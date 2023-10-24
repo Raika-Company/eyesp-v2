@@ -13,11 +13,10 @@ const RightSide = () => {
   return (
     <Box
       sx={{
-        display: "grid",
-        gridTemplateRows: "repeat(3, 1fr)",
-        gap: "1.5rem",
-        // Temporary
-        maxWidth: "20.8rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2rem",
+        flexShrink: "1",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>

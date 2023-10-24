@@ -49,11 +49,10 @@ const LeftSide = () => {
   return (
     <Box
       sx={{
-        display: "grid",
-        gridTemplateRows: "repeat(3, 1fr)",
-        gap: "1.5rem",
-        // Temporary
-        maxWidth: "20.8rem",
+        flexShrink: "1",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2rem",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>

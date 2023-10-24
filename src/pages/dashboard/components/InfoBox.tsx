@@ -26,6 +26,7 @@ const InfoBox: FC<Props> = ({
         border: "1px solid #2B2E31",
         display: "flex",
         flexDirection: "column",
+        height: "16.5rem",
       }}
     >
       <Box
@@ -35,7 +36,7 @@ const InfoBox: FC<Props> = ({
           background: "#232629",
           borderTopRightRadius: ".5rem",
           borderTopLeftRadius: ".5rem",
-          paddingY: ".5rem",
+          paddingY: ".6rem",
           paddingX: "1rem",
         }}
       >
