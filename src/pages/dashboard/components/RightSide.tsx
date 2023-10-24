@@ -14,8 +14,10 @@ const RightSide = () => {
     <Box
       sx={{
         display: "flex",
+        flexShrink: "1",
         flexDirection: "column",
-        gap: "2rem",
+        gap: "1rem",
+        justifySelf: "start",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>
@@ -25,6 +27,8 @@ const RightSide = () => {
             paddingY: "1.5rem",
             paddingX: ".8rem",
             gap: "1rem",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <NumberValue title="داخل" value={31} unit="ms" />
@@ -90,6 +94,7 @@ const RightSide = () => {
         <Box
           sx={{
             padding: "1rem",
+            paddingBottom: "0",
             display: "flex",
             flexDirection: "column",
             gap: ".5rem",

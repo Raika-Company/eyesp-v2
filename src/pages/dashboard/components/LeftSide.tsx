@@ -50,8 +50,10 @@ const LeftSide = () => {
     <Box
       sx={{
         display: "flex",
+        flexShrink: "1",
         flexDirection: "column",
-        gap: "2rem",
+        gap: "1rem",
+        justifySelf: "end",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>
@@ -61,6 +63,8 @@ const LeftSide = () => {
             paddingY: "1.5rem",
             paddingX: ".8rem",
             gap: "1rem",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <NumberValue title="Upload" value={6} unit="mbps" />

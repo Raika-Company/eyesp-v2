@@ -8,20 +8,13 @@ const Dashboard: FC = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        // alignItems: "center",
-        gap: "2rem",
+        display: "grid",
+        gridTemplateColumns: "1fr 2fr 1fr",
+        gap: "1rem",
       }}
     >
       <LeftSide />
-      <Box
-        sx={{
-          minWidth: "60rem",
-        }}
-      >
-        <Map />
-      </Box>
+      <Map />
       <RightSide />
     </Box>
   );

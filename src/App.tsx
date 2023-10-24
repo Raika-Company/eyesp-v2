@@ -31,9 +31,14 @@ const App: FC = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <CssBaseline />
+
         <Box
           sx={{
-            padding: "2.5rem",
+            height: "100vh",
+            width: "100vw",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <Routes>
