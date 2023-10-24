@@ -16,7 +16,6 @@ const RightSide = () => {
         display: "flex",
         flexDirection: "column",
         gap: "2rem",
-        flexShrink: "1",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>

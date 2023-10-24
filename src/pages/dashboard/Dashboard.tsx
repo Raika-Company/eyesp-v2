@@ -10,14 +10,14 @@ const Dashboard: FC = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
+        // alignItems: "center",
         gap: "2rem",
       }}
     >
       <LeftSide />
       <Box
         sx={{
-          minWidth: "50vw",
-          minHeight: "51vh",
+          minWidth: "60rem",
         }}
       >
         <Map />

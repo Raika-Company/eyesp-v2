@@ -49,7 +49,6 @@ const LeftSide = () => {
   return (
     <Box
       sx={{
-        flexShrink: "1",
         display: "flex",
         flexDirection: "column",
         gap: "2rem",
