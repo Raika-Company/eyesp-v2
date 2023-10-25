@@ -37,18 +37,18 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
         alignItems: "center",
       }}
     >
-      {renderText(title, "6rem")}
+      {renderText(title, "5.5rem")}
       <Typography
         sx={{
           background: "#232629",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "9rem",
+          width: "8rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
-          fontSize: "5rem",
+          fontSize: "4rem",
           paddingX: "2.5rem",
           borderRadius: ".5rem",
           zIndex: "1",
