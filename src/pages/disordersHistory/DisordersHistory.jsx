@@ -29,6 +29,14 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.5,
   },
 }));
+const HorizontalLine = styled(Box)(({ theme }) => ({
+  margin: "0 auto",
+  width: "400px",
+  height: "2px",
+  background:
+    "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+  opacity: "0.2",
+}));
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
 const DisordersHistory = () => {
@@ -93,7 +101,7 @@ const DisordersHistory = () => {
                   <Box
                     sx={{
                       width: "2px",
-                      height: "30px",
+                      height: "20px",
                       background: "white",
                     }}
                   />{" "}
@@ -110,16 +118,7 @@ const DisordersHistory = () => {
                 برطرف نشده
               </TableCell>
             </RowBox>
-            <Box
-              sx={{
-                margin: "0 auto",
-                width: "400px",
-                height: "2px",
-                background:
-                  "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
-                opacity: "0.2",
-              }}
-            />{" "}
+            <HorizontalLine />
             <RowBox
               sx={{
                 "td, th": { border: 0 },
@@ -138,7 +137,7 @@ const DisordersHistory = () => {
                   <Box
                     sx={{
                       width: "2px",
-                      height: "30px",
+                      height: "20px",
                       background: "white",
                     }}
                   />{" "}
