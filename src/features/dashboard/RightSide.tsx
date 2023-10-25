@@ -7,14 +7,14 @@ import {
   useTheme,
 } from "@mui/material";
 
-import InfoBox from "./InfoBox";
-import NumberValue from "./NumberValue";
-import ArrowLeftGreen from "../../../assets/images/arrow-left-green.svg";
-import SpeedCompare from "../../../assets/images/speed-compare.svg";
-import ChartIcon from "../../../assets/images/chart-icon-2.svg";
-import WifiIcon from "../../../assets/images/wifi.svg";
+import InfoBox from "./components/InfoBox";
+import NumberValue from "./components/NumberValue";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import SpeedCompare from "../../assets/images/speed-compare.svg";
+import ChartIcon from "../../assets/images/chart-icon-2.svg";
+import WifiIcon from "../../assets/images/wifi.svg";
 import {InternalISPList} from "./LeftSide";
-import BadgedValue from "./BadgedValue";
+import BadgedValue from "./components/BadgedValue";
 
 const RightSide = () => {
   const theme = useTheme();

@@ -1,7 +1,6 @@
 import {SvgIcon} from "@mui/material";
 import {FC} from "react";
-import MapPaths from "./MapPaths";
-// import provinceCoords from "../../../../public/data/provincesCoords.json";
+import MapPaths from "./components/MapPaths";
 
 const Map: FC = () => {
   return (

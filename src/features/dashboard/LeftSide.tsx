@@ -6,12 +6,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import InfoBox from "./InfoBox";
-import NumberValue from "./NumberValue";
-import AverageIcon from "../../../assets/images/average-icon.svg";
-import ArrowLeftGreen from "../../../assets/images/arrow-left-green.svg";
-import ActiveIndicator from "./ActiveIndicator";
-import ChartIcon from "../../../assets/images/chart-icon.svg";
+import InfoBox from "./components/InfoBox";
+import NumberValue from "./components/NumberValue";
+import AverageIcon from "../../assets/images/average-icon.svg";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import ActiveIndicator from "./components/ActiveIndicator";
+import ChartIcon from "../../assets/images/chart-icon.svg";
 
 export const InternalISPList = [
   {

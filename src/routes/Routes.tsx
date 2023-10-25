@@ -1,5 +1,6 @@
 import Dashboard from "../pages/dashboard/Dashboard";
 
+// const
 export const mainRoutes = [
   {
     path: "/",
