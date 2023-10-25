@@ -7,6 +7,7 @@ import {
   TableHead,
   TableCell,
   styled,
+  Divider,
 } from "@mui/material";
 import React from "react";
 import CardContainer from "./components/CardContainer";
@@ -69,6 +70,9 @@ const DisordersHistory = () => {
                 </TableCell>
               ))}
             </RowBox>
+            <div style={{ width: "100%", padding: "10px 0" }}>
+              <Divider />
+            </div>
           </TableHead>
           <TableBody>
             <RowBox
@@ -106,6 +110,16 @@ const DisordersHistory = () => {
                 برطرف نشده
               </TableCell>
             </RowBox>
+            <Box
+              sx={{
+                margin: "0 auto",
+                width: "400px",
+                height: "2px",
+                background:
+                  "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+                opacity: "0.2",
+              }}
+            />{" "}
             <RowBox
               sx={{
                 "td, th": { border: 0 },
