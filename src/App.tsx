@@ -1,7 +1,7 @@
-import {Box, CssBaseline, ThemeProvider, createTheme} from "@mui/material";
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
-import {mainRoutes} from "./routes/Routes";
-import {FC} from "react";
+import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { mainRoutes } from "./routes/Routes";
+import { FC } from "react";
 
 const theme = createTheme({
   direction: "rtl",
@@ -32,25 +32,11 @@ const App: FC = () => {
       <Router>
         <CssBaseline />
 
-        <Box
-          sx={{
-            height: "100vh",
-            width: "100vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Routes>
-            {mainRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-        </Box>
+        <Routes>
+          {mainRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
       </Router>
     </ThemeProvider>
   );
