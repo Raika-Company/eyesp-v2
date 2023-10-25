@@ -58,6 +58,7 @@ const LeftSide = () => {
   return (
     <Box
       sx={{
+        height: "100%",
         display: "flex",
         flexShrink: "1",
         flexDirection: "column",
