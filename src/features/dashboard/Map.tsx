@@ -1,6 +1,6 @@
 import {SvgIcon} from "@mui/material";
 import {FC} from "react";
-import MapPaths from "./MapPaths";
+import MapPaths from "./components/MapPaths";
 
 const Map: FC = () => {
   return (
