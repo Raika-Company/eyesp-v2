@@ -20,6 +20,7 @@ const InfoBox: FC<Props> = ({
   return (
     <Box
       sx={{
+        flexGrow: "1",
         borderRadius: ".5rem",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
         background: "#2B2E31",
@@ -68,7 +69,13 @@ const InfoBox: FC<Props> = ({
         )}
       </Box>
 
-      {children}
+      <Box
+        sx={{
+          marginY: "auto",
+        }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

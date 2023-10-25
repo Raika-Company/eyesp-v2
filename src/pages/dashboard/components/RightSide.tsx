@@ -1,4 +1,11 @@
-import {Box, Divider, Stack, Typography} from "@mui/material";
+import {
+  Box,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import InfoBox from "./InfoBox";
 import NumberValue from "./NumberValue";
@@ -10,21 +17,24 @@ import {InternalISPList} from "./LeftSide";
 import BadgedValue from "./BadgedValue";
 
 const RightSide = () => {
+  const theme = useTheme();
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   return (
     <Box
       sx={{
+        height: "100%",
         display: "flex",
         flexShrink: "1",
         flexDirection: "column",
-        gap: "1rem",
         justifySelf: "start",
+        gap: isLgScreen ? "2rem" : "1rem",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>
         <Stack
           direction="row"
           sx={{
-            paddingY: "1.5rem",
+            paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",

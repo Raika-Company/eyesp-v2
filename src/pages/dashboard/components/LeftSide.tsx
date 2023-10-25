@@ -1,4 +1,11 @@
-import {Box, Divider, Stack, Typography} from "@mui/material";
+import {
+  Box,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import InfoBox from "./InfoBox";
 import NumberValue from "./NumberValue";
 import AverageIcon from "../../../assets/images/average-icon.svg";
@@ -46,13 +53,17 @@ const ExternalISPList = [
 ];
 
 const LeftSide = () => {
+  const theme = useTheme();
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   return (
     <Box
       sx={{
+        height: "100%",
         display: "flex",
         flexShrink: "1",
         flexDirection: "column",
-        gap: "1rem",
+        gap: isLgScreen ? "2rem" : "1rem",
+        maxWidth: isLgScreen ? "initial" : "19rem",
         justifySelf: "end",
       }}
     >
@@ -60,7 +71,7 @@ const LeftSide = () => {
         <Stack
           direction="row"
           sx={{
-            paddingY: "1.5rem",
+            paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
