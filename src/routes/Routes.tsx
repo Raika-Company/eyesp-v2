@@ -2,6 +2,7 @@ import { lazy } from "react";
 import Dashboard from "../pages/Dashboard";
 const GlobalOverview = lazy(() => import("../pages/GlobalOverview"));
 
+// const
 export const mainRoutes = [
   {
     path: "/",
