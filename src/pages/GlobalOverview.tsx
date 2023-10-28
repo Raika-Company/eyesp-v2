@@ -25,7 +25,10 @@ const fetchHistoryData = async (): Promise<WebsiteData[]> => {
 };
 
 const useHistoryData = () =>
-  useQuery<HistoryData, Error>("historyDataKey", fetchHistoryData);
+  useQuery<HistoryData, Error>({
+    queryKey: ["historyDataKey"],
+    queryFn: fetchHistoryData,
+  });
 
 const LOGOS = [
   { src: google, name: "GOOGLE" },
@@ -51,7 +54,9 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
 }) => (
   <Grid
     xs={12}
-    md={5.78}
+    md={6}
+    spacing={2}
+    columns={16}
     sx={{
       borderRadius: "0.5rem",
       background: "#2B2E31",
