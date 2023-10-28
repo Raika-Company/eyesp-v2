@@ -4,7 +4,7 @@ import { mainRoutes } from "./routes/Routes";
 import { FC } from "react";
 import "./layout/global.css";
 import theme from "./layout/theme";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
