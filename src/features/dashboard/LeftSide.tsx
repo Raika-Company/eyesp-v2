@@ -9,7 +9,7 @@ import {
 import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
-import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+// import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ActiveIndicator from "./components/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
 
@@ -43,12 +43,12 @@ const ExternalISPList = [
   {
     id: 2,
     name: "Google",
-    isActive: true,
+    isActive: false,
   },
   {
     id: 3,
     name: "Amazon",
-    isActive: true,
+    isActive: false,
   },
 ];
 
@@ -115,7 +115,7 @@ const LeftSide = () => {
             </Box>
           ))}
 
-          <Stack
+          {/* <Stack
             direction="row"
             sx={{
               cursor: "pointer",
@@ -130,7 +130,7 @@ const LeftSide = () => {
                 marginLeft: ".5rem",
               }}
             />
-          </Stack>
+          </Stack> */}
         </Box>
       </InfoBox>
       <InfoBox
@@ -166,7 +166,7 @@ const LeftSide = () => {
             </Box>
           ))}
 
-          <Stack
+          {/* <Stack
             direction="row"
             sx={{
               cursor: "pointer",
@@ -182,7 +182,7 @@ const LeftSide = () => {
                 marginLeft: ".5rem",
               }}
             />
-          </Stack>
+          </Stack> */}
         </Box>
       </InfoBox>
     </Box>

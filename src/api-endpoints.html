@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>EYESP&period;LIVE API Endpoints</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-dark">
+        <h1 id="eyesplive-api-endpoints">EYESP.LIVE API Endpoints</h1>
+<h2 id="dashboard-page">Dashboard Page</h2>
+<p><strong>Avarage Metrics:</strong>
+sample url: <code>status.eyesp.live/v1/dashboard/metrics</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+	<span class="hljs-attr">&quot;internal-ping&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">31</span><span class="hljs-punctuation">,</span>
+	<span class="hljs-attr">&quot;external-ping&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">52</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;download&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;upload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;IGW&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1490026</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;IXP&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2320026</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>State of internal data centers</strong>
+sample url: <code>status.eyesp.live/v1/dashboard/isps</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;hamrahaval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;irancel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;rightel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">403</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;mobinnet&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>State of external data centers</strong>
+sample url: <code>status.eyesp.live/v1/dashboard/sites</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;google&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;github&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;amazon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">403</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;stackoverflow&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>Disturbances by Province:</strong>
+sample url: <code>status.eyesp.live/dashboard/province-disturbances</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;ardabil&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;azerbaijan, east&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;azerbaijan, west&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tehran&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;isfahan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;khorasan, razavi&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;fars&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;khuzestan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+
+        
+        
+    </body>
+    </html>

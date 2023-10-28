@@ -110,8 +110,8 @@ const RightSide = () => {
             gap: ".5rem",
           }}
         >
-          <BadgedValue badgeName="IGW" value={1490026} />
-          <BadgedValue badgeName="IXP" value={2310026} />
+          <BadgedValue badgeName="IGW" value={1.4} />
+          <BadgedValue badgeName="IXP" value={2.3} />
         </Box>
       </InfoBox>
     </Box>

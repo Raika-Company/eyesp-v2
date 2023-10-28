@@ -1,7 +1,19 @@
-import {SvgIcon, styled} from "@mui/material";
-import {FC, Fragment} from "react";
+import { SvgIcon, styled } from "@mui/material";
+import { FC, Fragment } from "react";
 import MapPaths from "./components/MapPaths";
-import provinceCoords from "../../../public/data/provincesCoords.json";
+
+type ProvinceCoordsType = {
+  [key: string]: {
+    name: string;
+    x: number;
+    y: number;
+    size: number;
+  }
+};
+
+import provinceCoordsData from "../../../public/data/provincesCoords.json";
+
+const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
 const mockProvinceData = [
   {
@@ -11,28 +23,33 @@ const mockProvinceData = [
   },
   {
     id: 2,
-    name: "yazd",
-    numberOfIssues: 4,
+    name: "azerbaijan, east",
+    numberOfIssues: 1,
   },
   {
     id: 3,
-    name: "ardabil",
+    name: "khorasan, razavi",
     numberOfIssues: 6,
   },
   {
     id: 4,
-    name: "lorestan",
-    numberOfIssues: 8,
+    name: "fars",
+    numberOfIssues: 1,
   },
   {
     id: 5,
     name: "isfahan",
-    numberOfIssues: 11,
+    numberOfIssues: 2,
   },
   {
     id: 6,
-    name: "ilam",
+    name: "alborz",
     numberOfIssues: 2,
+  },
+  {
+    id: 7,
+    name: "khozestan",
+    numberOfIssues: 1,
   },
 ];
 
@@ -52,7 +69,7 @@ const Map: FC = () => {
     index: number;
   }
   const AnimatedCircle = styled("circle")<Props & React.SVGProps<SVGAElement>>(
-    ({index, cx, cy}) => ({
+    ({ index, cx, cy }) => ({
       animation: `pulse 2s ${188 * index}ms infinite `,
       transformOrigin: `${cx}px ${cy}px`,
       "@keyframes pulse": {
@@ -86,30 +103,30 @@ const Map: FC = () => {
           <Fragment key={province.id}>
             <circle
               key={province.id}
-              cx={provinceCoords[province.name].x}
-              cy={provinceCoords[province.name].y}
+              cx={(provinceCoords as any)[province.name].x}
+              cy={(provinceCoords as any)[province.name].y}
               fill={getColor(province.numberOfIssues)}
               r="8"
             />
             <AnimatedCircle
-              cx={provinceCoords[province.name].x}
-              cy={provinceCoords[province.name].y}
+              cx={(provinceCoords as any)[province.name].x}
+              cy={(provinceCoords as any)[province.name].y}
               stroke={getColor(province.numberOfIssues)}
               opacity=".40"
               index={index}
               r="8"
             />
             <AnimatedCircle
-              cx={provinceCoords[province.name].x}
-              cy={provinceCoords[province.name].y}
+              cx={(provinceCoords as any)[province.name].x}
+              cy={(provinceCoords as any)[province.name].y}
               stroke={getColor(province.numberOfIssues)}
               opacity=".30"
               index={index}
               r="12"
             />
             <AnimatedCircle
-              cx={provinceCoords[province.name].x}
-              cy={provinceCoords[province.name].y}
+              cx={(provinceCoords as any)[province.name].x}
+              cy={(provinceCoords as any)[province.name].y}
               stroke={getColor(province.numberOfIssues)}
               opacity=".2"
               index={index}
