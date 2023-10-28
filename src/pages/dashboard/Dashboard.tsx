@@ -7,6 +7,7 @@ import Map from "../../features/dashboard/Map";
 const Dashboard: FC = () => {
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   return (
     <Box
       sx={{
@@ -20,7 +21,9 @@ const Dashboard: FC = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `1fr ${isLgScreen ? "3.5" : "2.5"}fr 1fr`,
+          gridTemplateColumns: `1fr ${
+            isXlgScreen ? "3.5" : isLgScreen ? "3.2" : "2.5"
+          }fr 1fr`,
           alignItems: "center",
           gap: isLgScreen ? "2rem" : "1rem",
         }}
