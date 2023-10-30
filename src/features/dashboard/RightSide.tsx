@@ -18,7 +18,7 @@ import BadgedValue from "./components/BadgedValue";
 
 const RightSide = () => {
   const theme = useTheme();
-  const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   return (
     <Box
       sx={{
@@ -26,8 +26,9 @@ const RightSide = () => {
         display: "flex",
         flexShrink: "1",
         flexDirection: "column",
-        justifySelf: "start",
-        gap: isLgScreen ? "2rem" : "1rem",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        maxWidth: isXlgScreen ? "initial" : "19rem",
+        justifySelf: "stretch",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>
@@ -51,7 +52,7 @@ const RightSide = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {InternalISPList.map((isp) => (
@@ -107,11 +108,11 @@ const RightSide = () => {
             paddingBottom: "0",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
-          <BadgedValue badgeName="IGW" value={1490026} />
-          <BadgedValue badgeName="IXP" value={2310026} />
+          <BadgedValue badgeName="IGW" value={1490026} unit="Mbps" />
+          <BadgedValue badgeName="IXP" value={2310026} unit="Mbps" />
         </Box>
       </InfoBox>
     </Box>

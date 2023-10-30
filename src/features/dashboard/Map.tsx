@@ -1,4 +1,4 @@
-import {SvgIcon, styled} from "@mui/material";
+import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
 import {FC, Fragment} from "react";
 import MapPaths from "./components/MapPaths";
 import provinceCoords from "../../../public/data/provincesCoords.json";
@@ -48,6 +48,11 @@ const getColor = (value: number) => {
 };
 
 const Map: FC = () => {
+  const theme = useTheme();
+  const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
   interface Props {
     index: number;
   }
@@ -73,6 +78,9 @@ const Map: FC = () => {
       sx={{
         width: "100%",
         height: "100%",
+        boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
+        order: isLgDownScreen ? "-1" : "0",
+        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
       }}
     >
       <svg
