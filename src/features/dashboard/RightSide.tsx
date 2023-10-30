@@ -111,8 +111,8 @@ const RightSide = () => {
             gap: isXlgScreen ? ".5rem" : "",
           }}
         >
-          <BadgedValue badgeName="IGW" value={1490026} unit="Mbps" />
-          <BadgedValue badgeName="IXP" value={2310026} unit="Mbps" />
+          <BadgedValue badgeName="IGW" value={1.4} />
+          <BadgedValue badgeName="IXP" value={2.3} />
         </Box>
       </InfoBox>
     </Box>

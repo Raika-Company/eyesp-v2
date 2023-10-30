@@ -1,8 +1,8 @@
 import {Box, useMediaQuery, useTheme} from "@mui/material";
 import {FC} from "react";
-import LeftSide from "../../features/dashboard/LeftSide";
-import RightSide from "../../features/dashboard/RightSide";
-import Map from "../../features/dashboard/Map";
+import LeftSide from "../features/dashboard/LeftSide";
+import RightSide from "../features/dashboard/RightSide";
+import Map from "../features/dashboard/Map";
 
 const Dashboard: FC = () => {
   const theme = useTheme();
