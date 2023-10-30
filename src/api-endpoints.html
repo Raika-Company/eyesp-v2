@@ -88,6 +88,75 @@ sample url: <code>status.eyesp.live/dashboard/province-disturbances</code></p>
     <span class="hljs-attr">&quot;khuzestan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
 <span class="hljs-punctuation">}</span>
 </code></pre>
+<h2 id="disorders-page">Disorders page:</h2>
+<p>sample url: <code>status.eyesp.live/v1/disorders</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;پیام‌رسانی&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;بروزرسانی موفق از سرویس‌های پیام‌رسانی&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;details&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;مشکلات موجود در پیام‌رسانی حل شد&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;date&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;12/04/1402 | 22:35&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;پیام‌رسانی&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;بروزرسانی ناموفق از سرویس‌های پیام‌رسانی&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;details&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;مشکلاتی در پیام‌رسانی پیش آمده است&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;date&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;12/04/1402 | 20:31&quot;</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span>
+</code></pre>
+<h2 id="uptime-page">uptime page:</h2>
+<p><strong>sites:</strong></p>
+<p>sample url: <code>status.eyesp.live/v1/uptime/isps</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;timestamps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;22:10&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;22:11&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;22:12&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;22:13&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;22:14&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;services&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hamrahaval&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;hamrahaval-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Irancel&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;irancel-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Zitel&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Zitel-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>isps:</strong></p>
+<p>sample url: <code>status.eyesp.live/v1/uptime/sites</code></p>
+<p>sample output:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;timestamps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;22:00&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;23:00&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;00:00&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;01:00&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;02:14&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;services&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;GITHUB&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;github-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;AMAZON&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;amazon-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;GOOGLE&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;google-icon-url&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;offline&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;online&quot;</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
 
         
         

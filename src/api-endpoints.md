@@ -59,3 +59,85 @@ sample output:
     "khuzestan": 4,
 }
 ```
+
+## Disorders page:
+
+sample url: `status.eyesp.live/v1/disorders`
+
+sample output:
+```json
+[
+    {
+        "id": 1,
+        "type": "پیام‌رسانی",
+        "message": "بروزرسانی موفق از سرویس‌های پیام‌رسانی",
+        "details": "مشکلات موجود در پیام‌رسانی حل شد",
+        "date": "12/04/1402 | 22:35"
+    },
+    {
+        "id": 2,
+        "type": "پیام‌رسانی",
+        "message": "بروزرسانی ناموفق از سرویس‌های پیام‌رسانی",
+        "details": "مشکلاتی در پیام‌رسانی پیش آمده است",
+        "date": "12/04/1402 | 20:31"
+    }
+]
+```
+
+## uptime page:
+
+**sites:**
+
+sample url: `status.eyesp.live/v1/uptime/isps`
+
+sample output:
+```json
+{
+    "timestamps": ["22:10", "22:11", "22:12", "22:13", "22:14"],
+    "services": [
+        {
+            "name": "Hamrahaval",
+            "icon": "hamrahaval-icon-url",
+            "status": ["online", "online", "offline", "online", "online"]
+        },
+        {
+            "name": "Irancel",
+            "icon": "irancel-icon-url",
+            "status": ["online", "online", "online", "online", "offline"]
+        },
+        {
+            "name": "Zitel",
+            "icon": "Zitel-icon-url",
+            "status": ["online", "online", "online", "offline", "online"]
+        }
+    ]
+}
+```
+
+**isps:**
+
+sample url: `status.eyesp.live/v1/uptime/sites`
+
+sample output:
+```json
+{
+    "timestamps": ["22:00", "23:00", "00:00", "01:00", "02:14"],
+    "services": [
+        {
+            "name": "GITHUB",
+            "icon": "github-icon-url",
+            "status": ["online", "online", "offline", "online", "online"]
+        },
+        {
+            "name": "AMAZON",
+            "icon": "amazon-icon-url",
+            "status": ["online", "online", "online", "online", "offline"]
+        },
+        {
+            "name": "GOOGLE",
+            "icon": "google-icon-url",
+            "status": ["online", "online", "online", "offline", "online"]
+        }
+    ]
+}
+```
