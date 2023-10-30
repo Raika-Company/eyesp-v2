@@ -1,5 +1,5 @@
-import { SvgIcon, styled } from "@mui/material";
-import { FC, Fragment } from "react";
+import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
+import {FC, Fragment} from "react";
 import MapPaths from "./components/MapPaths";
 
 type ProvinceCoordsType = {
@@ -8,7 +8,7 @@ type ProvinceCoordsType = {
     x: number;
     y: number;
     size: number;
-  }
+  };
 };
 
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
@@ -65,11 +65,16 @@ const getColor = (value: number) => {
 };
 
 const Map: FC = () => {
+  const theme = useTheme();
+  const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
   interface Props {
     index: number;
   }
   const AnimatedCircle = styled("circle")<Props & React.SVGProps<SVGAElement>>(
-    ({ index, cx, cy }) => ({
+    ({index, cx, cy}) => ({
       animation: `pulse 2s ${188 * index}ms infinite `,
       transformOrigin: `${cx}px ${cy}px`,
       "@keyframes pulse": {
@@ -90,6 +95,9 @@ const Map: FC = () => {
       sx={{
         width: "100%",
         height: "100%",
+        boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
+        order: isLgDownScreen ? "-1" : "0",
+        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
       }}
     >
       <svg

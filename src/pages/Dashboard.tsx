@@ -6,31 +6,59 @@ import Map from "../features/dashboard/Map";
 
 const Dashboard: FC = () => {
   const theme = useTheme();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
-  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   return (
+    // The code that surely will be changed.
     <Box
       sx={{
-        height: "100vh",
-        width: "100vw",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        background: "#000",
+
+        // Maybe temporary
+        marginTop: isLgScreen ? "3rem" : "1.5rem",
+        marginX: isLgScreen ? "" : "2.5rem",
       }}
     >
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: `1fr ${
-            isXlgScreen ? "3.5" : isLgScreen ? "3.2" : "2.5"
-          }fr 1fr`,
+          borderRadius: "1rem",
+          display: "flex",
+          justifyContent: "center",
           alignItems: "center",
-          gap: isLgScreen ? "2rem" : "1rem",
+          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+
+          // Maybe temporary
+          paddingY: isLgScreen ? "2rem" : "1rem",
+          paddingX: "3rem",
         }}
       >
-        <LeftSide />
-        <Map />
-        <RightSide />
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: isSmScreen
+              ? "1fr"
+              : isMdScreen
+              ? "2fr 1fr"
+              : `1fr ${isLgScreen ? "3.2" : "2.5"}fr 1fr`,
+            gridTemplateRows: isSmScreen
+              ? "repeat(3, auto)"
+              : isMdScreen
+              ? "repeat(2, auto)"
+              : isLgScreen
+              ? "1fr"
+              : "1fr",
+            alignItems: "center",
+            gap: isLgScreen ? "2rem" : "1rem",
+          }}
+        >
+          <LeftSide />
+          <Map />
+          <RightSide />
+        </Box>
       </Box>
     </Box>
   );

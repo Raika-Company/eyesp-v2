@@ -25,7 +25,8 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: BACKGROUND_GRADIENT,
+          // background: BACKGROUND_GRADIENT,
+          background: 'black',
           backgroundAttachment: "fixed",
         },
       },
@@ -35,11 +36,11 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 600,
+      sm: 660,
       md: 960,
       lg: 1280,
       xl: 1600,
-      x2: 1921 // Adding a new breakpoint
+      x2: 1920 // Adding a new breakpoint
     },
   }
 

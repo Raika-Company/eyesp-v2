@@ -54,7 +54,8 @@ const ExternalISPList = [
 
 const LeftSide = () => {
   const theme = useTheme();
-  const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Box
       sx={{
@@ -62,9 +63,9 @@ const LeftSide = () => {
         display: "flex",
         flexShrink: "1",
         flexDirection: "column",
-        gap: isLgScreen ? "2rem" : "1rem",
-        maxWidth: isLgScreen ? "initial" : "19rem",
-        justifySelf: "end",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        maxWidth: isXlgScreen ? "initial" : "19rem",
+        justifySelf: isMDScreen ? "start" : "",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>
@@ -92,7 +93,7 @@ const LeftSide = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {InternalISPList.map((isp) => (
@@ -143,7 +144,7 @@ const LeftSide = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {ExternalISPList.map((isp) => (
