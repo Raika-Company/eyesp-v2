@@ -54,17 +54,16 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
 }) => (
   <Grid
     xs={12}
-    md={6}
-    spacing={2}
-    columns={16}
+    // md={6}
     sx={{
+      maxWidth: { md: "48%" },
       borderRadius: "0.5rem",
       background: "#2B2E31",
       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
-      mx: "auto",
-      my: ".85em",
       display: "flex",
       justifyContent: "space-between",
+      mx: "auto",
+      my: ".85em",
       px: "1.5em",
     }}
   >
@@ -94,17 +93,20 @@ const GlobalOverview: React.FC = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Container maxWidth="xl">
-      <Grid container columnSpacing={2} rowSpacing={2} paddingY="3rem">
-        {data?.map((websiteData, index) => (
-          <GridItem
-            key={index}
-            data={websiteData}
-            logo={LOGOS[index % LOGOS.length]}
-          />
-        ))}
-      </Grid>
-    </Container>
+    <Grid
+      container
+      rowSpacing={4}
+      columnSpacing={{ xs: -5, sm: -5 }}
+      paddingY="3rem"
+    >
+      {data?.map((websiteData, index) => (
+        <GridItem
+          key={index}
+          data={websiteData}
+          logo={LOGOS[index % LOGOS.length]}
+        />
+      ))}
+    </Grid>
   );
 };
 
