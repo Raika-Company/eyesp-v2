@@ -166,7 +166,7 @@ const LeftSide = () => {
             </Box>
           ))}
 
-          {/* <Stack
+          <Stack
             direction="row"
             sx={{
               cursor: "pointer",
@@ -182,7 +182,7 @@ const LeftSide = () => {
                 marginLeft: ".5rem",
               }}
             />
-          </Stack> */}
+          </Stack>
         </Box>
       </InfoBox>
     </Box>
