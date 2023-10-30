@@ -39,7 +39,7 @@ const theme = createTheme({
       sm: 660,
       md: 960,
       lg: 1280,
-      xl: 1600,
+      xl: 1300,
       x2: 1920 // Adding a new breakpoint
     },
   }

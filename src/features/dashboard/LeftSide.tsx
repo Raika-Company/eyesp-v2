@@ -9,7 +9,7 @@ import {
 import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
-// import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ActiveIndicator from "./components/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
 
@@ -60,9 +60,7 @@ const LeftSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexShrink: "1",
-        flexDirection: "column",
+        display: "grid",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         maxWidth: isXlgScreen ? "initial" : "19rem",
         justifySelf: isMDScreen ? "start" : "",
@@ -72,7 +70,7 @@ const LeftSide = () => {
         <Stack
           direction="row"
           sx={{
-            paddingY: "1rem",
+            // paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -91,6 +89,7 @@ const LeftSide = () => {
         <Box
           sx={{
             padding: "1rem",
+            paddingY: "0",
             display: "flex",
             flexDirection: "column",
             gap: isXlgScreen ? ".5rem" : "",
@@ -116,7 +115,7 @@ const LeftSide = () => {
             </Box>
           ))}
 
-          {/* <Stack
+          <Stack
             direction="row"
             sx={{
               cursor: "pointer",
@@ -131,7 +130,7 @@ const LeftSide = () => {
                 marginLeft: ".5rem",
               }}
             />
-          </Stack> */}
+          </Stack>
         </Box>
       </InfoBox>
       <InfoBox

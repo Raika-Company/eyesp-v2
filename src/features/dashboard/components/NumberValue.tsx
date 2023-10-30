@@ -36,7 +36,6 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
       }}
     >
