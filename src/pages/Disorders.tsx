@@ -1,82 +1,174 @@
-import { Box, Container, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  styled,
+  Divider,
+  Card,
+} from "@mui/material";
 import RefreshIcon from "../components/icons/RefreshIcon";
 
-const Disorders: React.FC = () => {
-  return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        marginTop: "min(3rem, 3%)",
-        boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
-        overflow: "visible"
-      }}
-    >
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center" 
-        gap="1rem"
-        borderRadius="0.5rem 0.5rem 0rem 0rem"
-        sx={{ background: "#232629" }}
-        paddingX="1.6rem"
-        paddingY="1.3rem"
-      >
-        <RefreshIcon />
-        <Typography
-          component="h2"
-          color="#C7C6C3"
-          fontSize="1.34rem"
-          fontWeight={800}
-        >
-          تاریخچه اختلالات
-        </Typography>
-      </Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        px="3.5rem"
-        py="2rem"
-        sx={{ background: "#2B2E31" }}
-      >
-        {/* Header */}
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          mb="1.5rem"
-        >
-          <Typography color="#C7C6C3">وضعیت</Typography>
-          <Typography color="#C7C6C3">دلیل خطا</Typography>
-          <Typography color="#C7C6C3">نوع خطا</Typography>
-          <Typography color="#C7C6C3">تاریخ و ساعت</Typography>
-        </Box>
+const RowBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  borderRadius: "1rem",
+  paddingInline: "1.69rem",
+  "& > *": {
+    flex: 1,
+    fontFamily: "PeydaLight",
+  },
+  "& > *:nth-of-type(1)": {
+    flex: 0.5,
+  },
+  "& > *:nth-of-type(4)": {
+    flex: 0.5,
+  },
+}));
+const HorizontalLine = styled(Box)(({ theme }) => ({
+  margin: "0 auto",
+  width: "400px",
+  height: "2px",
+  background:
+    "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+  opacity: "0.2",
+}));
+const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-        {/* Rows */}
-        <Box display="flex" flexDirection="column" gap="1.5rem">
+const CardContainer = styled(Card)(({ theme }) => ({
+  borderRadius: ".75rem",
+  backdropFilter: "blur(35px)",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+
+  "& scrollbarWidth": "none",
+  background: "#2B2E31",
+  boxShadow: "0px 4px 40px 0px rgba(255, 255, 255, 0.10)",
+  margin: "3.5rem",
+}));
+
+const Disorders = () => {
+  return (
+    <Container maxWidth="xl">
+      <CardContainer>
+        <Box sx={{ backgroundColor: "black" }}>
+          {" "}
           <Box
+            padding="1.69rem"
             display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
+            justifyContent="start"
+            gap={1}
+            alignItems="center"
           >
-            <Typography color="#C7C6C3">بروزرسانی نشده</Typography>
-            <Typography color="#C7C6C3">روزی به شب شدن</Typography>
-            <Typography color="#C7C6C3">روزی به شب شدن</Typography>
-            <Typography color="#C7C6C3">12/04/1402 | 22:35</Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Typography color="#C7C6C3">بروزرسانی نشده</Typography>
-            <Typography color="#C7C6C3">روزی به شب شدن</Typography>
-            <Typography color="#C7C6C3">روزی به شب شدن</Typography>
-            <Typography color="#C7C6C3">12/04/1402 | 20:31</Typography>
+            <RefreshIcon />
+            <Typography fontWeight={800} fontSize="2rem">
+              تاریخچه اختلالات
+            </Typography>
           </Box>
         </Box>
-      </Box>
+        <Table aria-label="simple table">
+          <TableHead
+            sx={{
+              ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
+                { border: "none" },
+            }}
+          >
+            <RowBox>
+              {cellHeaders.map((header, idx) => (
+                <TableCell
+                  sx={{ borderBottom: "none" }}
+                  align={"right"}
+                  component="th"
+                  scope="row"
+                  key={idx}
+                >
+                  {header}
+                </TableCell>
+              ))}
+            </RowBox>
+            <div style={{ width: "100%", padding: "10px 0" }}>
+              <Divider />
+            </div>
+          </TableHead>
+          <TableBody>
+            <RowBox
+              sx={{
+                "td, th": { border: 0 },
+                height: "70px",
+              }}
+            >
+              <TableCell align="right" sx={{ color: "white" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <span>1402/3/24</span>
+                  <Box
+                    sx={{
+                      width: "2px",
+                      height: "20px",
+                      background: "white",
+                    }}
+                  />{" "}
+                  <span>12:23:45</span>
+                </Box>
+              </TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>
+                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+              </TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>
+                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
+              </TableCell>
+              <TableCell sx={{ color: "red" }} align="right">
+                برطرف نشده
+              </TableCell>
+            </RowBox>
+            <HorizontalLine />
+            <RowBox
+              sx={{
+                "td, th": { border: 0 },
+                height: "70px",
+              }}
+            >
+              <TableCell align="right" sx={{ color: "white" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <span>1402/3/24</span>
+                  <Box
+                    sx={{
+                      width: "2px",
+                      height: "20px",
+                      background: "white",
+                    }}
+                  />{" "}
+                  <span>12:23:45</span>
+                </Box>
+              </TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>
+                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+              </TableCell>
+              <TableCell align="right" sx={{ color: "white" }}>
+                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
+              </TableCell>
+              <TableCell sx={{ color: "green" }} align="right">
+                برطرف شده
+              </TableCell>
+            </RowBox>
+          </TableBody>
+        </Table>
+      </CardContainer>
     </Container>
   );
 };
