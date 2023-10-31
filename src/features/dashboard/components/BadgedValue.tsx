@@ -7,7 +7,7 @@ interface Props {
   unit?: string;
 }
 
-const BadgedValue: FC<Props> = ({badgeName, value, unit = "TB"}) => {
+const BadgedValue: FC<Props> = ({badgeName, value, unit = "Mbps"}) => {
   return (
     <Box
       sx={{

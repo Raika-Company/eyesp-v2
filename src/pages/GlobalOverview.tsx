@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Box, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import React from "react";
+import React, { useEffect } from "react";
 import amazon from "../assets/images/logo/amazon.svg";
 import google from "../assets/images/logo/google.svg";
 import github from "../assets/images/logo/github.svg";
@@ -28,6 +28,7 @@ const useHistoryData = () =>
   useQuery<HistoryData, Error>({
     queryKey: ["historyDataKey"],
     queryFn: fetchHistoryData,
+    staleTime: 60000, // cache for 60 seconds
   });
 
 const LOGOS = [
@@ -87,7 +88,15 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
 );
 
 const GlobalOverview: React.FC = () => {
-  const { data, error, isLoading } = useHistoryData();
+  const { data, error, isLoading, refetch } = useHistoryData();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

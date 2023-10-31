@@ -23,12 +23,9 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexShrink: "1",
-        flexDirection: "column",
+        display: "grid",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         maxWidth: isXlgScreen ? "initial" : "19rem",
-        justifySelf: "stretch",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>
@@ -111,8 +108,8 @@ const RightSide = () => {
             gap: isXlgScreen ? ".5rem" : "",
           }}
         >
-          <BadgedValue badgeName="IGW" value={1.4} />
-          <BadgedValue badgeName="IXP" value={2.3} />
+          <BadgedValue badgeName="IGW" value={1490026} />
+          <BadgedValue badgeName="IXP" value={2310026} />
         </Box>
       </InfoBox>
     </Box>
