@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect } from "react";
 import amazon from "../assets/images/logo/amazon.svg";
@@ -28,13 +28,14 @@ const useHistoryData = () =>
   useQuery<HistoryData, Error>({
     queryKey: ["historyDataKey"],
     queryFn: fetchHistoryData,
-    staleTime: 60000, // cache for 60 seconds
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
   });
 
 const LOGOS = [
-  { src: google, name: "GOOGLE" },
-  { src: github, name: "GITHUB" },
   { src: amazon, name: "AMAZON" },
+  { src: github, name: "GITHUB" },
+  { src: google, name: "GOOGLE" },
 ];
 
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
@@ -108,13 +109,15 @@ const GlobalOverview: React.FC = () => {
       columnSpacing={{ xs: -5, sm: -5 }}
       paddingY="3rem"
     >
-      {data?.map((websiteData, index) => (
-        <GridItem
-          key={index}
-          data={websiteData}
-          logo={LOGOS[index % LOGOS.length]}
-        />
-      ))}
+      {data &&
+        Array.isArray(data) &&
+        data.map((websiteData: WebsiteData, index: number) => (
+          <GridItem
+            key={index}
+            data={websiteData}
+            logo={LOGOS[index % LOGOS.length]}
+          />
+        ))}
     </Grid>
   );
 };
