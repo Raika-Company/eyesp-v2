@@ -1,10 +1,17 @@
-import {Box, Divider, Stack, Typography} from "@mui/material";
-import InfoBox from "./InfoBox";
-import NumberValue from "./NumberValue";
-import AverageIcon from "../../../assets/images/average-icon.svg";
-import ArrowLeftGreen from "../../../assets/images/arrow-left-green.svg";
-import ActiveIndicator from "./ActiveIndicator";
-import ChartIcon from "../../../assets/images/chart-icon.svg";
+import {
+  Box,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import InfoBox from "./components/InfoBox";
+import NumberValue from "./components/NumberValue";
+import AverageIcon from "../../assets/images/average-icon.svg";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import ActiveIndicator from "./components/ActiveIndicator";
+import ChartIcon from "../../assets/images/chart-icon.svg";
 
 export const InternalISPList = [
   {
@@ -36,31 +43,34 @@ const ExternalISPList = [
   {
     id: 2,
     name: "Google",
-    isActive: true,
+    isActive: false,
   },
   {
     id: 3,
     name: "Amazon",
-    isActive: true,
+    isActive: false,
   },
 ];
 
 const LeftSide = () => {
+  const theme = useTheme();
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Box
       sx={{
-        display: "flex",
-        flexShrink: "1",
-        flexDirection: "column",
-        gap: "1rem",
-        justifySelf: "end",
+        height: "100%",
+        display: "grid",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        maxWidth: isXlgScreen ? "initial" : "19rem",
+        justifySelf: isMDScreen ? "start" : "",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>
         <Stack
           direction="row"
           sx={{
-            paddingY: "1.5rem",
+            // paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -79,9 +89,10 @@ const LeftSide = () => {
         <Box
           sx={{
             padding: "1rem",
+            paddingY: "0",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {InternalISPList.map((isp) => (
@@ -132,7 +143,7 @@ const LeftSide = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {ExternalISPList.map((isp) => (

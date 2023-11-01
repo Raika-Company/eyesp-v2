@@ -7,7 +7,7 @@ interface Props {
   unit?: string;
 }
 
-const BadgedValue: FC<Props> = ({badgeName, value, unit = "MB"}) => {
+const BadgedValue: FC<Props> = ({badgeName, value, unit = "Mbps"}) => {
   return (
     <Box
       sx={{
@@ -21,7 +21,7 @@ const BadgedValue: FC<Props> = ({badgeName, value, unit = "MB"}) => {
       }}
     >
       <Stack direction="row-reverse" alignItems="baseline">
-        <Typography fontSize="2.5rem">{value}</Typography>
+        <Typography fontSize="2.5rem">{value.toLocaleString()}</Typography>
         <Typography>{unit}</Typography>
       </Stack>
 

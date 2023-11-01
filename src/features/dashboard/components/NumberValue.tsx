@@ -1,4 +1,4 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {FC} from "react";
 
 interface Props {
@@ -8,6 +8,9 @@ interface Props {
 }
 
 const NumberValue: FC<Props> = ({value, title, unit}) => {
+  const theme = useTheme();
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+
   const renderText = (value: string, minWidth = "initial") => {
     return (
       <Typography
@@ -33,30 +36,34 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
       }}
     >
-      {renderText(title, "6rem")}
-      <Typography
+      {renderText(title, "5.5rem")}
+      <Box
         sx={{
           background: "#232629",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "9rem",
+          width: isXlgScreen ? "8rem" : "7rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
-          fontSize: "5rem",
-          paddingX: "2.5rem",
           borderRadius: ".5rem",
           zIndex: "1",
-          fontWeight: "800",
         }}
       >
-        {value}
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: "800",
+            fontSize: isXlgScreen ? "4rem" : "2.5rem",
+            marginBottom: "-1rem",
+          }}
+        >
+          {value}
+        </Typography>
+      </Box>
       {renderText(unit)}
     </Box>
   );

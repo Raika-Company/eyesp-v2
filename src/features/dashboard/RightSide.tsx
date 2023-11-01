@@ -1,30 +1,38 @@
-import {Box, Divider, Stack, Typography} from "@mui/material";
+import {
+  Box,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
-import InfoBox from "./InfoBox";
-import NumberValue from "./NumberValue";
-import ArrowLeftGreen from "../../../assets/images/arrow-left-green.svg";
-import SpeedCompare from "../../../assets/images/speed-compare.svg";
-import ChartIcon from "../../../assets/images/chart-icon-2.svg";
-import WifiIcon from "../../../assets/images/wifi.svg";
+import InfoBox from "./components/InfoBox";
+import NumberValue from "./components/NumberValue";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import SpeedCompare from "../../assets/images/speed-compare.svg";
+import ChartIcon from "../../assets/images/chart-icon-2.svg";
+import WifiIcon from "../../assets/images/wifi.svg";
 import {InternalISPList} from "./LeftSide";
-import BadgedValue from "./BadgedValue";
+import BadgedValue from "./components/BadgedValue";
 
 const RightSide = () => {
+  const theme = useTheme();
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   return (
     <Box
       sx={{
-        display: "flex",
-        flexShrink: "1",
-        flexDirection: "column",
-        gap: "1rem",
-        justifySelf: "start",
+        height: "100%",
+        display: "grid",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        maxWidth: isXlgScreen ? "initial" : "19rem",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>
         <Stack
           direction="row"
           sx={{
-            paddingY: "1.5rem",
+            paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -41,7 +49,7 @@ const RightSide = () => {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           {InternalISPList.map((isp) => (
@@ -97,7 +105,7 @@ const RightSide = () => {
             paddingBottom: "0",
             display: "flex",
             flexDirection: "column",
-            gap: ".5rem",
+            gap: isXlgScreen ? ".5rem" : "",
           }}
         >
           <BadgedValue badgeName="IGW" value={1490026} />
