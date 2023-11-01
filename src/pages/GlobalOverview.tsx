@@ -32,9 +32,9 @@ const useHistoryData = () =>
   });
 
 const LOGOS = [
-  { src: google, name: "GOOGLE" },
-  { src: github, name: "GITHUB" },
   { src: amazon, name: "AMAZON" },
+  { src: github, name: "GITHUB" },
+  { src: google, name: "GOOGLE" },
 ];
 
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
