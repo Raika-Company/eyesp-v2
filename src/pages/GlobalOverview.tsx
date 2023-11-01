@@ -29,7 +29,6 @@ const useHistoryData = () =>
     queryKey: ["historyDataKey"],
     queryFn: fetchHistoryData,
     staleTime: 60000,
-    cacheTime: 60000,
     refetchOnWindowFocus: false,
   });
 
