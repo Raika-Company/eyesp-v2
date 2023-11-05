@@ -1,19 +1,8 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Box,
-  Typography,
-  Container,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import WestIcon from "@mui/icons-material/West";
-import amazon from "../assets/images/logo/amazon.svg";
-import google from "../assets/images/logo/google.svg";
-import github from "../assets/images/logo/github.svg";
 import { GetGlobalOverview } from "../services/GlobalOverview";
-import { Link } from "react-router-dom";
 
 type HistoryItem = {
   status: number;
