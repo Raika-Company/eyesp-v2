@@ -8,15 +8,12 @@ import {
   TableCell,
   styled,
   Divider,
-  Card,
-  Button
 } from "@mui/material";
-import RefreshIcon from "../components/icons/RefreshIcon";
-import { Link } from "react-router-dom";
-import WestIcon from '@mui/icons-material/West';
+import React from "react";
+import CardContainer from "./components/CardContainer";
+import history from "../../assets/images/history.svg";
 
-
-const RowBox = styled(Box)(({ }) => ({
+const RowBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -32,7 +29,7 @@ const RowBox = styled(Box)(({ }) => ({
     flex: 0.5,
   },
 }));
-const HorizontalLine = styled(Box)(({ }) => ({
+const HorizontalLine = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -42,24 +39,12 @@ const HorizontalLine = styled(Box)(({ }) => ({
 }));
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const CardContainer = styled(Card)(({ }) => ({
-  borderRadius: ".75rem",
-  backdropFilter: "blur(35px)",
-  "&::-webkit-scrollbar": {
-    display: "none",
-  },
-
-  "& scrollbarWidth": "none",
-  background: "#2B2E31",
-  boxShadow: "0px 4px 40px 0px rgba(255, 255, 255, 0.10)",
-  margin: "3.5rem",
-}));
-
-const Disorders = () => {
+const DisordersHistory = () => {
   return (
     <Container maxWidth="xl">
       <CardContainer>
-        <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "black" }}>
+        <Box sx={{ backgroundColor: "black" }}>
+          {" "}
           <Box
             padding="1.69rem"
             display="flex"
@@ -67,12 +52,11 @@ const Disorders = () => {
             gap={1}
             alignItems="center"
           >
-            <RefreshIcon />
+            <img src={history} alt="history" />
             <Typography fontWeight={800} fontSize="2rem">
               تاریخچه اختلالات
             </Typography>
           </Box>
-          <Button component={Link} to="/" sx={{fontSize: "1.5rem", textDecoration: "none", textAlign: "center", color: "#FFF"}} endIcon={<WestIcon sx={{marginRight: "1rem"}}/>}>بازگشت</Button>
         </Box>
         <Table aria-label="simple table">
           <TableHead
@@ -177,4 +161,4 @@ const Disorders = () => {
   );
 };
 
-export default Disorders;
+export default DisordersHistory;
