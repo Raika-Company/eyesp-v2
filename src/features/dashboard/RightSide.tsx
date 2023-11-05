@@ -9,7 +9,7 @@ import {
 
 import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
-import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+// import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
 import ChartIcon from "../../assets/images/chart-icon-2.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
@@ -75,7 +75,7 @@ const RightSide = () => {
             </Box>
           ))}
 
-          <Stack
+          {/* <Stack
             direction="row"
             sx={{
               cursor: "pointer",
@@ -91,7 +91,7 @@ const RightSide = () => {
                 marginLeft: ".5rem",
               }}
             />
-          </Stack>
+          </Stack> */}
         </Box>
       </InfoBox>
       <InfoBox

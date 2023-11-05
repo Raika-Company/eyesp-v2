@@ -1,5 +1,5 @@
 const config = {
-  rootAddress: "http://2.189.59.122:3000/get-history/lastminute",
+  rootAddress: "https://status.eyesp.live/get-history/lastminute",
   timeout: 25000,
   tokenName: "",
   refreshTokenName: "",

@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Box, Typography, Container, Button, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import WestIcon from '@mui/icons-material/West';
-import amazon from "../assets/images/logo/amazon.svg";
-import google from "../assets/images/logo/google.svg";
-import github from "../assets/images/logo/github.svg";
+import zitel from "../assets/images/zitel.png";
+import mokhaberat from "../assets/images/mokhaberat.png";
+import hamrahaval from "../assets/images/hamrahaval.png";
 
 import { GetGlobalOverview } from "../services/GlobalOverview";
 import { Link } from "react-router-dom";
@@ -35,9 +35,9 @@ const useHistoryData = () =>
   });
 
 const LOGOS = [
-  { src: amazon, name: "AMAZON" },
-  { src: github, name: "GITHUB" },
-  { src: google, name: "GOOGLE" },
+  { src: zitel, name: "زیتل" },
+  { src: mokhaberat, name: "مخابرات" },
+  { src: hamrahaval, name: "همراه اول" },
 ];
 
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
@@ -70,7 +70,7 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
       px: "1.5em",
     }}
   >
-    <Box>
+    <Box display="flex" flexDirection="column" alignItems="center" gap="0.5rem">
       <img src={logo.src} alt={logo.name} height="52px" />
       <Typography sx={{ textAlign: "center" }}>{logo.name}</Typography>
     </Box>
@@ -93,7 +93,7 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
   </Grid>
 );
 
-const GlobalOverview: React.FC = () => {
+const ISP: React.FC = () => {
   const { data, error, isLoading, refetch } = useHistoryData();
 
   useEffect(() => {
@@ -137,4 +137,4 @@ const GlobalOverview: React.FC = () => {
   );
 };
 
-export default GlobalOverview;
+export default ISP;

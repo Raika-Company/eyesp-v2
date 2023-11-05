@@ -9,10 +9,14 @@ import {
   styled,
   Divider,
   Card,
+  Button
 } from "@mui/material";
 import RefreshIcon from "../components/icons/RefreshIcon";
+import { Link } from "react-router-dom";
+import WestIcon from '@mui/icons-material/West';
 
-const RowBox = styled(Box)(({ theme }) => ({
+
+const RowBox = styled(Box)(({ }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -28,7 +32,7 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.5,
   },
 }));
-const HorizontalLine = styled(Box)(({ theme }) => ({
+const HorizontalLine = styled(Box)(({ }) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -38,7 +42,7 @@ const HorizontalLine = styled(Box)(({ theme }) => ({
 }));
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const CardContainer = styled(Card)(({ theme }) => ({
+const CardContainer = styled(Card)(({ }) => ({
   borderRadius: ".75rem",
   backdropFilter: "blur(35px)",
   "&::-webkit-scrollbar": {
@@ -55,8 +59,7 @@ const Disorders = () => {
   return (
     <Container maxWidth="xl">
       <CardContainer>
-        <Box sx={{ backgroundColor: "black" }}>
-          {" "}
+        <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "black" }}>
           <Box
             padding="1.69rem"
             display="flex"
@@ -69,6 +72,7 @@ const Disorders = () => {
               تاریخچه اختلالات
             </Typography>
           </Box>
+          <Button component={Link} to="/" sx={{fontSize: "1.5rem", textDecoration: "none", textAlign: "center", color: "#FFF"}} endIcon={<WestIcon sx={{marginRight: "1rem"}}/>}>بازگشت</Button>
         </Box>
         <Table aria-label="simple table">
           <TableHead

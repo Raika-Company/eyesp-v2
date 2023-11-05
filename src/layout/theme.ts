@@ -11,6 +11,9 @@ const BACKGROUND_GRADIENT = "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.5
 const theme = createTheme({
   direction: "rtl",
   palette: {
+    primary: {
+      main: "#C7C6C3",
+    },
     background: {
       default: BACKGROUND_GRADIENT,
     },
