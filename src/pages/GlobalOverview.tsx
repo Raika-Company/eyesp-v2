@@ -12,6 +12,7 @@ type HistoryItem = {
 type WebsiteData = {
   name: string;
   domain: string;
+
   history: HistoryItem[];
 };
 
@@ -29,12 +30,6 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
-const LOGOS = [
-  { src: "https://status.eyesp.live/images/amazon.svg" },
-  { src: "https://status.eyesp.live/images/github.svg" },
-  { src: "https://status.eyesp.live/images/google.svg" },
-];
-
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
   <Box
     width="2.5%"
@@ -47,10 +42,7 @@ const DataBlock: React.FC<{ value: number }> = ({ value }) => (
   />
 );
 
-const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
-  data,
-  logo,
-}) => (
+const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   <Grid
     xs={12}
     // md={6}
@@ -67,8 +59,11 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
       px: "1.5em",
     }}
   >
-    <Box>
-      <img src={logo.src} alt={data.name} />
+    <Box sx={{ textTransform: "uppercase" }}>
+      <img
+        src={`https://status.eyesp.live/images/${data.name}.svg`}
+        alt={data.name}
+      />
       <Typography
         sx={{
           textAlign: "center",
@@ -109,20 +104,11 @@ const GlobalOverview: React.FC = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Grid
-      container
-      rowSpacing={4}
-      columnSpacing={{ xs: -5, sm: -5 }}
-      paddingY="3rem"
-    >
+    <Grid container rowSpacing={4} px="2em" paddingY="3em">
       {data &&
         Array.isArray(data) &&
         data.map((websiteData: WebsiteData, index: number) => (
-          <GridItem
-            key={index}
-            data={websiteData}
-            logo={LOGOS[index % LOGOS.length]}
-          />
+          <GridItem key={index} data={websiteData} />
         ))}
     </Grid>
   );
