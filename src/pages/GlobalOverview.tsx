@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Container,
+  Button,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { GetGlobalOverview } from "../services/GlobalOverview";
+import { Link } from "react-router-dom";
+import WestIcon from '@mui/icons-material/West';
 
 type HistoryItem = {
   status: number;
@@ -120,13 +128,35 @@ const GlobalOverview: React.FC = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Grid container rowSpacing={4} px="2em" paddingY="3em">
-      {data &&
-        Array.isArray(data) &&
-        data.map((websiteData: WebsiteData, index: number) => (
-          <GridItem key={index} data={websiteData} />
-        ))}
-    </Grid>
+    <Container maxWidth="xl">
+      <Button
+        component={Link}
+        to="/"
+        sx={{
+          fontSize: "1.5rem",
+          textDecoration: "none",
+          textAlign: "center",
+          width: "100%",
+          color: "#FFF",
+          marginTop: "2rem",
+        }}
+        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
+      >
+        بازگشت
+      </Button>
+      <Grid
+        container
+        rowSpacing={4}
+        columnSpacing={{ xs: -5, sm: -5 }}
+        paddingY="2rem"
+      >
+        {data &&
+          Array.isArray(data) &&
+          data.map((websiteData: WebsiteData, index: number) => (
+            <GridItem key={index} data={websiteData} />
+          ))}
+      </Grid>
+    </Container>
   );
 };
 
