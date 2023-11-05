@@ -40,7 +40,7 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
       }}
     >
       {renderText(title, "5.5rem")}
-      <Typography
+      <Box
         sx={{
           background: "#232629",
           display: "flex",
@@ -50,15 +50,20 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
-          fontSize: isXlgScreen ? "4rem" : "2.5rem",
-          paddingX: "1.5rem",
           borderRadius: ".5rem",
           zIndex: "1",
-          fontWeight: "800",
         }}
       >
-        {value}
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: "800",
+            fontSize: isXlgScreen ? "4rem" : "2.5rem",
+            marginBottom: "-1rem",
+          }}
+        >
+          {value}
+        </Typography>
+      </Box>
       {renderText(unit)}
     </Box>
   );

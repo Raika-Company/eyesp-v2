@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   Stack,
   Typography,
@@ -12,6 +13,7 @@ import AverageIcon from "../../assets/images/average-icon.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ActiveIndicator from "./components/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
+import { Link } from "react-router-dom";
 
 export const InternalISPList = [
   {
@@ -123,7 +125,7 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Typography color="#7FCD9F">{"مشاهده ۱۵ مورد دیگر..."}</Typography>
+            <Button component={Link} to="/isp" sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
             <img
               src={ArrowLeftGreen}
               style={{
@@ -174,7 +176,7 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Typography color="#7FCD9F">{"مشاهده ۴۵  مورد دیگر..."}</Typography>
+            <Button component={Link} to="/global-overview" sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
             <img
               src={ArrowLeftGreen}
               style={{

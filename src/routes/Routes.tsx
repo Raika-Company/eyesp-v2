@@ -1,7 +1,8 @@
-import { lazy } from "react";
+// import { lazy } from "react";
 import Dashboard from "../pages/Dashboard";
-const GlobalOverview = lazy(() => import("../pages/GlobalOverview"));
-const Disorders = lazy(() => import("../pages/Disorders"));
+import GlobalOverview from "../pages/GlobalOverview";
+import ISP from "../pages/ISP";
+import Disorders from "../pages/Disorders";
 
 export const mainRoutes = [
   {
@@ -18,5 +19,10 @@ export const mainRoutes = [
     path: "/disorders",
     element: <Disorders />,
     title: "Disorders",
+  },
+  {
+    path: "/isp",
+    element: <ISP />,
+    title: "ISP",
   }
 ];
