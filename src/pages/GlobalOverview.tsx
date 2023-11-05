@@ -2,10 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect } from "react";
-import amazon from "../assets/images/logo/amazon.svg";
-import google from "../assets/images/logo/google.svg";
-import github from "../assets/images/logo/github.svg";
-
 import { GetGlobalOverview } from "../services/GlobalOverview";
 
 type HistoryItem = {
@@ -14,6 +10,7 @@ type HistoryItem = {
 };
 
 type WebsiteData = {
+  name: string;
   domain: string;
   history: HistoryItem[];
 };
@@ -33,9 +30,9 @@ const useHistoryData = () =>
   });
 
 const LOGOS = [
-  { src: amazon, name: "AMAZON" },
-  { src: github, name: "GITHUB" },
-  { src: google, name: "GOOGLE" },
+  { src: "https://status.eyesp.live/images/amazon.svg" },
+  { src: "https://status.eyesp.live/images/github.svg" },
+  { src: "https://status.eyesp.live/images/google.svg" },
 ];
 
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
@@ -63,6 +60,7 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
       background: "#2B2E31",
       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
       display: "flex",
+      alignItems: "center",
       justifyContent: "space-between",
       mx: "auto",
       my: ".85em",
@@ -70,8 +68,16 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
     }}
   >
     <Box>
-      <img src={logo.src} alt={logo.name} />
-      <Typography sx={{ textAlign: "center" }}>{logo.name}</Typography>
+      <img src={logo.src} alt={data.name} />
+      <Typography
+        sx={{
+          textAlign: "center",
+          textTransform: "uppercase",
+          fontWeight: 600,
+        }}
+      >
+        {data.name}
+      </Typography>
     </Box>
     <Box
       display="flex"
