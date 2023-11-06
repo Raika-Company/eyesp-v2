@@ -56,12 +56,14 @@ const RightSide = () => {
         {displayIsp.map((isp) => (
           <Box key={isp.id}>
             <Stack
-              direction="row"
+              // temporary
+              direction="row-reverse"
               justifyContent="space-between"
               alignItems="center"
               marginX=".5rem"
             >
-              <Stack direction="row" gap=".5rem">
+              {/* temporary */}
+              <Stack direction="row-reverse" gap=".5rem">
                 <Typography color="#7A7775">#{isp.id}</Typography>
                 <Typography>{isp.name}</Typography>
               </Stack>
@@ -109,10 +111,19 @@ const RightSide = () => {
         hasButton={true}
         onClick={toggleDialog}
       >
-        <ISPListDisplay isp={InternalISPList} isLimited={true} />
+        <ISPListDisplay
+          style={{ direction: "ltr" }}
+          isp={InternalISPList}
+          isLimited={true}
+        />
       </InfoBox>
       <Dialog
-        PaperProps={{ sx: { borderRadius: "0.5rem" } }}
+        PaperProps={{
+          sx: {
+            borderRadius: "0.5rem",
+            backgroundColor: "transparent",
+          },
+        }}
         open={isDialogOpen}
         onClose={toggleDialog}
       >
@@ -122,16 +133,19 @@ const RightSide = () => {
           hasButton={false}
           onClick={toggleDialog}
         >
-          <ISPListDisplay
-            isp={InternalISPList}
-            isLimited={false}
-            style={{
-              maxHeight: "40dvh",
-              overflowY: "scroll",
-              width: "20vw",
-              padding: "2rem",
-            }}
-          />
+          <Box padding=".5rem">
+            <ISPListDisplay
+              isp={InternalISPList}
+              isLimited={false}
+              style={{
+                direction: "ltr",
+                maxHeight: "40dvh",
+                overflowY: "scroll",
+                width: "20vw",
+                padding: "1rem",
+              }}
+            />
+          </Box>
         </InfoBox>
       </Dialog>
 
