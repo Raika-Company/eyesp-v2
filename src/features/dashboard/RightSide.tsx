@@ -22,21 +22,21 @@ import WifiIcon from "../../assets/images/wifi.svg";
 import { InternalISPList } from "./LeftSide";
 import BadgedValue from "./components/BadgedValue";
 import { useState } from "react";
-import { Flag, Info } from "@mui/icons-material";
+
+interface ISPListDisplayProps {
+  isp: typeof InternalISPList;
+  isLimited: boolean;
+  style?: React.CSSProperties;
+}
 
 const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const toogleDialog = () => {
+  const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
   };
-  interface ISPListDisplayProps {
-    isp: typeof InternalISPList;
-    isLimited: boolean;
-    style?: React.CSSProperties;
-  }
 
   const ISPListDisplay: React.FC<ISPListDisplayProps> = ({
     isp,
@@ -106,20 +106,20 @@ const RightSide = () => {
         title="رتبه بندی سرعت"
         iconPath={SpeedCompare}
         hasButton={true}
-        onClick={toogleDialog}
+        onClick={toggleDialog}
       >
         <ISPListDisplay isp={InternalISPList} isLimited={true} />
       </InfoBox>
       <Dialog
         PaperProps={{ sx: { borderRadius: "0.5rem" } }}
         open={isDialogOpen}
-        onClose={toogleDialog}
+        onClose={toggleDialog}
       >
         <InfoBox
           title="رتبه بندی سرعت"
           iconPath={SpeedCompare}
           hasButton={false}
-          onClick={toogleDialog}
+          onClick={toggleDialog}
         >
           <ISPListDisplay
             isp={InternalISPList}
