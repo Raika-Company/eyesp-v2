@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Typography, Container, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Container,
+  Button,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import WestIcon from '@mui/icons-material/West';
-import amazon from "../assets/images/logo/amazon.svg";
-import google from "../assets/images/logo/google.svg";
-import github from "../assets/images/logo/github.svg";
 import { GetGlobalOverview } from "../services/GlobalOverview";
 import { Link } from "react-router-dom";
+import WestIcon from '@mui/icons-material/West';
 
 type HistoryItem = {
   status: number;
@@ -17,6 +20,7 @@ type HistoryItem = {
 type WebsiteData = {
   name: string;
   domain: string;
+
   history: HistoryItem[];
 };
 
@@ -34,12 +38,6 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
-const LOGOS = [
-  { src: "https://status.eyesp.live/images/amazon.svg" },
-  { src: "https://status.eyesp.live/images/github.svg" },
-  { src: "https://status.eyesp.live/images/google.svg" },
-];
-
 const DataBlock: React.FC<{ value: number }> = ({ value }) => (
   <Box
     width="3%"
@@ -51,10 +49,7 @@ const DataBlock: React.FC<{ value: number }> = ({ value }) => (
   />
 );
 
-const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
-  data,
-  logo,
-}) => (
+const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   <Grid
     xs={12}
     sx={{
@@ -65,14 +60,16 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      alignItems: "center",
       mx: "auto",
       my: ".85em",
       px: "1.5em",
     }}
   >
-    <Box>
-      <img src={logo.src} alt={data.name} />
+    <Box sx={{ textTransform: "uppercase" }}>
+      <img
+        src={`https://status.eyesp.live/images/${data.name}.svg`}
+        alt={data.name}
+      />
       <Typography
         sx={{
           textAlign: "center",
@@ -115,8 +112,15 @@ const GlobalOverview: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <CircularProgress color="primary"/>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress color="primary" />
       </div>
     );
   }
@@ -125,7 +129,21 @@ const GlobalOverview: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
-      <Button component={Link} to="/" sx={{fontSize: "1.5rem", textDecoration: "none", textAlign: "center", width: "100%", color: "#FFF", marginTop: "2rem"}} endIcon={<WestIcon sx={{marginRight: "1rem"}}/>}>بازگشت</Button>
+      <Button
+        component={Link}
+        to="/"
+        sx={{
+          fontSize: "1.5rem",
+          textDecoration: "none",
+          textAlign: "center",
+          width: "100%",
+          color: "#FFF",
+          marginTop: "2rem",
+        }}
+        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
+      >
+        بازگشت
+      </Button>
       <Grid
         container
         rowSpacing={4}
@@ -135,11 +153,7 @@ const GlobalOverview: React.FC = () => {
         {data &&
           Array.isArray(data) &&
           data.map((websiteData: WebsiteData, index: number) => (
-            <GridItem
-              key={index}
-              data={websiteData}
-              logo={LOGOS[index % LOGOS.length]}
-            />
+            <GridItem key={index} data={websiteData} />
           ))}
       </Grid>
     </Container>
