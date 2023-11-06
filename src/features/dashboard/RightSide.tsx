@@ -47,6 +47,7 @@ const RightSide = () => {
     const combinedStyles = {
       display: "flex",
       flexDirection: "column",
+      padding: "1rem",
       gap: isXlgScreen ? ".5rem" : "",
       ...style,
     };
@@ -125,7 +126,7 @@ const RightSide = () => {
             isp={InternalISPList}
             isLimited={false}
             style={{
-              maxHeight: "40vh",
+              maxHeight: "40dvh",
               overflowY: "scroll",
               width: "20vw",
               padding: "2rem",
