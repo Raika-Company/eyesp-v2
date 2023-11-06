@@ -34,6 +34,36 @@ export const InternalISPList = [
     isActive: true,
     speed: "10",
   },
+  {
+    id: 3,
+    name: "رایتل",
+    isActive: true,
+    speed: "10",
+  },
+  {
+    id: 3,
+    name: "رایتل",
+    isActive: true,
+    speed: "10",
+  },
+  {
+    id: 3,
+    name: "رایتل",
+    isActive: true,
+    speed: "10",
+  },
+  {
+    id: 3,
+    name: "رایتل",
+    isActive: true,
+    speed: "10",
+  },
+  {
+    id: 3,
+    name: "رایتل",
+    isActive: true,
+    speed: "10",
+  },
 ];
 
 const ExternalISPList = [
@@ -125,7 +155,9 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Button component={Link} to="/isp" sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+            <Button component={Link} to="/isp" sx={{ color: "#7FCD9F" }}>
+              مشاهده جذئیات بیشتر
+            </Button>
             <img
               src={ArrowLeftGreen}
               style={{
@@ -176,7 +208,13 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Button component={Link} to="/global-overview" sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+            <Button
+              component={Link}
+              to="/global-overview"
+              sx={{ color: "#7FCD9F" }}
+            >
+              مشاهده جذئیات بیشتر
+            </Button>
             <img
               src={ArrowLeftGreen}
               style={{
