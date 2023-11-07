@@ -1,8 +1,8 @@
 import {Box, useMediaQuery, useTheme} from "@mui/material";
 import {FC} from "react";
-import LeftSide from "../../features/dashboard/LeftSide";
-import RightSide from "../../features/dashboard/RightSide";
-import Map from "../../components/ui/Map";
+import LeftSide from "../../../features/private_dashboard/LeftSide";
+import RightSide from "../../../features/private_dashboard/RightSide";
+import Map from "../../../components/ui/Map";
 
 const Dashboard: FC = () => {
   const theme = useTheme();
@@ -32,8 +32,8 @@ const Dashboard: FC = () => {
           boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
 
           // Maybe temporary
-          paddingY: isLgScreen ? "2rem" : "1rem",
-          paddingX: "3rem",
+          paddingY: "1rem",
+          paddingX: "1rem",
         }}
       >
         <Box
@@ -43,7 +43,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "2fr 1fr"
-              : `1fr ${isLgScreen ? "3.2" : "2.8"}fr 1fr`,
+              : `1fr ${isLgScreen ? "3.0" : "2.6"}fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
@@ -52,11 +52,11 @@ const Dashboard: FC = () => {
               ? "1fr"
               : "1fr",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "2rem",
+            gap: isLgScreen ? "2rem" : "1rem",
           }}
         >
           <LeftSide />
-          <Map />
+          <Map isPrivate />
           <RightSide />
         </Box>
       </Box>

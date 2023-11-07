@@ -1,6 +1,6 @@
 import {Box, Stack, Typography} from "@mui/material";
 import {FC, ReactNode} from "react";
-import ArrowLeft from "../../../assets/images/arrow-left.svg";
+import ArrowLeft from "../../assets/images/arrow-left.svg";
 
 interface Props {
   title: string;
@@ -27,7 +27,7 @@ const InfoBox: FC<Props> = ({
         border: "1px solid #2B2E31",
         display: "flex",
         flexDirection: "column",
-        minHeight: "14rem",
+        minHeight: "12rem",
       }}
     >
       <Box
@@ -69,14 +69,7 @@ const InfoBox: FC<Props> = ({
           />
         )}
       </Box>
-
-      <Box
-        sx={{
-          marginY: "auto",
-        }}
-      >
-        {children}
-      </Box>
+      {children}
     </Box>
   );
 };
