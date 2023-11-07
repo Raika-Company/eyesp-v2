@@ -13,7 +13,7 @@ import AverageIcon from "../../assets/images/average-icon.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ActiveIndicator from "./components/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export const InternalISPList = [
   {
@@ -34,36 +34,36 @@ export const InternalISPList = [
     isActive: true,
     speed: "10",
   },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
 ];
 
 const ExternalISPList = [
@@ -102,7 +102,7 @@ const LeftSide = () => {
         <Stack
           direction="row"
           sx={{
-            // paddingY: "1rem",
+            paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -155,7 +155,7 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Button component={Link} to="/isp" sx={{ color: "#7FCD9F" }}>
+            <Button component={Link} to="/isp" sx={{color: "#7FCD9F"}}>
               مشاهده جذئیات بیشتر
             </Button>
             <img
@@ -211,7 +211,7 @@ const LeftSide = () => {
             <Button
               component={Link}
               to="/global-overview"
-              sx={{ color: "#7FCD9F" }}
+              sx={{color: "#7FCD9F"}}
             >
               مشاهده جذئیات بیشتر
             </Button>

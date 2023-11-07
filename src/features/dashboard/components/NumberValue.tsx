@@ -50,6 +50,7 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
+          paddingY: ".5rem",
           borderRadius: ".5rem",
           zIndex: "1",
         }}
@@ -58,7 +59,7 @@ const NumberValue: FC<Props> = ({value, title, unit}) => {
           sx={{
             fontWeight: "800",
             fontSize: isXlgScreen ? "4rem" : "2.5rem",
-            marginBottom: "-1rem",
+            marginBottom: "-.5rem",
           }}
         >
           {value}
