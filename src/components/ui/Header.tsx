@@ -51,7 +51,7 @@ const Header: FC<Props> = ({
           }}
         >
           <img alt="iconPath" src={iconPath} />
-          <Typography>{title}</Typography>
+          <Typography color="white">{title}</Typography>
           <Typography color="#7A7775" mr="3rem">
             {selectTitle}
           </Typography>

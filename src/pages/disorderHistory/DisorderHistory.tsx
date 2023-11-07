@@ -1,23 +1,23 @@
+import React from "react";
+import Header from "../../components/ui/Header";
 import {
   Box,
-  Container,
-  Typography,
+  Divider,
   Table,
   TableBody,
-  TableHead,
   TableCell,
+  TableHead,
+  Typography,
   styled,
-  Divider,
 } from "@mui/material";
-import React from "react";
-import CardContainer from "./components/CardContainer";
 import history from "../../assets/images/history.svg";
+const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
 const RowBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
-  paddingInline: "1.69rem",
+  paddingRight: "3rem",
   "& > *": {
     flex: 1,
     fontFamily: "PeydaLight",
@@ -26,7 +26,7 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.5,
   },
   "& > *:nth-of-type(4)": {
-    flex: 0.5,
+    flex: 0.3,
   },
 }));
 const HorizontalLine = styled(Box)(({ theme }) => ({
@@ -37,27 +37,15 @@ const HorizontalLine = styled(Box)(({ theme }) => ({
     "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
   opacity: "0.2",
 }));
-const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
-
-const DisordersHistory = () => {
+const DisorderHistory = () => {
   return (
-    <Container maxWidth="xl">
-      <CardContainer>
-        <Box sx={{ backgroundColor: "black" }}>
-          {" "}
-          <Box
-            padding="1.69rem"
-            display="flex"
-            justifyContent="start"
-            gap={1}
-            alignItems="center"
-          >
-            <img src={history} alt="history" />
-            <Typography fontWeight={800} fontSize="2rem">
-              تاریخچه اختلالات
-            </Typography>
-          </Box>
-        </Box>
+    <div>
+      <Header
+        title="تاریخچه اختلالات"
+        iconPath={history}
+        selectTitle="ترتیب بندی براساس:"
+        // onClick={toggleDialog}
+      >
         <Table aria-label="simple table">
           <TableHead
             sx={{
@@ -156,9 +144,9 @@ const DisordersHistory = () => {
             </RowBox>
           </TableBody>
         </Table>
-      </CardContainer>
-    </Container>
+      </Header>
+    </div>
   );
 };
 
-export default DisordersHistory;
+export default DisorderHistory;

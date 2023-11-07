@@ -3,8 +3,7 @@ import Dashboard from "../pages/Dashboard";
 import GlobalOverview from "../pages/GlobalOverview";
 import ISP from "../pages/ISP";
 import Disorders from "../pages/Disorders";
-import LastDisorders from "../pages/lastDisorders/LastDisorders";
-
+import LastDisorder from "../pages/LastDisorders";
 export const mainRoutes = [
   {
     path: "/",
@@ -28,7 +27,7 @@ export const mainRoutes = [
   },
   {
     path: "/last-disorders",
-    element: <LastDisorders />,
+    element: <LastDisorder />,
     title: "lastDisorders",
   },
 ];
