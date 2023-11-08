@@ -12,10 +12,10 @@ import {
   Button,
 } from "@mui/material";
 import RefreshIcon from "../../components/icons/RefreshIcon";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 
-const RowBox = styled(Box)(({}) => ({
+const RowBox = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -31,7 +31,7 @@ const RowBox = styled(Box)(({}) => ({
     flex: 0.5,
   },
 }));
-const HorizontalLine = styled(Box)(({}) => ({
+const HorizontalLine = styled(Box)(() => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -41,7 +41,7 @@ const HorizontalLine = styled(Box)(({}) => ({
 }));
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const CardContainer = styled(Card)(({}) => ({
+const CardContainer = styled(Card)(() => ({
   borderRadius: ".75rem",
   backdropFilter: "blur(35px)",
   "&::-webkit-scrollbar": {
@@ -55,6 +55,7 @@ const CardContainer = styled(Card)(({}) => ({
 }));
 
 const Disorders = () => {
+  const navigate = useNavigate();
   return (
     <Container maxWidth="xl">
       <CardContainer>
@@ -77,8 +78,9 @@ const Disorders = () => {
             </Typography>
           </Box>
           <Button
-            component={Link}
-            to="/"
+            onClick={() => {
+              navigate(-1);
+            }}
             sx={{
               fontSize: "1.5rem",
               textDecoration: "none",

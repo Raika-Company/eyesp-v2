@@ -86,42 +86,50 @@ const RightSide = () => {
             </Box>
           ))}
           <Box>
-            <input
-              style={{
-                background: "#232629",
-                color: "#FFF",
-                padding: ".4rem",
-                outline: "none",
-                border: "none",
-                height: "2rem",
-                borderRadius: ".5rem",
-                width: "95%",
-                marginTop: "auto",
-                position: "absolute",
-                bottom: ".2rem",
-                left: "50%",
-                transform: "translateX(-50%)",
-                fontFamily: "PeydaRegular",
-                caretColor: "#FFF",
-              }}
-              placeholder="پیام خود را بنویسید..."
-            />
-            <Button
-              sx={{
-                position: "absolute",
-                bottom: ".75rem",
-                left: "-.5rem",
-                padding: "0",
-                ":hover": {
-                  background: "transparent",
-                },
-                "& .MuiTouchRipple-root": {
-                  display: "none",
-                },
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log("submit");
               }}
             >
-              <img src={Send} />
-            </Button>
+              <input
+                style={{
+                  background: "#232629",
+                  color: "#FFF",
+                  padding: ".4rem",
+                  outline: "none",
+                  border: "none",
+                  height: "2rem",
+                  borderRadius: ".5rem",
+                  width: "95%",
+                  marginTop: "auto",
+                  position: "absolute",
+                  bottom: ".2rem",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  fontFamily: "PeydaRegular",
+                  caretColor: "#FFF",
+                }}
+                placeholder="پیام خود را بنویسید..."
+              />
+              <Button
+                type="submit"
+                sx={{
+                  position: "absolute",
+                  bottom: ".75rem",
+                  left: "-.5rem",
+                  padding: "0",
+                  ":hover": {
+                    background: "transparent",
+                  },
+                  "& .MuiTouchRipple-root": {
+                    display: "none",
+                  },
+                }}
+              >
+                <img src={Send} />
+              </Button>
+            </form>
           </Box>
         </Box>
       </InfoBox>
