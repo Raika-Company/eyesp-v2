@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../../components/ui/Header";
 import {
   Box,
@@ -7,7 +6,6 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Typography,
   styled,
 } from "@mui/material";
 import history from "../../assets/images/history.svg";
