@@ -7,14 +7,14 @@ interface Props {
   title: string;
   selectTitle: string;
   iconPath: string;
-  children: ReactNode;
+  // children: ReactNode;
   onClick?: () => void;
 }
 
 const Header: FC<Props> = ({
   title,
   iconPath,
-  children,
+  // children,
   onClick,
   selectTitle,
 }) => {
@@ -135,13 +135,13 @@ const Header: FC<Props> = ({
         </Box>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           marginY: "auto",
         }}
       >
         {children}
-      </Box>
+      </Box> */}
     </Box>
   );
 };

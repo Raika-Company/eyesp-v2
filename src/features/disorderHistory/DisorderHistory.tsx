@@ -20,9 +20,8 @@ const DisorderHistory = () => {
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
         // onClick={toggleDialog}
-      >
-        <CustomTable cellHeaders={cellHeaders} />
-      </Header>
+      ></Header>
+      <CustomTable cellHeaders={cellHeaders} />
     </div>
   );
 };
