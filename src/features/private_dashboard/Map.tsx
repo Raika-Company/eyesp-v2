@@ -1,5 +1,5 @@
-import { SvgIcon, styled, useMediaQuery, useTheme } from "@mui/material";
-import { FC, Fragment } from "react";
+import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
+import {FC, Fragment} from "react";
 import MapPaths from "./components/MapPaths";
 
 type ProvinceCoordsType = {
@@ -12,7 +12,7 @@ type ProvinceCoordsType = {
 };
 
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -75,7 +75,7 @@ const Map: FC = () => {
     index: number;
   }
   const AnimatedCircle = styled("circle")<Props & React.SVGProps<SVGAElement>>(
-    ({ index, cx, cy }) => ({
+    ({index, cx, cy}) => ({
       animation: `pulse 2s ${188 * index}ms infinite `,
       transformOrigin: `${cx}px ${cy}px`,
       "@keyframes pulse": {
@@ -92,16 +92,16 @@ const Map: FC = () => {
   );
 
   return (
-    <Link to="/disorders">
-      <SvgIcon
-        sx={{
-          width: "100%",
-          height: "100%",
-          boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
-          order: isLgDownScreen ? "-1" : "0",
-          gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
-        }}
-      >
+    <SvgIcon
+      sx={{
+        width: "100%",
+        height: "100%",
+        boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
+        order: isLgDownScreen ? "-1" : "0",
+        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
+      }}
+    >
+      <Link to="/disorders">
         <svg
           preserveAspectRatio="none"
           viewBox="0 0 1130 1004"
@@ -145,8 +145,8 @@ const Map: FC = () => {
             </Fragment>
           ))}
         </svg>
-      </SvgIcon>
-    </Link>
+      </Link>
+    </SvgIcon>
   );
 };
 

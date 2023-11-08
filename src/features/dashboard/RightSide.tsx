@@ -6,14 +6,8 @@ import {
   useMediaQuery,
   useTheme,
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
 } from "@mui/material";
 
-import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 // import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
@@ -22,6 +16,7 @@ import WifiIcon from "../../assets/images/wifi.svg";
 import { InternalISPList } from "./LeftSide";
 import BadgedValue from "./components/BadgedValue";
 import { useState } from "react";
+import InfoBox from "../../components/ui/InfoBox";
 
 interface ISPListDisplayProps {
   isp: typeof InternalISPList;
@@ -47,7 +42,9 @@ const RightSide = () => {
     const combinedStyles = {
       display: "flex",
       flexDirection: "column",
+      padding: "1rem",
       gap: isXlgScreen ? ".5rem" : "",
+      marginY: "auto",
       ...style,
     };
     return (
@@ -55,12 +52,14 @@ const RightSide = () => {
         {displayIsp.map((isp) => (
           <Box key={isp.id}>
             <Stack
-              direction="row"
+              // temporary
+              direction="row-reverse"
               justifyContent="space-between"
               alignItems="center"
               marginX=".5rem"
             >
-              <Stack direction="row" gap=".5rem">
+              {/* temporary */}
+              <Stack direction="row-reverse" gap=".5rem">
                 <Typography color="#7A7775">#{isp.id}</Typography>
                 <Typography>{isp.name}</Typography>
               </Stack>
@@ -82,7 +81,8 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "grid",
+        display: "flex",
+        flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         maxWidth: isXlgScreen ? "initial" : "19rem",
       }}
@@ -91,7 +91,7 @@ const RightSide = () => {
         <Stack
           direction="row"
           sx={{
-            paddingY: "1rem",
+            marginY: "auto",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -108,10 +108,19 @@ const RightSide = () => {
         hasButton={true}
         onClick={toggleDialog}
       >
-        <ISPListDisplay isp={InternalISPList} isLimited={true} />
+        <ISPListDisplay
+          style={{ direction: "ltr" }}
+          isp={InternalISPList}
+          isLimited={true}
+        />
       </InfoBox>
       <Dialog
-        PaperProps={{ sx: { borderRadius: "0.5rem" } }}
+        PaperProps={{
+          sx: {
+            borderRadius: "0.5rem",
+            backgroundColor: "transparent",
+          },
+        }}
         open={isDialogOpen}
         onClose={toggleDialog}
       >
@@ -121,16 +130,19 @@ const RightSide = () => {
           hasButton={false}
           onClick={toggleDialog}
         >
-          <ISPListDisplay
-            isp={InternalISPList}
-            isLimited={false}
-            style={{
-              maxHeight: "40vh",
-              overflowY: "scroll",
-              width: "20vw",
-              padding: "2rem",
-            }}
-          />
+          <Box padding=".5rem">
+            <ISPListDisplay
+              isp={InternalISPList}
+              isLimited={false}
+              style={{
+                direction: "ltr",
+                maxHeight: "40dvh",
+                overflowY: "scroll",
+                width: "20vw",
+                padding: "1rem",
+              }}
+            />
+          </Box>
         </InfoBox>
       </Dialog>
 
@@ -141,6 +153,7 @@ const RightSide = () => {
       >
         <Box
           sx={{
+            marginY: "auto",
             padding: "1rem",
             paddingBottom: "0",
             display: "flex",

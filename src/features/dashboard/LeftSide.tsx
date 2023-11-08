@@ -7,13 +7,13 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ActiveIndicator from "./components/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
+import InfoBox from "../../components/ui/InfoBox";
 
 export const InternalISPList = [
   {
@@ -34,36 +34,36 @@ export const InternalISPList = [
     isActive: true,
     speed: "10",
   },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
-  {
-    id: 3,
-    name: "رایتل",
-    isActive: true,
-    speed: "10",
-  },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
+  // {
+  //   id: 3,
+  //   name: "رایتل",
+  //   isActive: true,
+  //   speed: "10",
+  // },
 ];
 
 const ExternalISPList = [
@@ -92,7 +92,8 @@ const LeftSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "grid",
+        display: "flex",
+        flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         maxWidth: isXlgScreen ? "initial" : "19rem",
         justifySelf: isMDScreen ? "start" : "",
@@ -102,7 +103,8 @@ const LeftSide = () => {
         <Stack
           direction="row"
           sx={{
-            // paddingY: "1rem",
+            paddingY: "1rem",
+            marginY: "auto",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
@@ -120,6 +122,7 @@ const LeftSide = () => {
       >
         <Box
           sx={{
+            marginY: "auto",
             padding: "1rem",
             paddingY: "0",
             display: "flex",
@@ -155,7 +158,7 @@ const LeftSide = () => {
               justifyContent: "space-between",
             }}
           >
-            <Button component={Link} to="/isp" sx={{ color: "#7FCD9F" }}>
+            <Button component={Link} to="/isp" sx={{color: "#7FCD9F"}}>
               مشاهده جذئیات بیشتر
             </Button>
             <img
@@ -174,6 +177,7 @@ const LeftSide = () => {
       >
         <Box
           sx={{
+            marginY: "auto",
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
@@ -211,7 +215,7 @@ const LeftSide = () => {
             <Button
               component={Link}
               to="/global-overview"
-              sx={{ color: "#7FCD9F" }}
+              sx={{color: "#7FCD9F"}}
             >
               مشاهده جذئیات بیشتر
             </Button>

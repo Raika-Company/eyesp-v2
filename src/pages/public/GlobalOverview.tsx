@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
 import {
   Box,
   Typography,
@@ -9,8 +9,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { GetGlobalOverview } from "../services/GlobalOverview";
-import { Link } from "react-router-dom";
+import {GetGlobalOverview} from "../../services/GlobalOverview";
+import {Link} from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 
 type HistoryItem = {
@@ -133,11 +133,11 @@ const convertToPersianDate = (dateString: string): string => {
   return formatter.format(date);
 };
 
-const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
+const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
   <Grid
     xs={12}
     sx={{
-      maxWidth: { md: "48%" },
+      maxWidth: {md: "48%"},
       borderRadius: "0.5rem",
       background: "#2B2E31",
       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -149,7 +149,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
       px: "1.5em",
     }}
   >
-    <Box sx={{ textTransform: "uppercase" }}>
+    <Box sx={{textTransform: "uppercase"}}>
       <img
         src={`https://status.eyesp.live/images/${data.name}.svg`}
         alt={data.name}
@@ -185,7 +185,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
 );
 
 const GlobalOverview: React.FC = () => {
-  const { data, error, isLoading, refetch } = useHistoryData();
+  const {data, error, isLoading, refetch} = useHistoryData();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -225,7 +225,7 @@ const GlobalOverview: React.FC = () => {
           color: "#FFF",
           marginTop: "2rem",
         }}
-        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
+        endIcon={<WestIcon sx={{marginRight: "1rem"}} />}
       >
         بازگشت
       </Button>
