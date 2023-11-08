@@ -3,7 +3,7 @@ import Dashboard from "../pages/public/Dashboard";
 import GlobalOverview from "../pages/public/GlobalOverview";
 import ISP from "../pages/public/ISP";
 import Disorders from "../pages/public/Disorders";
-import {PrivateDashboard} from "../pages/private/dashboard";
+import PrivateDashboard from "../pages/private/Dashboard";
 
 export const mainRoutes = [
   {

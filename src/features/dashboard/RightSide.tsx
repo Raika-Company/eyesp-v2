@@ -78,7 +78,8 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "grid",
+        display: "flex",
+        flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         maxWidth: isXlgScreen ? "initial" : "19rem",
       }}
@@ -88,7 +89,6 @@ const RightSide = () => {
           direction="row"
           sx={{
             marginY: "auto",
-            paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
