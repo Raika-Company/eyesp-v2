@@ -43,7 +43,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "2fr 1fr"
-              : `1fr ${isLgScreen ? "3.2" : "2.8"}fr 1fr`,
+              : `1fr 2.8fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
