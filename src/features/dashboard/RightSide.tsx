@@ -6,22 +6,17 @@ import {
   useMediaQuery,
   useTheme,
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
 } from "@mui/material";
 
-import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 // import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
 import ChartIcon from "../../assets/images/chart-icon-2.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
-import { InternalISPList } from "./LeftSide";
+import {InternalISPList} from "./LeftSide";
 import BadgedValue from "./components/BadgedValue";
-import { useState } from "react";
+import {useState} from "react";
+import InfoBox from "../../components/ui/InfoBox";
 
 interface ISPListDisplayProps {
   isp: typeof InternalISPList;
@@ -48,6 +43,7 @@ const RightSide = () => {
       display: "flex",
       flexDirection: "column",
       gap: isXlgScreen ? ".5rem" : "",
+      marginY: "auto",
       ...style,
     };
     return (
@@ -91,6 +87,7 @@ const RightSide = () => {
         <Stack
           direction="row"
           sx={{
+            marginY: "auto",
             paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
@@ -111,7 +108,7 @@ const RightSide = () => {
         <ISPListDisplay isp={InternalISPList} isLimited={true} />
       </InfoBox>
       <Dialog
-        PaperProps={{ sx: { borderRadius: "0.5rem" } }}
+        PaperProps={{sx: {borderRadius: "0.5rem"}}}
         open={isDialogOpen}
         onClose={toggleDialog}
       >
@@ -141,6 +138,7 @@ const RightSide = () => {
       >
         <Box
           sx={{
+            marginY: "auto",
             padding: "1rem",
             paddingBottom: "0",
             display: "flex",

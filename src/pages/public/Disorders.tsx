@@ -9,14 +9,13 @@ import {
   styled,
   Divider,
   Card,
-  Button
+  Button,
 } from "@mui/material";
-import RefreshIcon from "../components/icons/RefreshIcon";
-import { Link } from "react-router-dom";
-import WestIcon from '@mui/icons-material/West';
+import RefreshIcon from "../../components/icons/RefreshIcon";
+import {Link} from "react-router-dom";
+import WestIcon from "@mui/icons-material/West";
 
-
-const RowBox = styled(Box)(({ }) => ({
+const RowBox = styled(Box)(({}) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -32,7 +31,7 @@ const RowBox = styled(Box)(({ }) => ({
     flex: 0.5,
   },
 }));
-const HorizontalLine = styled(Box)(({ }) => ({
+const HorizontalLine = styled(Box)(({}) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -42,7 +41,7 @@ const HorizontalLine = styled(Box)(({ }) => ({
 }));
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const CardContainer = styled(Card)(({ }) => ({
+const CardContainer = styled(Card)(({}) => ({
   borderRadius: ".75rem",
   backdropFilter: "blur(35px)",
   "&::-webkit-scrollbar": {
@@ -59,7 +58,12 @@ const Disorders = () => {
   return (
     <Container maxWidth="xl">
       <CardContainer>
-        <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "black" }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{backgroundColor: "black"}}
+        >
           <Box
             padding="1.69rem"
             display="flex"
@@ -72,19 +76,31 @@ const Disorders = () => {
               تاریخچه اختلالات
             </Typography>
           </Box>
-          <Button component={Link} to="/" sx={{fontSize: "1.5rem", textDecoration: "none", textAlign: "center", color: "#FFF"}} endIcon={<WestIcon sx={{marginRight: "1rem"}}/>}>بازگشت</Button>
+          <Button
+            component={Link}
+            to="/"
+            sx={{
+              fontSize: "1.5rem",
+              textDecoration: "none",
+              textAlign: "center",
+              color: "#FFF",
+            }}
+            endIcon={<WestIcon sx={{marginRight: "1rem"}} />}
+          >
+            بازگشت
+          </Button>
         </Box>
         <Table aria-label="simple table">
           <TableHead
             sx={{
               ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
-                { border: "none" },
+                {border: "none"},
             }}
           >
             <RowBox>
               {cellHeaders.map((header, idx) => (
                 <TableCell
-                  sx={{ borderBottom: "none" }}
+                  sx={{borderBottom: "none"}}
                   align={"right"}
                   component="th"
                   scope="row"
@@ -94,18 +110,18 @@ const Disorders = () => {
                 </TableCell>
               ))}
             </RowBox>
-            <div style={{ width: "100%", padding: "10px 0" }}>
+            <div style={{width: "100%", padding: "10px 0"}}>
               <Divider />
             </div>
           </TableHead>
           <TableBody>
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -124,24 +140,24 @@ const Disorders = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "red" }} align="right">
+              <TableCell sx={{color: "red"}} align="right">
                 برطرف نشده
               </TableCell>
             </RowBox>
             <HorizontalLine />
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -160,13 +176,13 @@ const Disorders = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "green" }} align="right">
+              <TableCell sx={{color: "green"}} align="right">
                 برطرف شده
               </TableCell>
             </RowBox>
