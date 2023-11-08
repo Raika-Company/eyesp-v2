@@ -10,6 +10,7 @@ interface Props {
   size?: number;
   bgColor?: string;
   textColor?: string;
+  big?: boolean;
 }
 
 const CircleChart: FC<Props> = ({
@@ -21,6 +22,7 @@ const CircleChart: FC<Props> = ({
   size = 100,
   bgColor = "none",
   textColor = "none",
+  big = false,
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -44,7 +46,7 @@ const CircleChart: FC<Props> = ({
     return () => clearInterval(interval);
   }, [finalPercentage]);
   return (
-    <Stack alignItems="center">
+    <Stack alignItems="center" gap={big ? "1rem" : ""}>
       <div
         style={{
           position: "relative",
@@ -90,7 +92,8 @@ const CircleChart: FC<Props> = ({
             left: "50%",
             transform: "translate(-50%, -50%)",
             fontWeight: "800",
-            fontSize: "1.4rem",
+            fontSize: big ? "2.5rem" : "1.4rem",
+            color: "#7FCD9F",
           }}
         >
           {percentage}%
@@ -101,7 +104,7 @@ const CircleChart: FC<Props> = ({
         <Typography
           color="#7A7775"
           sx={{
-            fontSize: ".7rem",
+            fontSize: big ? "1rem" : ".7rem",
           }}
         >
           {textTitle}
@@ -109,6 +112,8 @@ const CircleChart: FC<Props> = ({
         <Typography
           sx={{
             textAlign: "center",
+            fontSize: big ? "2.2rem" : "1rem",
+            fontWeight: "bold",
           }}
         >
           {value}

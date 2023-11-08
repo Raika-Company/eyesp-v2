@@ -1,13 +1,13 @@
-import { FC, ReactNode, useState } from "react";
+import {FC, ReactNode, useState} from "react";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
-import { Box, FormControl, MenuItem, Typography } from "@mui/material";
-import { SelectButton } from "./SelectButton";
+import {Box, FormControl, MenuItem, Typography} from "@mui/material";
+import {SelectButton} from "./SelectButton";
 
 interface Props {
   title: string;
   selectTitle: string;
   iconPath: string;
-  children: ReactNode;
+  children?: ReactNode;
   onClick?: () => void;
 }
 
@@ -56,9 +56,7 @@ const Header: FC<Props> = ({
             {selectTitle}
           </Typography>
 
-          <FormControl
-            sx={{ width: "8%", height: "70px", marginTop: "1.8rem" }}
-          >
+          <FormControl sx={{width: "8%", height: "70px", marginTop: "1.8rem"}}>
             <SelectButton
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -100,9 +98,7 @@ const Header: FC<Props> = ({
               <MenuItem value="سالانه">سالانه</MenuItem>
             </SelectButton>
           </FormControl>
-          <FormControl
-            sx={{ width: "8%", height: "70px", marginTop: "1.8rem" }}
-          >
+          <FormControl sx={{width: "8%", height: "70px", marginTop: "1.8rem"}}>
             <SelectButton
               labelId="demo-simple-select-label"
               id="demo-simple-select"

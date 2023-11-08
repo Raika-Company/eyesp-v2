@@ -5,6 +5,7 @@ import ISP from "../pages/public/ISP";
 import Disorders from "../pages/private/Disorders";
 import LastDisorders from "../pages/private/LastDisorders";
 import PrivateDashboard from "../pages/private/PrivateDashboard";
+import Average from "../pages/private/Average";
 
 export const mainRoutes = [
   {
@@ -39,5 +40,10 @@ export const privateMainRoutes = [
     path: "/private",
     element: <PrivateDashboard />,
     title: "Dashboard",
+  },
+  {
+    path: "/private/average",
+    element: <Average />,
+    title: "All Average",
   },
 ];
