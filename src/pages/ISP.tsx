@@ -14,6 +14,7 @@ import WestIcon from "@mui/icons-material/West";
 import zitel from "../assets/images/zitel.png";
 import mokhaberat from "../assets/images/mokhaberat.png";
 import hamrahaval from "../assets/images/hamrahaval.png";
+import irancell from "../assets/images/irancell.svg";
 import { GetGlobalOverview } from "../services/GlobalOverview";
 
 // Types
@@ -39,11 +40,12 @@ const LOGOS = [
   { src: zitel, name: "زیتل" },
   { src: mokhaberat, name: "مخابرات" },
   { src: hamrahaval, name: "همراه اول" },
+  { src: irancell, name: "ایرانسل" },
 ];
 
 const errorMessages: Record<number, string> = {
   200: "درخواست با موفقیت انجام شد.",
-  403: "دسترسی غیرمجاز. شما اجازه دسترسی به این منبع را ندارید.",
+  403: "دسترسی به صورت موقت قطع شده است.",
   404: "صفحه مورد نظر یافت نشد.",
   503: "سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.",
 };
@@ -178,13 +180,6 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
       {data.history.map((historyItem, index) => (
         <DataBlock
           key={index}
-          value={historyItem.status}
-          checkTime={historyItem.check_time}
-        />
-      ))}
-      {data.history.map((historyItem, index) => (
-        <DataBlock
-          key={index + 12}
           value={historyItem.status}
           checkTime={historyItem.check_time}
         />
