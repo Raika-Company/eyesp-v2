@@ -11,7 +11,7 @@ import {
 import history from "../../assets/images/history.svg";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const RowBox = styled(Box)(({theme}) => ({
+const RowBox = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -27,7 +27,7 @@ const RowBox = styled(Box)(({theme}) => ({
     flex: 0.3,
   },
 }));
-const HorizontalLine = styled(Box)(({theme}) => ({
+const HorizontalLine = styled(Box)(() => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",

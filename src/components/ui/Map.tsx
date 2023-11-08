@@ -150,7 +150,7 @@ const Map: FC<Props> = ({isPrivate = false}) => {
     setScale(Math.max(scale / 1.1, 1)); // Decrease scale by 10%
   };
 
-  const startDrag = (e) => {
+  const startDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPrivate && scale !== 1) {
       setDragging(true);
       setStartPos({
@@ -160,7 +160,7 @@ const Map: FC<Props> = ({isPrivate = false}) => {
     }
   };
 
-  const onDrag = (e) => {
+  const onDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPrivate && scale !== 1) {
       if (dragging) {
         const dx = e.clientX - startPos.x;
