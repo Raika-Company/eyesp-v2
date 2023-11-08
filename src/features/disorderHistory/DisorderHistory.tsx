@@ -1,23 +1,21 @@
+import Header from "../../components/ui/Header";
 import {
   Box,
-  Container,
-  Typography,
+  Divider,
   Table,
   TableBody,
-  TableHead,
   TableCell,
+  TableHead,
   styled,
-  Divider,
 } from "@mui/material";
-import React from "react";
-import CardContainer from "./components/CardContainer";
 import history from "../../assets/images/history.svg";
+const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const RowBox = styled(Box)(({ theme }) => ({
+const RowBox = styled(Box)(({theme}) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
-  paddingInline: "1.69rem",
+  paddingRight: "3rem",
   "& > *": {
     flex: 1,
     fontFamily: "PeydaLight",
@@ -26,10 +24,10 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.5,
   },
   "& > *:nth-of-type(4)": {
-    flex: 0.5,
+    flex: 0.3,
   },
 }));
-const HorizontalLine = styled(Box)(({ theme }) => ({
+const HorizontalLine = styled(Box)(({theme}) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -37,38 +35,26 @@ const HorizontalLine = styled(Box)(({ theme }) => ({
     "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
   opacity: "0.2",
 }));
-const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
-
-const DisordersHistory = () => {
+const DisorderHistory = () => {
   return (
-    <Container maxWidth="xl">
-      <CardContainer>
-        <Box sx={{ backgroundColor: "black" }}>
-          {" "}
-          <Box
-            padding="1.69rem"
-            display="flex"
-            justifyContent="start"
-            gap={1}
-            alignItems="center"
-          >
-            <img src={history} alt="history" />
-            <Typography fontWeight={800} fontSize="2rem">
-              تاریخچه اختلالات
-            </Typography>
-          </Box>
-        </Box>
+    <div>
+      <Header
+        title="تاریخچه اختلالات"
+        iconPath={history}
+        selectTitle="ترتیب بندی براساس:"
+        // onClick={toggleDialog}
+      >
         <Table aria-label="simple table">
           <TableHead
             sx={{
               ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
-                { border: "none" },
+                {border: "none"},
             }}
           >
             <RowBox>
               {cellHeaders.map((header, idx) => (
                 <TableCell
-                  sx={{ borderBottom: "none" }}
+                  sx={{borderBottom: "none"}}
                   align={"right"}
                   component="th"
                   scope="row"
@@ -78,18 +64,18 @@ const DisordersHistory = () => {
                 </TableCell>
               ))}
             </RowBox>
-            <div style={{ width: "100%", padding: "10px 0" }}>
+            <div style={{width: "100%", padding: "10px 0"}}>
               <Divider />
             </div>
           </TableHead>
           <TableBody>
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -108,24 +94,24 @@ const DisordersHistory = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "red" }} align="right">
+              <TableCell sx={{color: "red"}} align="right">
                 برطرف نشده
               </TableCell>
             </RowBox>
             <HorizontalLine />
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -144,21 +130,21 @@ const DisordersHistory = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "green" }} align="right">
+              <TableCell sx={{color: "green"}} align="right">
                 برطرف شده
               </TableCell>
             </RowBox>
           </TableBody>
         </Table>
-      </CardContainer>
-    </Container>
+      </Header>
+    </div>
   );
 };
 
-export default DisordersHistory;
+export default DisorderHistory;

@@ -19,7 +19,7 @@ type ProvinceCoordsType = {
 };
 
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -83,6 +83,7 @@ interface Props {
 }
 
 const Map: FC<Props> = ({isPrivate = false}) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -149,24 +150,30 @@ const Map: FC<Props> = ({isPrivate = false}) => {
   };
 
   const startDrag = (e) => {
-    setDragging(true);
-    setStartPos({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    });
-  };
-
-  const onDrag = (e) => {
-    if (dragging) {
-      setPosition({
-        x: e.clientX - startPos.x,
-        y: e.clientY - startPos.y,
+    if (isPrivate && scale !== 1) {
+      setDragging(true);
+      setStartPos({
+        x: e.clientX - position.x,
+        y: e.clientY - position.y,
       });
     }
   };
 
+  const onDrag = (e) => {
+    if (isPrivate && scale !== 1) {
+      if (dragging) {
+        setPosition({
+          x: e.clientX - startPos.x,
+          y: e.clientY - startPos.y,
+        });
+      }
+    }
+  };
+
   const endDrag = () => {
-    setDragging(false);
+    if (isPrivate && scale !== 1) {
+      setDragging(false);
+    }
   };
 
   return (
@@ -199,11 +206,16 @@ const Map: FC<Props> = ({isPrivate = false}) => {
             top: `${position.y}px`,
             left: `${position.x}px`,
             transition: "transform .2s ease",
+            cursor: dragging ? "grabbing" : scale !== 1 ? "pointer" : "initial",
           }}
           onMouseDown={startDrag}
           onMouseMove={onDrag}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
+          onClick={() => {
+            if (isPrivate) return;
+            navigate("/disorders");
+          }}
         >
           <MapPaths
             provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
