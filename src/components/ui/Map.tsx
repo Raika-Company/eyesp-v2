@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import {FC, Fragment, useState} from "react";
+import {FC, Fragment, useRef, useState} from "react";
 import MapPaths from "../../features/dashboard/components/MapPaths";
 
 type ProvinceCoordsType = {
@@ -136,17 +136,18 @@ const Map: FC<Props> = ({isPrivate = false}) => {
     );
   };
 
-  const [scale, setScale] = useState(1);
-  const [dragging, setDragging] = useState(false);
+  const [scale, setScale] = useState<number>(1);
+  const [dragging, setDragging] = useState<boolean>(false);
   const [position, setPosition] = useState({x: 0, y: 0});
   const [startPos, setStartPos] = useState({x: 0, y: 0});
+  const svgContainerRef = useRef<HTMLDivElement | null>(null);
 
   const zoomIn = () => {
-    setScale(scale * 1.1); // Increase scale by 10%
+    setScale(Math.min(scale * 1.1, 10)); // Increase scale by 10%
   };
 
   const zoomOut = () => {
-    setScale(scale / 1.1); // Decrease scale by 10%
+    setScale(Math.max(scale / 1.1, 1)); // Decrease scale by 10%
   };
 
   const startDrag = (e) => {
@@ -162,9 +163,22 @@ const Map: FC<Props> = ({isPrivate = false}) => {
   const onDrag = (e) => {
     if (isPrivate && scale !== 1) {
       if (dragging) {
+        const dx = e.clientX - startPos.x;
+        const dy = e.clientY - startPos.y;
+        const svgRect = svgContainerRef.current!.getBoundingClientRect();
+        const containerRect = svgContainerRef.current!.getBoundingClientRect();
+
+        // Calculate the new position within the boundaries
+        let newX = Math.min(containerRect.width - svgRect.width / scale, dx);
+        let newY = Math.min(containerRect.height - svgRect.height / scale, dy);
+
+        // Prevent dragging beyond the left and top bounds
+        newX = Math.max(-150 * scale, newX);
+        newY = Math.max(-150 * scale, newY);
+
         setPosition({
-          x: e.clientX - startPos.x,
-          y: e.clientY - startPos.y,
+          x: newX,
+          y: newY,
         });
       }
     }
@@ -184,6 +198,7 @@ const Map: FC<Props> = ({isPrivate = false}) => {
         maxHeight: "100%",
         maxWidth: "100%",
       }}
+      ref={svgContainerRef}
     >
       <SvgIcon
         sx={{
