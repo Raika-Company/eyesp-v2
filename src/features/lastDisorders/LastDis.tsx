@@ -1,25 +1,22 @@
+import Header from "../../components/ui/Header";
 import {
   Box,
-  Container,
-  Typography,
+  Button,
+  Divider,
   Table,
   TableBody,
-  TableHead,
   TableCell,
+  TableHead,
   styled,
-  Divider,
-  Card,
-  Button,
 } from "@mui/material";
-import RefreshIcon from "../../components/icons/RefreshIcon";
-import {Link} from "react-router-dom";
-import WestIcon from "@mui/icons-material/West";
+import history from "../../assets/images/history.svg";
+const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
-const RowBox = styled(Box)(({}) => ({
+const RowBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
-  paddingInline: "1.69rem",
+  paddingRight: "3rem",
   "& > *": {
     flex: 1,
     fontFamily: "PeydaLight",
@@ -28,10 +25,10 @@ const RowBox = styled(Box)(({}) => ({
     flex: 0.5,
   },
   "& > *:nth-of-type(4)": {
-    flex: 0.5,
+    flex: 0.3,
   },
 }));
-const HorizontalLine = styled(Box)(({}) => ({
+const HorizontalLine = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -39,68 +36,26 @@ const HorizontalLine = styled(Box)(({}) => ({
     "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
   opacity: "0.2",
 }));
-const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
-
-const CardContainer = styled(Card)(({}) => ({
-  borderRadius: ".75rem",
-  backdropFilter: "blur(35px)",
-  "&::-webkit-scrollbar": {
-    display: "none",
-  },
-
-  "& scrollbarWidth": "none",
-  background: "#2B2E31",
-  boxShadow: "0px 4px 40px 0px rgba(255, 255, 255, 0.10)",
-  margin: "3.5rem",
-}));
-
-const Disorders = () => {
+const LastDis = () => {
   return (
-    <Container maxWidth="xl">
-      <CardContainer>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{backgroundColor: "black"}}
-        >
-          <Box
-            padding="1.69rem"
-            display="flex"
-            justifyContent="start"
-            gap={1}
-            alignItems="center"
-          >
-            <RefreshIcon />
-            <Typography fontWeight={800} fontSize="2rem">
-              تاریخچه اختلالات
-            </Typography>
-          </Box>
-          <Button
-            component={Link}
-            to="/"
-            sx={{
-              fontSize: "1.5rem",
-              textDecoration: "none",
-              textAlign: "center",
-              color: "#FFF",
-            }}
-            endIcon={<WestIcon sx={{marginRight: "1rem"}} />}
-          >
-            بازگشت
-          </Button>
-        </Box>
+    <div>
+      <Header
+        title="اختلالات فعلی"
+        iconPath={history}
+        selectTitle="ترتیب بندی براساس:"
+        // onClick={toggleDialog}
+      >
         <Table aria-label="simple table">
           <TableHead
             sx={{
               ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
-                {border: "none"},
+                { border: "none" },
             }}
           >
             <RowBox>
               {cellHeaders.map((header, idx) => (
                 <TableCell
-                  sx={{borderBottom: "none"}}
+                  sx={{ borderBottom: "none" }}
                   align={"right"}
                   component="th"
                   scope="row"
@@ -110,18 +65,18 @@ const Disorders = () => {
                 </TableCell>
               ))}
             </RowBox>
-            <div style={{width: "100%", padding: "10px 0"}}>
+            <div style={{ width: "100%", padding: "10px 0" }}>
               <Divider />
             </div>
           </TableHead>
           <TableBody>
             <RowBox
               sx={{
-                "td, th": {border: 0},
+                "td, th": { border: 0 },
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -140,24 +95,32 @@ const Disorders = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{color: "red"}} align="right">
-                برطرف نشده
+              <TableCell sx={{ color: "red" }} align="right">
+                <Button
+                  sx={{
+                    backgroundColor: "#7A7775",
+                    borderRadius: "0.597rem",
+                    color: "white",
+                  }}
+                >
+                  کمک از هوش مصنوعی
+                </Button>{" "}
               </TableCell>
             </RowBox>
             <HorizontalLine />
             <RowBox
               sx={{
-                "td, th": {border: 0},
+                "td, th": { border: 0 },
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -176,21 +139,29 @@ const Disorders = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{color: "white"}}>
+              <TableCell align="right" sx={{ color: "white" }}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{color: "green"}} align="right">
-                برطرف شده
+              <TableCell sx={{ color: "green" }} align="right">
+                <Button
+                  sx={{
+                    backgroundColor: "#7A7775",
+                    borderRadius: "0.597rem",
+                    color: "white",
+                  }}
+                >
+                  کمک از هوش مصنوعی
+                </Button>
               </TableCell>
             </RowBox>
           </TableBody>
         </Table>
-      </CardContainer>
-    </Container>
+      </Header>
+    </div>
   );
 };
 
-export default Disorders;
+export default LastDis;

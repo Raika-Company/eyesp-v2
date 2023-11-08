@@ -74,3 +74,29 @@ body {
   background: linear-gradient(252deg, #2c2e32 0.73%, #0f1114 39.56%);
   font-family: "PeydaRegular";
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+webkit-scrollbar-track {
+  border-top: 20px solid transparent; /* Adjust these values to 'shorten' the track visually */
+  border-bottom: 20px solid transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgb(252, 252, 252)),
+    color-stop(0.72, rgb(251, 251, 251)),
+    color-stop(0.86, rgb(250, 250, 250))
+  );
+}
+
+::-webkit-scrollbar-button {
+  width: 50px;
+  height: 70px;
+}

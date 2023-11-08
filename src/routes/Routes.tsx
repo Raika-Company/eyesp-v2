@@ -2,8 +2,9 @@
 import Dashboard from "../pages/public/Dashboard";
 import GlobalOverview from "../pages/public/GlobalOverview";
 import ISP from "../pages/public/ISP";
-import Disorders from "../pages/public/Disorders";
-import PrivateDashboard from "../pages/private/Dashboard";
+import Disorders from "../pages/private/Disorders";
+import { PrivateDashboard } from "../pages/private/dashboard";
+import LastDisorders from "../pages/private/LastDisorders";
 
 export const mainRoutes = [
   {
@@ -24,6 +25,11 @@ export const mainRoutes = [
   {
     path: "/isp",
     element: <ISP />,
+    title: "ISP",
+  },
+  {
+    path: "/last-disorders",
+    element: <LastDisorders />,
     title: "ISP",
   },
 ];
