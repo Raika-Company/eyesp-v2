@@ -1,10 +1,10 @@
 import {Box, useMediaQuery, useTheme} from "@mui/material";
 import {FC} from "react";
-import LeftSide from "../../../features/private_dashboard/LeftSide";
-import RightSide from "../../../features/private_dashboard/RightSide";
-import Map from "../../../components/ui/Map";
+import LeftSide from "../../features/private_dashboard/LeftSide";
+import RightSide from "../../features/private_dashboard/RightSide";
+import Map from "../../components/ui/Map";
 
-const Dashboard: FC = () => {
+const PrivateDashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -43,7 +43,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "2fr 1fr"
-              : `1fr ${isLgScreen ? "3.0" : "2.6"}fr 1fr`,
+              : `1fr ${isLgScreen ? "2.8" : "2.6"}fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
@@ -64,4 +64,4 @@ const Dashboard: FC = () => {
   );
 };
 
-export default Dashboard;
+export default PrivateDashboard;
