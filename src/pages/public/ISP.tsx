@@ -1,16 +1,20 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
 import {
   Box,
   Typography,
-  CircularProgress,
   Container,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { GetGlobalOverview } from "../services/GlobalOverview";
-import { Link } from "react-router-dom";
-import WestIcon from '@mui/icons-material/West';
+import WestIcon from "@mui/icons-material/West";
+import zitel from "../../assets/images/zitel.png";
+import mokhaberat from "../../assets/images/mokhaberat.png";
+import hamrahaval from "../../assets/images/hamrahaval.png";
+
+import {GetGlobalOverview} from "../../services/GlobalOverview";
+import {Link} from "react-router-dom";
 
 type HistoryItem = {
   status: number;
@@ -18,9 +22,7 @@ type HistoryItem = {
 };
 
 type WebsiteData = {
-  name: string;
   domain: string;
-
   history: HistoryItem[];
 };
 
@@ -38,47 +40,45 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
-const DataBlock: React.FC<{ value: number }> = ({ value }) => (
+const LOGOS = [
+  {src: zitel, name: "زیتل"},
+  {src: mokhaberat, name: "مخابرات"},
+  {src: hamrahaval, name: "همراه اول"},
+];
+
+const DataBlock: React.FC<{value: number}> = ({value}) => (
   <Box
     width="3%"
     height="62px"
     borderRadius="2em"
     bgcolor={value === 200 ? "#7FCD9F" : "#E93F3F"}
     mx={0.3}
-    sx={{ cursor: "pointer" }}
+    sx={{cursor: "pointer"}}
   />
 );
 
-const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
+const GridItem: React.FC<{data: WebsiteData; logo: (typeof LOGOS)[0]}> = ({
+  data,
+  logo,
+}) => (
   <Grid
     xs={12}
     sx={{
-      maxWidth: { md: "48%" },
+      maxWidth: {md: "48%"},
       borderRadius: "0.5rem",
       background: "#2B2E31",
       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
       display: "flex",
-      alignItems: "center",
       justifyContent: "space-between",
+      alignItems: "center",
       mx: "auto",
       my: ".85em",
       px: "1.5em",
     }}
   >
-    <Box sx={{ textTransform: "uppercase" }}>
-      <img
-        src={`https://status.eyesp.live/images/${data.name}.svg`}
-        alt={data.name}
-      />
-      <Typography
-        sx={{
-          textAlign: "center",
-          textTransform: "uppercase",
-          fontWeight: 600,
-        }}
-      >
-        {data.name}
-      </Typography>
+    <Box display="flex" flexDirection="column" alignItems="center" gap="0.5rem">
+      <img src={logo.src} alt={logo.name} height="52px" />
+      <Typography sx={{textAlign: "center"}}>{logo.name}</Typography>
     </Box>
     <Box
       display="flex"
@@ -99,8 +99,8 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   </Grid>
 );
 
-const GlobalOverview: React.FC = () => {
-  const { data, error, isLoading, refetch } = useHistoryData();
+const ISP: React.FC = () => {
+  const {data, error, isLoading, refetch} = useHistoryData();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -140,24 +140,28 @@ const GlobalOverview: React.FC = () => {
           color: "#FFF",
           marginTop: "2rem",
         }}
-        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
+        endIcon={<WestIcon sx={{marginRight: "1rem"}} />}
       >
         بازگشت
       </Button>
       <Grid
         container
         rowSpacing={4}
-        columnSpacing={{ xs: -5, sm: -5 }}
+        columnSpacing={{xs: -5, sm: -5}}
         paddingY="2rem"
       >
         {data &&
           Array.isArray(data) &&
           data.map((websiteData: WebsiteData, index: number) => (
-            <GridItem key={index} data={websiteData} />
+            <GridItem
+              key={index}
+              data={websiteData}
+              logo={LOGOS[index % LOGOS.length]}
+            />
           ))}
       </Grid>
     </Container>
   );
 };
 
-export default GlobalOverview;
+export default ISP;
