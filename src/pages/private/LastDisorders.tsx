@@ -1,5 +1,5 @@
 import React from "react";
-import LastDis from "./lastDisorders/LastDis";
+import LastDis from "../../features/lastDisorders/LastDis";
 
 const LastDisorders = () => {
   return (
