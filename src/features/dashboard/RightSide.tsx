@@ -5,9 +5,9 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Dialog,
 } from "@mui/material";
 
-import InfoBox from "./components/InfoBox";
 import NumberValue from "./components/NumberValue";
 // import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
@@ -15,10 +15,65 @@ import ChartIcon from "../../assets/images/chart-icon-2.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import {InternalISPList} from "./LeftSide";
 import BadgedValue from "./components/BadgedValue";
+import {useState} from "react";
+import InfoBox from "../../components/ui/InfoBox";
+
+interface ISPListDisplayProps {
+  isp: typeof InternalISPList;
+  isLimited: boolean;
+  style?: React.CSSProperties;
+}
 
 const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const toggleDialog = () => {
+    setDialogOpen(!isDialogOpen);
+  };
+
+  const ISPListDisplay: React.FC<ISPListDisplayProps> = ({
+    isp,
+    isLimited,
+    style,
+  }) => {
+    const displayIsp = isLimited ? isp.slice(0, 3) : isp;
+    const combinedStyles = {
+      display: "flex",
+      flexDirection: "column",
+      gap: isXlgScreen ? ".5rem" : "",
+      marginY: "auto",
+      ...style,
+    };
+    return (
+      <Box sx={combinedStyles}>
+        {displayIsp.map((isp) => (
+          <Box key={isp.id}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              marginX=".5rem"
+            >
+              <Stack direction="row" gap=".5rem">
+                <Typography color="#7A7775">#{isp.id}</Typography>
+                <Typography>{isp.name}</Typography>
+              </Stack>
+              <Typography color="#7A7775">{isp.speed}Mbps</Typography>
+            </Stack>
+            <Divider
+              style={{
+                background: "#35383B",
+                margin: ".5rem",
+              }}
+            />
+          </Box>
+        ))}
+      </Box>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -32,6 +87,7 @@ const RightSide = () => {
         <Stack
           direction="row"
           sx={{
+            marginY: "auto",
             paddingY: "1rem",
             paddingX: ".8rem",
             gap: "1rem",
@@ -43,57 +99,38 @@ const RightSide = () => {
           <NumberValue title="خارج" value={55} unit="ms" />
         </Stack>
       </InfoBox>
-      <InfoBox title="رتبه بندی سرعت" iconPath={SpeedCompare} hasButton={true}>
-        <Box
-          sx={{
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: isXlgScreen ? ".5rem" : "",
-          }}
-        >
-          {InternalISPList.map((isp) => (
-            <Box key={isp.id}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                marginX=".5rem"
-              >
-                <Stack direction="row" gap=".5rem">
-                  <Typography color="#7A7775">#{isp.id}</Typography>
-                  <Typography>{isp.name}</Typography>
-                </Stack>
-                <Typography color="#7A7775">{isp.speed}Mbps</Typography>
-              </Stack>
-              <Divider
-                style={{
-                  background: "#35383B",
-                  margin: ".5rem",
-                }}
-              />
-            </Box>
-          ))}
-
-          {/* <Stack
-            direction="row"
-            sx={{
-              cursor: "pointer",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography color="#7FCD9F">{"مشاهده ۱۵ مورد دیگر..."}</Typography>
-            <img
-              src={ArrowLeftGreen}
-              style={{
-                cursor: "pointer",
-                marginLeft: ".5rem",
-              }}
-            />
-          </Stack> */}
-        </Box>
+      <InfoBox
+        title="رتبه بندی سرعت"
+        iconPath={SpeedCompare}
+        hasButton={true}
+        onClick={toggleDialog}
+      >
+        <ISPListDisplay isp={InternalISPList} isLimited={true} />
       </InfoBox>
+      <Dialog
+        PaperProps={{sx: {borderRadius: "0.5rem"}}}
+        open={isDialogOpen}
+        onClose={toggleDialog}
+      >
+        <InfoBox
+          title="رتبه بندی سرعت"
+          iconPath={SpeedCompare}
+          hasButton={false}
+          onClick={toggleDialog}
+        >
+          <ISPListDisplay
+            isp={InternalISPList}
+            isLimited={false}
+            style={{
+              maxHeight: "40vh",
+              overflowY: "scroll",
+              width: "20vw",
+              padding: "2rem",
+            }}
+          />
+        </InfoBox>
+      </Dialog>
+
       <InfoBox
         title="ترافیک فعلی (IXP,IGW)"
         iconPath={WifiIcon}
@@ -101,6 +138,7 @@ const RightSide = () => {
       >
         <Box
           sx={{
+            marginY: "auto",
             padding: "1rem",
             paddingBottom: "0",
             display: "flex",
