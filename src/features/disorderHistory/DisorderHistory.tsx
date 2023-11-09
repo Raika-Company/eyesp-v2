@@ -11,7 +11,7 @@ import {
 import history from "../../assets/images/history.svg";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const RowBox = styled(Box)(({ theme }) => ({
+const RowBox = styled(Box)(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -27,7 +27,7 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.3,
   },
 }));
-const HorizontalLine = styled(Box)(({ theme }) => ({
+const HorizontalLine = styled(Box)(() => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -48,13 +48,13 @@ const DisorderHistory = () => {
           <TableHead
             sx={{
               ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
-                { border: "none" },
+                {border: "none"},
             }}
           >
             <RowBox>
               {cellHeaders.map((header, idx) => (
                 <TableCell
-                  sx={{ borderBottom: "none" }}
+                  sx={{borderBottom: "none"}}
                   align={"right"}
                   component="th"
                   scope="row"
@@ -64,18 +64,18 @@ const DisorderHistory = () => {
                 </TableCell>
               ))}
             </RowBox>
-            <div style={{ width: "100%", padding: "10px 0" }}>
+            <div style={{width: "100%", padding: "10px 0"}}>
               <Divider />
             </div>
           </TableHead>
           <TableBody>
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -94,24 +94,24 @@ const DisorderHistory = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "red" }} align="right">
+              <TableCell sx={{color: "red"}} align="right">
                 برطرف نشده
               </TableCell>
             </RowBox>
             <HorizontalLine />
             <RowBox
               sx={{
-                "td, th": { border: 0 },
+                "td, th": {border: 0},
                 height: "70px",
               }}
             >
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 <Box
                   sx={{
                     display: "flex",
@@ -130,13 +130,13 @@ const DisorderHistory = () => {
                   <span>12:23:45</span>
                 </Box>
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
               </TableCell>
-              <TableCell align="right" sx={{ color: "white" }}>
+              <TableCell align="right" sx={{color: "white"}}>
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
               </TableCell>
-              <TableCell sx={{ color: "green" }} align="right">
+              <TableCell sx={{color: "green"}} align="right">
                 برطرف شده
               </TableCell>
             </RowBox>
