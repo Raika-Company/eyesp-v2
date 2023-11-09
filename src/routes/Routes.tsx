@@ -5,6 +5,8 @@ import ISP from "../pages/public/ISP";
 import Disorders from "../pages/private/Disorders";
 import LastDisorders from "../pages/private/LastDisorders";
 import PrivateDashboard from "../pages/private/PrivateDashboard";
+import LastDisorders from "../pages/private/LastDisorders";
+import PrivateDashboard from "../pages/private/Dashboard";
 
 export const mainRoutes = [
   {
