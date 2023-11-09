@@ -6,6 +6,8 @@ import Disorders from "../pages/private/Disorders";
 // import { PrivateDashboard } from "../pages/private/dashboard";
 import LastDisorders from "../pages/private/LastDisorders";
 import PrivateDashboard from "../pages/private/Dashboard";
+import Operators from "../pages/public/Operators";
+import CurrentTraffic from "../pages/public/CurrentTraffic";
 
 export const mainRoutes = [
   {
@@ -32,6 +34,16 @@ export const mainRoutes = [
     path: "/last-disorders",
     element: <LastDisorders />,
     title: "ISP",
+  },
+  {
+    path: "/operators",
+    element: <Operators />,
+    title: "Operators",
+  },
+  {
+    path: "/current-traffic",
+    element: <CurrentTraffic />,
+    title: "Current-traffic",
   },
 ];
 
