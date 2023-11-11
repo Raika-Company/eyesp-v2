@@ -6,6 +6,7 @@ import {
   MenuItem,
   SelectChangeEvent,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { SelectButton } from "./SelectButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
@@ -38,42 +39,55 @@ const Header: FC<Props> = ({
   handleISPChange,
   handleCategory,
 }) => {
+  const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   return (
     <Box
       sx={{
-        flexGrow: "1",
-        // borderRadius: ".5rem",
-        boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
-        background: "#2B2E31",
-        border: "1px solid #2B2E31",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        paddingTop: isMdScreen ? "2rem" : "0",
+        justifyContent: "space-between",
+        background: "#232629",
+        paddingX: "1rem",
       }}
     >
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          background: "#232629",
-          borderTopRightRadius: ".5rem",
-          borderTopLeftRadius: ".5rem",
-          paddingX: "1rem",
+          alignItems: "center",
+          order: isMdScreen ? 1 : 0,
+          gap: "1rem",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexGrow: "1",
-            alignItems: "center",
-            gap: "1.18rem",
-          }}
-        >
-          <img alt="iconPath" src={iconPath} />
-          <Typography color="white">{title}</Typography>
-          <Typography color="#7A7775" mr="3rem" variant="body">
-            {selectTitle}
-          </Typography>
+        <img alt="iconPath" src={iconPath} />
+        <Typography color="white" fontSize={isMdScreen ? "1rem" : "1.625rem"}>
+          {title}
+        </Typography>
+      </Box>
 
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isSmScreen ? "column" : "row",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 0.5,
+          order: isMdScreen ? 3 : 1,
+        }}
+      >
+        <Typography color="#7A7775" mr="3rem">
+          {selectTitle}
+        </Typography>
+        <Box
+          display="flex"
+          gap={2}
+          flexWrap={isSmScreen ? "wrap" : "nowrap"}
+          alignItems="center"
+          justifyContent="center"
+        >
+          {" "}
           <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
             <SelectButton
               labelId="change-province-label"
@@ -148,23 +162,42 @@ const Header: FC<Props> = ({
                 </MenuItem>
               ))}
             </SelectButton>
-          </FormControl>
+          </FormControl>{" "}
         </Box>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography>بازگشت</Typography>
-          <img
-            alt="arrowLeft"
-            onClick={onClick}
-            src={ArrowLeft}
-            style={{
-              marginLeft: ".5rem",
-              cursor: "pointer",
-            }}
-          />
-        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          order: isMdScreen ? 2 : 2,
+        }}
+      >
+        <Typography>بازگشت</Typography>
+        <img
+          alt="arrowLeft"
+          onClick={onClick}
+          src={ArrowLeft}
+          style={{
+            marginLeft: ".5rem",
+            cursor: "pointer",
+          }}
+        />
       </Box>
     </Box>
   );
 };
 
 export default Header;
+// <Box
+//     sx={{
+//       // flexGrow: "1",
+//       // borderRadius: ".5rem",
+//       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
+//       background: "#2B2E31",
+//       border: "1px solid #2B2E31",
+//       display: "flex",
+//       flexDirection: "column",
+//     }}
+//   ></Box>

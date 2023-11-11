@@ -3,6 +3,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import history from "../../assets/images/history.svg";
 import CustomTable from "../../components/ui/CustomTable";
 import { useState } from "react";
+import { Box, useMediaQuery } from "@mui/material";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
 const LastDis = () => {
@@ -10,6 +11,8 @@ const LastDis = () => {
   const [selectedISP, setSelectedISP] = useState("");
   const [category, setCategory] = useState("");
   // const [visibleRows, setVisibleRows] = useState(6);
+  const isXsScreen = useMediaQuery((theme) => theme.breakpoints.down("xs"));
+  const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
@@ -36,7 +39,18 @@ const LastDis = () => {
 
         // onClick={toggleDialog}
       ></Header>
-      {/* <CustomTable cellHeaders={cellHeaders} isAI={true} /> */}
+      <Box
+        sx={{
+          overflowX: isMdScreen ? "scroll" : "hidden",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
+        <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
+          <CustomTable cellHeaders={cellHeaders} isAI={true} />
+        </Box>
+      </Box>
     </div>
   );
 };
