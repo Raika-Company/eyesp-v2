@@ -2,7 +2,8 @@ import { FC, ReactNode, useState } from "react";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
 import { Box, FormControl, MenuItem, Typography } from "@mui/material";
 import { SelectButton } from "./SelectButton";
-
+import provincesCoords from "../../../public/data/provincesCoords.json";
+import ISPData from "../../..//public/data/ISPData.json";
 interface Props {
   title: string;
   selectTitle: string;
@@ -11,15 +12,17 @@ interface Props {
   onClick?: () => void;
 }
 
-const Header: FC<Props> = ({
-  title,
-  iconPath,
-  // children,
-  onClick,
-  selectTitle,
-}) => {
-  const [age, setAge] = useState("در حال حاضر");
+const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
+  const [province, setProvince] = useState("");
+  const [selectedISP, setSelectedISP] = useState("");
+  const [category, setCategory] = useState("نوع");
 
+  const handleProvinceChange = (event) => {
+    setProvince(event.target.value);
+  };
+  const handleISPChange = (event) => {
+    setSelectedISP(event.target.value);
+  };
   return (
     <Box
       sx={{
@@ -56,68 +59,74 @@ const Header: FC<Props> = ({
             {selectTitle}
           </Typography>
 
-          <FormControl
-            sx={{ width: "8%", height: "70px", marginTop: "1.8rem" }}
-          >
+          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
             <SelectButton
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="سال"
-              //   onChange={handleChangeDailyPercent}
+              labelId="change-province-label"
+              id="change-province"
+              label="انتخاب استان"
+              value={province}
+              onChange={handleProvinceChange}
               displayEmpty
+              sx={{
+                paddingLeft: "2rem",
+                minWidth: "10rem",
+                // background: isDark ? "" : "#FFF",
+              }}
             >
-              <MenuItem value="در حال حاضر">درحال حاضر</MenuItem>
-              <MenuItem value="۳ ساعت پیش">۳ ساعت پیش</MenuItem>
-              <MenuItem value="امروز">امروز</MenuItem>
-              <MenuItem value="دیروز">دیروز</MenuItem>
-              <MenuItem value="هفتگی">هفتگی</MenuItem>
-              <MenuItem value="ماهانه">ماهانه</MenuItem>
-              <MenuItem value="سالانه">سالانه</MenuItem>
+              <MenuItem value=""> استان</MenuItem>
+              {Object.keys(provincesCoords).map((provinceName) => (
+                <MenuItem
+                  key={provincesCoords[provinceName]}
+                  value={provinceName}
+                >
+                  {provincesCoords[provinceName].name}
+                </MenuItem>
+              ))}
             </SelectButton>
           </FormControl>
           <FormControl
             sx={{
-              width: "8%",
               height: "70px",
               marginTop: "1.8rem",
             }}
           >
             <SelectButton
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="سال"
-              //   onChange={handleChangeDailyPercent}
+              labelId="change-province-label"
+              id="change-province"
+              label="انتخاب اپراتور"
+              value={selectedISP}
+              onChange={handleISPChange}
               displayEmpty
+              sx={{
+                paddingLeft: "2rem",
+                minWidth: "10rem",
+                // background: isDark ? "" : "#FFF",
+              }}
             >
-              <MenuItem value="در حال حاضر">درحال حاضر</MenuItem>
-              <MenuItem value="۳ ساعت پیش">۳ ساعت پیش</MenuItem>
-              <MenuItem value="امروز">امروز</MenuItem>
-              <MenuItem value="دیروز">دیروز</MenuItem>
-              <MenuItem value="هفتگی">هفتگی</MenuItem>
-              <MenuItem value="ماهانه">ماهانه</MenuItem>
-              <MenuItem value="سالانه">سالانه</MenuItem>
+              <MenuItem value=""> اپراتور</MenuItem>
+              {ISPData.map((isp) => (
+                <MenuItem key={isp.ISPname} value={isp.ISPname}>
+                  {isp.ISPname}
+                </MenuItem>
+              ))}
             </SelectButton>
           </FormControl>
-          <FormControl
-            sx={{ width: "8%", height: "70px", marginTop: "1.8rem" }}
-          >
+          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
             <SelectButton
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="سال"
-              //   onChange={handleChangeDailyPercent}
+              labelId="change-province-label"
+              id="change-province"
+              label=" نوع"
+              value={category}
+              // value={province}
+              // onChange={handleProvinceChange}
               displayEmpty
+              sx={{
+                paddingLeft: "2rem",
+                minWidth: "10rem",
+                // background: isDark ? "" : "#FFF",
+              }}
             >
-              <MenuItem value="در حال حاضر">درحال حاضر</MenuItem>
-              <MenuItem value="۳ ساعت پیش">۳ ساعت پیش</MenuItem>
-              <MenuItem value="امروز">امروز</MenuItem>
-              <MenuItem value="دیروز">دیروز</MenuItem>
-              <MenuItem value="هفتگی">هفتگی</MenuItem>
-              <MenuItem value="ماهانه">ماهانه</MenuItem>
-              <MenuItem value="سالانه">سالانه</MenuItem>
+              <MenuItem value="نوع">نوع</MenuItem>
             </SelectButton>
           </FormControl>
         </Box>
@@ -134,14 +143,6 @@ const Header: FC<Props> = ({
           />
         </Box>
       </Box>
-
-      {/* <Box
-        sx={{
-          marginY: "auto",
-        }}
-      >
-        {children}
-      </Box> */}
     </Box>
   );
 };
