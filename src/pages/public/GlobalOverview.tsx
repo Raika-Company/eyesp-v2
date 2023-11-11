@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Container,
   Button,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import {GetGlobalOverview} from "../../services/GlobalOverview";
@@ -26,9 +27,26 @@ type WebsiteData = {
 
 type HistoryData = WebsiteData[];
 
-const fetchHistoryData = async (): Promise<WebsiteData[]> => {
-  return await GetGlobalOverview();
+interface DataBlockProps {
+  value: number;
+  checkTime: string;
+}
+
+const errorMessages: Record<number, string> = {
+  200: "درخواست با موفقیت انجام شد.",
+  403: "دسترسی به صورت موقت قطع شده است.",
+  404: "صفحه مورد نظر یافت نشد.",
+  503: "سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.",
 };
+
+const errorTitel: Record<number, string> = {
+  200: "✅ بدون قطعی",
+  403: "❌ قطعی کامل",
+  404: "❌ صفحه مورد نظر در دسترس نیست",
+  503: "⚠️ قطعی جزئی",
+};
+
+const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
 
 const useHistoryData = () =>
   useQuery<HistoryData, Error>({
@@ -38,16 +56,82 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
-const DataBlock: React.FC<{value: number}> = ({value}) => (
-  <Box
-    width="3%"
-    height="62px"
-    borderRadius="2em"
-    bgcolor={value === 200 ? "#7FCD9F" : "#E93F3F"}
-    mx={0.3}
-    sx={{cursor: "pointer"}}
-  />
-);
+const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
+  const errorMessage = getStatusMessage(value);
+  const statusTitle = getTitleMessage(value);
+  const persianDate = convertToPersianDate(checkTime);
+
+  return (
+    <Tooltip
+      arrow
+      title={
+        <Box sx={{ p: "0.3em", userSelect: "none" }}>
+          <Typography
+            color={
+              value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
+            }
+            fontSize="1.3rem"
+          >
+            وضعیت: {value}
+          </Typography>
+          <Typography
+            sx={{
+              my: "1em",
+              bgcolor: "#777777",
+              p: ".4em",
+              borderRadius: ".2em",
+              fontSize: "1.2rem",
+            }}
+          >
+            {statusTitle}: <br /> {persianDate}
+          </Typography>
+          <Typography>{errorMessage}</Typography>
+        </Box>
+      }
+    >
+      <Box
+        width="3%"
+        height="62px"
+        borderRadius="2em"
+        bgcolor={
+          value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
+        }
+        mx={0.3}
+        sx={{
+          cursor: "pointer",
+          "&:hover": {
+            bgcolor: "darkgray",
+          },
+        }}
+      />
+    </Tooltip>
+  );
+});
+
+const getStatusMessage = (statusCode: number): string => {
+  return errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
+};
+
+const getTitleMessage = (statusCode: number): string => {
+  return errorTitel[statusCode] || "عنوان خطای ناشناخته";
+};
+
+const convertToPersianDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    calendar: "persian",
+    numberingSystem: "arabext",
+    localeMatcher: "best fit",
+  };
+  const formatter = new Intl.DateTimeFormat("fa-IR-u-nu-latn", options);
+  return formatter.format(date);
+};
 
 const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
   <Grid
@@ -90,10 +174,11 @@ const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
       padding="1rem"
     >
       {data.history.map((historyItem, index) => (
-        <DataBlock key={index} value={historyItem.status} />
-      ))}
-      {data.history.map((historyItem, index) => (
-        <DataBlock key={index + 12} value={historyItem.status} />
+        <DataBlock
+          key={index}
+          value={historyItem.status}
+          checkTime={historyItem.check_time}
+        />
       ))}
     </Box>
   </Grid>
@@ -144,12 +229,7 @@ const GlobalOverview: React.FC = () => {
       >
         بازگشت
       </Button>
-      <Grid
-        container
-        rowSpacing={4}
-        columnSpacing={{xs: -5, sm: -5}}
-        paddingY="2rem"
-      >
+      <Grid container rowSpacing={4} paddingY="2rem">
         {data &&
           Array.isArray(data) &&
           data.map((websiteData: WebsiteData, index: number) => (

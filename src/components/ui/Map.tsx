@@ -1,5 +1,12 @@
-import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
-import {FC, Fragment} from "react";
+import {
+  Box,
+  Button as MuiButton,
+  SvgIcon,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import {FC, Fragment, useRef, useState} from "react";
 import MapPaths from "../../features/dashboard/components/MapPaths";
 
 type ProvinceCoordsType = {
@@ -12,7 +19,7 @@ type ProvinceCoordsType = {
 };
 
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -76,47 +83,154 @@ interface Props {
 }
 
 const Map: FC<Props> = ({isPrivate = false}) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
-  interface Props {
+  interface CircleProps {
     index: number;
   }
-  const AnimatedCircle = styled("circle")<Props & React.SVGProps<SVGAElement>>(
-    ({index, cx, cy}) => ({
-      animation: `pulse 2s ${188 * index}ms infinite `,
-      transformOrigin: `${cx}px ${cy}px`,
-      "@keyframes pulse": {
-        "0%": {
-          transform: "scale(1)",
-        },
-
-        "100%": {
-          transform: "scale(3)",
-          opacity: 0,
-        },
+  const AnimatedCircle = styled("circle")<
+    CircleProps & React.SVGProps<SVGAElement>
+  >(({index, cx, cy}) => ({
+    animation: `pulse 2s ${188 * index}ms infinite `,
+    transformOrigin: `${cx}px ${cy}px`,
+    "@keyframes pulse": {
+      "0%": {
+        transform: "scale(1)",
       },
-    })
-  );
+
+      "100%": {
+        transform: "scale(3)",
+        opacity: 0,
+      },
+    },
+  }));
+
+  interface ButtonProps {
+    text: string;
+    onClick: () => void;
+  }
+  const Button: FC<ButtonProps> = ({text, onClick}) => {
+    return (
+      <MuiButton
+        onClick={onClick}
+        sx={{
+          background: "#666",
+          color: "#FFF",
+          fontSize: "1.2rem",
+          border: "none",
+          width: "2.5rem",
+          height: "2.5rem",
+          borderRadius: ".5rem",
+          cursor: "pointer",
+          ":hover": {
+            background: "#66666666",
+          },
+        }}
+      >
+        {text}
+      </MuiButton>
+    );
+  };
+
+  const [scale, setScale] = useState<number>(1);
+  const [dragging, setDragging] = useState<boolean>(false);
+  const [position, setPosition] = useState({x: 0, y: 0});
+  const [startPos, setStartPos] = useState({x: 0, y: 0});
+  const svgContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const zoomIn = () => {
+    setScale(Math.min(scale * 1.1, 10)); // Increase scale by 10%
+  };
+
+  const zoomOut = () => {
+    setScale(Math.max(scale / 1.1, 1)); // Decrease scale by 10%
+  };
+
+  const startDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    if (isPrivate && scale !== 1) {
+      setDragging(true);
+      setStartPos({
+        x: e.clientX - position.x,
+        y: e.clientY - position.y,
+      });
+    }
+  };
+
+  const onDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    if (isPrivate && scale !== 1) {
+      if (dragging) {
+        const dx = e.clientX - startPos.x;
+        const dy = e.clientY - startPos.y;
+        const svgRect = svgContainerRef.current!.getBoundingClientRect();
+        const containerRect = svgContainerRef.current!.getBoundingClientRect();
+
+        // Calculate the new position within the boundaries
+        let newX = Math.min(containerRect.width - svgRect.width / scale, dx);
+        let newY = Math.min(containerRect.height - svgRect.height / scale, dy);
+
+        // Prevent dragging beyond the left and top bounds
+        newX = Math.max(-150 * scale, newX);
+        newY = Math.max(-150 * scale, newY);
+
+        setPosition({
+          x: newX,
+          y: newY,
+        });
+      }
+    }
+  };
+
+  const endDrag = () => {
+    if (isPrivate && scale !== 1) {
+      setDragging(false);
+    }
+  };
 
   return (
-    <SvgIcon
+    <Box
       sx={{
-        width: "100%",
-        height: "100%",
-        boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
-        order: isLgDownScreen ? "-1" : "0",
-        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
+        position: "relative",
+        overflow: "hidden",
+        maxHeight: "100%",
+        maxWidth: "100%",
       }}
+      ref={svgContainerRef}
     >
-      <Link to="/disorders">
+      <SvgIcon
+        sx={{
+          width: "100%",
+          height: "100%",
+          boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
+          order: isLgDownScreen ? "-1" : "0",
+          gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
+        }}
+      >
+        {/* <Link to="/disorders"> */}
         <svg
           preserveAspectRatio="none"
-          viewBox="0 0 1130 1004"
+          viewBox="0 0 1130 1005"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          style={{
+            position: "relative",
+            transform: `scale(${scale})`,
+            top: `${position.y}px`,
+            left: `${position.x}px`,
+            transition: "transform .2s ease",
+            cursor: dragging ? "grabbing" : scale !== 1 ? "pointer" : "initial",
+          }}
+          onMouseDown={startDrag}
+          onMouseMove={onDrag}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          onClick={() => {
+            if (isPrivate) return;
+            navigate("/disorders");
+          }}
         >
           <MapPaths
             provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
@@ -158,8 +272,22 @@ const Map: FC<Props> = ({isPrivate = false}) => {
               </Fragment>
             ))}
         </svg>
-      </Link>
-    </SvgIcon>
+        {/* </Link> */}
+      </SvgIcon>
+      <Box
+        sx={{
+          display: isPrivate ? "flex" : "none",
+          bottom: "1rem",
+          left: "1rem",
+          gap: "1rem",
+          position: "absolute",
+          color: "#FFF",
+        }}
+      >
+        <Button onClick={zoomIn} text="+" />
+        <Button onClick={zoomOut} text="-" />
+      </Box>
+    </Box>
   );
 };
 
