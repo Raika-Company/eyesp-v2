@@ -36,7 +36,7 @@ const LastDis = () => {
 
         // onClick={toggleDialog}
       ></Header>
-      <CustomTable cellHeaders={cellHeaders} isAI={true} />
+      {/* <CustomTable cellHeaders={cellHeaders} isAI={true} /> */}
     </div>
   );
 };

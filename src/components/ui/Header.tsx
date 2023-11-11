@@ -70,7 +70,7 @@ const Header: FC<Props> = ({
         >
           <img alt="iconPath" src={iconPath} />
           <Typography color="white">{title}</Typography>
-          <Typography color="#7A7775" mr="3rem">
+          <Typography color="#7A7775" mr="3rem" variant="body">
             {selectTitle}
           </Typography>
 
