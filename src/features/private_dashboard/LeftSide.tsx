@@ -15,6 +15,7 @@ import TaggedNumber from "./components/TaggedNumber";
 import CircleChart from "../../components/ui/CircularChart";
 import InfoBox from "../../components/ui/InfoBox";
 import {Fragment} from "react";
+import {Link} from "react-router-dom";
 
 const ConflictsData = [
   {
@@ -136,17 +137,19 @@ const LeftSide = () => {
               </Stack>
             </Button>
             <Button>
-              <Stack direction="row" gap={0.5} alignItems="center">
-                <Typography
-                  sx={{
-                    color: "#7FCD9F",
-                    fontSize: ".8rem",
-                  }}
-                >
-                  مشاهده جزئیات
-                </Typography>
-                <img src={FullArrowGreen} />
-              </Stack>
+              <Link to="/disorders">
+                <Stack direction="row" gap={0.5} alignItems="center">
+                  <Typography
+                    sx={{
+                      color: "#7FCD9F",
+                      fontSize: ".8rem",
+                    }}
+                  >
+                    مشاهده جزئیات
+                  </Typography>
+                  <img src={FullArrowGreen} />
+                </Stack>
+              </Link>
             </Button>
           </Box>
         </Box>
