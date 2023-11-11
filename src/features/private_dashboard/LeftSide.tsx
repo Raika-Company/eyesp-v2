@@ -187,7 +187,7 @@ const LeftSide = () => {
           </Box>
         </Box>
       </InfoBox>
-      <InfoBox title="تاریخچه اطلاعات" iconPath={HistoryInfo}>
+      <InfoBox title="تاریخچه اختلالات" iconPath={HistoryInfo}>
         <Box
           sx={{
             display: "flex",
