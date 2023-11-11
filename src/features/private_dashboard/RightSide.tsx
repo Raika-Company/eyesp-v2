@@ -27,6 +27,7 @@ const aiMessages = [
 const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const toggleDialog = () => {
@@ -69,6 +70,17 @@ const RightSide = () => {
       }}
     >
       <InfoBox title="هوش مصنوعی" iconPath={Ai}>
+        <Button
+          sx={{
+            position: "absolute",
+            left: ".5rem",
+            fontSize: ".7rem",
+            top: ".5rem",
+          }}
+          onClick={() => setMessages([])}
+        >
+          پاک کردن همه
+        </Button>
         <Box
           sx={{
             padding: ".5rem",
@@ -81,7 +93,8 @@ const RightSide = () => {
             sx={{
               overflowY: "auto",
               maxHeight: "10rem",
-              paddingY: "1rem",
+              paddingBottom: isSmScreen ? "2rem" : ".5rem",
+              // marginBottom: isSmScreen ? "1rem" : "0",
             }}
           >
             {messages.map((message) => (
