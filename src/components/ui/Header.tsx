@@ -10,25 +10,34 @@ import {
 import { SelectButton } from "./SelectButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../..//public/data/ISPData.json";
+import Category from "../../../public/data/category.json";
+
 interface Props {
   title: string;
   selectTitle: string;
   iconPath: string;
   // children: ReactNode;
   onClick?: () => void;
+  handleISPChange: (event: SelectChangeEvent<unknown>) => void;
+  handleProvinceChange: (event: SelectChangeEvent<unknown>) => void;
+  handleCategory: (event: SelectChangeEvent<unknown>) => void;
+  category: string;
+  province: string;
+  selectedISP: string;
 }
 
-const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
-  const [province, setProvince] = useState("");
-  const [selectedISP, setSelectedISP] = useState("");
-  const [category, setCategory] = useState("نوع");
-
-  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
-    setProvince(event.target.value as string);
-  };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
-  };
+const Header: FC<Props> = ({
+  title,
+  iconPath,
+  onClick,
+  selectTitle,
+  province,
+  selectedISP,
+  category,
+  handleProvinceChange,
+  handleISPChange,
+  handleCategory,
+}) => {
   return (
     <Box
       sx={{
@@ -120,12 +129,11 @@ const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
           </FormControl>
           <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
             <SelectButton
-              labelId="change-province-label"
-              id="change-province"
-              label=" نوع"
+              labelId="change-category-label"
+              id="change-category-select"
+              label=""
               value={category}
-              // value={province}
-              // onChange={handleProvinceChange}
+              onChange={handleCategory}
               displayEmpty
               sx={{
                 paddingLeft: "2rem",
@@ -133,7 +141,12 @@ const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
                 // background: isDark ? "" : "#FFF",
               }}
             >
-              <MenuItem value="نوع">نوع</MenuItem>
+              <MenuItem value=""> نوع</MenuItem>
+              {Category.map((item) => (
+                <MenuItem key={item.name} value={item.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
             </SelectButton>
           </FormControl>
         </Box>
