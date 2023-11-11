@@ -5,7 +5,7 @@ import ISP from "../pages/public/ISP";
 import Disorders from "../pages/private/Disorders";
 import Average from "../pages/private/Average";
 import LastDisorders from "../pages/private/LastDisorders";
-import PrivateDashboard from "../pages/private/Dashboard";
+import PrivateDashboard from "../pages/private/PrivateDashboard";
 import Operators from "../pages/public/Operators";
 import CurrentTraffic from "../pages/public/CurrentTraffic";
 

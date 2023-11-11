@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,7 +8,17 @@ import {
   TableCell,
   TableHead,
   styled,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
+
+type TableRowData = {
+  date: string;
+  time: string;
+  type: string;
+  reason: string;
+  status: string;
+};
 
 const RowBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -37,17 +47,48 @@ const HorizontalLine = styled(Box)(({ theme }) => ({
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const rowData = [
+const rowData: TableRowData[] = [
   {
     date: "1402/3/24",
     time: "12:23:45",
+    type: "صفحه مورد نظر یافت نشد.",
+    reason: "دسترسی به صورت موقت قطع شده است.",
+    status: "برطرف شده",
+  },
+  {
+    date: "1402/10/11",
+    time: "12:11:23",
+    type: "دسترسی به صورت موقت قطع شده است.",
+    reason: "صفحه مورد نظر یافت نشد.",
+    status: "برطرف نشده",
+  },
+  {
+    date: "1402/08/01",
+    time: "12:44:22",
+    type: "دسترسی به صورت موقت قطع شده است.",
+    reason: "صفحه مورد نظر یافت نشد.",
+    status: "برطرف نشده",
+  },
+];
+
+const dataStatus = [
+  {
+    date: "1402/3/24",
+    time: "08:23:45",
     type: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ",
     reason: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم",
     status: "برطرف نشده",
   },
   {
-    date: "1402/3/24",
+    date: "1402/3/10",
     time: "12:23:45",
+    type: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ",
+    reason: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم",
+    status: "برطرف شده",
+  },
+  {
+    date: "1402/3/17",
+    time: "20:23:45",
     type: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ",
     reason: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم",
     status: "برطرف شده",
@@ -55,10 +96,19 @@ const rowData = [
 ];
 
 const HistoryOperators = () => {
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [tableData, setTableData] = useState<TableRowData[]>(rowData);
+  const [activeButton, setActiveButton] = useState("recent");
+  const handleButtonClick = (data: TableRowData[], buttonType: string) => {
+    setTableData(data);
+    setActiveButton(buttonType);
+  };
+
   return (
     <Box
       sx={{
-        width: "86%",
+        width: isMdScreen ? "100%" : "76%",
         margin: "0 auto",
         borderRadius: "0.8em",
         marginTop: "2em",
@@ -73,9 +123,13 @@ const HistoryOperators = () => {
             borderTopLeftRadius: "0.75em",
             bgcolor: "#232629",
             boxShadow: "0",
-            color: "#fff",
             fontSize: "1.3125rem",
+            color: activeButton === "recent" ? "#fff" : "#7A7775",
+            "&:hover": {
+              color: "#fff",
+            },
           }}
+          onClick={() => handleButtonClick(rowData, "recent")}
           variant="contained"
         >
           اختلال های اخیر
@@ -87,26 +141,26 @@ const HistoryOperators = () => {
             borderTopLeftRadius: "0.75em",
             bgcolor: "#232629",
             boxShadow: "0",
-            color: "#7A7775",
-            fontSize: "1.3125rem",
+            color: activeButton === "current" ? "#fff" : "#7A7775",
             "&:hover": {
               color: "#fff",
             },
+            fontSize: "1.3125rem",
           }}
           variant="contained"
-          href="#contained-buttons"
+          onClick={() => handleButtonClick(dataStatus, "current")}
         >
           اختلال های فعلی
         </Button>
       </Stack>
       <Box
         sx={{
-          height: "14.97em",
           borderRadius: "0.8em",
           borderBottomLeftRadius: "0",
           borderBottomRightRadius: "0",
           borderTopRightRadius: "0",
           backgroundColor: "#232629",
+          overflowX: "scroll",
         }}
       >
         <Table aria-label="simple table">
@@ -132,11 +186,11 @@ const HistoryOperators = () => {
             <HorizontalLine />
           </TableHead>
           <TableBody>
-            {rowData.map((row, index) => (
+            {tableData.map((row, index) => (
               <RowBox
                 sx={{
                   "td, th": { border: 0 },
-                  height: "70px",
+                  // height: "70px",
                 }}
                 key={index}
               >
@@ -144,6 +198,7 @@ const HistoryOperators = () => {
                   <Box
                     sx={{
                       display: "flex",
+                      flexWrap: "wrap",
                       alignItems: "center",
                       gap: "1rem",
                     }}
