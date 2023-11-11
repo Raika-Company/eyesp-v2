@@ -1,6 +1,12 @@
 import { FC, ReactNode, useState } from "react";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
-import { Box, FormControl, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  MenuItem,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import { SelectButton } from "./SelectButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../..//public/data/ISPData.json";
@@ -17,11 +23,11 @@ const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
   const [selectedISP, setSelectedISP] = useState("");
   const [category, setCategory] = useState("نوع");
 
-  const handleProvinceChange = (event) => {
-    setProvince(event.target.value);
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
   };
-  const handleISPChange = (event) => {
-    setSelectedISP(event.target.value);
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
   };
   return (
     <Box
@@ -75,11 +81,12 @@ const Header: FC<Props> = ({ title, iconPath, onClick, selectTitle }) => {
             >
               <MenuItem value=""> استان</MenuItem>
               {Object.keys(provincesCoords).map((provinceName) => (
-                <MenuItem
-                  key={provincesCoords[provinceName]}
-                  value={provinceName}
-                >
-                  {provincesCoords[provinceName].name}
+                <MenuItem key={provinceName} value={provinceName}>
+                  {
+                    provincesCoords[
+                      provinceName as keyof typeof provincesCoords
+                    ].name
+                  }
                 </MenuItem>
               ))}
             </SelectButton>
