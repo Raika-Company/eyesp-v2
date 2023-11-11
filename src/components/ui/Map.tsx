@@ -112,14 +112,15 @@ const Map: FC<Props> = ({isPrivate = false}) => {
   interface ButtonProps {
     text: string;
     onClick: () => void;
+    disable: boolean;
   }
-  const Button: FC<ButtonProps> = ({text, onClick}) => {
+  const Button: FC<ButtonProps> = ({text, onClick, disable}) => {
     return (
       <MuiButton
         onClick={onClick}
         sx={{
-          background: "#666",
-          color: "#FFF",
+          background: disable ? "#66666666" : "#666",
+          color: disable ? "#ffffff88" : "#FFF",
           fontSize: "1.2rem",
           border: "none",
           width: "2.5rem",
@@ -195,8 +196,10 @@ const Map: FC<Props> = ({isPrivate = false}) => {
       sx={{
         position: "relative",
         overflow: "hidden",
-        maxHeight: "100%",
-        maxWidth: "100%",
+        width: "100%",
+        height: "100%",
+        order: isLgDownScreen ? "-1" : "0",
+        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
       }}
       ref={svgContainerRef}
     >
@@ -205,8 +208,6 @@ const Map: FC<Props> = ({isPrivate = false}) => {
           width: "100%",
           height: "100%",
           boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
-          order: isLgDownScreen ? "-1" : "0",
-          gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
         }}
       >
         {/* <Link to="/disorders"> */}
@@ -284,8 +285,8 @@ const Map: FC<Props> = ({isPrivate = false}) => {
           color: "#FFF",
         }}
       >
-        <Button onClick={zoomIn} text="+" />
-        <Button onClick={zoomOut} text="-" />
+        <Button onClick={zoomIn} text="+" disable={scale === 10} />
+        <Button onClick={zoomOut} text="-" disable={scale === 1} />
       </Box>
     </Box>
   );

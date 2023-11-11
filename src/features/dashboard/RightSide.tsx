@@ -13,9 +13,9 @@ import NumberValue from "./components/NumberValue";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
 import ChartIcon from "../../assets/images/chart-icon-2.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
-import { InternalISPList } from "./LeftSide";
+import {InternalISPList} from "./LeftSide";
 import BadgedValue from "./components/BadgedValue";
-import { useState } from "react";
+import {useState} from "react";
 import InfoBox from "../../components/ui/InfoBox";
 
 interface ISPListDisplayProps {
@@ -24,6 +24,53 @@ interface ISPListDisplayProps {
   style?: React.CSSProperties;
 }
 
+export const ISPListDisplay: React.FC<ISPListDisplayProps> = ({
+  isp,
+  isLimited,
+  style,
+}) => {
+  const theme = useTheme();
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const displayIsp = isLimited ? isp.slice(0, 3) : isp;
+  const combinedStyles = {
+    display: "flex",
+    flexDirection: "column",
+    padding: "1rem",
+    gap: isXlgScreen ? ".5rem" : "",
+    marginY: "auto",
+    ...style,
+  };
+
+  return (
+    <Box sx={combinedStyles}>
+      {displayIsp.map((isp) => (
+        <Box key={isp.id}>
+          <Stack
+            // temporary
+            direction="row-reverse"
+            justifyContent="space-between"
+            alignItems="center"
+            marginX=".5rem"
+          >
+            {/* temporary */}
+            <Stack direction="row-reverse" gap=".5rem">
+              <Typography color="#7A7775">#{isp.id}</Typography>
+              <Typography>{isp.name}</Typography>
+            </Stack>
+            <Typography color="#7A7775">{isp.speed}Mbps</Typography>
+          </Stack>
+          <Divider
+            style={{
+              background: "#35383B",
+              margin: ".5rem",
+            }}
+          />
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
 const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
@@ -31,50 +78,6 @@ const RightSide = () => {
 
   const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
-  };
-
-  const ISPListDisplay: React.FC<ISPListDisplayProps> = ({
-    isp,
-    isLimited,
-    style,
-  }) => {
-    const displayIsp = isLimited ? isp.slice(0, 3) : isp;
-    const combinedStyles = {
-      display: "flex",
-      flexDirection: "column",
-      padding: "1rem",
-      gap: isXlgScreen ? ".5rem" : "",
-      marginY: "auto",
-      ...style,
-    };
-    return (
-      <Box sx={combinedStyles}>
-        {displayIsp.map((isp) => (
-          <Box key={isp.id}>
-            <Stack
-              // temporary
-              direction="row-reverse"
-              justifyContent="space-between"
-              alignItems="center"
-              marginX=".5rem"
-            >
-              {/* temporary */}
-              <Stack direction="row-reverse" gap=".5rem">
-                <Typography color="#7A7775">#{isp.id}</Typography>
-                <Typography>{isp.name}</Typography>
-              </Stack>
-              <Typography color="#7A7775">{isp.speed}Mbps</Typography>
-            </Stack>
-            <Divider
-              style={{
-                background: "#35383B",
-                margin: ".5rem",
-              }}
-            />
-          </Box>
-        ))}
-      </Box>
-    );
   };
 
   return (
@@ -109,7 +112,7 @@ const RightSide = () => {
         onClick={toggleDialog}
       >
         <ISPListDisplay
-          style={{ direction: "ltr" }}
+          style={{direction: "ltr"}}
           isp={InternalISPList}
           isLimited={true}
         />
