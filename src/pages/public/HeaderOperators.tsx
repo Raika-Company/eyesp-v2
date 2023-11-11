@@ -1,8 +1,17 @@
-import React, {FC, useState } from 'react';
-import { Box, Button, FormControl, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
-import { SelectOperators } from './SelectOperators';
-import { useNavigate } from 'react-router-dom';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import React, { FC, useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  Typography,
+  SelectChangeEvent,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { SelectOperators } from "./SelectOperators";
+import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import citiesData from "../../../public/data/provincesCoords.json";
 
 interface Props {
@@ -16,7 +25,15 @@ interface Props {
 const cityNames = Object.values(citiesData).map((city) => city.name);
 
 const data = {
-  operators: ["همراه اول", "ایرانسل", "مخابرات", "سامانتل", "شاتل", "زیتل", "پارس وب"],
+  operators: [
+    "همراه اول",
+    "ایرانسل",
+    "مخابرات",
+    "سامانتل",
+    "شاتل",
+    "زیتل",
+    "پارس وب",
+  ],
   times: ["نوع", "۳ ساعت پیش", "امروز", "دیروز", "هفتگی", "ماهانه", "سالانه"],
 };
 
@@ -27,6 +44,8 @@ const HeaderOperators: FC<Props> = ({
   selectTitle,
 }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [selections, setSelections] = useState({
     city: cityNames[0],
@@ -52,7 +71,14 @@ const HeaderOperators: FC<Props> = ({
     const isWhiteBackground = ["city", "operator"].includes(labelId);
 
     return (
-      <FormControl sx={{ width: "7em", height: "70px", marginTop: "1.8rem" }}>
+      <FormControl
+        sx={{
+          width: "7em",
+          height: "70px",
+          marginTop: "1.8rem",
+          display: isMdScreen ? "none" : "flex",
+        }}
+      >
         <SelectOperators
           labelId={`${labelId}-select-label`}
           id={`${labelId}-select`}
@@ -98,7 +124,13 @@ const HeaderOperators: FC<Props> = ({
         <Box sx={{ display: "flex", alignItems: "center", gap: "1.18rem" }}>
           <img alt="Icon" src={iconPath} />
           <Typography color="white">{title}</Typography>
-          <Typography color="#7A7775" mr="3rem">
+          <Typography
+            sx={{
+              color: "#7A7775",
+              mr: "3em",
+              display: isMdScreen ? "none" : "flex",
+            }}
+          >
             {selectTitle}
           </Typography>
           {renderSelect(cityNames, selections.city, "city")}

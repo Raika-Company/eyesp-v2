@@ -1,6 +1,7 @@
 import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
 import {FC, Fragment} from "react";
-import MapPaths from "./components/MapPaths";
+// import MapPaths from "./components/MapPaths";
+import MapPaths from "../dashboard/components/MapPaths";
 
 type ProvinceCoordsType = {
   [key: string]: {

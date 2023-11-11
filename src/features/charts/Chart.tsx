@@ -4,6 +4,8 @@ import {
   MenuItem,
   Typography,
   SelectChangeEvent,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import {
   XAxis,
@@ -32,7 +34,6 @@ interface CustomTooltipProps {
   payload?: { value: number }[];
 }
 
-
 const data: DataPoint[] = [
   { name: "فروردین", uv: 80 },
   { name: "اسفند", uv: 30 },
@@ -52,11 +53,12 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   return null;
 };
 
-
 const Chart: React.FC<ChartProps> = ({ title, desc }) => {
+  const theme = useTheme();
   const location = useLocation();
   const [city, setCity] = useState<string>("سرعت");
-  const isCurrentTrafficRoute = location.pathname.includes("/Current-traffic");
+  const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleCityChange = (event: SelectChangeEvent<unknown>) => {
     setCity(event.target.value as string);
@@ -66,7 +68,6 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
     <div
       style={{
         width: "100%",
-        height: 310,
         padding: "1em",
         border: "2.326px solid rgba(255, 255, 255, 0.07)",
         borderRadius: "1em",
@@ -81,11 +82,15 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
         }}
       >
         <Typography
-          sx={{ ml: "1em", mt: ".5em", fontSize: isCurrentTrafficRoute ? ".9rem" : "2rem" }}
+          sx={{
+            ml: "1em",
+            mt: ".5em",
+            fontSize: isCurrentTrafficRoute || isSmScreen ? "1.2rem" : "2rem",
+          }}
         >
           {desc}
         </Typography>
-        <Typography sx={{ fontSize: "2rem" }}>{title}</Typography>
+        <Typography sx={{ fontSize: "3.125rem" }}>{title}</Typography>
         {!isCurrentTrafficRoute && (
           <SelectOperators
             labelId="city-select-label"
@@ -94,7 +99,11 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
             displayEmpty
             onChange={handleCityChange}
             sx={{
-              width: "12%",
+              px: "1.1em",
+              ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+                {
+                  paddingRight: "0em",
+                },
               height: "40px",
               bgcolor: "#232629",
               color: "#FFF",
@@ -109,7 +118,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
           </SelectOperators>
         )}
       </Box>
-      <ResponsiveContainer width="100%" height={220}>
+      <ResponsiveContainer height={220}>
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
