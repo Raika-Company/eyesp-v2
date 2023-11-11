@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import Conflicts from "../../assets/images/conflicts.svg";
 import HistoryInfo from "../../assets/images/history-info.svg";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import Average from "../../assets/images/speed-compare.svg";
 import FullArrowGreen from "../../assets/images/fullarrow-left-green.svg";
 import TaggedNumber from "./components/TaggedNumber";
@@ -29,6 +30,37 @@ const ConflictsData = [
   {
     id: 3,
     title: "افزایش پینگ اپراتور ایرانسل به ۸۰ در استان تهران",
+  },
+];
+
+const conflictsHistoryMockData = [
+  {
+    id: 11,
+    conflicts: ["افزایش پینگ"],
+    isp: ["ایرانسل"],
+    cities: ["تهران"],
+    time: "22:35",
+  },
+  {
+    id: 22,
+    conflicts: ["کاهش سرعت"],
+    isp: ["رایتل"],
+    cities: ["مشهد"],
+    time: "22:35",
+  },
+  {
+    id: 33,
+    conflicts: ["افزایش پینگ"],
+    isp: ["همراه‌اول"],
+    cities: ["اهواز"],
+    time: "22:35",
+  },
+  {
+    id: 44,
+    conflicts: ["افزایش پینگ"],
+    isp: ["ایرانسل"],
+    cities: ["تهران"],
+    time: "22:35",
   },
 ];
 
@@ -105,12 +137,13 @@ const LeftSide = () => {
                     width: "100%",
                     marginX: "auto",
                     background: "#35383B",
-                    height: ".1rem",
+                    height: "2px",
                   }}
                 />
               </Fragment>
             ))}
           </Box>
+
           <Box
             sx={{
               display: "flex",
@@ -155,7 +188,60 @@ const LeftSide = () => {
         </Box>
       </InfoBox>
       <InfoBox title="تاریخچه اطلاعات" iconPath={HistoryInfo}>
-        <></>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: ".5rem",
+            padding: ".5rem",
+          }}
+        >
+          {conflictsHistoryMockData.map((data) => (
+            <Fragment key={data.id}>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {data.conflicts.join(",")}|{data.isp.join(",")}|
+                  {data.cities.join(",")}
+                </Typography>
+                <Typography>{data.time}</Typography>
+              </Stack>
+              <Divider
+                sx={{
+                  width: "100%",
+                  marginX: "auto",
+                  background: "#35383B",
+                  height: "2px",
+                }}
+              />
+            </Fragment>
+          ))}
+        </Box>
+        <Stack
+          direction="row"
+          component={Link}
+          to="/isp"
+          sx={{
+            cursor: "pointer",
+            alignItems: "center",
+            marginX: "1rem",
+            justifyContent: "space-between",
+            ":active": {
+              textDecoration: "none",
+            },
+          }}
+        >
+          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <img
+            src={ArrowLeftGreen}
+            style={{
+              marginLeft: "1rem",
+            }}
+          />
+        </Stack>
       </InfoBox>
       <InfoBox title="میانگین کلی" iconPath={Average}>
         <Box

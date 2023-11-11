@@ -10,11 +10,15 @@ import {
 // import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import Ai from "../../assets/images/ai.svg";
 import IspAndProvinces from "../../assets/images/isp-province.svg";
+import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
 import BadgedValue from "./components/BadgedValue";
 import {FormEvent, useEffect, useRef, useState} from "react";
 import InfoBox from "../../components/ui/InfoBox";
+import {ISPListDisplay} from "../dashboard/RightSide";
+import {InternalISPList} from "../dashboard/LeftSide";
+import {Link} from "react-router-dom";
 
 const aiMessages = [
   {
@@ -181,7 +185,33 @@ const RightSide = () => {
         iconPath={IspAndProvinces}
         onClick={toggleDialog}
       >
-        <></>
+        <ISPListDisplay
+          style={{direction: "ltr"}}
+          isp={InternalISPList}
+          isLimited={true}
+        />
+        <Stack
+          direction="row"
+          component={Link}
+          to="/isp"
+          sx={{
+            cursor: "pointer",
+            alignItems: "center",
+            marginX: "1rem",
+            justifyContent: "space-between",
+            ":active": {
+              textDecoration: "none",
+            },
+          }}
+        >
+          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <img
+            src={ArrowLeftGreen}
+            style={{
+              marginLeft: "1rem",
+            }}
+          />
+        </Stack>
       </InfoBox>
       <InfoBox title="ترافیک فعلی (IXP,IGW)" iconPath={WifiIcon}>
         <Box
