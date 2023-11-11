@@ -195,8 +195,10 @@ const Map: FC<Props> = ({isPrivate = false}) => {
       sx={{
         position: "relative",
         overflow: "hidden",
-        maxHeight: "100%",
-        maxWidth: "100%",
+        width: "100%",
+        height: "100%",
+        order: isLgDownScreen ? "-1" : "0",
+        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
       }}
       ref={svgContainerRef}
     >
@@ -205,8 +207,6 @@ const Map: FC<Props> = ({isPrivate = false}) => {
           width: "100%",
           height: "100%",
           boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
-          order: isLgDownScreen ? "-1" : "0",
-          gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
         }}
       >
         {/* <Link to="/disorders"> */}

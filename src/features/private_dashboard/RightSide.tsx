@@ -13,7 +13,7 @@ import IspAndProvinces from "../../assets/images/isp-province.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
 import BadgedValue from "./components/BadgedValue";
-import {useState} from "react";
+import {FormEvent, useEffect, useRef, useState} from "react";
 import InfoBox from "../../components/ui/InfoBox";
 
 const aiMessages = [
@@ -33,6 +33,32 @@ const RightSide = () => {
     setDialogOpen(!isDialogOpen);
   };
 
+  // Functionality for Chat with ai
+  const chatRef = useRef<HTMLDivElement | null>(null);
+
+  const [messages, setMessages] =
+    useState<{id: number; text: string; time: string}[]>(aiMessages);
+
+  const [enteredMessage, setEnteredMessage] = useState<string>("");
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        id: messages.length + 1,
+        text: enteredMessage,
+        time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
+      },
+    ]);
+    setEnteredMessage("");
+  };
+
+  // For scrolling to the bottom of it's content
+  useEffect(() => {
+    if (chatRef.current)
+      chatRef.current.scrollTop = chatRef.current?.scrollHeight;
+  }, [messages]);
+
   return (
     <Box
       sx={{
@@ -50,87 +76,91 @@ const RightSide = () => {
             height: "100%",
           }}
         >
-          {aiMessages.map((message) => (
-            <Box key={message.id}>
-              <Stack direction="row" alignItems="center" gap={0.5}>
-                <img
-                  src={Ai}
-                  style={{
-                    width: "13px",
-                    height: "13px",
-                  }}
-                />
-                <Typography>هوش مصنوعی</Typography>
+          <Box
+            ref={chatRef}
+            sx={{
+              overflowY: "auto",
+              maxHeight: "10rem",
+              paddingY: "1rem",
+            }}
+          >
+            {messages.map((message) => (
+              <Box key={message.id}>
+                <Stack direction="row" alignItems="center" gap={0.5}>
+                  <img
+                    src={Ai}
+                    style={{
+                      width: "13px",
+                      height: "13px",
+                    }}
+                  />
+                  <Typography>هوش مصنوعی</Typography>
+                  <Typography
+                    sx={{
+                      color: "#7A7775",
+                      fontSize: ".5rem",
+                    }}
+                  >
+                    {message.time}
+                  </Typography>
+                </Stack>
                 <Typography
                   sx={{
-                    color: "#7A7775",
-                    fontSize: ".5rem",
+                    color: "#FFF",
+                    background: "#7A7775",
+                    borderRadius: ".5rem",
+                    borderTopRightRadius: "0",
+                    padding: ".5rem",
+                    fontSize: ".8rem",
+                    width: "15rem",
                   }}
                 >
-                  {message.time}
+                  {message.text}
                 </Typography>
-              </Stack>
-              <Typography
-                sx={{
-                  color: "#FFF",
-                  background: "#7A7775",
-                  borderRadius: ".5rem",
-                  borderTopRightRadius: "0",
-                  padding: ".5rem",
-                  fontSize: ".8rem",
-                  width: "15rem",
-                }}
-              >
-                {message.text}
-              </Typography>
-            </Box>
-          ))}
-          <Box>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log("submit");
+              </Box>
+            ))}
+          </Box>
+          <form onSubmit={handleSubmit}>
+            <input
+              style={{
+                background: "#232629",
+                color: "#FFF",
+                padding: ".4rem",
+                outline: "none",
+                border: "none",
+                height: "2rem",
+                borderRadius: ".5rem",
+                width: "95%",
+                marginTop: "auto",
+                position: "absolute",
+                bottom: ".2rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontFamily: "PeydaRegular",
+                caretColor: "#FFF",
+              }}
+              placeholder="پیام خود را بنویسید..."
+              onChange={(e) => setEnteredMessage(e.target.value)}
+              value={enteredMessage}
+            />
+            <Button
+              type="submit"
+              sx={{
+                position: "absolute",
+                bottom: ".75rem",
+                left: "-.5rem",
+                padding: "0",
+                ":hover": {
+                  background: "transparent",
+                },
+                "& .MuiTouchRipple-root": {
+                  display: "none",
+                },
               }}
             >
-              <input
-                style={{
-                  background: "#232629",
-                  color: "#FFF",
-                  padding: ".4rem",
-                  outline: "none",
-                  border: "none",
-                  height: "2rem",
-                  borderRadius: ".5rem",
-                  width: "95%",
-                  marginTop: "auto",
-                  position: "absolute",
-                  bottom: ".2rem",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  fontFamily: "PeydaRegular",
-                  caretColor: "#FFF",
-                }}
-                placeholder="پیام خود را بنویسید..."
-              />
-              <Button
-                type="submit"
-                sx={{
-                  position: "absolute",
-                  bottom: ".75rem",
-                  left: "-.5rem",
-                  padding: "0",
-                  ":hover": {
-                    background: "transparent",
-                  },
-                  "& .MuiTouchRipple-root": {
-                    display: "none",
-                  },
-                }}
-              >
-                <img src={Send} />
-              </Button>
-            </form>
-          </Box>
+              <img src={Send} />
+            </Button>
+          </form>
         </Box>
       </InfoBox>
       <InfoBox
