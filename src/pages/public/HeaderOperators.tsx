@@ -9,10 +9,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { SelectOperators } from "./SelectOperators";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import citiesData from "../../../public/data/provincesCoords.json";
+import { SelectButton } from "../../components/ui/SelectButton";
 
 interface Props {
   title: string;
@@ -79,7 +79,7 @@ const HeaderOperators: FC<Props> = ({
           display: isMdScreen ? "none" : "flex",
         }}
       >
-        <SelectOperators
+        <SelectButton
           labelId={`${labelId}-select-label`}
           id={`${labelId}-select`}
           value={selectedValue}
@@ -95,7 +95,7 @@ const HeaderOperators: FC<Props> = ({
               {item}
             </MenuItem>
           ))}
-        </SelectOperators>
+        </SelectButton>
       </FormControl>
     );
   };
