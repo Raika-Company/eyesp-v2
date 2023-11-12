@@ -9,42 +9,71 @@ import {
   TableHead,
   Typography,
   styled,
+  keyframes,
 } from "@mui/material";
 
+type DataRow = {
+  date: string;
+  hour: string;
+  categoryDis: string;
+  causeDis: string;
+  handle: string;
+};
 interface Props {
   cellHeaders: string[];
   isAI?: boolean;
-  rows: any;
+  rows: DataRow[];
+  delay?: number;
 }
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+const RowBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  borderRadius: "1rem",
+  paddingRight: "3rem",
 
-const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
-  const RowBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    borderRadius: "1rem",
-    paddingRight: "3rem",
-    "& > *": {
-      flex: 1,
-      fontFamily: "PeydaLight",
-    },
-    "& > *:nth-of-type(1)": {
-      flex: 0.5,
-    },
-    "& > *:nth-of-type(4)": {
-      flex: 0.3,
-    },
-  }));
-  const HorizontalLine = styled(Box)(({ theme }) => ({
-    margin: "0 auto",
-    width: "400px",
-    height: "2px",
-    background:
-      "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
-    opacity: "0.2",
-  }));
+  "& > *": {
+    flex: 1,
+    fontFamily: "PeydaLight",
+  },
+  "& > *:nth-of-type(1)": {
+    flex: 0.5,
+  },
+  "& > *:nth-of-type(4)": {
+    flex: 0.3,
+  },
+}));
+const HorizontalLine = styled(Box)(({ theme }) => ({
+  margin: "0 auto",
+  width: "400px",
+  height: "2px",
+  background:
+    "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+  opacity: "0.2",
+}));
+const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
+  const animatedRows =
+    rows.length >= 2
+      ? rows
+      : [...rows, ...Array(2 - rows.length).fill(rows[0])];
+  const getColorBasedOnHandle = (handle) => {
+    const color = handle === "برطرف شده" ? "green" : "red";
+    console.log(`Handle: ${handle}, Color: ${color}`);
+    return color;
+  };
   return (
     <>
-      <MuiTable aria-label="simple table">
+      <MuiTable
+        aria-label="simple table"
+        className="transition duration-500 ease-in-out"
+      >
         <TableHead
           sx={{
             ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
@@ -69,8 +98,9 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
           </Stack>
         </TableHead>
         <TableBody>
-          {rows?.map((row, idx) => {
-            console.log(row);
+          {animatedRows?.map((row, idx) => {
+            const animationDelay = delay ? `${idx * delay}s` : "0s";
+            const handleColor = getColorBasedOnHandle(row.handle);
 
             return (
               <>
@@ -78,6 +108,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
                   sx={{
                     "td, th": { border: 0 },
                     height: "70px",
+                    animation: `${fadeIn} 1s ease-in-out ${animationDelay} forwards`,
                   }}
                 >
                   <TableCell align="right" sx={{ color: "white" }}>
@@ -105,7 +136,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
                   <TableCell align="right" sx={{ color: "white" }}>
                     {row.causeDis}
                   </TableCell>
-                  <TableCell sx={{ color: "red" }} align="right">
+                  <TableCell align="right">
                     {isAI ? (
                       <Button
                         sx={{
@@ -117,7 +148,9 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
                         کمک از هوش مصنوعی
                       </Button>
                     ) : (
-                      <Typography> برطرف نشده</Typography>
+                      <Typography sx={{ color: handleColor }}>
+                        {row.handle}
+                      </Typography>
                     )}
                   </TableCell>
                 </RowBox>
@@ -125,54 +158,6 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows }) => {
               </>
             );
           })}
-
-          {/* <RowBox
-            sx={{
-              "td, th": { border: 0 },
-              height: "70px",
-            }}
-          >
-            <TableCell align="right" sx={{ color: "white" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1rem",
-                }}
-              >
-                <span>1402/3/24</span>
-                <Box
-                  sx={{
-                    width: "2px",
-                    height: "20px",
-                    background: "white",
-                  }}
-                />{" "}
-                <span>12:23:45</span>
-              </Box>
-            </TableCell>
-            <TableCell align="right" sx={{ color: "white" }}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-            </TableCell>
-            <TableCell align="right" sx={{ color: "white" }}>
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم{" "}
-            </TableCell>
-            <TableCell sx={{ color: "green" }} align="right">
-              {isAI ? (
-                <Button
-                  sx={{
-                    backgroundColor: "#7A7775",
-                    borderRadius: "0.597rem",
-                    color: "white",
-                  }}
-                >
-                  کمک از هوش مصنوعی
-                </Button>
-              ) : (
-                <Typography> برطرف شده</Typography>
-              )}
-            </TableCell>
-          </RowBox> */}
         </TableBody>
       </MuiTable>
     </>
