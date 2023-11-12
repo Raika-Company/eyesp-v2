@@ -13,9 +13,9 @@ import {
 import wifiLogo from "../../assets/images/wifi.svg";
 import HeaderOperators from "./HeaderOperators";
 import Chart from "../../features/charts/Chart";
-import { SelectOperators } from "./SelectOperators";
 import { SelectChangeEvent } from "@mui/material/Select";
 import citiesData from "../../../public/data/provincesCoords.json";
+import { SelectButton } from "../../components/ui/SelectButton";
 
 interface Props {
   onClick?: () => void;
@@ -78,7 +78,7 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
           display: isMdScreen ? "flex" : "none",
         }}
       >
-        <SelectOperators
+        <SelectButton
           labelId={`${labelId}-select-label`}
           id={`${labelId}-select`}
           value={selectedValue}
@@ -99,7 +99,7 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
               {item}
             </MenuItem>
           ))}
-        </SelectOperators>
+        </SelectButton>
       </FormControl>
     );
   };
@@ -141,7 +141,7 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
             </Grid>
           ))}
         </Grid>
-        <SelectOperators
+        <SelectButton
           labelId="city-select-label"
           id="city-select"
           value={city}
@@ -165,7 +165,7 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
               {cityName}
             </MenuItem>
           ))}
-        </SelectOperators>
+        </SelectButton>
       </Box>
     </>
   );

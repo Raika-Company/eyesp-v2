@@ -12,7 +12,6 @@ import {
 import irancell from "../../assets/images/irancell.svg";
 import Chart from "../../features/charts/Chart";
 import HistoryOperators from "./HistoryOperators";
-import { SelectOperators } from "./SelectOperators";
 import citiesData from "../../../public/data/provincesCoords.json";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
