@@ -1,44 +1,17 @@
-import React, { FC, useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import operators from "../../assets/images/operators-icon.svg";
-import HeaderOperators from "./HeaderOperators";
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import irancell from "../../assets/images/irancell.svg";
 import Chart from "../../features/charts/Chart";
 import HistoryOperators from "./HistoryOperators";
-import citiesData from "../../../public/data/provincesCoords.json";
+
 import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
-import provinceCompare from "../../../public/data/provinceCompare.json";
+
 interface InfoItemProps {
   title: string;
   value: string;
 }
-
-interface Props {
-  onClick?: () => void;
-}
-
-const cityNames = Object.values(citiesData).map((city) => city.name);
-
-const data = {
-  operators: [
-    "همراه اول",
-    "ایرانسل",
-    "مخابرات",
-    "سامانتل",
-    "شاتل",
-    "زیتل",
-    "پارس وب",
-  ],
-  times: ["نوع", "۳ ساعت پیش", "امروز", "دیروز", "هفتگی", "ماهانه", "سالانه"],
-};
 
 const commonStyles = {
   title: {
@@ -60,14 +33,8 @@ const Operators: React.FC = () => {
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
   const [category, setCategory] = useState("");
-  const [rows, setRows] = useState(provinceCompare);
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [selections, setSelections] = useState({
-    city: cityNames[0],
-    operator: data.operators[0],
-    time: data.times[0],
-  });
 
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
@@ -96,57 +63,6 @@ const Operators: React.FC = () => {
     </Box>
   );
 
-  // const handleSelectionChange =
-  //   (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
-  //     const value = event.target.value;
-  //     if (typeof value === "string") {
-  //       setSelections((prev) => ({ ...prev, [name]: value }));
-  //     } else {
-  //       console.error("Value is not a string:", value);
-  //     }
-  //   };
-
-  // const renderSelect = (
-  //   items: string[],
-  //   selectedValue: string,
-  //   labelId: keyof typeof selections
-  // ) => {
-  //   const isWhiteBackground = ["city", "operator"].includes(labelId);
-
-  //   return (
-  //     <FormControl
-  //       sx={{
-  //         height: "70px",
-  //         marginTop: "1.8rem",
-  //         display: isMdScreen ? "flex" : "none",
-  //       }}
-  //     >
-  //       <SelectOperators
-  //         labelId={`${labelId}-select-label`}
-  //         id={`${labelId}-select`}
-  //         value={selectedValue}
-  //         displayEmpty
-  //         onChange={handleSelectionChange(labelId)}
-  //         sx={{
-  //           backgroundColor: isWhiteBackground ? "#fff" : "#232629",
-  //           color: "#7A7775",
-  //           px: isSmScreen ? ".9em" : "2em",
-  //           mx: isSmScreen ? "" : "2em",
-  //           ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-  //             {
-  //               paddingRight: ".5em",
-  //             },
-  //         }}
-  //       >
-  //         {items.map((item) => (
-  //           <MenuItem key={item} value={item}>
-  //             {item}
-  //           </MenuItem>
-  //         ))}
-  //       </SelectOperators>
-  //     </FormControl>
-  //   );
-  // };
   return (
     <>
       <Header
@@ -176,9 +92,6 @@ const Operators: React.FC = () => {
           mt="2em"
           px="1em"
         >
-          {/* {renderSelect(cityNames, selections.city, "city")}
-          {renderSelect(data.operators, selections.operator, "operator")}
-          {renderSelect(data.times, selections.time, "time")} */}
           <Box
             sx={{
               width: isSmScreen ? "100%" : isMdScreen ? "90%" : "10%",
@@ -188,11 +101,11 @@ const Operators: React.FC = () => {
               textAlign: "center",
             }}
           >
+            <img src={irancell} alt="operator-logo" />
             <Box>
               <Typography sx={commonStyles.infoValue}>اپراتور</Typography>
               <Typography sx={commonStyles.mainInfo}>ایرانسل</Typography>
             </Box>
-            <img src={irancell} alt="operator-logo" />
           </Box>
           <Box width={800}>
             <Chart title="" desc="نمودار وضعیت" />
