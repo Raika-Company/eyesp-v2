@@ -3,16 +3,24 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import history from "../../assets/images/history.svg";
 import CustomTable from "../../components/ui/CustomTable";
 import { useState } from "react";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Theme, useMediaQuery } from "@mui/material";
+import provinceCompare from "../../../public/data/provinceCompare.json";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
 const LastDis = () => {
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
   const [category, setCategory] = useState("");
+  const [rows, setRows] = useState(provinceCompare);
+  console.log(rows);
+
   // const [visibleRows, setVisibleRows] = useState(6);
-  const isXsScreen = useMediaQuery((theme) => theme.breakpoints.down("xs"));
-  const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isXsScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("xs")
+  );
+  const isMdScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
 
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
@@ -48,7 +56,7 @@ const LastDis = () => {
         }}
       >
         <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
-          <CustomTable cellHeaders={cellHeaders} isAI={true} />
+          <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={true} />
         </Box>
       </Box>
     </div>
