@@ -7,11 +7,15 @@ import {
   SelectChangeEvent,
   Typography,
   useMediaQuery,
+  Theme,
+  Button,
 } from "@mui/material";
 import { SelectButton } from "./SelectButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../..//public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
+import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 interface Props {
   title: string;
@@ -39,8 +43,14 @@ const Header: FC<Props> = ({
   handleISPChange,
   handleCategory,
 }) => {
-  const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const navigate = useNavigate();
+
+  const isSmScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
+  const isMdScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
   return (
     <Box
       sx={{
@@ -74,21 +84,29 @@ const Header: FC<Props> = ({
           justifyContent: "center",
           alignItems: "center",
           gap: 0.5,
+          margin: isSmScreen ? "0 auto" : isMdScreen ? "0 auto" : "0",
+          // marginLeft: isSmScreen ? "1px" : isMdScreen ? "7rem" : "35rem",
           order: isMdScreen ? 3 : 1,
+          transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(20rem)",
         }}
       >
-        <Typography color="#7A7775" mr="3rem">
+        <Typography
+          color="#7A7775"
+          mr={isSmScreen ? "0" : isMdScreen ? "0.5rem" : "3rem"}
+        >
           {selectTitle}
         </Typography>
         <Box
           display="flex"
-          gap={2}
+          gap={isSmScreen ? 0 : 2}
           flexWrap={isSmScreen ? "wrap" : "nowrap"}
           alignItems="center"
           justifyContent="center"
         >
           {" "}
-          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
+          <FormControl
+            sx={{ height: "70px", marginTop: isSmScreen ? ".5rem" : "1.8rem" }}
+          >
             <SelectButton
               labelId="change-province-label"
               id="change-province"
@@ -117,7 +135,7 @@ const Header: FC<Props> = ({
           <FormControl
             sx={{
               height: "70px",
-              marginTop: "1.8rem",
+              marginTop: isSmScreen ? "0" : "1.8rem",
             }}
           >
             <SelectButton
@@ -141,7 +159,9 @@ const Header: FC<Props> = ({
               ))}
             </SelectButton>
           </FormControl>
-          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
+          <FormControl
+            sx={{ height: "70px", marginTop: isSmScreen ? "0" : "1.8rem" }}
+          >
             <SelectButton
               labelId="change-category-label"
               id="change-category-select"
@@ -174,16 +194,14 @@ const Header: FC<Props> = ({
           order: isMdScreen ? 2 : 2,
         }}
       >
-        <Typography>بازگشت</Typography>
-        <img
-          alt="arrowLeft"
-          onClick={onClick}
-          src={ArrowLeft}
-          style={{
-            marginLeft: ".5rem",
-            cursor: "pointer",
-          }}
-        />
+        <Button
+          onClick={() => navigate(-1)}
+          variant="contained"
+          sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
+          endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}
+        >
+          بازگشت
+        </Button>
       </Box>
     </Box>
   );
@@ -201,3 +219,22 @@ export default Header;
 //       flexDirection: "column",
 //     }}
 //   ></Box>
+// <Box
+//   sx={{
+//     display: "flex",
+//     alignItems: "center",
+//     gap: 2,
+//     order: isMdScreen ? 2 : 2,
+//   }}
+// >
+//   <Typography>بازگشت</Typography>
+//   <img
+//     alt="arrowLeft"
+//     onClick={onClick}
+//     src={ArrowLeft}
+//     style={{
+//       marginLeft: ".5rem",
+//       cursor: "pointer",
+//     }}
+//   />
+// </Box>;

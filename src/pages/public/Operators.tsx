@@ -12,10 +12,10 @@ import {
 import irancell from "../../assets/images/irancell.svg";
 import Chart from "../../features/charts/Chart";
 import HistoryOperators from "./HistoryOperators";
-import { SelectOperators } from "./SelectOperators";
 import citiesData from "../../../public/data/provincesCoords.json";
 import { SelectChangeEvent } from "@mui/material/Select";
-
+import Header from "../../components/ui/Header";
+import provinceCompare from "../../../public/data/provinceCompare.json";
 interface InfoItemProps {
   title: string;
   value: string;
@@ -57,6 +57,10 @@ const commonStyles = {
 
 const Operators: React.FC = () => {
   const theme = useTheme();
+  const [province, setProvince] = useState("");
+  const [selectedISP, setSelectedISP] = useState("");
+  const [category, setCategory] = useState("");
+  const [rows, setRows] = useState(provinceCompare);
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [selections, setSelections] = useState({
@@ -65,6 +69,15 @@ const Operators: React.FC = () => {
     time: data.times[0],
   });
 
+  const handleCategory = (event: SelectChangeEvent<unknown>) => {
+    setCategory(event.target.value as string);
+  };
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
+  };
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
+  };
   const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => (
     <Box
       sx={{
@@ -83,60 +96,66 @@ const Operators: React.FC = () => {
     </Box>
   );
 
-  const handleSelectionChange =
-    (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
-      const value = event.target.value;
-      if (typeof value === "string") {
-        setSelections((prev) => ({ ...prev, [name]: value }));
-      } else {
-        console.error("Value is not a string:", value);
-      }
-    };
+  // const handleSelectionChange =
+  //   (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
+  //     const value = event.target.value;
+  //     if (typeof value === "string") {
+  //       setSelections((prev) => ({ ...prev, [name]: value }));
+  //     } else {
+  //       console.error("Value is not a string:", value);
+  //     }
+  //   };
 
-  const renderSelect = (
-    items: string[],
-    selectedValue: string,
-    labelId: keyof typeof selections
-  ) => {
-    const isWhiteBackground = ["city", "operator"].includes(labelId);
+  // const renderSelect = (
+  //   items: string[],
+  //   selectedValue: string,
+  //   labelId: keyof typeof selections
+  // ) => {
+  //   const isWhiteBackground = ["city", "operator"].includes(labelId);
 
-    return (
-      <FormControl
-        sx={{
-          height: "70px",
-          marginTop: "1.8rem",
-          display: isMdScreen ? "flex" : "none",
-        }}
-      >
-        <SelectOperators
-          labelId={`${labelId}-select-label`}
-          id={`${labelId}-select`}
-          value={selectedValue}
-          displayEmpty
-          onChange={handleSelectionChange(labelId)}
-          sx={{
-            backgroundColor: isWhiteBackground ? "#fff" : "#232629",
-            color: "#7A7775",
-            px: isSmScreen ? ".9em" : "2em",
-            mx: isSmScreen ? "" : "2em",
-            ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              {
-                paddingRight: ".5em",
-              },
-          }}
-        >
-          {items.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
-          ))}
-        </SelectOperators>
-      </FormControl>
-    );
-  };
+  //   return (
+  //     <FormControl
+  //       sx={{
+  //         height: "70px",
+  //         marginTop: "1.8rem",
+  //         display: isMdScreen ? "flex" : "none",
+  //       }}
+  //     >
+  //       <SelectOperators
+  //         labelId={`${labelId}-select-label`}
+  //         id={`${labelId}-select`}
+  //         value={selectedValue}
+  //         displayEmpty
+  //         onChange={handleSelectionChange(labelId)}
+  //         sx={{
+  //           backgroundColor: isWhiteBackground ? "#fff" : "#232629",
+  //           color: "#7A7775",
+  //           px: isSmScreen ? ".9em" : "2em",
+  //           mx: isSmScreen ? "" : "2em",
+  //           ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+  //             {
+  //               paddingRight: ".5em",
+  //             },
+  //         }}
+  //       >
+  //         {items.map((item) => (
+  //           <MenuItem key={item} value={item}>
+  //             {item}
+  //           </MenuItem>
+  //         ))}
+  //       </SelectOperators>
+  //     </FormControl>
+  //   );
+  // };
   return (
     <>
-      <HeaderOperators
+      <Header
+        handleISPChange={handleISPChange}
+        handleProvinceChange={handleProvinceChange}
+        handleCategory={handleCategory}
+        category={category}
+        province={province}
+        selectedISP={selectedISP}
         title="اپراتور ها"
         iconPath={operators}
         selectTitle="فیلتر:"
@@ -157,9 +176,9 @@ const Operators: React.FC = () => {
           mt="2em"
           px="1em"
         >
-          {renderSelect(cityNames, selections.city, "city")}
+          {/* {renderSelect(cityNames, selections.city, "city")}
           {renderSelect(data.operators, selections.operator, "operator")}
-          {renderSelect(data.times, selections.time, "time")}
+          {renderSelect(data.times, selections.time, "time")} */}
           <Box
             sx={{
               width: isSmScreen ? "100%" : isMdScreen ? "90%" : "10%",
