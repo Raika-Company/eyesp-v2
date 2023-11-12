@@ -7,6 +7,7 @@ import {
   SelectChangeEvent,
   Typography,
   useMediaQuery,
+  Theme,
 } from "@mui/material";
 import { SelectButton } from "./SelectButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
@@ -39,8 +40,12 @@ const Header: FC<Props> = ({
   handleISPChange,
   handleCategory,
 }) => {
-  const isSmScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const isMdScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isSmScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
+  const isMdScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
   return (
     <Box
       sx={{
