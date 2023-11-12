@@ -16,8 +16,8 @@ import {
   Area,
   CartesianGrid,
 } from "recharts";
-import { SelectOperators } from "../../pages/public/SelectOperators";
 import { useLocation } from "react-router-dom";
+import { SelectButton } from "../../components/ui/SelectButton";
 
 interface DataPoint {
   name: string;
@@ -92,7 +92,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
         </Typography>
         <Typography sx={{ fontSize: "3.125rem" }}>{title}</Typography>
         {!isCurrentTrafficRoute && (
-          <SelectOperators
+          <SelectButton
             labelId="city-select-label"
             id="city-select"
             value={city}
@@ -115,7 +115,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
                 {city}
               </MenuItem>
             ))}
-          </SelectOperators>
+          </SelectButton>
         )}
       </Box>
       <ResponsiveContainer height={220}>

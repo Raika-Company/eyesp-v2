@@ -97,64 +97,59 @@ const Operators: React.FC = () => {
     </Box>
   );
 
-  const handleSelectionChange =
-    (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
-      const value = event.target.value;
-      if (typeof value === "string") {
-        setSelections((prev) => ({ ...prev, [name]: value }));
-      } else {
-        console.error("Value is not a string:", value);
-      }
-    };
+  // const handleSelectionChange =
+  //   (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
+  //     const value = event.target.value;
+  //     if (typeof value === "string") {
+  //       setSelections((prev) => ({ ...prev, [name]: value }));
+  //     } else {
+  //       console.error("Value is not a string:", value);
+  //     }
+  //   };
 
-  const renderSelect = (
-    items: string[],
-    selectedValue: string,
-    labelId: keyof typeof selections
-  ) => {
-    const isWhiteBackground = ["city", "operator"].includes(labelId);
+  // const renderSelect = (
+  //   items: string[],
+  //   selectedValue: string,
+  //   labelId: keyof typeof selections
+  // ) => {
+  //   const isWhiteBackground = ["city", "operator"].includes(labelId);
 
-    return (
-      <FormControl
-        sx={{
-          height: "70px",
-          marginTop: "1.8rem",
-          display: isMdScreen ? "flex" : "none",
-        }}
-      >
-        <SelectOperators
-          labelId={`${labelId}-select-label`}
-          id={`${labelId}-select`}
-          value={selectedValue}
-          displayEmpty
-          onChange={handleSelectionChange(labelId)}
-          sx={{
-            backgroundColor: isWhiteBackground ? "#fff" : "#232629",
-            color: "#7A7775",
-            px: isSmScreen ? ".9em" : "2em",
-            mx: isSmScreen ? "" : "2em",
-            ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              {
-                paddingRight: ".5em",
-              },
-          }}
-        >
-          {items.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
-          ))}
-        </SelectOperators>
-      </FormControl>
-    );
-  };
+  //   return (
+  //     <FormControl
+  //       sx={{
+  //         height: "70px",
+  //         marginTop: "1.8rem",
+  //         display: isMdScreen ? "flex" : "none",
+  //       }}
+  //     >
+  //       <SelectOperators
+  //         labelId={`${labelId}-select-label`}
+  //         id={`${labelId}-select`}
+  //         value={selectedValue}
+  //         displayEmpty
+  //         onChange={handleSelectionChange(labelId)}
+  //         sx={{
+  //           backgroundColor: isWhiteBackground ? "#fff" : "#232629",
+  //           color: "#7A7775",
+  //           px: isSmScreen ? ".9em" : "2em",
+  //           mx: isSmScreen ? "" : "2em",
+  //           ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+  //             {
+  //               paddingRight: ".5em",
+  //             },
+  //         }}
+  //       >
+  //         {items.map((item) => (
+  //           <MenuItem key={item} value={item}>
+  //             {item}
+  //           </MenuItem>
+  //         ))}
+  //       </SelectOperators>
+  //     </FormControl>
+  //   );
+  // };
   return (
     <>
-      {/* <HeaderOperators
-        title="اپراتور ها"
-        iconPath={operators}
-        selectTitle="فیلتر:"
-      /> */}
       <Header
         handleISPChange={handleISPChange}
         handleProvinceChange={handleProvinceChange}
@@ -182,9 +177,9 @@ const Operators: React.FC = () => {
           mt="2em"
           px="1em"
         >
-          {renderSelect(cityNames, selections.city, "city")}
+          {/* {renderSelect(cityNames, selections.city, "city")}
           {renderSelect(data.operators, selections.operator, "operator")}
-          {renderSelect(data.times, selections.time, "time")}
+          {renderSelect(data.times, selections.time, "time")} */}
           <Box
             sx={{
               width: isSmScreen ? "100%" : isMdScreen ? "90%" : "10%",
