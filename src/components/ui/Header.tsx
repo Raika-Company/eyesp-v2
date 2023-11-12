@@ -79,21 +79,24 @@ const Header: FC<Props> = ({
           justifyContent: "center",
           alignItems: "center",
           gap: 0.5,
+          margin: "0 auto",
           order: isMdScreen ? 3 : 1,
         }}
       >
-        <Typography color="#7A7775" mr="3rem">
+        <Typography color="#7A7775" mr={isSmScreen ? "0" : "3rem"}>
           {selectTitle}
         </Typography>
         <Box
           display="flex"
-          gap={2}
+          gap={isSmScreen ? 0 : 2}
           flexWrap={isSmScreen ? "wrap" : "nowrap"}
           alignItems="center"
           justifyContent="center"
         >
           {" "}
-          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
+          <FormControl
+            sx={{ height: "70px", marginTop: isSmScreen ? ".5rem" : "1.8rem" }}
+          >
             <SelectButton
               labelId="change-province-label"
               id="change-province"
@@ -122,7 +125,7 @@ const Header: FC<Props> = ({
           <FormControl
             sx={{
               height: "70px",
-              marginTop: "1.8rem",
+              marginTop: isSmScreen ? "0" : "1.8rem",
             }}
           >
             <SelectButton
@@ -146,7 +149,9 @@ const Header: FC<Props> = ({
               ))}
             </SelectButton>
           </FormControl>
-          <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
+          <FormControl
+            sx={{ height: "70px", marginTop: isSmScreen ? "0" : "1.8rem" }}
+          >
             <SelectButton
               labelId="change-category-label"
               id="change-category-select"
