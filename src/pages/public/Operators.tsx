@@ -15,7 +15,8 @@ import HistoryOperators from "./HistoryOperators";
 import { SelectOperators } from "./SelectOperators";
 import citiesData from "../../../public/data/provincesCoords.json";
 import { SelectChangeEvent } from "@mui/material/Select";
-
+import Header from "../../components/ui/Header";
+import provinceCompare from "../../../public/data/provinceCompare.json";
 interface InfoItemProps {
   title: string;
   value: string;
@@ -57,6 +58,10 @@ const commonStyles = {
 
 const Operators: React.FC = () => {
   const theme = useTheme();
+  const [province, setProvince] = useState("");
+  const [selectedISP, setSelectedISP] = useState("");
+  const [category, setCategory] = useState("");
+  const [rows, setRows] = useState(provinceCompare);
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [selections, setSelections] = useState({
@@ -65,6 +70,15 @@ const Operators: React.FC = () => {
     time: data.times[0],
   });
 
+  const handleCategory = (event: SelectChangeEvent<unknown>) => {
+    setCategory(event.target.value as string);
+  };
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
+  };
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
+  };
   const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => (
     <Box
       sx={{
@@ -136,7 +150,18 @@ const Operators: React.FC = () => {
   };
   return (
     <>
-      <HeaderOperators
+      {/* <HeaderOperators
+        title="اپراتور ها"
+        iconPath={operators}
+        selectTitle="فیلتر:"
+      /> */}
+      <Header
+        handleISPChange={handleISPChange}
+        handleProvinceChange={handleProvinceChange}
+        handleCategory={handleCategory}
+        category={category}
+        province={province}
+        selectedISP={selectedISP}
         title="اپراتور ها"
         iconPath={operators}
         selectTitle="فیلتر:"
