@@ -72,7 +72,7 @@ const Header: FC<Props> = ({
         }}
       >
         <img alt="iconPath" src={iconPath} />
-        <Typography color="white" fontSize={isMdScreen ? "1rem" : "1.625rem"}>
+        <Typography color="white" fontSize={isMdScreen ? "1rem" : "1.3rem"}>
           {title}
         </Typography>
       </Box>

@@ -1,115 +1,55 @@
-import React, { FC, useState, ChangeEvent } from "react";
+import React, { FC, useState } from "react";
 import {
   Box,
-  FormControl,
   Grid,
-  InputLabel,
   MenuItem,
-  Select,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import wifiLogo from "../../assets/images/wifi.svg";
-import HeaderOperators from "./HeaderOperators";
 import Chart from "../../features/charts/Chart";
 import { SelectChangeEvent } from "@mui/material/Select";
-import citiesData from "../../../public/data/provincesCoords.json";
 import { SelectButton } from "../../components/ui/SelectButton";
+import Header from "../../components/ui/Header";
 
 interface Props {
   onClick?: () => void;
 }
 
-const cityNames = Object.values(citiesData).map((city) => city.name);
-
-const data = {
-  operators: [
-    "همراه اول",
-    "ایرانسل",
-    "مخابرات",
-    "سامانتل",
-    "شاتل",
-    "زیتل",
-    "پارس وب",
-  ],
-  times: ["نوع", "۳ ساعت پیش", "امروز", "دیروز", "هفتگی", "ماهانه", "سالانه"],
-};
-
 const cities = ["خروجی", "IXP", "IGW"];
 const chartsTitle = ["IXP", "IGW"];
 
-const CurrentTraffic: FC<Props> = ({ onClick }) => {
-  const [age, setAge] = React.useState("");
+const CurrentTraffic: FC<Props> = () => {
   const [city, setCity] = useState<string>("خروجی");
   const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [province, setProvince] = useState("");
+  const [selectedISP, setSelectedISP] = useState("");
+  const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const [selections, setSelections] = useState({
-    city: cityNames[0],
-    operator: data.operators[0],
-    time: data.times[0],
-  });
-
-  const handleSelectionChange =
-    (name: keyof typeof selections) => (event: SelectChangeEvent<unknown>) => {
-      const value = event.target.value;
-      if (typeof value === "string") {
-        setSelections((prev) => ({ ...prev, [name]: value }));
-      } else {
-        console.error("Value is not a string:", value);
-      }
-    };
-
-  const renderSelect = (
-    items: string[],
-    selectedValue: string,
-    labelId: keyof typeof selections
-  ) => {
-    const isWhiteBackground = ["city", "operator"].includes(labelId);
-
-    return (
-      <FormControl
-        sx={{
-          mx: ".5em",
-          height: "70px",
-          marginTop: "1.8rem",
-          display: isMdScreen ? "flex" : "none",
-        }}
-      >
-        <SelectButton
-          labelId={`${labelId}-select-label`}
-          id={`${labelId}-select`}
-          value={selectedValue}
-          displayEmpty
-          onChange={handleSelectionChange(labelId)}
-          sx={{
-            backgroundColor: isWhiteBackground ? "#fff" : "#232629",
-            color: "#7A7775",
-            px: "1.1em",
-            ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              {
-                paddingRight: ".5em",
-              },
-          }}
-        >
-          {items.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
-          ))}
-        </SelectButton>
-      </FormControl>
-    );
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const handleCategory = (event: SelectChangeEvent<unknown>) => {
+    setCategory(event.target.value as string);
   };
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
+  };
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
+  };
+
   return (
     <>
-      <HeaderOperators
+      <Header
+        handleISPChange={handleISPChange}
+        handleProvinceChange={handleProvinceChange}
+        handleCategory={handleCategory}
+        category={category}
+        province={province}
+        selectedISP={selectedISP}
         title="ترافیک فعلی (IXP, IGW)"
         iconPath={wifiLogo}
         selectTitle="فیلتر:"
-        onClick={onClick}
       />
       <Box
         sx={{
@@ -122,9 +62,6 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
           px: "2em",
         }}
       >
-        {renderSelect(cityNames, selections.city, "city")}
-        {renderSelect(data.operators, selections.operator, "operator")}
-        {renderSelect(data.times, selections.time, "time")}
         <Grid container justifyContent="center" gap={4} mt="4em">
           {chartsTitle.map((cityName) => (
             <Grid item xs={12} md={5} key={cityName}>
@@ -154,7 +91,7 @@ const CurrentTraffic: FC<Props> = ({ onClick }) => {
             color: "#FFF",
             borderRadius: "0.7em",
             textAlign: "center",
-            ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+            ".css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
               {
                 paddingRight: "0em",
               },
