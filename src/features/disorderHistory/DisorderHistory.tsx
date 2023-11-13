@@ -6,11 +6,9 @@ import { Box, SelectChangeEvent, Theme, useMediaQuery } from "@mui/material";
 import provinceCompare from "../../../public/data/provinceCompare.json";
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
-
+type RowType = (typeof provinceCompare)[0];
 const DisorderHistory = () => {
-  const [province, setProvince] = useState("");
-  const [selectedISP, setSelectedISP] = useState("");
-  const [category, setCategory] = useState("");
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
   const [rows, setRows] = useState(provinceCompare);
 
   const isXsScreen = useMediaQuery((theme: Theme) =>
@@ -20,7 +18,7 @@ const DisorderHistory = () => {
     theme.breakpoints.down("md")
   );
 
-  const randomizeRows = (data) => {
+  const randomizeRows = (data: RowType[]): RowType[] => {
     if (data.length <= 2) {
       return data;
     }
@@ -28,30 +26,19 @@ const DisorderHistory = () => {
     return data.slice(0, randomSize);
   };
 
-  const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
+  const handleButtonClick = (buttonName: string) => {
     setRows(randomizeRows(provinceCompare));
-  };
-  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
-    setProvince(event.target.value as string);
-    setRows(randomizeRows(provinceCompare));
-  };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
-    setRows(randomizeRows(provinceCompare));
+    setClickedButton(buttonName);
   };
   return (
     <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Header
+        clickedButton={clickedButton}
+        handleButtonClick={handleButtonClick}
         title="تاریخچه اختلالات"
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
-        handleISPChange={handleISPChange}
-        handleProvinceChange={handleProvinceChange}
-        handleCategory={handleCategory}
-        category={category}
-        province={province}
-        selectedISP={selectedISP}
+        isButton={true}
         // onClick={toggleDialog}
       ></Header>
       <Box
