@@ -124,19 +124,25 @@ const Header: FC<Props> = ({
                 {" "}
                 <HeaderButton
                   clicked={clickedButton === "province"}
-                  onClick={() => handleButtonClick("province")}
+                  onClick={() =>
+                    handleButtonClick ? handleButtonClick("province") : null
+                  }
                 >
                   استان
                 </HeaderButton>
                 <HeaderButton
                   clicked={clickedButton === "operator"}
-                  onClick={() => handleButtonClick("operator")}
+                  onClick={() =>
+                    handleButtonClick ? handleButtonClick("operator") : null
+                  }
                 >
                   اپراتور
                 </HeaderButton>
                 <HeaderButton
                   clicked={clickedButton === "type"}
-                  onClick={() => handleButtonClick("type")}
+                  onClick={() =>
+                    handleButtonClick ? handleButtonClick("type") : null
+                  }
                 >
                   نوع
                 </HeaderButton>
