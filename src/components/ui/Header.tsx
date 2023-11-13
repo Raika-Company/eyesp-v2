@@ -16,6 +16,7 @@ import ISPData from "../../..//public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { HeaderButton } from "./HeaderButton";
 
 interface Props {
   title: string;
@@ -23,12 +24,15 @@ interface Props {
   iconPath: string;
   // children: ReactNode;
   onClick?: () => void;
-  handleISPChange: (event: SelectChangeEvent<unknown>) => void;
-  handleProvinceChange: (event: SelectChangeEvent<unknown>) => void;
-  handleCategory: (event: SelectChangeEvent<unknown>) => void;
-  category: string;
-  province: string;
-  selectedISP: string;
+  handleISPChange?: (event: SelectChangeEvent<unknown>) => void;
+  handleProvinceChange?: (event: SelectChangeEvent<unknown>) => void;
+  handleCategory?: (event: SelectChangeEvent<unknown>) => void;
+  category?: string;
+  province?: string;
+  selectedISP?: string;
+  isButton?: boolean;
+  handleButtonClick?: (buttonName: string) => void;
+  clickedButton?: string | null;
 }
 
 const Header: FC<Props> = ({
@@ -42,6 +46,9 @@ const Header: FC<Props> = ({
   handleProvinceChange,
   handleISPChange,
   handleCategory,
+  isButton,
+  handleButtonClick,
+  clickedButton,
 }) => {
   const navigate = useNavigate();
 
@@ -51,6 +58,7 @@ const Header: FC<Props> = ({
   const isMdScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
+
   return (
     <Box
       sx={{
@@ -87,7 +95,7 @@ const Header: FC<Props> = ({
           margin: isSmScreen ? "0 auto" : isMdScreen ? "0 auto" : "0",
           // marginLeft: isSmScreen ? "1px" : isMdScreen ? "7rem" : "35rem",
           order: isMdScreen ? 3 : 1,
-          transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(20rem)",
+          transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(17rem)",
         }}
       >
         <Typography
@@ -103,86 +111,123 @@ const Header: FC<Props> = ({
           alignItems="center"
           justifyContent="center"
         >
-          {" "}
-          <FormControl
-            sx={{ height: "70px", marginTop: isSmScreen ? ".5rem" : "1.8rem" }}
-          >
-            <SelectButton
-              labelId="change-province-label"
-              id="change-province"
-              label="انتخاب استان"
-              value={province}
-              onChange={handleProvinceChange}
-              displayEmpty
-              sx={{
-                paddingLeft: "2rem",
-                minWidth: "10rem",
-                // background: isDark ? "" : "#FFF",
-              }}
-            >
-              <MenuItem value=""> استان</MenuItem>
-              {Object.keys(provincesCoords).map((provinceName) => (
-                <MenuItem key={provinceName} value={provinceName}>
-                  {
-                    provincesCoords[
-                      provinceName as keyof typeof provincesCoords
-                    ].name
-                  }
-                </MenuItem>
-              ))}
-            </SelectButton>
-          </FormControl>
-          <FormControl
-            sx={{
-              height: "70px",
-              marginTop: isSmScreen ? "0" : "1.8rem",
-            }}
-          >
-            <SelectButton
-              labelId="change-province-label"
-              id="change-province"
-              label="انتخاب اپراتور"
-              value={selectedISP}
-              onChange={handleISPChange}
-              displayEmpty
-              sx={{
-                paddingLeft: "2rem",
-                minWidth: "10rem",
-                // background: isDark ? "" : "#FFF",
-              }}
-            >
-              <MenuItem value=""> اپراتور</MenuItem>
-              {ISPData.map((isp) => (
-                <MenuItem key={isp.ISPname} value={isp.ISPname}>
-                  {isp.ISPname}
-                </MenuItem>
-              ))}
-            </SelectButton>
-          </FormControl>
-          <FormControl
-            sx={{ height: "70px", marginTop: isSmScreen ? "0" : "1.8rem" }}
-          >
-            <SelectButton
-              labelId="change-category-label"
-              id="change-category-select"
-              label=""
-              value={category}
-              onChange={handleCategory}
-              displayEmpty
-              sx={{
-                paddingLeft: "2rem",
-                minWidth: "10rem",
-                // background: isDark ? "" : "#FFF",
-              }}
-            >
-              <MenuItem value=""> نوع</MenuItem>
-              {Category.map((item) => (
-                <MenuItem key={item.name} value={item.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </SelectButton>
-          </FormControl>{" "}
+          {isButton === true ? (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "70px",
+                  gap: "1rem",
+                  marginTop: isSmScreen ? ".5rem" : "1.8rem",
+                }}
+              >
+                {" "}
+                <HeaderButton
+                  clicked={clickedButton === "province"}
+                  onClick={() => handleButtonClick("province")}
+                >
+                  استان
+                </HeaderButton>
+                <HeaderButton
+                  clicked={clickedButton === "operator"}
+                  onClick={() => handleButtonClick("operator")}
+                >
+                  اپراتور
+                </HeaderButton>
+                <HeaderButton
+                  clicked={clickedButton === "type"}
+                  onClick={() => handleButtonClick("type")}
+                >
+                  نوع
+                </HeaderButton>
+              </Box>
+            </>
+          ) : (
+            <>
+              <FormControl
+                sx={{
+                  height: "70px",
+                  marginTop: isSmScreen ? ".5rem" : "1.8rem",
+                }}
+              >
+                <SelectButton
+                  labelId="change-province-label"
+                  id="change-province"
+                  label="انتخاب استان"
+                  value={province}
+                  onChange={handleProvinceChange}
+                  displayEmpty
+                  sx={{
+                    paddingLeft: "2rem",
+                    minWidth: "10rem",
+                    // background: isDark ? "" : "#FFF",
+                  }}
+                >
+                  <MenuItem value=""> استان</MenuItem>
+                  {Object.keys(provincesCoords).map((provinceName) => (
+                    <MenuItem key={provinceName} value={provinceName}>
+                      {
+                        provincesCoords[
+                          provinceName as keyof typeof provincesCoords
+                        ].name
+                      }
+                    </MenuItem>
+                  ))}
+                </SelectButton>
+              </FormControl>
+              <FormControl
+                sx={{
+                  height: "70px",
+                  marginTop: isSmScreen ? "0" : "1.8rem",
+                }}
+              >
+                <SelectButton
+                  labelId="change-province-label"
+                  id="change-province"
+                  label="انتخاب اپراتور"
+                  value={selectedISP}
+                  onChange={handleISPChange}
+                  displayEmpty
+                  sx={{
+                    paddingLeft: "2rem",
+                    minWidth: "10rem",
+                    // background: isDark ? "" : "#FFF",
+                  }}
+                >
+                  <MenuItem value=""> اپراتور</MenuItem>
+                  {ISPData.map((isp) => (
+                    <MenuItem key={isp.ISPname} value={isp.ISPname}>
+                      {isp.ISPname}
+                    </MenuItem>
+                  ))}
+                </SelectButton>
+              </FormControl>
+              <FormControl
+                sx={{ height: "70px", marginTop: isSmScreen ? "0" : "1.8rem" }}
+              >
+                <SelectButton
+                  labelId="change-category-label"
+                  id="change-category-select"
+                  label=""
+                  value={category}
+                  onChange={handleCategory}
+                  displayEmpty
+                  sx={{
+                    paddingLeft: "2rem",
+                    minWidth: "10rem",
+                    // background: isDark ? "" : "#FFF",
+                  }}
+                >
+                  <MenuItem value=""> نوع</MenuItem>
+                  {Category.map((item) => (
+                    <MenuItem key={item.name} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </SelectButton>
+              </FormControl>{" "}
+            </>
+          )}{" "}
         </Box>
       </Box>
 

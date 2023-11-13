@@ -8,10 +8,8 @@ import provinceCompare from "../../../public/data/provinceCompare.json";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
 const LastDis = () => {
-  const [province, setProvince] = useState("");
-  const [selectedISP, setSelectedISP] = useState("");
-  const [category, setCategory] = useState("");
   const [rows, setRows] = useState(provinceCompare);
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
 
   // const [visibleRows, setVisibleRows] = useState(6);
   const isXsScreen = useMediaQuery((theme: Theme) =>
@@ -32,32 +30,31 @@ const LastDis = () => {
     return data.slice(0, randomSize);
   };
 
-  const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
-    setRows(randomizeRows(provinceCompare));
-  };
-  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
-    setProvince(event.target.value as string);
-    setRows(randomizeRows(provinceCompare));
-  };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
-    setRows(randomizeRows(provinceCompare));
-  };
+  // const handleCategory = (event: SelectChangeEvent<unknown>) => {
+  //   setCategory(event.target.value as string);
+  //   setRows(randomizeRows(provinceCompare));
+  // };
+  // const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+  //   setProvince(event.target.value as string);
+  //   setRows(randomizeRows(provinceCompare));
+  // };
+  // const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+  //   setSelectedISP(event.target.value as string);
+  //   setRows(randomizeRows(provinceCompare));
+  // };
 
+  const handleButtonClick = (buttonName: string) => {
+    setClickedButton(buttonName);
+  };
   return (
     <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Header
+        isButton={true}
+        clickedButton={clickedButton}
+        handleButtonClick={handleButtonClick}
         title="اختلالات فعلی"
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
-        handleISPChange={handleISPChange}
-        handleProvinceChange={handleProvinceChange}
-        handleCategory={handleCategory}
-        category={category}
-        province={province}
-        selectedISP={selectedISP}
-
         // onClick={toggleDialog}
       ></Header>
       <Box

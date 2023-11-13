@@ -1,11 +1,12 @@
-import {Box, FormControl, MenuItem} from "@mui/material";
-import {ArrowDropDown} from "@mui/icons-material";
+import { Box, FormControl, MenuItem } from "@mui/material";
+import { ArrowDropDown } from "@mui/icons-material";
 import Header from "../../components/ui/Header";
 import AverageIcon from "../../assets/images/average-icon.svg";
 import ArrowDown from "../../assets/images/arrow-down.svg";
 import CircleChart from "../../components/ui/CircularChart";
 import TaggedText from "../../components/ui/TaggedText";
-import {SelectButton} from "../../components/ui/SelectButton";
+import { SelectButton } from "../../components/ui/SelectButton";
+import { useState } from "react";
 
 const mockChartData = [
   {
@@ -62,6 +63,11 @@ const mockData = [
 ];
 
 const Average = () => {
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
+
+  const handleButtonClick = (buttonName: string) => {
+    setClickedButton(buttonName);
+  };
   return (
     <Box
       sx={{
@@ -70,6 +76,9 @@ const Average = () => {
       }}
     >
       <Header
+        isButton={true}
+        clickedButton={clickedButton}
+        handleButtonClick={handleButtonClick}
         title="میانگین کلی"
         iconPath={AverageIcon}
         selectTitle="ترتیب بر اساس"

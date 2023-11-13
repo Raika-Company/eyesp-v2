@@ -11,6 +11,8 @@ const DisorderHistory = () => {
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
   const [category, setCategory] = useState("");
+  const [clickedButton, setClickedButton] = useState<string | null>(null);
+
   const [rows, setRows] = useState(provinceCompare);
 
   const isXsScreen = useMediaQuery((theme: Theme) =>
@@ -40,9 +42,14 @@ const DisorderHistory = () => {
     setSelectedISP(event.target.value as string);
     setRows(randomizeRows(provinceCompare));
   };
+  const handleButtonClick = (buttonName: string) => {
+    setClickedButton(buttonName);
+  };
   return (
     <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Header
+        clickedButton={clickedButton}
+        handleButtonClick={handleButtonClick}
         title="تاریخچه اختلالات"
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
@@ -52,6 +59,7 @@ const DisorderHistory = () => {
         category={category}
         province={province}
         selectedISP={selectedISP}
+        isButton={true}
         // onClick={toggleDialog}
       ></Header>
       <Box
