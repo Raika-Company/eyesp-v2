@@ -23,11 +23,12 @@ const chartsTitle = ["IXP", "IGW"];
 const CurrentTraffic: FC<Props> = () => {
   const [city, setCity] = useState<string>("خروجی");
   const theme = useTheme();
-  const [province, setProvince] = useState("");
-  const [selectedISP, setSelectedISP] = useState("");
-  const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [selectedISP, setSelectedISP] = useState("");
+  const [province, setProvince] = useState("");
+  const [category, setCategory] = useState("");
+
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
   };
@@ -65,7 +66,13 @@ const CurrentTraffic: FC<Props> = () => {
         <Grid container justifyContent="center" gap={4} mt="4em">
           {chartsTitle.map((cityName) => (
             <Grid item xs={12} md={5} key={cityName}>
-              <Chart title={cityName} desc="Graph Live View" />
+              <Chart
+                selectedISP={selectedISP}
+                province={province}
+                category={category}
+                title={cityName}
+                desc="Graph Live View"
+              />
               <Typography
                 sx={{
                   fontSize: isSmScreen ? "3rem" : isMdScreen ? "4rem" : "5rem",

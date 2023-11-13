@@ -108,7 +108,13 @@ const Operators: React.FC = () => {
             </Box>
           </Box>
           <Box width={800}>
-            <Chart title="" desc="نمودار وضعیت" />
+            <Chart
+              province={province}
+              selectedISP={selectedISP}
+              category={category}
+              title=""
+              desc="نمودار وضعیت"
+            />
           </Box>
           <Box
             display="flex"

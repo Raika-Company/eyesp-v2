@@ -1,5 +1,5 @@
-import {Stack, Typography} from "@mui/material";
-import {useState, useEffect, FC} from "react";
+import { Stack, Typography } from "@mui/material";
+import { useState, useEffect, FC } from "react";
 
 interface Props {
   textTitle: string;
@@ -79,7 +79,7 @@ const CircleChart: FC<Props> = ({
             strokeDashoffset={offset}
             transform={`rotate(-90, ${size / 2}, ${size / 2})`}
             style={{
-              transition: "stroke-dashoffset .05s linear",
+              transition: "stroke-dashoffset .4s linear",
             }}
           />
         </svg>
@@ -94,6 +94,7 @@ const CircleChart: FC<Props> = ({
             fontWeight: "800",
             fontSize: big ? "2.5rem" : "1.4rem",
             color: "#7FCD9F",
+            transition: "stroke-dashoffset .6s linear",
           }}
         >
           {percentage}%

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   MenuItem,
@@ -27,6 +27,9 @@ interface DataPoint {
 interface ChartProps {
   title: string;
   desc: string;
+  selectedISP: string;
+  province: string;
+  category: string;
 }
 
 interface CustomTooltipProps {
@@ -34,15 +37,22 @@ interface CustomTooltipProps {
   payload?: { value: number }[];
 }
 
-const data: DataPoint[] = [
-  { name: "فروردین", uv: 80 },
-  { name: "اسفند", uv: 30 },
-  { name: "بهمن", uv: 50 },
-  { name: "دی", uv: 40 },
-  { name: "آذر", uv: 90 },
-  { name: "آبان", uv: 10 },
-  { name: "مهر", uv: 90 },
-];
+const generateRandomData = (
+  selectedISP: string,
+  province: string,
+  category: string,
+  selectedCity: string
+) => {
+  const randomFactor =
+    selectedISP.length +
+    province.length +
+    category.length +
+    selectedCity.length;
+  return Array.from({ length: 7 }, (_, i) => ({
+    name: ["فروردین", "اسفند", "بهمن", "دی", "آذر", "آبان", "مهر"][i],
+    uv: Math.random() * randomFactor * 10,
+  }));
+};
 
 const cities = ["سرعت", "پینگ", "جیتر"];
 
@@ -53,15 +63,25 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   return null;
 };
 
-const Chart: React.FC<ChartProps> = ({ title, desc }) => {
+const Chart: React.FC<ChartProps> = ({
+  title,
+  desc,
+  selectedISP,
+  province,
+  category,
+}) => {
   const theme = useTheme();
   const location = useLocation();
-  const [city, setCity] = useState<string>("سرعت");
+  const [selectedCity, setSelectedCity] = useState<string>("سرعت");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const chartData = useMemo(
+    () => generateRandomData(selectedISP, province, category, selectedCity),
+    [selectedISP, province, category, selectedCity]
+  );
 
   const handleCityChange = (event: SelectChangeEvent<unknown>) => {
-    setCity(event.target.value as string);
+    setSelectedCity(event.target.value as string);
   };
 
   return (
@@ -95,7 +115,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
           <SelectButton
             labelId="city-select-label"
             id="city-select"
-            value={city}
+            value={selectedCity}
             displayEmpty
             onChange={handleCityChange}
             sx={{
@@ -119,7 +139,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
         )}
       </Box>
       <ResponsiveContainer height={220}>
-        <AreaChart data={data}>
+        <AreaChart data={chartData}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
