@@ -33,7 +33,7 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-const RowBox = styled(Box)(({ theme }) => ({
+const RowBox = styled(Box)(({ }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -50,7 +50,7 @@ const RowBox = styled(Box)(({ theme }) => ({
     flex: 0.3,
   },
 }));
-const HorizontalLine = styled(Box)(({ theme }) => ({
+const HorizontalLine = styled(Box)(({ }) => ({
   margin: "0 auto",
   width: "400px",
   height: "2px",
@@ -63,7 +63,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
     rows.length >= 2
       ? rows
       : [...rows, ...Array(2 - rows.length).fill(rows[0])];
-  const getColorBasedOnHandle = (handle) => {
+  const getColorBasedOnHandle = (handle : string) => {
     const color = handle === "برطرف شده" ? "green" : "red";
     console.log(`Handle: ${handle}, Color: ${color}`);
     return color;

@@ -1,5 +1,4 @@
-import { FC, ReactNode, useState } from "react";
-import ArrowLeft from "../../assets/images/arrow-left.svg";
+import { FC } from "react";
 import {
   Box,
   FormControl,
@@ -38,7 +37,6 @@ interface Props {
 const Header: FC<Props> = ({
   title,
   iconPath,
-  onClick,
   selectTitle,
   province,
   selectedISP,
