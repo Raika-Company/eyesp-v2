@@ -133,7 +133,7 @@ const Operators: React.FC = () => {
               <Typography sx={commonStyles.mainInfo}>ایرانسل</Typography>
             </Box>
           </Box>
-          <Box width={800}>
+          <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
               province={province}
               selectedISP={selectedISP}
