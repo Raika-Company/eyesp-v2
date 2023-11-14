@@ -225,7 +225,7 @@ const LeftSide = () => {
         <Stack
           direction="row"
           component={Link}
-          to="/isp"
+          to="/last-disorders"
           sx={{
             cursor: "pointer",
             alignItems: "center",
