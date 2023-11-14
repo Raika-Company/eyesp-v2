@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Box,
-  Typography,
-  Container,
-  Button,
-  CircularProgress,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Container, Button, CircularProgress, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import WestIcon from "@mui/icons-material/West";
 import zitel from "../../assets/images/zitel.png";
@@ -18,25 +11,44 @@ import { GetGlobalOverview } from "../../services/GlobalOverview";
 import { Link } from "react-router-dom";
 import irancell from "../../assets/images/irancell.svg";
 
-// Types
+/**
+ * Type for individual history items in the website data.
+ * @param status The status code of the website check.
+ * @param check_time The timestamp of the website check.
+ */
 type HistoryItem = {
   status: number;
   check_time: string;
 };
 
+/**
+ * Type for website data structure.
+ * @param domain The domain name of the website.
+ * @param history Array of history items.
+ */
 type WebsiteData = {
   domain: string;
   history: HistoryItem[];
 };
 
+/**
+ * Type for an array of website data.
+ */
 type HistoryData = WebsiteData[];
 
+/**
+ * Props for the DataBlock component.
+ * @param value The status code of the website check.
+ * @param checkTime The timestamp of the website check.
+ */
 interface DataBlockProps {
   value: number;
   checkTime: string;
 }
 
-// Constants
+/**
+ * Constants for mapping logos and error messages.
+ */
 const LOGOS = [
   { src: zitel, name: "زیتل" },
   { src: mokhaberat, name: "مخابرات" },
@@ -58,8 +70,16 @@ const errorTitel: Record<number, string> = {
   503: "⚠️ قطعی جزئی",
 };
 
+/**
+ * Fetches history data using the GetGlobalOverview service.
+ * @returns A Promise of HistoryData.
+ */
 const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
 
+/**
+ * Custom hook for using the history data query.
+ * @returns The query object containing the data, error, loading state, etc.
+ */
 const useHistoryData = () =>
   useQuery<WebsiteData[], Error>({
     queryKey: ["historyDataKey"],
@@ -68,14 +88,29 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
+/**
+ * Gets the status message for a given status code.
+ * @param statusCode The status code to get the message for.
+ * @returns The corresponding message string.
+ */
 const getStatusMessage = (statusCode: number): string => {
   return errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
 };
 
+/**
+ * Gets the title message for a given status code.
+ * @param statusCode The status code to get the title for.
+ * @returns The corresponding title string.
+ */
 const getTitleMessage = (statusCode: number): string => {
   return errorTitel[statusCode] || "عنوان خطای ناشناخته";
 };
 
+/**
+ * Converts a date string to a Persian date format.
+ * @param dateString The date string to convert.
+ * @returns The formatted Persian date string.
+ */
 const convertToPersianDate = (dateString: string): string => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
@@ -93,6 +128,11 @@ const convertToPersianDate = (dateString: string): string => {
   return formatter.format(date);
 };
 
+/**
+ * DataBlock component representing a single data point in the history.
+ * @param props DataBlockProps
+ * @returns A JSX element representing the data block.
+ */
 const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
   const errorMessage = getStatusMessage(value);
   const statusTitle = getTitleMessage(value);
@@ -145,6 +185,11 @@ const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
   );
 });
 
+/**
+ * GridItem component for displaying a single website's data.
+ * @param props Contains the website data and associated logo.
+ * @returns A JSX element representing the grid item.
+ */
 const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
   data,
   logo,
@@ -189,6 +234,11 @@ const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
   </Grid>
 );
 
+/**
+ * ISP component for displaying the status of various websites.
+ * Fetches and displays data using a custom hook and renders a grid of GridItems.
+ * @returns A JSX element representing the ISP component.
+ */
 const ISP: React.FC = () => {
   const { data, error, isLoading, refetch } = useHistoryData();
 

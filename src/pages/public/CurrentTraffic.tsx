@@ -13,6 +13,10 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { SelectButton } from "../../components/ui/SelectButton";
 import Header from "../../components/ui/Header";
 
+/**
+ * Props definition for the CurrentTraffic component.
+ * @property onClick - Optional click handler for any interactive elements.
+ */
 interface Props {
   onClick?: () => void;
 }
@@ -20,6 +24,13 @@ interface Props {
 const cities = ["خروجی", "IXP", "IGW"];
 const chartsTitle = ["IXP", "IGW"];
 
+/**
+ * CurrentTraffic Component: Displays the current traffic data with interactive charts.
+ * It shows different traffic metrics for selected cities and provides filters for customization.
+ *
+ * @param props - Props passed to the CurrentTraffic component.
+ * @returns The CurrentTraffic component JSX.
+ */
 const CurrentTraffic: FC<Props> = () => {
   const [city, setCity] = useState<string>("خروجی");
   const theme = useTheme();
@@ -29,6 +40,10 @@ const CurrentTraffic: FC<Props> = () => {
   const [province, setProvince] = useState("");
   const [category, setCategory] = useState("");
 
+  /**
+   * Handles category selection change.
+   * @param event - The select change event.
+   */
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
   };

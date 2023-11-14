@@ -111,9 +111,9 @@ const Average = () => {
       }}
     >
       <Header
-        isButton={true}
-        clickedButton={clickedButton}
-        handleButtonClick={handleButtonClick}
+        // isButton={true}
+        // clickedButton={clickedButton}
+        // handleButtonClick={handleButtonClick}
         title="میانگین کلی"
         selectTitle="ترتیب بر اساس"
         iconPath={AverageIcon}

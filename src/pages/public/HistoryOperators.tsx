@@ -3,6 +3,14 @@ import { Box, Button, Stack, useMediaQuery, Theme } from "@mui/material";
 import CustomTable from "../../components/ui/CustomTable";
 import provinceCompare from "../../../public/data/provinceCompare.json";
 
+/**
+ * Interface for the disruption data structure.
+ * @param date The date of the disruption.
+ * @param hour The hour of the disruption.
+ * @param categoryDis The category of the disruption.
+ * @param causeDis The cause of the disruption.
+ * @param handle The handling status of the disruption.
+ */
 interface Disruption {
   date: string;
   hour: string;
@@ -11,6 +19,11 @@ interface Disruption {
   handle: string;
 }
 
+/**
+ * Enum for different types of button states.
+ * Recent - represents recent disruptions.
+ * Current - represents current disruptions.
+ */
 enum ActiveButtonType {
   Recent = "recent",
   Current = "current",
@@ -18,20 +31,41 @@ enum ActiveButtonType {
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
+/**
+ * The HistoryOperators component.
+ * This component is responsible for displaying a table of disruptions
+ * and allows toggling between recent and current disruptions.
+ */
 const HistoryOperators = () => {
-  const [activeButton, setActiveButton] = useState<ActiveButtonType>(ActiveButtonType.Recent);
+  const [activeButton, setActiveButton] = useState<ActiveButtonType>(
+    ActiveButtonType.Recent
+  );
   const [activeData, setActiveData] = useState<Disruption[]>(provinceCompare);
 
-  const recentDisruptions = provinceCompare.filter(item => item.handle === "برطرف شده");
-  const currentDisruptions = provinceCompare.filter(item => item.handle === "برطرف نشده");
+  const recentDisruptions = provinceCompare.filter(
+    (item) => item.handle === "برطرف شده"
+  );
+  const currentDisruptions = provinceCompare.filter(
+    (item) => item.handle === "برطرف نشده"
+  );
 
+  /**
+   * Handles button clicks to toggle between recent and current disruptions.
+   * @param type The type of button clicked, determining the data to be displayed.
+   */
   const handleButtonClick = (type: ActiveButtonType) => {
-    setActiveData(type === ActiveButtonType.Recent ? recentDisruptions : currentDisruptions);
+    setActiveData(
+      type === ActiveButtonType.Recent ? recentDisruptions : currentDisruptions
+    );
     setActiveButton(type);
   };
 
-  const isMdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
-  const isXsScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("xs"));
+  const isMdScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
+  const isXsScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("xs")
+  );
 
   return (
     <Box
@@ -43,7 +77,7 @@ const HistoryOperators = () => {
       }}
     >
       <Stack direction="row">
-        {Object.values(ActiveButtonType).map(type => (
+        {Object.values(ActiveButtonType).map((type) => (
           <Button
             key={type}
             sx={{
@@ -54,7 +88,7 @@ const HistoryOperators = () => {
               bgcolor: "#232629",
               color: activeButton === type ? "#fff" : "#7A7775",
               boxShadow: "0",
-              fontSize: isMdScreen ? "0.9rem": "1.3125rem",
+              fontSize: isMdScreen ? "0.9rem" : "1.3125rem",
               "&:hover": {
                 color: "#fff",
                 bgcolor: "#232629",
@@ -64,7 +98,9 @@ const HistoryOperators = () => {
             variant="contained"
             onClick={() => handleButtonClick(type)}
           >
-            {type === ActiveButtonType.Recent ? "اختلال های اخیر" : "اختلال های فعلی"}
+            {type === ActiveButtonType.Recent
+              ? "اختلال های اخیر"
+              : "اختلال های فعلی"}
           </Button>
         ))}
       </Stack>
