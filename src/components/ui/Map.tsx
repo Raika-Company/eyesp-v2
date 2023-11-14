@@ -213,7 +213,7 @@ const Map: FC<Props> = ({isPrivate = false}) => {
         {/* <Link to="/disorders"> */}
         <svg
           preserveAspectRatio="none"
-          viewBox="0 0 1130 1005"
+          viewBox="0 0 1140 1110"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           style={{
