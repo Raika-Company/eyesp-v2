@@ -1,11 +1,19 @@
 import Header from "../../components/ui/Header";
-import { SelectChangeEvent } from "@mui/material/Select";
+// import { SelectChangeEvent } from "@mui/material/Select";
 import history from "../../assets/images/history.svg";
 import CustomTable from "../../components/ui/CustomTable";
-import { useState } from "react";
-import { Box, Theme, useMediaQuery } from "@mui/material";
+import {useState} from "react";
+import {Box, Theme, useMediaQuery} from "@mui/material";
 import provinceCompare from "../../../public/data/provinceCompare.json";
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
+
+interface ProvinceCompare {
+  date: string;
+  hour: string;
+  categoryDis: string;
+  causeDis: string;
+  handle: string;
+}
 
 const LastDis = () => {
   const [rows, setRows] = useState(provinceCompare);
@@ -19,7 +27,7 @@ const LastDis = () => {
     theme.breakpoints.down("md")
   );
 
-  const randomizeRows = (data) => {
+  const randomizeRows = (data: ProvinceCompare[]) => {
     if (data.length <= 2) {
       return data;
     }
@@ -32,7 +40,7 @@ const LastDis = () => {
     setClickedButton(buttonName);
   };
   return (
-    <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
+    <div style={{backgroundColor: "#2B2E31", height: "100dvh"}}>
       <Header
         isButton={true}
         clickedButton={clickedButton}
@@ -50,7 +58,7 @@ const LastDis = () => {
           },
         }}
       >
-        <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
+        <Box sx={{width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%"}}>
           <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={true} />
         </Box>
       </Box>

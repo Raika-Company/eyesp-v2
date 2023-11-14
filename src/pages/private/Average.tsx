@@ -2,7 +2,7 @@ import {Box, FormControl, MenuItem} from "@mui/material";
 import {ArrowDropDown} from "@mui/icons-material";
 import Header from "../../components/ui/Header";
 import AverageIcon from "../../assets/images/average-icon.svg";
-import ArrowDown from "../../assets/images/arrow-down.svg";
+// import ArrowDown from "../../assets/images/arrow-down.svg";
 import CircleChart from "../../components/ui/CircularChart";
 import TaggedText from "../../components/ui/TaggedText";
 import {SelectButton} from "../../components/ui/SelectButton";
@@ -24,7 +24,7 @@ interface MockData {
   value: string;
 }
 
-const parseChartData = (data: (typeof ispData)[0]): ChartData[] => [
+const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
   {
     id: 1,
     percentage: parseFloat(ispData[0].upload),
@@ -55,7 +55,7 @@ const parseChartData = (data: (typeof ispData)[0]): ChartData[] => [
   },
 ];
 
-const mockChartData: ChartData[] = parseChartData(ispData[0]);
+const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
 
 const mockData: MockData[] = [
   {
