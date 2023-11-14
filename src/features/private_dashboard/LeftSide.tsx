@@ -16,7 +16,7 @@ import TaggedNumber from "./components/TaggedNumber";
 import CircleChart from "../../components/ui/CircularChart";
 import InfoBox from "../../components/ui/InfoBox";
 import {Fragment} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const ConflictsData = [
   {
@@ -65,9 +65,11 @@ const conflictsHistoryMockData = [
 ];
 
 const LeftSide = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+
   return (
     <Box
       sx={{
@@ -223,7 +225,7 @@ const LeftSide = () => {
         <Stack
           direction="row"
           component={Link}
-          to="/isp"
+          to="/last-disorders"
           sx={{
             cursor: "pointer",
             alignItems: "center",
@@ -234,7 +236,7 @@ const LeftSide = () => {
             },
           }}
         >
-          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات و موارد بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{
@@ -243,7 +245,12 @@ const LeftSide = () => {
           />
         </Stack>
       </InfoBox>
-      <InfoBox title="میانگین کلی" iconPath={Average}>
+      <InfoBox
+        title="میانگین کلی"
+        iconPath={Average}
+        hasButton
+        onClick={() => navigate("/private/average")}
+      >
         <Box
           sx={{
             padding: ".5rem",
