@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   MenuItem,
@@ -19,33 +19,76 @@ import {
 import { useLocation } from "react-router-dom";
 import { SelectButton } from "../../components/ui/SelectButton";
 
-interface DataPoint {
-  name: string;
-  uv: number;
-}
-
+/**
+ * Props for the Chart component.
+ * @param title The title of the chart.
+ * @param desc Description of the chart.
+ * @param selectedISP The currently selected ISP.
+ * @param province The selected province.
+ * @param category The selected category for data representation.
+ */
 interface ChartProps {
   title: string;
   desc: string;
+  selectedISP: string;
+  province: string;
+  category: string;
 }
 
+/**
+ * Props for the CustomTooltip component.
+ * @param active Indicates if the tooltip is active.
+ * @param payload Data to be shown in the tooltip.
+ */
 interface CustomTooltipProps {
   active?: boolean;
   payload?: { value: number }[];
 }
 
-const data: DataPoint[] = [
-  { name: "فروردین", uv: 80 },
-  { name: "اسفند", uv: 30 },
-  { name: "بهمن", uv: 50 },
-  { name: "دی", uv: 40 },
-  { name: "آذر", uv: 90 },
-  { name: "آبان", uv: 10 },
-  { name: "مهر", uv: 90 },
-];
+/**
+ * Generates random data for the chart based on provided parameters.
+ * This simulates dynamic data generation based on user selection.
+ * The function creates an array of objects, each representing a data point for the chart.
+ * Each data point includes a name (representing a month) and a UV value
+ * (a simulated numeric value influenced by the length of the input strings).
+ *
+ * @param selectedISP The selected Internet Service Provider.
+ * @param province The selected province.
+ * @param category The selected category.
+ * @param selectedCity The selected city.
+ * @returns An array of data objects for the chart. Each object has a 'name' (string) and a 'uv' (number).
+ */
+const generateRandomData = (
+  selectedISP: string,
+  province: string,
+  category: string,
+  selectedCity: string
+): { name: string; uv: number }[] => {
+  // The randomFactor is a simple sum of the lengths of input strings.
+  // It's used to influence the UV value of each data point.
+  const randomFactor =
+    selectedISP.length +
+    province.length +
+    category.length +
+    selectedCity.length;
 
-const cities = ["سرعت", "پینگ", "جیتر"];
+  // Generate an array with 7 elements, each representing a month with a corresponding UV value.
+  // The month names are in Persian, adhering to the initial prompt.
+  return Array.from({ length: 7 }, (_, i) => ({
+    name: ["فروردین", "اسفند", "بهمن", "دی", "آذر", "آبان", "مهر"][i],
+    uv: Math.random() * randomFactor * 10, // Random UV value influenced by the randomFactor
+  }));
+};
 
+// A predefined list of cities for selection in the chart.
+const cities: string[] = ["سرعت", "پینگ", "جیتر"];
+
+/**
+ * A custom tooltip component for the chart.
+ * Displays data when a chart area is hovered.
+ * @param props CustomTooltipProps
+ * @returns A JSX element or null.
+ */
 const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return <div className="custom-tooltip">{payload[0].value}%</div>;
@@ -53,15 +96,31 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   return null;
 };
 
-const Chart: React.FC<ChartProps> = ({ title, desc }) => {
+/**
+ * The main Chart component.
+ * Renders a responsive area chart with dynamic data based on selected parameters.
+ * @param props ChartProps
+ * @returns A JSX element representing the chart.
+ */
+const Chart: React.FC<ChartProps> = ({
+  title,
+  desc,
+  selectedISP,
+  province,
+  category,
+}) => {
   const theme = useTheme();
   const location = useLocation();
-  const [city, setCity] = useState<string>("سرعت");
+  const [selectedCity, setSelectedCity] = useState<string>("سرعت");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const chartData = useMemo(
+    () => generateRandomData(selectedISP, province, category, selectedCity),
+    [selectedISP, province, category, selectedCity]
+  );
 
   const handleCityChange = (event: SelectChangeEvent<unknown>) => {
-    setCity(event.target.value as string);
+    setSelectedCity(event.target.value as string);
   };
 
   return (
@@ -95,7 +154,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
           <SelectButton
             labelId="city-select-label"
             id="city-select"
-            value={city}
+            value={selectedCity}
             displayEmpty
             onChange={handleCityChange}
             sx={{
@@ -119,7 +178,7 @@ const Chart: React.FC<ChartProps> = ({ title, desc }) => {
         )}
       </Box>
       <ResponsiveContainer height={220}>
-        <AreaChart data={data}>
+        <AreaChart data={chartData}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />

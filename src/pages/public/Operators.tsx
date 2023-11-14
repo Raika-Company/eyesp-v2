@@ -8,11 +8,17 @@ import HistoryOperators from "./HistoryOperators";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
 
+/**
+ * Interface for InfoItem properties.
+ */
 interface InfoItemProps {
   title: string;
   value: string;
 }
 
+/**
+ * Common styles used in the Operators component.
+ */
 const commonStyles = {
   title: {
     textAlign: "center" as const, // Fix for TypeScript
@@ -28,24 +34,17 @@ const commonStyles = {
   },
 } as const; // Ensure immutability and better type inference
 
-const Operators: React.FC = () => {
+/**
+ * InfoItem component: Displays a piece of information with title and value.
+ * @param props - The properties passed to the InfoItem component.
+ * @param props.title - The title of the information item.
+ * @param props.value - The value of the information item.
+ */
+const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => {
   const theme = useTheme();
-  const [province, setProvince] = useState("");
-  const [selectedISP, setSelectedISP] = useState("");
-  const [category, setCategory] = useState("");
-  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
-  };
-  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
-    setProvince(event.target.value as string);
-  };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
-  };
-  const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => (
+  return (
     <Box
       sx={{
         display: "flex",
@@ -62,6 +61,33 @@ const Operators: React.FC = () => {
       </Typography>
     </Box>
   );
+};
+
+/**
+ * Operators component: Displays operator information and charts.
+ * It utilizes Material UI components and custom components like Chart and HistoryOperators.
+ */
+const Operators: React.FC = () => {
+  const theme = useTheme();
+  const [province, setProvince] = useState("");
+  const [selectedISP, setSelectedISP] = useState("");
+  const [category, setCategory] = useState("");
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  /**
+   * Handles changes to the category selection.
+   * @param event - The event object containing the selected value.
+   */
+  const handleCategory = (event: SelectChangeEvent<unknown>) => {
+    setCategory(event.target.value as string);
+  };
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
+  };
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
+  };
 
   return (
     <>
@@ -108,7 +134,13 @@ const Operators: React.FC = () => {
             </Box>
           </Box>
           <Box width={800}>
-            <Chart title="" desc="نمودار وضعیت" />
+            <Chart
+              province={province}
+              selectedISP={selectedISP}
+              category={category}
+              title=""
+              desc="نمودار وضعیت"
+            />
           </Box>
           <Box
             display="flex"

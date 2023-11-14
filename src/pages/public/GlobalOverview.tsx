@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {useQuery} from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Box,
   Typography,
@@ -9,24 +9,37 @@ import {
   Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import {GetGlobalOverview} from "../../services/GlobalOverview";
-import {Link} from "react-router-dom";
+import { GetGlobalOverview } from "../../services/GlobalOverview";
+import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 
+/**
+ * Represents a single history item with status code and check time.
+ */
 type HistoryItem = {
   status: number;
   check_time: string;
 };
 
+/**
+ * Represents the data structure for a website, including its name,
+ * domain, and a history of status checks.
+ */
 type WebsiteData = {
   name: string;
   domain: string;
-
   history: HistoryItem[];
 };
 
+/**
+ * Type alias for an array of WebsiteData.
+ */
 type HistoryData = WebsiteData[];
 
+/**
+ * Props for the DataBlock component, containing the value of the status
+ * and the check time.
+ */
 interface DataBlockProps {
   value: number;
   checkTime: string;
@@ -56,6 +69,13 @@ const useHistoryData = () =>
     refetchOnWindowFocus: false,
   });
 
+/**
+ * Functional component to display a single data block representing the status
+ * of a website check at a specific time.
+ *
+ * @param value - The HTTP status code of the website check.
+ * @param checkTime - The time at which the check was performed.
+ */
 const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
   const errorMessage = getStatusMessage(value);
   const statusTitle = getTitleMessage(value);
@@ -133,11 +153,17 @@ const convertToPersianDate = (dateString: string): string => {
   return formatter.format(date);
 };
 
-const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
+/**
+ * Functional component to display information about a single website
+ * including its history of status checks.
+ *
+ * @param data - Data pertaining to a single website.
+ */
+const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   <Grid
     xs={12}
     sx={{
-      maxWidth: {md: "48%"},
+      maxWidth: { md: "48%" },
       borderRadius: "0.5rem",
       background: "#2B2E31",
       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -149,7 +175,7 @@ const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
       px: "1.5em",
     }}
   >
-    <Box sx={{textTransform: "uppercase"}}>
+    <Box sx={{ textTransform: "uppercase" }}>
       <img
         src={`https://status.eyesp.live/images/${data.name}.svg`}
         alt={data.name}
@@ -184,8 +210,12 @@ const GridItem: React.FC<{data: WebsiteData}> = ({data}) => (
   </Grid>
 );
 
+/**
+ * Component for rendering the global overview of website statuses.
+ * It fetches and displays data for multiple websites and their historical statuses.
+ */
 const GlobalOverview: React.FC = () => {
-  const {data, error, isLoading, refetch} = useHistoryData();
+  const { data, error, isLoading, refetch } = useHistoryData();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -225,7 +255,7 @@ const GlobalOverview: React.FC = () => {
           color: "#FFF",
           marginTop: "2rem",
         }}
-        endIcon={<WestIcon sx={{marginRight: "1rem"}} />}
+        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
       >
         بازگشت
       </Button>
