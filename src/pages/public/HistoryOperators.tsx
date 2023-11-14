@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Button, Stack, useMediaQuery, Theme } from "@mui/material";
 import CustomTable from "../../components/ui/CustomTable";
 import provinceCompare from "../../../public/data/provinceCompare.json";
@@ -31,6 +31,7 @@ enum ActiveButtonType {
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
+const MemoizedCustomTable = React.memo(CustomTable);
 /**
  * The HistoryOperators component.
  * This component is responsible for displaying a table of disruptions
@@ -42,17 +43,21 @@ const HistoryOperators = () => {
   );
   const [activeData, setActiveData] = useState<Disruption[]>(provinceCompare);
 
-  const recentDisruptions = provinceCompare.filter(
-    (item) => item.handle === "برطرف شده"
+  const recentDisruptions = useMemo(
+    () => provinceCompare.filter((item) => item.handle === "برطرف شده"),
+    [provinceCompare]
   );
-  const currentDisruptions = provinceCompare.filter(
-    (item) => item.handle === "برطرف نشده"
+
+  const currentDisruptions = useMemo(
+    () => provinceCompare.filter((item) => item.handle === "برطرف نشده"),
+    [provinceCompare]
   );
 
   /**
    * Handles button clicks to toggle between recent and current disruptions.
    * @param type The type of button clicked, determining the data to be displayed.
    */
+
   const handleButtonClick = (type: ActiveButtonType) => {
     setActiveData(
       type === ActiveButtonType.Recent ? recentDisruptions : currentDisruptions
@@ -115,7 +120,7 @@ const HistoryOperators = () => {
         }}
       >
         <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
-          <CustomTable rows={activeData} cellHeaders={cellHeaders} />
+          <MemoizedCustomTable rows={activeData} cellHeaders={cellHeaders} />
         </Box>
       </Box>
     </Box>
