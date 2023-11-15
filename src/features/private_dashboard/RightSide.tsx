@@ -14,11 +14,14 @@ import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
 import BadgedValue from "./components/BadgedValue";
-import {FormEvent, useEffect, useRef, useState} from "react";
+import { FormEvent, useEffect, useRef, useState, FC, useContext } from "react";
 import InfoBox from "../../components/ui/InfoBox";
-import {ISPListDisplay} from "../dashboard/RightSide";
-import {InternalISPList} from "../dashboard/LeftSide";
-import {Link} from "react-router-dom";
+import { ISPListDisplay } from "../dashboard/RightSide";
+import { InternalISPList } from "../dashboard/LeftSide";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { on } from "events";
+import { MessageContext } from "../../context/MessageContext";
 
 const aiMessages = [
   {
@@ -27,9 +30,10 @@ const aiMessages = [
     time: "امروز 22:30",
   },
 ];
-
-const RightSide = () => {
+interface props {}
+const RightSide: FC<props> = ({}) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -42,11 +46,16 @@ const RightSide = () => {
   const chatRef = useRef<HTMLDivElement | null>(null);
 
   const [messages, setMessages] =
-    useState<{id: number; text: string; time: string}[]>(aiMessages);
+    useState<{ id: number; text: string; time: string }[]>(aiMessages);
+  const { setMessage } = useContext(MessageContext);
 
   const [enteredMessage, setEnteredMessage] = useState<string>("");
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setMessage(enteredMessage); // Update the message in context
+    navigate("/private/chat");
+    // Save the message to local storage
+
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -57,7 +66,6 @@ const RightSide = () => {
     ]);
     setEnteredMessage("");
   };
-
   // For scrolling to the bottom of it's content
   useEffect(() => {
     if (chatRef.current)
@@ -186,7 +194,7 @@ const RightSide = () => {
         onClick={toggleDialog}
       >
         <ISPListDisplay
-          style={{direction: "ltr"}}
+          style={{ direction: "ltr" }}
           isp={InternalISPList}
           isLimited={true}
         />
@@ -204,7 +212,7 @@ const RightSide = () => {
             },
           }}
         >
-          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{
