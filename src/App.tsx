@@ -1,39 +1,61 @@
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {CssBaseline, ThemeProvider} from "@mui/material";
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
-import {mainRoutes, privateMainRoutes} from "./routes/Routes";
-import {FC} from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { mainRoutes, privateMainRoutes } from "./routes/Routes";
+import { FC, Suspense } from "react";
 import "./layout/global.css";
 import theme from "./layout/theme";
 
 const queryClient = new QueryClient({});
+const DASHBOARD_PATH = "/";
+const DASHBOARD_PATH_PRIVATE = "/private";
 
 const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <Routes>
-            {mainRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-            {privateMainRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-        </Router>
-      </QueryClientProvider>
+      <Router>
+        <AppContent />
+      </Router>
     </ThemeProvider>
   );
 };
+
+const AppContent: FC = () => {
+  const location = useLocation();
+  const showSuspense =
+    location.pathname !== DASHBOARD_PATH &&
+    location.pathname !== DASHBOARD_PATH_PRIVATE;
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      {showSuspense ? (
+        <Suspense fallback={<div>loading</div>}>
+          <RoutesContent />
+        </Suspense>
+      ) : (
+        <RoutesContent />
+      )}
+    </QueryClientProvider>
+  );
+};
+
+const RoutesContent: FC = () => (
+  <>
+    <CssBaseline />
+    <Routes>
+      {mainRoutes.map((route) => (
+        <Route key={route.path} path={route.path} element={route.element} />
+      ))}
+      {privateMainRoutes.map((route) => (
+        <Route key={route.path} path={route.path} element={route.element} />
+      ))}
+    </Routes>
+  </>
+);
 
 export default App;

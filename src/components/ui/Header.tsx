@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 import {
   Box,
   FormControl,
@@ -9,13 +9,13 @@ import {
   Theme,
   Button,
 } from "@mui/material";
-import {SelectButton} from "./SelectButton";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from "react-router-dom";
+import { SelectButton } from "./SelectButton";
+import { HeaderButton } from "./HeaderButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../..//public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
-import {useNavigate} from "react-router-dom";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import {HeaderButton} from "./HeaderButton";
 
 interface Props {
   title: string;
@@ -207,7 +207,7 @@ const Header: FC<Props> = ({
                 </SelectButton>
               </FormControl>
               <FormControl
-                sx={{height: "70px", marginTop: isSmScreen ? "0" : "1.8rem"}}
+                sx={{ height: "70px", marginTop: isSmScreen ? "0" : "1.8rem" }}
               >
                 <SelectButton
                   labelId="change-category-label"
@@ -246,8 +246,8 @@ const Header: FC<Props> = ({
         <Button
           onClick={() => navigate(-1)}
           variant="contained"
-          sx={{bgcolor: "transparent", boxShadow: 0, color: "#fff"}}
-          endIcon={<KeyboardBackspaceIcon sx={{mr: "0.4em"}} />}
+          sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
+          endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}
         >
           بازگشت
         </Button>

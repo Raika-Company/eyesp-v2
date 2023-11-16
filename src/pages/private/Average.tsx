@@ -1,13 +1,14 @@
-import {Box, FormControl, MenuItem} from "@mui/material";
-import {ArrowDropDown} from "@mui/icons-material";
-import Header from "../../components/ui/Header";
+import { lazy } from "react";
+import { useState } from "react";
+import { Box, FormControl, MenuItem } from "@mui/material";
+import { ArrowDropDown } from "@mui/icons-material";
 import AverageIcon from "../../assets/images/average-icon.svg";
-import CircleChart from "../../components/ui/CircularChart";
-import TaggedText from "../../components/ui/TaggedText";
-import {SelectButton} from "../../components/ui/SelectButton";
+const Header = lazy(() => import("../../components/ui/Header"));
+const CircleChart = lazy(() => import("../../components/ui/CircularChart"));
+const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
+import { SelectButton } from "../../components/ui/SelectButton";
 import ispData from "../../../public/data/ISPData.json";
-import {useState} from "react";
-import {SelectChangeEvent} from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 interface ChartData {
   id: number;
