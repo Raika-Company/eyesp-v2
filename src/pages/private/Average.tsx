@@ -1,49 +1,66 @@
-import { Box, FormControl, MenuItem } from "@mui/material";
-import { ArrowDropDown } from "@mui/icons-material";
+import {Box, FormControl, MenuItem} from "@mui/material";
+import {ArrowDropDown} from "@mui/icons-material";
 import Header from "../../components/ui/Header";
 import AverageIcon from "../../assets/images/average-icon.svg";
-import ArrowDown from "../../assets/images/arrow-down.svg";
 import CircleChart from "../../components/ui/CircularChart";
 import TaggedText from "../../components/ui/TaggedText";
-import { SelectButton } from "../../components/ui/SelectButton";
-import { useState } from "react";
+import {SelectButton} from "../../components/ui/SelectButton";
+import ispData from "../../../public/data/ISPData.json";
+import {useState} from "react";
+import {SelectChangeEvent} from "@mui/material/Select";
 
-const mockChartData = [
+interface ChartData {
+  id: number;
+  percentage: number;
+  value: number;
+  title: string;
+  unit: string;
+}
+
+interface MockData {
+  id: number;
+  title: string;
+  value: string;
+}
+
+const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
   {
     id: 1,
-    percentage: 66,
-    value: 6,
+    percentage: parseFloat(ispData[0].upload),
+    value: parseFloat(ispData[0].performance),
     title: "میانگین سرعت آپلود",
     unit: "Mbps",
   },
   {
     id: 2,
-    percentage: 62,
-    value: 13,
+    percentage: parseFloat(ispData[0].speed),
+    value: parseFloat(ispData[0].performance),
     title: "میانگین سرعت دانلود",
     unit: "Mbps",
   },
   {
     id: 3,
-    percentage: 46,
-    value: 32,
+    percentage: parseFloat(ispData[0].pings),
+    value: parseFloat(ispData[0].performance),
     title: "میانگین پینگ",
     unit: "Ms",
   },
   {
     id: 4,
-    percentage: 51,
-    value: 5,
+    percentage: parseFloat(ispData[0].packet),
+    value: parseFloat(ispData[0].performance),
     title: "میانگین جیتر",
     unit: "Ms",
   },
 ];
 
-const mockData = [
+const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
+
+const mockData: MockData[] = [
   {
     id: 1,
     title: "رتبه‌ بین‌المللی",
-    value: 87,
+    value: ispData[0].disturbance,
   },
   {
     id: 2,
@@ -53,7 +70,7 @@ const mockData = [
   {
     id: 3,
     title: "رتبه‌ملی",
-    value: 1,
+    value: ispData[0].disturbance,
   },
   {
     id: 4,
@@ -63,11 +80,28 @@ const mockData = [
 ];
 
 const Average = () => {
-  const [clickedButton, setClickedButton] = useState<string | null>(null);
+  const [selectedISP, setSelectedISP] = useState("");
+  const [province, setProvince] = useState("");
+  const [category, setCategory] = useState("");
 
-  const handleButtonClick = (buttonName: string) => {
-    setClickedButton(buttonName);
+  const handleCategory = (event: SelectChangeEvent<unknown>) => {
+    setCategory(event.target.value as string);
   };
+  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
+    setProvince(event.target.value as string);
+  };
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedISP(event.target.value as string);
+  };
+
+  const calculateFinalPercentage = (
+    selectedISP: string,
+    province: string,
+    category: string
+  ) => {
+    return selectedISP.length + province.length + category.length;
+  };
+
   return (
     <Box
       sx={{
@@ -76,12 +110,18 @@ const Average = () => {
       }}
     >
       <Header
-        isButton={true}
-        clickedButton={clickedButton}
-        handleButtonClick={handleButtonClick}
+        // isButton={true}
+        // clickedButton={clickedButton}
+        // handleButtonClick={handleButtonClick}
         title="میانگین کلی"
-        iconPath={AverageIcon}
         selectTitle="ترتیب بر اساس"
+        iconPath={AverageIcon}
+        category={category}
+        province={province}
+        selectedISP={selectedISP}
+        handleISPChange={handleISPChange}
+        handleProvinceChange={handleProvinceChange}
+        handleCategory={handleCategory}
       />
 
       <Box
@@ -98,7 +138,7 @@ const Average = () => {
             display: "flex",
             flexWrap: "wrap",
             marginX: "auto",
-            width: "60%",
+            width: "75%",
             justifyContent: "center",
             gap: "6rem",
           }}
@@ -109,8 +149,12 @@ const Average = () => {
               key={chart.id}
               textTitle={chart.title}
               value={chart.value}
+              finalPercentage={calculateFinalPercentage(
+                selectedISP,
+                province,
+                category
+              )}
               unit={chart.unit}
-              finalPercentage={chart.percentage}
               size={150}
               strokeWidth={12}
             />
@@ -156,7 +200,7 @@ const Average = () => {
         >
           <MenuItem value="خروجی">خروجی</MenuItem>
         </SelectButton>
-        <img
+        {/* <img
           src={ArrowDown}
           style={{
             position: "absolute",
@@ -166,7 +210,7 @@ const Average = () => {
             width: "13px",
             height: "13px",
           }}
-        />
+        /> */}
       </FormControl>
     </Box>
   );

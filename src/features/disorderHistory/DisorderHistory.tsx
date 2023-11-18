@@ -1,8 +1,8 @@
 import Header from "../../components/ui/Header";
 import history from "../../assets/images/history.svg";
 import CustomTable from "../../components/ui/CustomTable";
-import { useState } from "react";
-import { Box, SelectChangeEvent, Theme, useMediaQuery } from "@mui/material";
+import {useState} from "react";
+import {Box, Theme, useMediaQuery} from "@mui/material";
 import provinceCompare from "../../../public/data/provinceCompare.json";
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
@@ -31,7 +31,7 @@ const DisorderHistory = () => {
     setClickedButton(buttonName);
   };
   return (
-    <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
+    <div style={{backgroundColor: "#2B2E31", height: "100dvh"}}>
       <Header
         clickedButton={clickedButton}
         handleButtonClick={handleButtonClick}
@@ -49,7 +49,7 @@ const DisorderHistory = () => {
           },
         }}
       >
-        <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
+        <Box sx={{width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%"}}>
           <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
         </Box>
       </Box>{" "}
