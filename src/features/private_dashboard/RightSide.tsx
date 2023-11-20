@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef, FormEvent } from "react";
 import {
   Box,
   Button,
@@ -6,19 +7,22 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
-// import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
-import Ai from "../../assets/images/ai.svg";
+import { Link } from "react-router-dom";
+import AiIcon from "../../assets/images/ai.svg";
 import IspAndProvinces from "../../assets/images/isp-province.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
-import BadgedValue from "./components/BadgedValue";
-import {FormEvent, useEffect, useRef, useState} from "react";
+import BadgedValue from "./ـcomponents/BadgedValue";
 import InfoBox from "../../components/ui/InfoBox";
-import {ISPListDisplay} from "../dashboard/RightSide";
-import {InternalISPList} from "../dashboard/LeftSide";
-import {Link} from "react-router-dom";
+import { ISPListDisplay } from "../dashboard/RightSide";
+import { InternalISPList } from "../dashboard/LeftSide";
+
+type Message = {
+  id: number;
+  text: string;
+  time: string;
+};
 
 const aiMessages = [
   {
@@ -27,85 +31,50 @@ const aiMessages = [
     time: "امروز 22:30",
   },
 ];
-
-const RightSide = () => {
+const RightSide: React.FC = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const chatRef = useRef<HTMLDivElement | null>(null);
+  const [messages, setMessages] = useState<Message[]>(aiMessages);
+  const [enteredMessage, setEnteredMessage] = useState<string>("");
   const [isDialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (chatRef.current)
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!enteredMessage.trim()) return;
+    const newMessage: Message = {
+      id: messages.length + 1,
+      text: enteredMessage,
+      time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
+    };
+    setMessages([...messages, newMessage]);
+    setEnteredMessage("");
+  };
+
+  const clearMessages = () => setMessages([]);
 
   const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
   };
 
-  // Functionality for Chat with ai
-  const chatRef = useRef<HTMLDivElement | null>(null);
-
-  const [messages, setMessages] =
-    useState<{id: number; text: string; time: string}[]>(aiMessages);
-
-  const [enteredMessage, setEnteredMessage] = useState<string>("");
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        id: messages.length + 1,
-        text: enteredMessage,
-        time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
-      },
-    ]);
-    setEnteredMessage("");
-  };
-
-  // For scrolling to the bottom of it's content
-  useEffect(() => {
-    if (chatRef.current)
-      chatRef.current.scrollTop = chatRef.current?.scrollHeight;
-  }, [messages]);
-
   return (
-    <Box
-      sx={{
-        height: "100%",
-        display: "grid",
-        gap: isXlgScreen ? "1.5rem" : "1rem",
-        maxWidth: isXlgScreen ? "initial" : "19rem",
-      }}
-    >
-      <InfoBox title="هوش مصنوعی" iconPath={Ai}>
-        <Button
-          sx={{
-            position: "absolute",
-            left: ".5rem",
-            fontSize: ".7rem",
-            top: ".5rem",
-          }}
-          onClick={() => setMessages([])}
-        >
+    <Box sx={getStyle(isXlgScreen)}>
+      <InfoBox title="هوش مصنوعی" iconPath={AiIcon}>
+        <Button onClick={clearMessages} sx={clearButtonStyle}>
           پاک کردن همه
         </Button>
-        <Box
-          sx={{
-            padding: ".5rem",
-            position: "relative",
-            height: "100%",
-          }}
-        >
-          <Box
-            ref={chatRef}
-            sx={{
-              overflowY: "auto",
-              maxHeight: "10rem",
-              paddingBottom: isSmScreen ? "2rem" : ".5rem",
-              // marginBottom: isSmScreen ? "1rem" : "0",
-            }}
-          >
+        <Box sx={chatBoxStyle}>
+          <Box ref={chatRef} sx={chatContentStyle}>
             {messages.map((message) => (
               <Box key={message.id}>
                 <Stack direction="row" alignItems="center" gap={0.5}>
                   <img
-                    src={Ai}
+                    src={AiIcon}
                     style={{
                       width: "13px",
                       height: "13px",
@@ -186,7 +155,7 @@ const RightSide = () => {
         onClick={toggleDialog}
       >
         <ISPListDisplay
-          style={{direction: "ltr"}}
+          style={{ direction: "ltr" }}
           isp={InternalISPList}
           isLimited={true}
         />
@@ -204,7 +173,7 @@ const RightSide = () => {
             },
           }}
         >
-          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{
@@ -230,6 +199,32 @@ const RightSide = () => {
       </InfoBox>
     </Box>
   );
+};
+
+const getStyle = (isXlgScreen: boolean) => ({
+  height: "100%",
+  display: "grid",
+  gap: isXlgScreen ? "1.5rem" : "1rem",
+  maxWidth: isXlgScreen ? "initial" : "19rem",
+});
+
+const clearButtonStyle = {
+  position: "absolute",
+  left: ".5rem",
+  fontSize: ".7rem",
+  top: ".5rem",
+};
+
+const chatBoxStyle = {
+  padding: ".5rem",
+  position: "relative",
+  height: "100%",
+};
+
+const chatContentStyle = {
+  overflowY: "auto",
+  maxHeight: "10rem",
+  paddingBottom: "2rem",
 };
 
 export default RightSide;

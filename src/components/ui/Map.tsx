@@ -1,154 +1,37 @@
-import {
-  Box,
-  Button as MuiButton,
-  SvgIcon,
-  styled,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import {FC, Fragment, useRef, useState} from "react";
-import MapPaths from "../../features/dashboard/components/MapPaths";
-
-type ProvinceCoordsType = {
-  [key: string]: {
-    name: string;
-    x: number;
-    y: number;
-    size: number;
-  };
-};
-
+import { Box, SvgIcon, useMediaQuery, useTheme } from "@mui/material";
+import { FC, Fragment, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
+import { AnimatedCircle } from "./AnimatedCircle";
+import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import {useNavigate} from "react-router-dom";
+import { ProvinceCoordsType, getColor, mockProvinceData, mockProvinceListsForPrivate } from './MapHelpers';
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
-
-const mockProvinceData = [
-  {
-    id: 1,
-    name: "tehran",
-    numberOfIssues: 3,
-  },
-  {
-    id: 2,
-    name: "azerbaijan, east",
-    numberOfIssues: 1,
-  },
-  {
-    id: 3,
-    name: "khorasan, razavi",
-    numberOfIssues: 6,
-  },
-  {
-    id: 4,
-    name: "fars",
-    numberOfIssues: 1,
-  },
-  {
-    id: 5,
-    name: "isfahan",
-    numberOfIssues: 2,
-  },
-  {
-    id: 6,
-    name: "alborz",
-    numberOfIssues: 2,
-  },
-  {
-    id: 7,
-    name: "khozestan",
-    numberOfIssues: 1,
-  },
-];
-
-const mockProvinceListsForPrivate = {
-  tehran: "#BD2626",
-  qom: "#B68A19",
-  isfahan: "#7FCD9F",
-};
-
-const getColor = (value: number) => {
-  switch (true) {
-    case value <= 4:
-      return "#1CC760";
-    case value <= 9:
-      return "#FFF500";
-    case value >= 10:
-      return "#FF6B6B";
-  }
-};
 
 interface Props {
   isPrivate?: boolean;
 }
 
-const Map: FC<Props> = ({isPrivate = false}) => {
+const Map: FC<Props> = ({ isPrivate = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
-  interface CircleProps {
-    index: number;
-  }
-  const AnimatedCircle = styled("circle")<
-    CircleProps & React.SVGProps<SVGAElement>
-  >(({index, cx, cy}) => ({
-    animation: `pulse 2s ${188 * index}ms infinite `,
-    transformOrigin: `${cx}px ${cy}px`,
-    "@keyframes pulse": {
-      "0%": {
-        transform: "scale(1)",
-      },
-
-      "100%": {
-        transform: "scale(3)",
-        opacity: 0,
-      },
-    },
-  }));
-
-  interface ButtonProps {
-    text: string;
-    onClick: () => void;
-    disable: boolean;
-  }
-  const Button: FC<ButtonProps> = ({text, onClick, disable}) => {
-    return (
-      <MuiButton
-        onClick={onClick}
-        sx={{
-          background: disable ? "#66666666" : "#666",
-          color: disable ? "#ffffff88" : "#FFF",
-          fontSize: "1.2rem",
-          border: "none",
-          width: "2.5rem",
-          height: "2.5rem",
-          borderRadius: ".5rem",
-          cursor: "pointer",
-          ":hover": {
-            background: "#66666666",
-          },
-        }}
-      >
-        {text}
-      </MuiButton>
-    );
-  };
-
   const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
-  const [position, setPosition] = useState({x: 0, y: 0});
-  const [startPos, setStartPos] = useState({x: 0, y: 0});
-  const svgContainerRef = useRef<HTMLDivElement | null>(null);
+  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [startPos, setStartPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
-    setScale(Math.min(scale * 1.1, 10)); // Increase scale by 10%
+    setScale(Math.min(scale * 1.1, 10));
   };
 
   const zoomOut = () => {
-    setScale(Math.max(scale / 1.1, 1)); // Decrease scale by 10%
+    setScale(Math.max(scale / 1.1, 1));
   };
 
   const startDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {

@@ -8,14 +8,13 @@ import {
   Dialog,
 } from "@mui/material";
 
-import NumberValue from "./components/NumberValue";
-// import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
+import NumberValue from "./ـcomponents/NumberValue";
 import SpeedCompare from "../../assets/images/speed-compare.svg";
 import ChartIcon from "../../assets/images/chart-icon-2.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
-import {InternalISPList} from "./LeftSide";
-import BadgedValue from "./components/BadgedValue";
-import {useState} from "react";
+import { InternalISPList } from "./LeftSide";
+import BadgedValue from "./ـcomponents/BadgedValue";
+import { useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
 
 interface ISPListDisplayProps {
@@ -112,7 +111,7 @@ const RightSide = () => {
         onClick={toggleDialog}
       >
         <ISPListDisplay
-          style={{direction: "ltr"}}
+          style={{ direction: "ltr" }}
           isp={InternalISPList}
           isLimited={true}
         />

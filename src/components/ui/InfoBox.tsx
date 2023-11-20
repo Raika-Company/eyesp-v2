@@ -1,5 +1,5 @@
-import {Box, Stack, Typography} from "@mui/material";
-import {FC, ReactNode} from "react";
+import { Box, Stack, Typography } from "@mui/material";
+import { FC, ReactNode } from "react";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
 
 interface Props {

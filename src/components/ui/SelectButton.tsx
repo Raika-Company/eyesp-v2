@@ -1,9 +1,8 @@
-import {Select, styled} from "@mui/material";
+import { Select, styled } from "@mui/material";
 
 const SelectButton = styled(Select)({
   height: "60%",
   borderRadius: "1.25rem",
-  // border: "1px solid #DDD",
   backgroundColor: "#2B2E31",
 
   paddingX: "0.8rem",
@@ -13,7 +12,7 @@ const SelectButton = styled(Select)({
     right: "auto",
     left: "7px",
   },
-  ".MuiOutlinedInput-notchedOutline": {border: 0},
+  ".MuiOutlinedInput-notchedOutline": { border: 0 },
   "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
     border: 0,
   },
@@ -26,4 +25,4 @@ const SelectButton = styled(Select)({
     },
 });
 
-export {SelectButton};
+export { SelectButton };
