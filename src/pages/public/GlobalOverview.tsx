@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Box,
-  Typography,
   CircularProgress,
   Container,
   Button,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { GetGlobalOverview } from "../../services/GlobalOverview";
@@ -17,8 +17,8 @@ import WestIcon from "@mui/icons-material/West";
  * Represents a single history item with status code and check time.
  */
 type HistoryItem = {
-  status: number;
-  check_time: string;
+  status: number; // HTTP status code of the website check.
+  check_time: string; // Time at which the check was performed, in ISO format.
 };
 
 /**
@@ -26,9 +26,9 @@ type HistoryItem = {
  * domain, and a history of status checks.
  */
 type WebsiteData = {
-  name: string;
-  domain: string;
-  history: HistoryItem[];
+  name: string; // Name of the website.
+  domain: string; // Domain of the website.
+  history: HistoryItem[]; // Array of history items representing the checks done on the website.
 };
 
 /**
@@ -41,9 +41,37 @@ type HistoryData = WebsiteData[];
  * and the check time.
  */
 interface DataBlockProps {
-  value: number;
-  checkTime: string;
+  value: number; // The HTTP status code of the website check.
+  checkTime: string; // The time at which the check was performed.
+  nextCheckTime?: string; // Optional next check time.
+  data: WebsiteData; // Data about the website.
 }
+
+/**
+ * Represents a period of outage with start and end times.
+ */
+interface OutagePeriod {
+  start: string; // Start time of the outage period.
+  end: string; // End time of the outage period.
+}
+
+const REFRESH_INTERVAL = 60000;
+
+const getStatusMessage = (statusCode: number): string =>
+  errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
+
+const getTitleMessage = (statusCode: number): string =>
+  errorTitel[statusCode] || "عنوان خطای ناشناخته";
+
+const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
+
+const useHistoryData = () =>
+  useQuery<HistoryData, Error>({
+    queryKey: ["historyDataKey"],
+    queryFn: fetchHistoryData,
+    staleTime: REFRESH_INTERVAL,
+    refetchOnWindowFocus: false,
+  });
 
 const errorMessages: Record<number, string> = {
   200: "درخواست با موفقیت انجام شد.",
@@ -59,15 +87,68 @@ const errorTitel: Record<number, string> = {
   503: "⚠️ قطعی جزئی",
 };
 
-const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
+/**
+ * Generates a status message based on status code and outage period.
+ * @param statusCode - HTTP status code.
+ * @param startTime - Start time of the outage.
+ * @param endTime - End time of the outage.
+ * @param isOngoing - Flag indicating if the outage is ongoing.
+ * @returns A string message detailing the status.
+ */
+const generateStatusMessage = (
+  statusCode: number,
+  startTime: string,
+  endTime: string
+): string => {
+  const formattedStartTime = convertToPersianDate(startTime);
+  const formattedEndTime = convertToPersianDate(endTime);
 
-const useHistoryData = () =>
-  useQuery<HistoryData, Error>({
-    queryKey: ["historyDataKey"],
-    queryFn: fetchHistoryData,
-    staleTime: 60000,
-    refetchOnWindowFocus: false,
+  let message;
+  switch (statusCode) {
+    case 403:
+    case 404:
+      message = `قطعی کامل سرویس از ${formattedEndTime} تا ${formattedStartTime}`;
+      break;
+    case 503:
+      message = `اختلال در سرویس از ${formattedEndTime} تا ${formattedStartTime}`;
+      break;
+    default:
+      message = "";
+  }
+
+  return message;
+};
+
+/**
+ * Finds outage periods based on the history of status checks.
+ * @param history - Array of history items for a website.
+ * @returns Array of OutagePeriod objects indicating the outage periods.
+ */
+const findOutagePeriods = (history: HistoryItem[]): OutagePeriod[] => {
+  const outagePeriods: OutagePeriod[] = [];
+  let outageStart: string | null = null;
+
+  history.forEach((item) => {
+    if (item.status !== 200 && !outageStart) {
+      outageStart = item.check_time;
+    } else if (item.status === 200 && outageStart) {
+      outagePeriods.push({
+        start: outageStart,
+        end: item.check_time,
+      });
+      outageStart = null;
+    }
   });
+
+  if (outageStart) {
+    outagePeriods.push({
+      start: outageStart,
+      end: history[history.length - 1].check_time,
+    });
+  }
+
+  return outagePeriods;
+};
 
 /**
  * Functional component to display a single data block representing the status
@@ -76,68 +157,86 @@ const useHistoryData = () =>
  * @param value - The HTTP status code of the website check.
  * @param checkTime - The time at which the check was performed.
  */
-const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
-  const errorMessage = getStatusMessage(value);
-  const statusTitle = getTitleMessage(value);
-  const persianDate = convertToPersianDate(checkTime);
+const DataBlock: React.FC<DataBlockProps> = React.memo(
+  ({ value, checkTime, data }) => {
+    const errorMessage = getStatusMessage(value);
+    const statusTitle = getTitleMessage(value);
 
-  return (
-    <Tooltip
-      arrow
-      title={
-        <Box sx={{ p: "0.3em", userSelect: "none" }}>
-          <Typography
-            color={
-              value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
-            }
-            fontSize="1.3rem"
-          >
-            وضعیت: {value}
-          </Typography>
-          <Typography
-            sx={{
-              my: "1em",
-              bgcolor: "#777777",
-              p: ".4em",
-              borderRadius: ".2em",
-              fontSize: "1.2rem",
-            }}
-          >
-            {statusTitle}: <br /> {persianDate}
-          </Typography>
-          <Typography>{errorMessage}</Typography>
-        </Box>
-      }
-    >
-      <Box
-        width="3%"
-        height="62px"
-        borderRadius="2em"
-        bgcolor={
-          value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
+    let statusMessage = "";
+
+    const currentPeriod = findOutagePeriods(data.history).find(
+      (period) => period.start === checkTime
+    );
+
+    if (currentPeriod) {
+      statusMessage = generateStatusMessage(
+        value,
+        currentPeriod.start,
+        currentPeriod.end || new Date().toISOString()
+      );
+    }
+
+    return (
+      <Tooltip
+        arrow
+        title={
+          <Box sx={{ p: "0.3em", userSelect: "none" }}>
+            <Typography
+              color={
+                value === 200
+                  ? "#7FCD9F"
+                  : value === 503
+                  ? "#f19e2c"
+                  : "#E93F3F"
+              }
+              fontSize="1.3rem"
+            >
+              وضعیت: {value}
+            </Typography>
+            <Typography
+              sx={{
+                my: "1em",
+                bgcolor: "#777777",
+                p: ".4em",
+                borderRadius: ".2em",
+                fontSize: "1.2rem",
+              }}
+            >
+              {statusTitle}:
+              {statusMessage && <Typography>{statusMessage}</Typography>}
+            </Typography>
+            <Typography>{errorMessage}</Typography>
+          </Box>
         }
-        mx={0.3}
-        sx={{
-          cursor: "pointer",
-          "&:hover": {
-            bgcolor: "darkgray",
-          },
-        }}
-      />
-    </Tooltip>
-  );
-});
+      >
+        <Box
+          width="3%"
+          height="62px"
+          borderRadius="2em"
+          bgcolor={
+            value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
+          }
+          mx={0.3}
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              bgcolor: "darkgray",
+            },
+          }}
+        />
+      </Tooltip>
+    );
+  }
+);
 
-const getStatusMessage = (statusCode: number): string => {
-  return errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
-};
-
-const getTitleMessage = (statusCode: number): string => {
-  return errorTitel[statusCode] || "عنوان خطای ناشناخته";
-};
-
+/**
+ * Converts a standard date string to a Persian date string.
+ * @param dateString - The ISO date string to be converted.
+ * @returns A string representing the date in Persian calendar format.
+ */
 const convertToPersianDate = (dateString: string): string => {
   const date = new Date(dateString);
+
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -156,7 +255,6 @@ const convertToPersianDate = (dateString: string): string => {
 /**
  * Functional component to display information about a single website
  * including its history of status checks.
- *
  * @param data - Data pertaining to a single website.
  */
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
@@ -199,13 +297,19 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
       height="100%"
       padding="1rem"
     >
-      {data.history.map((historyItem, index) => (
-        <DataBlock
-          key={index}
-          value={historyItem.status}
-          checkTime={historyItem.check_time}
-        />
-      ))}
+      {data.history.map((historyItem, index) => {
+        const nextCheckTime = data.history[index + 1]?.check_time; // این خط را در داخل تابع map قرار دهید
+
+        return (
+          <DataBlock
+            key={index}
+            value={historyItem.status}
+            checkTime={historyItem.check_time}
+            nextCheckTime={nextCheckTime}
+            data={data}
+          />
+        );
+      })}
     </Box>
   </Grid>
 );
@@ -220,7 +324,7 @@ const GlobalOverview: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetch();
-    }, 60000);
+    }, REFRESH_INTERVAL);
 
     return () => clearInterval(intervalId);
   }, [refetch]);
