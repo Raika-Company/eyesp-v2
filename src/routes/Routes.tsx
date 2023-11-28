@@ -8,6 +8,7 @@ import LastDisorders from "../pages/private/LastDisorders";
 import PrivateDashboard from "../pages/private/PrivateDashboard";
 import Operators from "../pages/public/Operators";
 import CurrentTraffic from "../pages/public/CurrentTraffic";
+import SpeedTest from "../pages/public/SpeedTest";
 
 export const mainRoutes = [
   {
@@ -44,6 +45,11 @@ export const mainRoutes = [
     path: "/current-traffic",
     element: <CurrentTraffic />,
     title: "Current-traffic",
+  },
+  {
+    path: "/speed-test",
+    element: <SpeedTest />,
+    title: "Speed-Test",
   },
 ];
 
