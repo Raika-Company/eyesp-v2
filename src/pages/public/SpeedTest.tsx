@@ -1,4 +1,4 @@
-import { Box, Typography, keyframes } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DownloadGrad from "../../assets/images/download-grad.png";
 import UploadGrad from "../../assets/images/upload-grad.png";

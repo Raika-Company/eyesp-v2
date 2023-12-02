@@ -1,9 +1,15 @@
 const config = {
-  rootAddress: "https://status.eyesp.live/get-history/lastminute",
+  rootAddress: "http://95.38.58.65/api/v1",
   timeout: 25000,
-  tokenName: "",
+  tokenName: "eyesp_dashboard_token",
   refreshTokenName: "",
   cid: "user-id",
+};
+
+export type AxiosReturnType<T> = {
+  statusCode: number;
+  message: string;
+  datas: T;
 };
 
 export default config;

@@ -15,8 +15,8 @@ import FullArrowGreen from "../../assets/images/fullarrow-left-green.svg";
 import TaggedNumber from "./components/TaggedNumber";
 import CircleChart from "../../components/ui/CircularChart";
 import InfoBox from "../../components/ui/InfoBox";
-import {Fragment} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const ConflictsData = [
   {
@@ -172,7 +172,12 @@ const LeftSide = () => {
               </Stack>
             </Button>
             <Button>
-              <Link to="/disorders">
+              <Link
+                style={{
+                  textDecoration: "none",
+                }}
+                to="/disorders"
+              >
                 <Stack direction="row" gap={0.5} alignItems="center">
                   <Typography
                     sx={{
@@ -227,6 +232,7 @@ const LeftSide = () => {
           component={Link}
           to="/last-disorders"
           sx={{
+            textDecoration: "none",
             cursor: "pointer",
             alignItems: "center",
             marginX: "1rem",
@@ -236,7 +242,7 @@ const LeftSide = () => {
             },
           }}
         >
-          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات و موارد بیشتر</Button>
+          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات و موارد بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{
