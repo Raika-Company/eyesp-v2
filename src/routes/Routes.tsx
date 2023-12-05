@@ -8,6 +8,7 @@ import LastDisorders from "../pages/private/LastDisorders";
 import PrivateDashboard from "../pages/private/PrivateDashboard";
 import Operators from "../pages/public/Operators";
 import CurrentTraffic from "../pages/public/CurrentTraffic";
+import Chart from "../pages/private/Chat";
 
 export const mainRoutes = [
   {
@@ -57,5 +58,10 @@ export const privateMainRoutes = [
     path: "/private/average",
     element: <Average />,
     title: "All Average",
+  },
+  {
+    path: "/private/chat",
+    element: <Chart />,
+    title: "chatBot",
   },
 ];

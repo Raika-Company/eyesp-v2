@@ -1,5 +1,5 @@
-import {Box, useMediaQuery, useTheme} from "@mui/material";
-import {FC} from "react";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { FC, useState } from "react";
 import LeftSide from "../../features/private_dashboard/LeftSide";
 import RightSide from "../../features/private_dashboard/RightSide";
 import Map from "../../components/ui/Map";
@@ -9,6 +9,7 @@ const PrivateDashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+
   return (
     // The code that surely will be changed.
     <Box
