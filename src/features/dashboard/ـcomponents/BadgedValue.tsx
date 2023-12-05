@@ -1,5 +1,5 @@
-import {Box, Stack, Typography} from "@mui/material";
-import {FC} from "react";
+import { Box, Stack, Typography } from "@mui/material";
+import { FC } from "react";
 
 interface Props {
   badgeName: string;
@@ -7,7 +7,7 @@ interface Props {
   unit?: string;
 }
 
-const BadgedValue: FC<Props> = ({badgeName, value, unit = "Mbps"}) => {
+const BadgedValue: FC<Props> = ({ badgeName, value, unit = "Mbps" }) => {
   return (
     <Box
       sx={{

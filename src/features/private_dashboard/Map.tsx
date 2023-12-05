@@ -1,7 +1,8 @@
-import {SvgIcon, styled, useMediaQuery, useTheme} from "@mui/material";
-import {FC, Fragment} from "react";
-// import MapPaths from "./components/MapPaths";
-import MapPaths from "../dashboard/components/MapPaths";
+import React, { FC } from "react";
+import { SvgIcon, styled, useMediaQuery, useTheme } from "@mui/material";
+import { Link } from "react-router-dom";
+import MapPaths from "../dashboard/ـcomponents/MapPaths";
+import provinceCoordsData from "../../../public/data/provincesCoords.json";
 
 type ProvinceCoordsType = {
   [key: string]: {
@@ -11,9 +12,6 @@ type ProvinceCoordsType = {
     size: number;
   };
 };
-
-import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import {Link} from "react-router-dom";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -55,42 +53,26 @@ const mockProvinceData = [
   },
 ];
 
-const getColor = (value: number) => {
-  switch (true) {
-    case value <= 4:
-      return "#1CC760";
-    case value <= 9:
-      return "#FFF500";
-    case value >= 10:
-      return "#FF6B6B";
-  }
+const getColor = (value: number): string => {
+  if (value <= 4) return "#1CC760";
+  if (value <= 9) return "#FFF500";
+  return "#FF6B6B";
 };
+
+const AnimatedCircle = styled("circle")<{ index: number }>((props) => ({
+  animation: `pulse 2s ${188 * props.index}ms infinite `,
+  transformOrigin: `${props.cx}px ${props.cy}px`,
+  "@keyframes pulse": {
+    "0%": { transform: "scale(1)" },
+    "100%": { transform: "scale(3)", opacity: 0 },
+  },
+}));
 
 const Map: FC = () => {
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
-
-  interface Props {
-    index: number;
-  }
-  const AnimatedCircle = styled("circle")<Props & React.SVGProps<SVGAElement>>(
-    ({index, cx, cy}) => ({
-      animation: `pulse 2s ${188 * index}ms infinite `,
-      transformOrigin: `${cx}px ${cy}px`,
-      "@keyframes pulse": {
-        "0%": {
-          transform: "scale(1)",
-        },
-
-        "100%": {
-          transform: "scale(3)",
-          opacity: 0,
-        },
-      },
-    })
-  );
 
   return (
     <SvgIcon
@@ -111,39 +93,25 @@ const Map: FC = () => {
         >
           <MapPaths />
           {mockProvinceData.map((province, index) => (
-            <Fragment key={province.id}>
+            <React.Fragment key={province.id}>
               <circle
-                key={province.id}
-                cx={(provinceCoords as any)[province.name].x}
-                cy={(provinceCoords as any)[province.name].y}
+                cx={provinceCoords[province.name].x}
+                cy={provinceCoords[province.name].y}
                 fill={getColor(province.numberOfIssues)}
                 r="8"
               />
-              <AnimatedCircle
-                cx={(provinceCoords as any)[province.name].x}
-                cy={(provinceCoords as any)[province.name].y}
-                stroke={getColor(province.numberOfIssues)}
-                opacity=".40"
-                index={index}
-                r="8"
-              />
-              <AnimatedCircle
-                cx={(provinceCoords as any)[province.name].x}
-                cy={(provinceCoords as any)[province.name].y}
-                stroke={getColor(province.numberOfIssues)}
-                opacity=".30"
-                index={index}
-                r="12"
-              />
-              <AnimatedCircle
-                cx={(provinceCoords as any)[province.name].x}
-                cy={(provinceCoords as any)[province.name].y}
-                stroke={getColor(province.numberOfIssues)}
-                opacity=".2"
-                index={index}
-                r="16"
-              />
-            </Fragment>
+              {[8, 12, 16].map((radius) => (
+                <AnimatedCircle
+                  key={radius}
+                  cx={provinceCoords[province.name].x}
+                  cy={provinceCoords[province.name].y}
+                  stroke={getColor(province.numberOfIssues)}
+                  opacity={1 - radius / 20}
+                  index={index}
+                  r={radius}
+                />
+              ))}
+            </React.Fragment>
           ))}
         </svg>
       </Link>

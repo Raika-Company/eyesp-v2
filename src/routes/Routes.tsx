@@ -1,13 +1,14 @@
-// import { lazy } from "react";
-import Dashboard from "../pages/public/Dashboard";
-import GlobalOverview from "../pages/public/GlobalOverview";
-import ISP from "../pages/public/ISP";
-import Disorders from "../pages/private/Disorders";
-import Average from "../pages/private/Average";
-import LastDisorders from "../pages/private/LastDisorders";
-import PrivateDashboard from "../pages/private/PrivateDashboard";
-import Operators from "../pages/public/Operators";
-import CurrentTraffic from "../pages/public/CurrentTraffic";
+import { lazy } from 'react';
+const Dashboard = lazy(() => import('../pages/public/Dashboard'));
+const GlobalOverview = lazy(() => import('../pages/public/GlobalOverview'));
+const ISP = lazy(() => import('../pages/public/ISP'));
+const Disorders = lazy(() => import('../pages/private/Disorders'));
+const Average = lazy(() => import('../pages/private/Average'));
+const LastDisorders = lazy(() => import('../pages/private/LastDisorders'));
+const PrivateDashboard = lazy(() => import('../pages/private/PrivateDashboard'));
+const Operators = lazy(() => import('../pages/public/Operators'));
+const CurrentTraffic = lazy(() => import('../pages/public/CurrentTraffic'));
+const Chart = lazy(() => import('../pages/private/Chat'));
 import SpeedTest from "../pages/public/SpeedTest";
 
 export const mainRoutes = [
@@ -63,5 +64,10 @@ export const privateMainRoutes = [
     path: "/private/average",
     element: <Average />,
     title: "All Average",
+  },
+  {
+    path: "/private/chat",
+    element: <Chart />,
+    title: "chatBot",
   },
 ];
