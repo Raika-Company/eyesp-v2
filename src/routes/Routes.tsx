@@ -9,6 +9,8 @@ const LastDisorders = lazy(() => import('../pages/private/LastDisorders'));
 const PrivateDashboard = lazy(() => import('../pages/private/PrivateDashboard'));
 const Operators = lazy(() => import('../pages/public/Operators'));
 const CurrentTraffic = lazy(() => import('../pages/public/CurrentTraffic'));
+const Chart = lazy(() => import('../pages/private/Chat'));
+
 
 export const mainRoutes = [
   {
@@ -58,5 +60,10 @@ export const privateMainRoutes = [
     path: "/private/average",
     element: <Average />,
     title: "All Average",
+  },
+  {
+    path: "/private/chat",
+    element: <Chart />,
+    title: "chatBot",
   },
 ];

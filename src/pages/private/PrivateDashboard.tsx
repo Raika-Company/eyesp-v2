@@ -1,5 +1,9 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
+<<<<<<< HEAD
 import { FC } from "react";
+=======
+import { FC, useState } from "react";
+>>>>>>> 8baf9d66c3a91341dd4ed517f67b659f9abf3369
 import LeftSide from "../../features/private_dashboard/LeftSide";
 import RightSide from "../../features/private_dashboard/RightSide";
 import Map from "../../components/ui/Map";
@@ -9,6 +13,31 @@ const PrivateDashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+<<<<<<< HEAD
+=======
+
+  return (
+    // The code that surely will be changed.
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#000",
+        marginY: "auto",
+        marginX: "1.5rem",
+      }}
+    >
+      <Box
+        sx={{
+          borderRadius: "1rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+          boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
+>>>>>>> 8baf9d66c3a91341dd4ed517f67b659f9abf3369
 
   const outerBoxStyle = {
     minHeight: "100vh",

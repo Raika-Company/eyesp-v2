@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent, useContext, FC } from "react";
 import {
   Box,
   Button,
@@ -7,37 +7,42 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AiIcon from "../../assets/images/ai.svg";
 import IspAndProvinces from "../../assets/images/isp-province.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
-import BadgedValue from "./ـcomponents/BadgedValue";
 import InfoBox from "../../components/ui/InfoBox";
 import { ISPListDisplay } from "../dashboard/RightSide";
 import { InternalISPList } from "../dashboard/LeftSide";
+import { MessageContext } from "../../context/MessageContext";
+import BadgedValue from "./ـcomponents/BadgedValue";
 
-type Message = {
+interface Message {
   id: number;
   text: string;
   time: string;
-};
+}
 
-const aiMessages = [
+const aiMessages: Message[] = [
   {
     id: 1,
     text: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون ",
     time: "امروز 22:30",
   },
 ];
-const RightSide: React.FC = () => {
+
+const RightSide: FC = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const chatRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<Message[]>(aiMessages);
   const [enteredMessage, setEnteredMessage] = useState<string>("");
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const context = useContext(MessageContext);
+
 
   useEffect(() => {
     if (chatRef.current)
@@ -47,20 +52,34 @@ const RightSide: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!enteredMessage.trim()) return;
-    const newMessage: Message = {
-      id: messages.length + 1,
-      text: enteredMessage,
-      time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
-    };
-    setMessages([...messages, newMessage]);
+
+    if (context?.setMessage) {
+      context.setMessage(enteredMessage);
+      navigate("/private/chat");
+    }
+
+    setMessages(prevMessages => [
+      ...prevMessages,
+      {
+        id: messages.length + 1,
+        text: enteredMessage,
+        time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
+      },
+    ]);
     setEnteredMessage("");
   };
+
 
   const clearMessages = () => setMessages([]);
 
   const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
   };
+
+  useEffect(() => {
+    if (chatRef.current)
+      chatRef.current.scrollTop = chatRef.current?.scrollHeight;
+  }, [messages]);
 
   return (
     <Box sx={getStyle(isXlgScreen)}>
