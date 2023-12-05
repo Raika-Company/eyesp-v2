@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
+
+    <script type="text/javascript" src="/speedtest.js"></script>
+    <script>
+      const s = new Speedtest(); //create speedtest object
+      const server = {
+        name: "demo",
+        server: "https://server1.eyesp.live",
+        dlURL: "download/test",
+        ulURL: "upload/server1",
+        pingURL: "empty",
+        getIpURL: "",
+      };
+      s.setSelectedServer(server);
+      window.speedtest = s;
+    </script>
   </head>
   <body>
     <div id="root"></div>

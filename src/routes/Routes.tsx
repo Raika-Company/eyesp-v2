@@ -1,4 +1,3 @@
-// import { lazy } from "react";
 import { lazy } from 'react';
 const Dashboard = lazy(() => import('../pages/public/Dashboard'));
 const GlobalOverview = lazy(() => import('../pages/public/GlobalOverview'));
@@ -10,7 +9,7 @@ const PrivateDashboard = lazy(() => import('../pages/private/PrivateDashboard'))
 const Operators = lazy(() => import('../pages/public/Operators'));
 const CurrentTraffic = lazy(() => import('../pages/public/CurrentTraffic'));
 const Chart = lazy(() => import('../pages/private/Chat'));
-
+import SpeedTest from "../pages/public/SpeedTest";
 
 export const mainRoutes = [
   {
@@ -47,6 +46,11 @@ export const mainRoutes = [
     path: "/current-traffic",
     element: <CurrentTraffic />,
     title: "Current-traffic",
+  },
+  {
+    path: "/speed-test",
+    element: <SpeedTest />,
+    title: "Speed-Test",
   },
 ];
 

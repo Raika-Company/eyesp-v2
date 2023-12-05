@@ -168,7 +168,12 @@ const LeftSide: React.FC = () => {
               </Stack>
             </Button>
             <Button>
-              <Link to="/disorders">
+              <Link
+                style={{
+                  textDecoration: "none",
+                }}
+                to="/disorders"
+              >
                 <Stack direction="row" gap={0.5} alignItems="center">
                   <Typography
                     sx={{
@@ -223,6 +228,7 @@ const LeftSide: React.FC = () => {
           component={Link}
           to="/last-disorders"
           sx={{
+            textDecoration: "none",
             cursor: "pointer",
             alignItems: "center",
             marginX: "1rem",
