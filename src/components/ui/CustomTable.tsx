@@ -59,7 +59,7 @@ const HorizontalLine = styled(Box)(() => ({
     "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
   opacity: "0.2",
 }));
-const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
+const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
   const animatedRows =
     rows.length >= 2
       ? rows
@@ -78,13 +78,13 @@ const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
         <TableHead
           sx={{
             ".css-2s229y-MuiTableCell-root,.css-lt8975-MuiTableCell-root, .css-167oed0-MuiTableCell-root,.css-o4v5rt-MuiTableCell-root,.css-gsxlzn-MuiTableCell-root,.css-10kadzj-MuiTableCell-root":
-              {border: "none"},
+              { border: "none" },
           }}
         >
           <RowBox>
             {cellHeaders.map((header, idx) => (
               <TableCell
-                sx={{borderBottom: "none"}}
+                sx={{ borderBottom: "none" }}
                 align={"right"}
                 component="th"
                 scope="row"
@@ -94,7 +94,7 @@ const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
               </TableCell>
             ))}
           </RowBox>
-          <Stack style={{width: "100%", padding: "10px 0"}}>
+          <Stack style={{ width: "100%", padding: "10px 0" }}>
             <Divider />
           </Stack>
         </TableHead>
@@ -107,12 +107,12 @@ const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
               <>
                 <RowBox
                   sx={{
-                    "td, th": {border: 0},
+                    "td, th": { border: 0 },
                     height: "70px",
                     animation: `${fadeIn} 1s ease-in-out ${animationDelay} forwards`,
                   }}
                 >
-                  <TableCell align="right" sx={{color: "white"}}>
+                  <TableCell align="right" sx={{ color: "white" }}>
                     <Box
                       sx={{
                         display: "flex",
@@ -131,10 +131,10 @@ const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
                       <span>{row.hour}</span>
                     </Box>
                   </TableCell>
-                  <TableCell align="right" sx={{color: "white"}}>
+                  <TableCell align="right" sx={{ color: "white" }}>
                     {row.categoryDis}
                   </TableCell>
-                  <TableCell align="right" sx={{color: "white"}}>
+                  <TableCell align="right" sx={{ color: "white" }}>
                     {row.causeDis}
                   </TableCell>
                   <TableCell align="right">
@@ -149,7 +149,7 @@ const CustomTable: React.FC<Props> = ({cellHeaders, isAI, rows, delay}) => {
                         کمک از هوش مصنوعی
                       </Button>
                     ) : (
-                      <Typography sx={{color: handleColor}}>
+                      <Typography sx={{ color: handleColor }}>
                         {row.handle}
                       </Typography>
                     )}
