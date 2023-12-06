@@ -1,13 +1,15 @@
+import { lazy } from "react";
+import { useState } from "react";
 import { Box, FormControl, MenuItem } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
-import Header from "../../components/ui/Header";
 import AverageIcon from "../../assets/images/average-icon.svg";
-import CircleChart from "../../components/ui/CircularChart";
-import TaggedText from "../../components/ui/TaggedText";
 import { SelectButton } from "../../components/ui/SelectButton";
 import ispData from "../../../public/data/ISPData.json";
-import { useState } from "react";
 import { SelectChangeEvent } from "@mui/material/Select";
+
+const Header = lazy(() => import("../../components/ui/Header"));
+const CircleChart = lazy(() => import("../../components/ui/CircularChart"));
+const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
 
 interface ChartData {
   id: number;
@@ -110,9 +112,6 @@ const Average = () => {
       }}
     >
       <Header
-        // isButton={true}
-        // clickedButton={clickedButton}
-        // handleButtonClick={handleButtonClick}
         title="میانگین کلی"
         selectTitle="ترتیب بر اساس"
         iconPath={AverageIcon}
@@ -201,17 +200,6 @@ const Average = () => {
         >
           <MenuItem value="خروجی">خروجی</MenuItem>
         </SelectButton>
-        {/* <img
-          src={ArrowDown}
-          style={{
-            position: "absolute",
-            top: "52%",
-            transform: "translateY(-50%)",
-            left: "1rem",
-            width: "13px",
-            height: "13px",
-          }}
-        /> */}
       </FormControl>
     </Box>
   );

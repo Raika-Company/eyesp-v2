@@ -1,10 +1,10 @@
-import {Button, styled, ButtonProps} from "@mui/material";
+import { Button, styled, ButtonProps } from "@mui/material";
 
 interface CustomButtonProps extends ButtonProps {
   clicked: boolean;
 }
 
-const HeaderButton = styled(Button)<CustomButtonProps>(({clicked}) => ({
+const HeaderButton = styled(Button)<CustomButtonProps>(({ clicked }) => ({
   height: "60%",
   paddingInline: "3rem",
   borderRadius: "3.43106rem",
@@ -16,4 +16,4 @@ const HeaderButton = styled(Button)<CustomButtonProps>(({clicked}) => ({
   },
 }));
 
-export {HeaderButton};
+export { HeaderButton };

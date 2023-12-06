@@ -1,12 +1,12 @@
-import {Box, Typography} from "@mui/material";
-import {FC} from "react";
+import { Box, Typography } from "@mui/material";
+import { FC } from "react";
 
 interface Props {
   title: string;
   value: string;
 }
 
-const TaggedText: FC<Props> = ({title, value}) => {
+const TaggedText: FC<Props> = ({ title, value }) => {
   return (
     <Box
       sx={{

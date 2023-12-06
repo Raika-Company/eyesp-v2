@@ -13,12 +13,12 @@ import IspAndProvinces from "../../assets/images/isp-province.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
-import BadgedValue from "./components/BadgedValue";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
 import { ISPListDisplay } from "../dashboard/RightSide";
 import { InternalISPList } from "../dashboard/LeftSide";
 import { Link } from "react-router-dom";
+import BadgedValue from "./ـcomponents/BadgedValue";
 
 const aiMessages = [
   {

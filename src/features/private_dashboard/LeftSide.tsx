@@ -12,7 +12,7 @@ import HistoryInfo from "../../assets/images/history-info.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import Average from "../../assets/images/speed-compare.svg";
 import FullArrowGreen from "../../assets/images/fullarrow-left-green.svg";
-import TaggedNumber from "./components/TaggedNumber";
+import TaggedNumber from "./ـcomponents/TaggedNumber";
 import CircleChart from "../../components/ui/CircularChart";
 import InfoBox from "../../components/ui/InfoBox";
 import { Fragment } from "react";
@@ -64,22 +64,18 @@ const conflictsHistoryMockData = [
   },
 ];
 
-const LeftSide = () => {
-  const navigate = useNavigate();
+const LeftSide: React.FC = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
+  const navigateToAverage = () => {
+    navigate("/private/average");
+  };
+
   return (
-    <Box
-      sx={{
-        height: "100%",
-        display: "grid",
-        gap: isXlgScreen ? "1.5rem" : "1rem",
-        maxWidth: isXlgScreen ? "initial" : "19rem",
-        justifySelf: isMDScreen ? "start" : "",
-      }}
-    >
+    <Box sx={getBoxStyle(isXlgScreen, isMDScreen)}>
       <InfoBox title="اختلال‌های فعلی" iconPath={Conflicts}>
         <Box
           sx={{
@@ -255,7 +251,7 @@ const LeftSide = () => {
         title="میانگین کلی"
         iconPath={Average}
         hasButton
-        onClick={() => navigate("/private/average")}
+        onClick={navigateToAverage}
       >
         <Box
           sx={{
@@ -302,5 +298,13 @@ const LeftSide = () => {
     </Box>
   );
 };
+
+const getBoxStyle = (isXlgScreen: boolean, isMDScreen: boolean) => ({
+  height: "100%",
+  display: "grid",
+  gap: isXlgScreen ? "1.5rem" : "1rem",
+  maxWidth: isXlgScreen ? "initial" : "19rem",
+  justifySelf: isMDScreen ? "start" : "",
+});
 
 export default LeftSide;

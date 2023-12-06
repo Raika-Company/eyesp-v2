@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, lazy, useState } from "react";
 import {
   Box,
   Grid,
@@ -8,10 +8,10 @@ import {
   useTheme,
 } from "@mui/material";
 import wifiLogo from "../../assets/images/wifi.svg";
-import Chart from "../../features/charts/Chart";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { SelectButton } from "../../components/ui/SelectButton";
-import Header from "../../components/ui/Header";
+const Chart = lazy(() => import("../../features/charts/Chart"));
+const Header = lazy(() => import("../../components/ui/Header"));
 
 /**
  * Props definition for the CurrentTraffic component.

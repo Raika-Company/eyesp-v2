@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 
 interface Props {
   provinceList?: {
@@ -6,7 +6,7 @@ interface Props {
   };
 }
 
-const MapPaths: FC<Props> = ({provinceList = {}}) => {
+const MapPaths: FC<Props> = ({ provinceList = {} }) => {
   return (
     <>
       <g filter="url(#filter0_d_26_140)">

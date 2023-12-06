@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 import {
   Box,
   FormControl,
@@ -6,26 +6,25 @@ import {
   SelectChangeEvent,
   Typography,
   useMediaQuery,
-  Theme,
   Button,
+  useTheme,
 } from "@mui/material";
-import {SelectButton} from "./SelectButton";
-import provincesCoords from "../../../public/data/provincesCoords.json";
-import ISPData from "../../..//public/data/ISPData.json";
-import Category from "../../../public/data/category.json";
-import {useNavigate} from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import {HeaderButton} from "./HeaderButton";
+import { useNavigate } from "react-router-dom";
+import { SelectButton } from "./SelectButton";
+import { HeaderButton } from "./HeaderButton";
+import provincesCoords from "../../../public/data/provincesCoords.json";
+import ISPData from "../../../public/data/ISPData.json";
+import Category from "../../../public/data/category.json";
 
 interface Props {
   title: string;
   selectTitle: string;
   iconPath: string;
-  // children: ReactNode;
   onClick?: () => void;
-  handleISPChange?: (event: SelectChangeEvent<unknown>) => void;
-  handleProvinceChange?: (event: SelectChangeEvent<unknown>) => void;
-  handleCategory?: (event: SelectChangeEvent<unknown>) => void;
+  handleISPChange?: (event: SelectChangeEvent<string>) => void;
+  handleProvinceChange?: (event: SelectChangeEvent<string>) => void;
+  handleCategory?: (event: SelectChangeEvent<string>) => void;
   category?: string;
   province?: string;
   selectedISP?: string;
@@ -49,205 +48,94 @@ const Header: FC<Props> = ({
   clickedButton,
 }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const isSmScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("sm")
-  );
-  const isMdScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("md")
-  );
-
-  return (
+  const renderButtons = () => (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        paddingTop: isMdScreen ? "2rem" : "0",
-        justifyContent: "space-between",
-        background: "#232629",
-        paddingX: "1rem",
+        height: "70px",
+        gap: "1rem",
+        flexDirection: isSmScreen ? "column" : "row",
+        marginTop: isSmScreen ? ".5rem" : "1.8rem",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          order: isMdScreen ? 1 : 0,
-          gap: "1rem",
-        }}
+      <HeaderButton
+        clicked={clickedButton === "province"}
+        onClick={() => handleButtonClick?.("province")}
       >
-        <img alt="iconPath" src={iconPath} />
+        استان
+      </HeaderButton>
+      <HeaderButton
+        clicked={clickedButton === "operator"}
+        onClick={() => handleButtonClick?.("operator")}
+      >
+        اپراتور
+      </HeaderButton>
+      <HeaderButton
+        clicked={clickedButton === "type"}
+        onClick={() => handleButtonClick?.("type")}
+      >
+        نوع
+      </HeaderButton>
+    </Box>
+  );
+
+  const renderSelects = () => (
+    <>
+      <SelectControl
+        label="انتخاب استان"
+        value={province || ""}
+        onChange={handleProvinceChange}
+        options={getOptions(provincesCoords)}
+      />
+      <SelectControl
+        label="انتخاب اپراتور"
+        value={selectedISP || ""}
+        onChange={handleISPChange}
+        options={ISPData.map((isp) => ({
+          value: isp.ISPname,
+          label: isp.ISPname,
+        }))}
+      />
+      <SelectControl
+        label="نوع"
+        value={category || ""}
+        onChange={handleCategory}
+        options={Category.map((cat) => ({ value: cat.name, label: cat.name }))}
+      />
+    </>
+  );
+
+  return (
+    <Box sx={getMainBoxStyle(isMdScreen)}>
+      <Box sx={getIconBoxStyle(isMdScreen)}>
+        <img alt="Icon" src={iconPath} />
         <Typography color="white" fontSize={isMdScreen ? "1rem" : "1.3rem"}>
           {title}
         </Typography>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: isSmScreen ? "column" : "row",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 0.5,
-          margin: isSmScreen ? "0 auto" : isMdScreen ? "0 auto" : "0",
-          // marginLeft: isSmScreen ? "1px" : isMdScreen ? "7rem" : "35rem",
-          order: isMdScreen ? 3 : 1,
-          transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(17rem)",
-        }}
-      >
+      <Box sx={getSelectsBoxStyle(isSmScreen, isMdScreen)}>
         <Typography
           color="#7A7775"
           mr={isSmScreen ? "0" : isMdScreen ? "0.5rem" : "3rem"}
         >
           {selectTitle}
         </Typography>
-        <Box
-          display="flex"
-          gap={isSmScreen ? 0 : 2}
-          flexWrap={isSmScreen ? "wrap" : "nowrap"}
-          alignItems="center"
-          justifyContent="center"
-        >
-          {isButton === true ? (
-            <>
-              <Box
-                sx={{
-                  display: "flex",
-                  height: "70px",
-                  gap: "1rem",
-                  marginTop: isSmScreen ? ".5rem" : "1.8rem",
-                }}
-              >
-                {" "}
-                <HeaderButton
-                  clicked={clickedButton === "province"}
-                  onClick={() =>
-                    handleButtonClick ? handleButtonClick("province") : null
-                  }
-                >
-                  استان
-                </HeaderButton>
-                <HeaderButton
-                  clicked={clickedButton === "operator"}
-                  onClick={() =>
-                    handleButtonClick ? handleButtonClick("operator") : null
-                  }
-                >
-                  اپراتور
-                </HeaderButton>
-                <HeaderButton
-                  clicked={clickedButton === "type"}
-                  onClick={() =>
-                    handleButtonClick ? handleButtonClick("type") : null
-                  }
-                >
-                  نوع
-                </HeaderButton>
-              </Box>
-            </>
-          ) : (
-            <>
-              <FormControl
-                sx={{
-                  height: "70px",
-                  marginTop: isSmScreen ? ".5rem" : "1.8rem",
-                }}
-              >
-                <SelectButton
-                  labelId="change-province-label"
-                  id="change-province"
-                  label="انتخاب استان"
-                  value={province}
-                  onChange={handleProvinceChange}
-                  displayEmpty
-                  sx={{
-                    paddingLeft: "2rem",
-                    minWidth: "10rem",
-                    // background: isDark ? "" : "#FFF",
-                  }}
-                >
-                  <MenuItem value=""> استان</MenuItem>
-                  {Object.keys(provincesCoords).map((provinceName) => (
-                    <MenuItem key={provinceName} value={provinceName}>
-                      {
-                        provincesCoords[
-                          provinceName as keyof typeof provincesCoords
-                        ].name
-                      }
-                    </MenuItem>
-                  ))}
-                </SelectButton>
-              </FormControl>
-              <FormControl
-                sx={{
-                  height: "70px",
-                  marginTop: isSmScreen ? "0" : "1.8rem",
-                }}
-              >
-                <SelectButton
-                  labelId="change-province-label"
-                  id="change-province"
-                  label="انتخاب اپراتور"
-                  value={selectedISP}
-                  onChange={handleISPChange}
-                  displayEmpty
-                  sx={{
-                    paddingLeft: "2rem",
-                    minWidth: "10rem",
-                    // background: isDark ? "" : "#FFF",
-                  }}
-                >
-                  <MenuItem value=""> اپراتور</MenuItem>
-                  {ISPData.map((isp) => (
-                    <MenuItem key={isp.ISPname} value={isp.ISPname}>
-                      {isp.ISPname}
-                    </MenuItem>
-                  ))}
-                </SelectButton>
-              </FormControl>
-              <FormControl
-                sx={{height: "70px", marginTop: isSmScreen ? "0" : "1.8rem"}}
-              >
-                <SelectButton
-                  labelId="change-category-label"
-                  id="change-category-select"
-                  label=""
-                  value={category}
-                  onChange={handleCategory}
-                  displayEmpty
-                  sx={{
-                    paddingLeft: "2rem",
-                    minWidth: "10rem",
-                    // background: isDark ? "" : "#FFF",
-                  }}
-                >
-                  <MenuItem value=""> نوع</MenuItem>
-                  {Category.map((item) => (
-                    <MenuItem key={item.name} value={item.name}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </SelectButton>
-              </FormControl>{" "}
-            </>
-          )}{" "}
+        <Box sx={getSelectsWrapperStyle(isSmScreen)}>
+          {isButton ? renderButtons() : renderSelects()}
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-          order: isMdScreen ? 2 : 2,
-        }}
-      >
+      <Box sx={getBackButtonBoxStyle(isMdScreen)}>
         <Button
           onClick={() => navigate(-1)}
           variant="contained"
-          sx={{bgcolor: "transparent", boxShadow: 0, color: "#fff"}}
-          endIcon={<KeyboardBackspaceIcon sx={{mr: "0.4em"}} />}
+          sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
+          endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}
         >
           بازگشت
         </Button>
@@ -256,34 +144,79 @@ const Header: FC<Props> = ({
   );
 };
 
+const getMainBoxStyle = (isMdScreen: boolean) => ({
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  paddingTop: isMdScreen ? "2rem" : "0",
+  justifyContent: "space-between",
+  background: "#232629",
+  paddingX: "1rem",
+});
+
+const getIconBoxStyle = (isMdScreen: boolean) => ({
+  display: "flex",
+  alignItems: "center",
+  order: isMdScreen ? 1 : 0,
+  gap: "1rem",
+});
+
+const getSelectsBoxStyle = (isSmScreen: boolean, isMdScreen: boolean) => ({
+  display: "flex",
+  flexDirection: isSmScreen ? "column" : "row",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: 0.5,
+  margin: isSmScreen ? "0 auto" : isMdScreen ? "0 auto" : "0",
+  order: isMdScreen ? 3 : 1,
+  transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(17rem)",
+});
+
+const getSelectsWrapperStyle = (isSmScreen: boolean) => ({
+  display: "flex",
+  gap: isSmScreen ? 0 : 2,
+  flexWrap: isSmScreen ? "wrap" : "nowrap",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
+const getBackButtonBoxStyle = (isMdScreen: boolean) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: 2,
+  order: isMdScreen ? 2 : 2,
+});
+
+const getOptions = (data: typeof provincesCoords) =>
+  Object.keys(data).map((key) => ({
+    value: key,
+    label: data[key as keyof typeof provincesCoords].name,
+  }));
+
+const SelectControl: FC<{
+  label: string;
+  value: string;
+  onChange?: (event: SelectChangeEvent<string>) => void; // تغییر اینجا
+  options: { value: string; label: string }[];
+}> = ({ label, value, onChange, options }) => (
+  <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
+    <SelectButton
+      labelId={`${label}-label`}
+      id={`${label}-select`}
+      label={label}
+      value={value}
+      onChange={(e) => onChange?.(e as SelectChangeEvent<string>)}
+      displayEmpty
+      sx={{ paddingLeft: "2rem", minWidth: "10rem" }}
+    >
+      <MenuItem value="">{label}</MenuItem>
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </SelectButton>
+  </FormControl>
+);
+
 export default Header;
-// <Box
-//     sx={{
-//       // flexGrow: "1",
-//       // borderRadius: ".5rem",
-//       boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
-//       background: "#2B2E31",
-//       border: "1px solid #2B2E31",
-//       display: "flex",
-//       flexDirection: "column",
-//     }}
-//   ></Box>
-// <Box
-//   sx={{
-//     display: "flex",
-//     alignItems: "center",
-//     gap: 2,
-//     order: isMdScreen ? 2 : 2,
-//   }}
-// >
-//   <Typography>بازگشت</Typography>
-//   <img
-//     alt="arrowLeft"
-//     onClick={onClick}
-//     src={ArrowLeft}
-//     style={{
-//       marginLeft: ".5rem",
-//       cursor: "pointer",
-//     }}
-//   />
-// </Box>;
