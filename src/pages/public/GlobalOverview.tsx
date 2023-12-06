@@ -9,9 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { GetGlobalOverview } from "../../services/GlobalOverview";
 import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
+import { GetGlobalOverview } from "../../services/globalOverview";
 
 /**
  * Represents a single history item with status code and check time.
@@ -26,7 +26,7 @@ type HistoryItem = {
  * domain, and a history of status checks.
  */
 type WebsiteData = {
-  name: string; // Name of the website.
+  name?: string; // Name of the website.
   domain: string; // Domain of the website.
   history: HistoryItem[]; // Array of history items representing the checks done on the website.
 };
@@ -55,7 +55,7 @@ interface OutagePeriod {
   end: string; // End time of the outage period.
 }
 
-const REFRESH_INTERVAL = 60000;
+export const REFRESH_INTERVAL = 60000;
 
 const getStatusMessage = (statusCode: number): string =>
   errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
@@ -63,12 +63,10 @@ const getStatusMessage = (statusCode: number): string =>
 const getTitleMessage = (statusCode: number): string =>
   errorTitel[statusCode] || "عنوان خطای ناشناخته";
 
-const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
-
 const useHistoryData = () =>
   useQuery<HistoryData, Error>({
     queryKey: ["historyDataKey"],
-    queryFn: fetchHistoryData,
+    queryFn: GetGlobalOverview,
     staleTime: REFRESH_INTERVAL,
     refetchOnWindowFocus: false,
   });
