@@ -63,7 +63,8 @@ const getStatusMessage = (statusCode: number): string =>
 const getTitleMessage = (statusCode: number): string =>
   errorTitel[statusCode] || "عنوان خطای ناشناخته";
 
-const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
+const fetchHistoryData = (): Promise<HistoryData> =>
+  GetGlobalOverview().then(response => response.data as HistoryData);
 
 const useHistoryData = () =>
   useQuery<HistoryData, Error>({
@@ -186,8 +187,8 @@ const DataBlock: React.FC<DataBlockProps> = React.memo(
                 value === 200
                   ? "#7FCD9F"
                   : value === 503
-                  ? "#f19e2c"
-                  : "#E93F3F"
+                    ? "#f19e2c"
+                    : "#E93F3F"
               }
               fontSize="1.3rem"
             >
