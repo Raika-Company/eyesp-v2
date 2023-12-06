@@ -10,6 +10,7 @@ import {
   Typography,
   styled,
   keyframes,
+  TableRow,
 } from "@mui/material";
 
 type DataRow = {
@@ -33,7 +34,7 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-const RowBox = styled(Box)(() => ({
+const RowBox = styled(TableRow)(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
@@ -51,13 +52,14 @@ const RowBox = styled(Box)(() => ({
   },
 }));
 
-const HorizontalLine = styled(Box)(() => ({
-  margin: "0 auto",
-  width: "400px",
-  height: "2px",
+const HorizontalLine = styled(TableCell)(() => ({
   background:
     "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+  height: "2px",
   opacity: "0.2",
+  borderBottom: "none",
+  padding: 0,
+  // Add more styles as needed
 }));
 const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
   const animatedRows =
@@ -66,7 +68,6 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
       : [...rows, ...Array(2 - rows.length).fill(rows[0])];
   const getColorBasedOnHandle = (handle: string) => {
     const color = handle === "برطرف شده" ? "green" : "red";
-    console.log(`Handle: ${handle}, Color: ${color}`);
     return color;
   };
   return (
@@ -86,7 +87,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
               <TableCell
                 sx={{ borderBottom: "none" }}
                 align={"right"}
-                component="th"
+                component="th" // Ensure this is a th
                 scope="row"
                 key={idx}
               >
@@ -94,17 +95,17 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
               </TableCell>
             ))}
           </RowBox>
-          <Stack style={{ width: "100%", padding: "10px 0" }}>
-            <Divider />
-          </Stack>
         </TableHead>
+        <Stack sx={{ width: "100%", padding: "10px 0" }}>
+          <Divider />
+        </Stack>
         <TableBody>
           {animatedRows?.map((row, idx) => {
             const animationDelay = delay ? `${idx * delay}s` : "0s";
             const handleColor = getColorBasedOnHandle(row.handle);
 
             return (
-              <>
+              <TableRow key={idx}>
                 <RowBox
                   sx={{
                     "td, th": { border: 0 },
@@ -155,8 +156,8 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                     )}
                   </TableCell>
                 </RowBox>
-                <HorizontalLine />
-              </>
+                <HorizontalLine colSpan={cellHeaders.length} />
+              </TableRow>
             );
           })}
         </TableBody>
