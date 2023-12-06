@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    speedtest: any;
+  }
+}
+
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DownloadGrad from "../../assets/images/download-grad.png";
@@ -54,23 +60,23 @@ const SpeedTest = () => {
   const [startTest, setStartTest] = useState<boolean>(false);
 
   const [startAnimate, setStartAnimate] = useState(false);
-  const [status, setStatus] = useState(2);
-  const [isTestEnds, setIsTestEnds] = useState(false);
+  const [_status, setStatus] = useState(2);
+  // const [isTestEnds, setIsTestEnds] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const [latency, setLatency] = useState(0);
+  const [_latency, setLatency] = useState(0);
   const [download, setDownload] = useState(0);
-  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [_downloadProgress, setDownloadProgress] = useState(0);
   const [upload, setUpload] = useState(0);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
   // const [testType, setTestType] = useState("تست دقیق");
-  const [testStateNumber, setTestStateNumber] = useState(0);
+  const [_testStateNumber, setTestStateNumber] = useState(0);
   const [isDl, setIsDl] = useState(true);
-  const [clientIp, setClientIp] = useState("");
+  const [_clientIp, setClientIp] = useState("");
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-  const [openSelectServer, setOpenSelectServer] = useState(false);
+  // const [openSelectServer, setOpenSelectServer] = useState(false);
 
   useEffect(() => {
     axios
@@ -87,7 +93,7 @@ const SpeedTest = () => {
     }
   };
 
-  const [servers, setServers] = useState([]);
+  const [_servers, setServers] = useState([]);
 
   useEffect(() => {
     const getServers = async () => {
@@ -177,15 +183,16 @@ const SpeedTest = () => {
 
   const handleStart = () => {
     if (window.speedtest.getState() === STATUS_MAP.RUNNING) {
+      return;
     } else {
-      window.speedtest.onupdate = (data) => {
+      window.speedtest.onupdate = (data: any) => {
         const {
           dlProgress,
           dlStatus,
           ulProgress,
           ulStatus,
-          pingStatus,
-          jitterStatus,
+          // pingStatus,
+          // jitterStatus,
           testState,
         } = data;
         setTestStateNumber(testState);
@@ -248,8 +255,6 @@ const SpeedTest = () => {
     }
   };
 
-  console.log(download, upload);
-
   return (
     <Box
       sx={{
@@ -262,7 +267,7 @@ const SpeedTest = () => {
       }}
     >
       <Box
-        onClick={() => handleStartTestClick()}
+        onClick={handleStartTestClick}
         onMouseEnter={() => setHoverButton(true)}
         onMouseLeave={() => setHoverButton(false)}
         sx={{

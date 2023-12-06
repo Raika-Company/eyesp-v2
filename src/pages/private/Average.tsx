@@ -137,9 +137,10 @@ const Average = () => {
             display: "flex",
             flexWrap: "wrap",
             marginX: "auto",
-            width: "75%",
+            width: "70%",
             justifyContent: "center",
-            gap: "6rem",
+            columnGap: "4rem",
+            rowGap: "3rem",
           }}
         >
           {mockChartData.map((chart) => (
@@ -161,7 +162,7 @@ const Average = () => {
         </Box>
         <Box
           sx={{
-            width: "60%",
+            width: "70%",
             marginX: "auto",
             marginBottom: "5rem",
             justifyContent: "center",

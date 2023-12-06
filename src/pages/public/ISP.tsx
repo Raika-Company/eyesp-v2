@@ -14,8 +14,9 @@ import zitel from "../../assets/images/zitel.png";
 import mokhaberat from "../../assets/images/mokhaberat.png";
 import hamrahaval from "../../assets/images/hamrahaval.png";
 import irancell from "../../assets/images/irancell.svg";
-import { GetGlobalOverview } from "../../services/GlobalOverview";
+import { GetGlobalOverview } from "../../services/globalOverview";
 import { Link } from "react-router-dom";
+import { REFRESH_INTERVAL } from "./GlobalOverview";
 
 /**
  * Type for individual history items in the website data.
@@ -40,7 +41,7 @@ type WebsiteData = {
 /**
  * Type for an array of website data.
  */
-type HistoryData = WebsiteData[];
+export type HistoryData = WebsiteData[];
 
 /**
  * Props for the DataBlock component.
@@ -77,20 +78,14 @@ const errorTitel: Record<number, string> = {
 };
 
 /**
- * Fetches history data using the GetGlobalOverview service.
- * @returns A Promise of HistoryData.
- */
-const fetchHistoryData = (): Promise<HistoryData> =>
-  GetGlobalOverview().then(response => response.data as HistoryData);
-/**
  * Custom hook for using the history data query.
  * @returns The query object containing the data, error, loading state, etc.
  */
 const useHistoryData = () =>
-  useQuery<WebsiteData[], Error>({
+  useQuery<HistoryData, Error>({
     queryKey: ["historyDataKey"],
-    queryFn: fetchHistoryData,
-    staleTime: 60000,
+    queryFn: GetGlobalOverview,
+    staleTime: REFRESH_INTERVAL,
     refetchOnWindowFocus: false,
   });
 

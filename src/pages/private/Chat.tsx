@@ -1,9 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext } from "react";
 import { MessageContext } from "../../context/MessageContext";
-interface props {}
 
-const Chat: FC<props> = ({}) => {
+const Chat: FC = () => {
   const { message } = useContext(MessageContext) || {};
 
   return (
