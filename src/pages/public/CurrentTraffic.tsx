@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import { FC, useState } from "react";
 import {
   Box,
   Grid,
@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import wifiLogo from "../../assets/images/wifi.svg";
 import Chart from "../../features/charts/Chart";
-import {SelectChangeEvent} from "@mui/material/Select";
-import {SelectButton} from "../../components/ui/SelectButton";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { SelectButton } from "../../components/ui/SelectButton";
 import Header from "../../components/ui/Header";
 
 /**
