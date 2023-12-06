@@ -12,6 +12,7 @@ import {
   keyframes,
   TableRow,
 } from "@mui/material";
+import React from "react";
 
 type DataRow = {
   date: string;
@@ -20,12 +21,14 @@ type DataRow = {
   causeDis: string;
   handle: string;
 };
+
 interface Props {
   cellHeaders: string[];
   isAI?: boolean;
   rows: DataRow[];
   delay?: number;
 }
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -34,12 +37,54 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
+
 const RowBox = styled(TableRow)(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: "1rem",
   paddingRight: "3rem",
+  position: "relative",
+  "::after": {
+    content: "''",
+    position: "absolute",
+    width: "30%",
+    height: "2px",
+    left: "10%",
+    right: "35%",
+    top: "100%",
+    alignItems: "center",
+    background:
+      "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
+    opacity: "0.2",
+  },
+  "& > *": {
+    flex: 1,
+    fontFamily: "PeydaLight",
+  },
+  "& > *:nth-of-type(1)": {
+    flex: 0.5,
+  },
+  "& > *:nth-of-type(4)": {
+    flex: 0.3,
+  },
+}));
+const RowBoxHead = styled(TableRow)(() => ({
+  display: "flex",
+  alignItems: "center",
+  borderRadius: "1rem",
+  paddingRight: "3rem",
+  position: "relative",
 
+  "::after": {
+    content: "''",
+    position: "absolute",
+    width: "100%",
+    right: "0",
+    height: "2px",
+    backgroundColor: "white",
+    top: "100%",
+    alignItems: "center",
+  },
   "& > *": {
     flex: 1,
     fontFamily: "PeydaLight",
@@ -52,24 +97,17 @@ const RowBox = styled(TableRow)(() => ({
   },
 }));
 
-const HorizontalLine = styled(TableCell)(() => ({
-  background:
-    "linear-gradient(90deg,rgba(255, 255, 255, 0) 0%,rgb(255, 255, 255) 49.48%,rgba(255, 255, 255, 0) 100%)",
-  height: "2px",
-  opacity: "0.2",
-  borderBottom: "none",
-  padding: 0,
-  // Add more styles as needed
-}));
 const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
   const animatedRows =
     rows.length >= 2
       ? rows
       : [...rows, ...Array(2 - rows.length).fill(rows[0])];
+
   const getColorBasedOnHandle = (handle: string) => {
     const color = handle === "برطرف شده" ? "green" : "red";
     return color;
   };
+
   return (
     <>
       <MuiTable
@@ -82,30 +120,28 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
               { border: "none" },
           }}
         >
-          <RowBox>
+          <RowBoxHead>
             {cellHeaders.map((header, idx) => (
               <TableCell
                 sx={{ borderBottom: "none" }}
                 align={"right"}
-                component="th" // Ensure this is a th
+                component="th"
                 scope="row"
                 key={idx}
               >
                 {header}
               </TableCell>
             ))}
-          </RowBox>
+          </RowBoxHead>
         </TableHead>
-        <Stack sx={{ width: "100%", padding: "10px 0" }}>
-          <Divider />
-        </Stack>
+
         <TableBody>
-          {animatedRows?.map((row, idx) => {
+          {animatedRows.map((row, idx) => {
             const animationDelay = delay ? `${idx * delay}s` : "0s";
             const handleColor = getColorBasedOnHandle(row.handle);
 
             return (
-              <TableRow key={idx}>
+              <React.Fragment key={idx}>
                 <RowBox
                   sx={{
                     "td, th": { border: 0 },
@@ -156,8 +192,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                     )}
                   </TableCell>
                 </RowBox>
-                <HorizontalLine colSpan={cellHeaders.length} />
-              </TableRow>
+              </React.Fragment>
             );
           })}
         </TableBody>
