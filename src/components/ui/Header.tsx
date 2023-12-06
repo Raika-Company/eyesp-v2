@@ -63,19 +63,19 @@ const Header: FC<Props> = ({
       }}
     >
       <HeaderButton
-        clicked={clickedButton === "province"}
+        clicked={clickedButton === "province" ? "true" : "false"} // Convert boolean to string
         onClick={() => handleButtonClick?.("province")}
       >
         استان
       </HeaderButton>
       <HeaderButton
-        clicked={clickedButton === "operator"}
+        clicked={clickedButton === "operator" ? "true" : "false"} // Convert boolean to string
         onClick={() => handleButtonClick?.("operator")}
       >
         اپراتور
       </HeaderButton>
       <HeaderButton
-        clicked={clickedButton === "type"}
+        clicked={clickedButton === "type" ? "true" : "false"} // Convert boolean to string
         onClick={() => handleButtonClick?.("type")}
       >
         نوع
