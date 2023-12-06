@@ -80,8 +80,8 @@ const errorTitel: Record<number, string> = {
  * Fetches history data using the GetGlobalOverview service.
  * @returns A Promise of HistoryData.
  */
-const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
-
+const fetchHistoryData = (): Promise<HistoryData> =>
+  GetGlobalOverview().then(response => response.data as HistoryData);
 /**
  * Custom hook for using the history data query.
  * @returns The query object containing the data, error, loading state, etc.

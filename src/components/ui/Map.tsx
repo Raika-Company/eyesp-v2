@@ -5,7 +5,7 @@ import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
 import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import { ProvinceCoordsType, getColor, mockProvinceData, mockProvinceListsForPrivate } from './MapHelpers';
+import { ProvinceCoordsType, getColor, mockProvinceData, mockProvinceListsForPrivate } from '../../lib/MapHelpers';
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
