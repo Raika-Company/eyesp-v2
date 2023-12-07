@@ -272,8 +272,8 @@ const SpeedTest = () => {
         onMouseLeave={() => setHoverButton(false)}
         sx={{
           position: "absolute",
-          width: "200px",
-          height: "200px",
+          width: "300px",
+          height: "300px",
           borderRadius: "50%",
           display: "flex",
           alignItems: "center",
@@ -319,12 +319,12 @@ const SpeedTest = () => {
           sx={{
             position: "absolute",
             top: "50%",
-            transform: "translateY(-40%)",
+            transform: "translateY(-50%)",
             zIndex: "1",
             fontSize: "3.5rem",
           }}
         >
-          GO
+          شروع
         </Typography>
         <Box
           sx={{
