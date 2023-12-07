@@ -1,5 +1,5 @@
-import {FC} from "react";
-import {Box, keyframes} from "@mui/material";
+import { FC } from "react";
+import { Box, keyframes } from "@mui/material";
 
 interface Props {
   isActive: boolean;
@@ -14,7 +14,7 @@ from {
   }
 `;
 
-const ActiveIndicator: FC<Props> = ({isActive}) => {
+const ActiveIndicator: FC<Props> = ({ isActive }) => {
   const innerColor = isActive ? "#BA3535" : "#84D1A3";
 
   return (

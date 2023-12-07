@@ -1,12 +1,7 @@
-import axios from "axios";
-import config from "./config";
+import { HistoryData } from "../pages/public/ISP";
+import ClientApi from "./clientApi";
 
-const { rootAddress } = config;
+const axios = new ClientApi();
 
-export const GetGlobalOverview = async () => {
-  const response = await axios.get(rootAddress);
-  if (response.status !== 200) {
-    throw new Error("Network response was not ok");
-  }
-  return response.data;
-};
+export const GetGlobalOverview = async (): Promise<HistoryData> =>
+  await axios.http.get("https://status.eyesp.live/get-history/lastminute");

@@ -1,5 +1,5 @@
-import {Box, Typography, useMediaQuery, useTheme} from "@mui/material";
-import {FC} from "react";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { FC } from "react";
 
 interface Props {
   value: number;
@@ -7,7 +7,7 @@ interface Props {
   unit: string;
 }
 
-const NumberValue: FC<Props> = ({value, title, unit}) => {
+const NumberValue: FC<Props> = ({ value, title, unit }) => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
 

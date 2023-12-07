@@ -13,12 +13,12 @@ import IspAndProvinces from "../../assets/images/isp-province.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
-import BadgedValue from "./components/BadgedValue";
-import {FormEvent, useEffect, useRef, useState} from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
-import {ISPListDisplay} from "../dashboard/RightSide";
-import {InternalISPList} from "../dashboard/LeftSide";
-import {Link} from "react-router-dom";
+import { ISPListDisplay } from "../dashboard/RightSide";
+import { InternalISPList } from "../dashboard/LeftSide";
+import { Link } from "react-router-dom";
+import BadgedValue from "./ـcomponents/BadgedValue";
 
 const aiMessages = [
   {
@@ -42,7 +42,7 @@ const RightSide = () => {
   const chatRef = useRef<HTMLDivElement | null>(null);
 
   const [messages, setMessages] =
-    useState<{id: number; text: string; time: string}[]>(aiMessages);
+    useState<{ id: number; text: string; time: string }[]>(aiMessages);
 
   const [enteredMessage, setEnteredMessage] = useState<string>("");
   const handleSubmit = (e: FormEvent) => {
@@ -186,7 +186,7 @@ const RightSide = () => {
         onClick={toggleDialog}
       >
         <ISPListDisplay
-          style={{direction: "ltr"}}
+          style={{ direction: "ltr" }}
           isp={InternalISPList}
           isLimited={true}
         />
@@ -195,6 +195,7 @@ const RightSide = () => {
           component={Link}
           to="/isp"
           sx={{
+            textDecoration: "none",
             cursor: "pointer",
             alignItems: "center",
             marginX: "1rem",
@@ -204,7 +205,7 @@ const RightSide = () => {
             },
           }}
         >
-          <Button sx={{color: "#7FCD9F"}}>مشاهده جذئیات بیشتر</Button>
+          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{

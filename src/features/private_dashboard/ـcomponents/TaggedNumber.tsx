@@ -1,12 +1,12 @@
-import {Stack, Typography} from "@mui/material";
-import {FC} from "react";
+import { Stack, Typography } from "@mui/material";
+import { FC } from "react";
 
 interface Props {
   value: number;
   title: string;
 }
 
-const TaggedNumber: FC<Props> = ({value, title}) => {
+const TaggedNumber: FC<Props> = ({ value, title }) => {
   return (
     <Stack alignItems="center">
       <Typography

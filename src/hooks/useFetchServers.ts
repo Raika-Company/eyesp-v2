@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { io } from 'socket.io-client';
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 const useFetchServers = () => {
-  const [servers, setServers] = useState([]);
+  const [servers, setServers] = useState<any[]>([]);
   const [isFetchingServers, setIsFetchingServers] = useState(false);
   const [bestServerUrl, setBestServerUrl] = useState(null);
 
@@ -13,7 +13,9 @@ const useFetchServers = () => {
     const fetchServers = async () => {
       try {
         setIsFetchingServers(true);
-        const response = await axios.get('https://server1.eyesp.live/servers');
+        const response = await axios.get("https://server1.eyesp.live/servers");
+        console.log(response);
+
         setServers(response.data);
         setIsFetchingServers(false);
       } catch (error) {
@@ -29,7 +31,7 @@ const useFetchServers = () => {
 
   const pingServer = async (url: string) => {
     return new Promise((resolve) => {
-      const socket = io(url, { transports: ['websocket'] });
+      const socket = io(url, { transports: ["websocket"] });
 
       let pingCount = 0;
       let minLatency = Infinity;
@@ -50,7 +52,7 @@ const useFetchServers = () => {
         }
       });
 
-      socket.on('connect_error', () => {
+      socket.on("connect_error", () => {
         // console.error('Error connecting to server:', err);
         resolve(Infinity);
         socket.disconnect();
@@ -70,7 +72,9 @@ const useFetchServers = () => {
       return;
     }
 
-    const latencies = await Promise.all(servers.map(server => pingServer(server.url)));
+    const latencies: any[] = await Promise.all(
+      servers.map((server) => pingServer(server.url))
+    );
     const minLatency = Math.min(...latencies);
     const bestServer = servers[latencies.indexOf(minLatency)];
     console.log(`Best server: ${bestServer.url} with latency: ${minLatency}ms`);

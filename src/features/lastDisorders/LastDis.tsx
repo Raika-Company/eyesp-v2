@@ -1,10 +1,10 @@
+import React, { useState, useCallback } from "react";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
 import Header from "../../components/ui/Header";
-// import { SelectChangeEvent } from "@mui/material/Select";
-import history from "../../assets/images/history.svg";
 import CustomTable from "../../components/ui/CustomTable";
-import {useState} from "react";
-import {Box, Theme, useMediaQuery} from "@mui/material";
+import history from "../../assets/images/history.svg";
 import provinceCompare from "../../../public/data/provinceCompare.json";
+
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
 interface ProvinceCompare {
@@ -15,32 +15,32 @@ interface ProvinceCompare {
   handle: string;
 }
 
-const LastDis = () => {
-  const [rows, setRows] = useState(provinceCompare);
+const LastDis: React.FC = () => {
+  const theme = useTheme();
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [rows, setRows] = useState<ProvinceCompare[]>(provinceCompare);
   const [clickedButton, setClickedButton] = useState<string | null>(null);
 
-  // const [visibleRows, setVisibleRows] = useState(6);
-  const isXsScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("xs")
-  );
-  const isMdScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("md")
-  );
-
-  const randomizeRows = (data: ProvinceCompare[]) => {
+  const randomizeRows = useCallback((data: ProvinceCompare[]) => {
     if (data.length <= 2) {
       return data;
     }
     const randomSize = Math.max(Math.floor(Math.random() * data.length), 2);
     return data.slice(0, randomSize);
-  };
+  }, []);
 
-  const handleButtonClick = (buttonName: string) => {
-    setRows(randomizeRows(provinceCompare));
-    setClickedButton(buttonName);
-  };
+  const handleButtonClick = useCallback(
+    (buttonName: string) => {
+      setRows(randomizeRows(provinceCompare));
+      setClickedButton(buttonName);
+    },
+    [randomizeRows]
+  );
+
   return (
-    <div style={{backgroundColor: "#2B2E31", height: "100dvh"}}>
+    <div style={{ backgroundColor: "#2B2E31", height: "100vh" }}>
       <Header
         isButton={true}
         clickedButton={clickedButton}
@@ -48,17 +48,14 @@ const LastDis = () => {
         title="اختلالات فعلی"
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
-        // onClick={toggleDialog}
-      ></Header>
+      />
       <Box
         sx={{
           overflowX: isMdScreen ? "scroll" : "hidden",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        <Box sx={{width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%"}}>
+        <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
           <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={true} />
         </Box>
       </Box>

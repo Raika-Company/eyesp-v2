@@ -1,15 +1,22 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Typography, Container, Button, CircularProgress, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Container,
+  Button,
+  CircularProgress,
+  Tooltip,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import WestIcon from "@mui/icons-material/West";
 import zitel from "../../assets/images/zitel.png";
 import mokhaberat from "../../assets/images/mokhaberat.png";
 import hamrahaval from "../../assets/images/hamrahaval.png";
-
-import { GetGlobalOverview } from "../../services/GlobalOverview";
-import { Link } from "react-router-dom";
 import irancell from "../../assets/images/irancell.svg";
+import { GetGlobalOverview } from "../../services/globalOverview";
+import { Link } from "react-router-dom";
+import { REFRESH_INTERVAL } from "./GlobalOverview";
 
 /**
  * Type for individual history items in the website data.
@@ -34,7 +41,7 @@ type WebsiteData = {
 /**
  * Type for an array of website data.
  */
-type HistoryData = WebsiteData[];
+export type HistoryData = WebsiteData[];
 
 /**
  * Props for the DataBlock component.
@@ -71,20 +78,14 @@ const errorTitel: Record<number, string> = {
 };
 
 /**
- * Fetches history data using the GetGlobalOverview service.
- * @returns A Promise of HistoryData.
- */
-const fetchHistoryData = (): Promise<HistoryData> => GetGlobalOverview();
-
-/**
  * Custom hook for using the history data query.
  * @returns The query object containing the data, error, loading state, etc.
  */
 const useHistoryData = () =>
-  useQuery<WebsiteData[], Error>({
+  useQuery<HistoryData, Error>({
     queryKey: ["historyDataKey"],
-    queryFn: fetchHistoryData,
-    staleTime: 60000,
+    queryFn: GetGlobalOverview,
+    staleTime: REFRESH_INTERVAL,
     refetchOnWindowFocus: false,
   });
 
