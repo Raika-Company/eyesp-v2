@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Divider,
   Table as MuiTable,
-  Stack,
   TableBody,
   TableCell,
   TableHead,
