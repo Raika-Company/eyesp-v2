@@ -11,7 +11,7 @@ import {
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
-import { GetGlobalOverview } from "../../services/globalOverview";
+import { GetGlobalOverview } from "../../services/GlobalOverview";
 
 /**
  * Represents a single history item with status code and check time.

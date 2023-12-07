@@ -14,7 +14,7 @@ import zitel from "../../assets/images/zitel.png";
 import mokhaberat from "../../assets/images/mokhaberat.png";
 import hamrahaval from "../../assets/images/hamrahaval.png";
 import irancell from "../../assets/images/irancell.svg";
-import { GetGlobalOverview } from "../../services/globalOverview";
+import { GetGlobalOverview } from "../../services/GlobalOverview";
 import { Link } from "react-router-dom";
 import { REFRESH_INTERVAL } from "./GlobalOverview";
 
