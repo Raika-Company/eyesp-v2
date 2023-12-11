@@ -263,7 +263,7 @@ const SpeedTest = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#141526",
+        background: "#000",
       }}
     >
       <Box
@@ -272,8 +272,8 @@ const SpeedTest = () => {
         onMouseLeave={() => setHoverButton(false)}
         sx={{
           position: "absolute",
-          width: "200px",
-          height: "200px",
+          width: "300px",
+          height: "300px",
           borderRadius: "50%",
           display: "flex",
           alignItems: "center",
@@ -319,12 +319,12 @@ const SpeedTest = () => {
           sx={{
             position: "absolute",
             top: "50%",
-            transform: "translateY(-40%)",
+            transform: "translateY(-50%)",
             zIndex: "1",
             fontSize: "3.5rem",
           }}
         >
-          GO
+          شروع
         </Typography>
         <Box
           sx={{
@@ -421,7 +421,7 @@ const SpeedTest = () => {
                 left: "50%",
                 borderTopRightRadius: "50%",
                 borderTopLeftRadius: "50%",
-                background: "#141526",
+                background: "#000",
                 zIndex: "15",
                 animation: "borderFadeIn .3s 1.3s both",
                 "@keyframes borderFadeIn": {
@@ -443,7 +443,7 @@ const SpeedTest = () => {
                 position: "absolute",
                 width: "0",
                 height: "0",
-                background: "#141526",
+                background: "#000",
                 zIndex: "10",
                 borderRadius: "50%",
                 animation: "fadeInsideOut .3s 1s ease-in both",
@@ -629,7 +629,7 @@ const SpeedTest = () => {
                 "&::after": {
                   content: '""',
                   position: "absolute",
-                  background: "#141526",
+                  background: "#000",
                   transform: "rotate(45deg)",
                   width: "50px",
                   height: "80px",
@@ -641,7 +641,7 @@ const SpeedTest = () => {
                 "&::before": {
                   content: '""',
                   position: "absolute",
-                  background: "#141526",
+                  background: "#000",
                   transform: "rotate(45deg)",
                   width: "50px",
                   height: "40px",
