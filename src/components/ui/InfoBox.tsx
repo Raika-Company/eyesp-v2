@@ -40,7 +40,9 @@ const InfoBox: FC<Props> = ({
           borderTopLeftRadius: ".5rem",
           paddingY: ".6rem",
           paddingX: "1rem",
+          cursor: "pointer",
         }}
+        onClick={onClick}
       >
         <Stack
           direction="row"
@@ -61,7 +63,6 @@ const InfoBox: FC<Props> = ({
         </Stack>
         {hasButton && (
           <img
-            onClick={onClick}
             src={ArrowLeft}
             style={{
               marginLeft: ".5rem",
