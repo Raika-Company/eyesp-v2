@@ -16,7 +16,7 @@ import hamrahaval from "../../assets/images/hamrahaval.png";
 import irancell from "../../assets/images/irancell.svg";
 import { Link } from "react-router-dom";
 import { REFRESH_INTERVAL } from "./GlobalOverview";
-import { GetGlobalOverview } from "../../services/globalOverview";
+import { GetGlobalOverview } from "../../services/GlobalOverview";
 
 /**
  * Type for individual history items in the website data.
