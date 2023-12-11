@@ -14,7 +14,7 @@ const useFetchServers = () => {
       try {
         setIsFetchingServers(true);
         const response = await axios.get("https://server1.eyesp.live/servers");
-        console.log(response);
+        // console.log(response);
 
         setServers(response.data);
         setIsFetchingServers(false);

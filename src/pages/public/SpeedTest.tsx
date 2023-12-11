@@ -263,7 +263,7 @@ const SpeedTest = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#000",
+        background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
       <Box
@@ -296,7 +296,7 @@ const SpeedTest = () => {
             height: "100%",
             borderRadius: "50%",
             border: "8px",
-            background: "linear-gradient(to bottom, cyan, #498dd6)",
+            background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
             "-webkit-mask":
               "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             "-webkit-mask-composite": "xor",
@@ -322,6 +322,7 @@ const SpeedTest = () => {
             transform: "translateY(-50%)",
             zIndex: "1",
             fontSize: "3.5rem",
+            opacity: ".7",
           }}
         >
           شروع
@@ -334,7 +335,7 @@ const SpeedTest = () => {
             width: "100%",
             height: "100%",
             borderRadius: "50%",
-            border: "2px #26c5dd solid",
+            border: "2px #7FCD9F solid",
             opacity: "0",
             animation: hoverButton ? "" : "startRing 3.5s 3.5s infinite linear",
 
@@ -421,7 +422,7 @@ const SpeedTest = () => {
                 left: "50%",
                 borderTopRightRadius: "50%",
                 borderTopLeftRadius: "50%",
-                background: "#000",
+                background: "#0F1114",
                 zIndex: "15",
                 animation: "borderFadeIn .3s 1.3s both",
                 "@keyframes borderFadeIn": {
@@ -443,7 +444,7 @@ const SpeedTest = () => {
                 position: "absolute",
                 width: "0",
                 height: "0",
-                background: "#000",
+                background: "#0F1114",
                 zIndex: "10",
                 borderRadius: "50%",
                 animation: "fadeInsideOut .3s 1s ease-in both",
@@ -629,7 +630,7 @@ const SpeedTest = () => {
                 "&::after": {
                   content: '""',
                   position: "absolute",
-                  background: "#000",
+                  background: "#0F1114",
                   transform: "rotate(45deg)",
                   width: "50px",
                   height: "80px",
@@ -641,7 +642,7 @@ const SpeedTest = () => {
                 "&::before": {
                   content: '""',
                   position: "absolute",
-                  background: "#000",
+                  background: "#0F1114",
                   transform: "rotate(45deg)",
                   width: "50px",
                   height: "40px",
