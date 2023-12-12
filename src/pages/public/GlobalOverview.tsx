@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Box,
@@ -7,11 +7,17 @@ import {
   Button,
   Tooltip,
   Typography,
+  Modal,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import { GetGlobalOverview } from "../../services/GlobalOverview";
+import { convertToPersianDate } from "../../utils/convertToPersianDate";
+
+
 
 /**
  * Represents a single history item with status code and check time.
@@ -184,8 +190,8 @@ const DataBlock: React.FC<DataBlockProps> = React.memo(
                 value === 200
                   ? "#7FCD9F"
                   : value === 503
-                  ? "#f19e2c"
-                  : "#E93F3F"
+                    ? "#f19e2c"
+                    : "#E93F3F"
               }
               fontSize="1.3rem"
             >
@@ -226,29 +232,6 @@ const DataBlock: React.FC<DataBlockProps> = React.memo(
     );
   }
 );
-
-/**
- * Converts a standard date string to a Persian date string.
- * @param dateString - The ISO date string to be converted.
- * @returns A string representing the date in Persian calendar format.
- */
-const convertToPersianDate = (dateString: string): string => {
-  const date = new Date(dateString);
-
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    calendar: "persian",
-    numberingSystem: "arabext",
-    localeMatcher: "best fit",
-  };
-  const formatter = new Intl.DateTimeFormat("fa-IR-u-nu-latn", options);
-  return formatter.format(date);
-};
 
 /**
  * Functional component to display information about a single website
@@ -317,7 +300,22 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
  * It fetches and displays data for multiple websites and their historical statuses.
  */
 const GlobalOverview: React.FC = () => {
+  const theme = useTheme();
   const { data, error, isLoading, refetch } = useHistoryData();
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        setShowModal(true);
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -327,7 +325,7 @@ const GlobalOverview: React.FC = () => {
     return () => clearInterval(intervalId);
   }, [refetch]);
 
-  if (isLoading) {
+  if (isLoading && !showModal) {
     return (
       <div
         style={{
@@ -339,6 +337,21 @@ const GlobalOverview: React.FC = () => {
       >
         <CircularProgress color="primary" />
       </div>
+    );
+  }
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  if (showModal) {
+    return (
+      <Modal open={showModal}>
+        <Box sx={{ textAlign: "center", bgcolor: "#2c2e32", width: isSmScreen ? "22rem" : "27rem", p: isSmScreen ? "1em" : "3em", mx: "auto", my: "20em", borderRadius: ".5em" }}>
+          <Typography sx={{ mb: "2em", fontSize: "0.9rem" }}>متاسفانه در حال حاضر قادر به دریافت دیتا نمی باشیم, <br /> لطفا بعدا امتحان کنید.</Typography>
+          <Button sx={{ bgcolor: "#4D765F" }} onClick={() => { window.location.reload(); handleCloseModal(); }}>بروزرسانی صفحه</Button>
+          <Button sx={{ bgcolor: "#4D765F", mr: "2em" }} onClick={() => { navigate("/"); handleCloseModal(); }}>رفتن به صفحه اصلی</Button>
+        </Box>
+      </Modal >
     );
   }
 
