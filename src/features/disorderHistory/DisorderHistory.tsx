@@ -39,8 +39,9 @@ const DisorderHistory: React.FC = () => {
           handleButtonClick={handleButtonClick}
           title="تاریخچه اختلالات"
           iconPath={history}
-          selectTitle="ترتیب بندی براساس:"
-          isButton={true}
+          selectTitle=""
+          isButton={false}
+          isButtonSelect={false}
         />
         <Box
           sx={{

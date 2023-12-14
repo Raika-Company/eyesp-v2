@@ -29,6 +29,7 @@ interface Props {
   province?: string;
   selectedISP?: string;
   isButton?: boolean;
+  isButtonSelect?: boolean;
   handleButtonClick?: (buttonName: string) => void;
   clickedButton?: string | null;
 }
@@ -44,6 +45,7 @@ const Header: FC<Props> = ({
   handleISPChange,
   handleCategory,
   isButton,
+  isButtonSelect,
   handleButtonClick,
   clickedButton,
 }) => {
@@ -126,7 +128,7 @@ const Header: FC<Props> = ({
           {selectTitle}
         </Typography>
         <Box sx={getSelectsWrapperStyle(isSmScreen)}>
-          {isButton ? renderButtons() : renderSelects()}
+          {isButton ? renderButtons() : isButtonSelect ? renderSelects() : null}
         </Box>
       </Box>
 
@@ -196,7 +198,7 @@ const getOptions = (data: typeof provincesCoords) =>
 const SelectControl: FC<{
   label: string;
   value: string;
-  onChange?: (event: SelectChangeEvent<string>) => void; // تغییر اینجا
+  onChange?: (event: SelectChangeEvent<string>) => void;
   options: { value: string; label: string }[];
 }> = ({ label, value, onChange, options }) => (
   <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
