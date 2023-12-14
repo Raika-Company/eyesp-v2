@@ -297,9 +297,9 @@ const SpeedTest = () => {
             borderRadius: "50%",
             border: "8px",
             background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
-            "-webkit-mask":
+            WebkitMask:
               "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            "-webkit-mask-composite": "xor",
+            WebkitMaskComposite: "xor",
             maskComposite: "exclude",
           },
 
@@ -665,6 +665,7 @@ const SpeedTest = () => {
               }}
             >
               <img
+                alt="isdl"
                 src={isDl ? DownloadGrad : UploadGrad}
                 style={{
                   position: "absolute",
