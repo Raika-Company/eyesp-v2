@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   getAhvazPingState,
   getAlborzPingState,
-  getTehranPingState,
 } from "../../../services/pingStatus";
 
 export const useISPState = () => {

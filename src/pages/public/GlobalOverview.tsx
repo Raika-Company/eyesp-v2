@@ -17,48 +17,29 @@ import WestIcon from "@mui/icons-material/West";
 import { GetGlobalOverview } from "../../services/GlobalOverview";
 import { convertToPersianDate } from "../../utils/convertToPersianDate";
 
-
-
-/**
- * Represents a single history item with status code and check time.
- */
 type HistoryItem = {
-  status: number; // HTTP status code of the website check.
-  check_time: string; // Time at which the check was performed, in ISO format.
+  status: number;
+  check_time: string;
 };
 
-/**
- * Represents the data structure for a website, including its name,
- * domain, and a history of status checks.
- */
 type WebsiteData = {
-  name?: string; // Name of the website.
-  domain: string; // Domain of the website.
-  history: HistoryItem[]; // Array of history items representing the checks done on the website.
+  name?: string;
+  domain: string;
+  history: HistoryItem[];
 };
 
-/**
- * Type alias for an array of WebsiteData.
- */
 type HistoryData = WebsiteData[];
 
-/**
- * Props for the DataBlock component, containing the value of the status
- * and the check time.
- */
 interface DataBlockProps {
-  value: number; // The HTTP status code of the website check.
-  checkTime: string; // The time at which the check was performed.
-  nextCheckTime?: string; // Optional next check time.
-  data: WebsiteData; // Data about the website.
+  value: number; 
+  checkTime: string;
+  nextCheckTime?: string;
+  data: WebsiteData;
 }
 
-/**
- * Represents a period of outage with start and end times.
- */
 interface OutagePeriod {
-  start: string; // Start time of the outage period.
-  end: string; // End time of the outage period.
+  start: string;
+  end: string;
 }
 
 export const REFRESH_INTERVAL = 60000;
@@ -91,14 +72,6 @@ const errorTitel: Record<number, string> = {
   503: "⚠️ قطعی جزئی",
 };
 
-/**
- * Generates a status message based on status code and outage period.
- * @param statusCode - HTTP status code.
- * @param startTime - Start time of the outage.
- * @param endTime - End time of the outage.
- * @param isOngoing - Flag indicating if the outage is ongoing.
- * @returns A string message detailing the status.
- */
 const generateStatusMessage = (
   statusCode: number,
   startTime: string,
@@ -123,11 +96,6 @@ const generateStatusMessage = (
   return message;
 };
 
-/**
- * Finds outage periods based on the history of status checks.
- * @param history - Array of history items for a website.
- * @returns Array of OutagePeriod objects indicating the outage periods.
- */
 const findOutagePeriods = (history: HistoryItem[]): OutagePeriod[] => {
   const outagePeriods: OutagePeriod[] = [];
   let outageStart: string | null = null;
@@ -154,13 +122,6 @@ const findOutagePeriods = (history: HistoryItem[]): OutagePeriod[] => {
   return outagePeriods;
 };
 
-/**
- * Functional component to display a single data block representing the status
- * of a website check at a specific time.
- *
- * @param value - The HTTP status code of the website check.
- * @param checkTime - The time at which the check was performed.
- */
 const DataBlock: React.FC<DataBlockProps> = React.memo(
   ({ value, checkTime, data }) => {
     const errorMessage = getStatusMessage(value);
@@ -233,11 +194,6 @@ const DataBlock: React.FC<DataBlockProps> = React.memo(
   }
 );
 
-/**
- * Functional component to display information about a single website
- * including its history of status checks.
- * @param data - Data pertaining to a single website.
- */
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   <Grid
     xs={12}
@@ -295,10 +251,6 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   </Grid>
 );
 
-/**
- * Component for rendering the global overview of website statuses.
- * It fetches and displays data for multiple websites and their historical statuses.
- */
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
   const { data, error, isLoading, refetch } = useHistoryData();

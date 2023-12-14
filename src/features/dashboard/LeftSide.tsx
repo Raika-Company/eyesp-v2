@@ -226,10 +226,11 @@ const LeftSide: React.FC = () => {
 
       <ISPSection
         title="وضعیت مراکز داده بین‌الملل"
+        //@ts-ignore
         ispList={ExternalISPList}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
-        hasMoreInfo={true}
+        hasMoreInfo={false}
       />
     </Box>
   );
