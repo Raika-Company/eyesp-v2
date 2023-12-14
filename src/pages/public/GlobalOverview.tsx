@@ -279,7 +279,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
       padding="1rem"
     >
       {data.history.map((historyItem, index) => {
-        const nextCheckTime = data.history[index + 1]?.check_time; // این خط را در داخل تابع map قرار دهید
+        const nextCheckTime = data.history[index + 1]?.check_time;
 
         return (
           <DataBlock
