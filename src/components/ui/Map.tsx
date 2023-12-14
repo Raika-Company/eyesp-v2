@@ -7,7 +7,6 @@ import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
 import {
   ProvinceCoordsType,
-  getColor,
   getProvinceData,
   mockProvinceListsForPrivate,
 } from "../../lib/MapHelpers";

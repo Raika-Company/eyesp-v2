@@ -14,10 +14,12 @@ import ActiveIndicator from "./ـcomponents/ActiveIndicator";
 import ChartIcon from "../../assets/images/chart-icon.svg";
 import { Link } from "react-router-dom";
 import InfoBox from "../../components/ui/InfoBox";
+import { useISPState } from "./hooks/useISPState";
 
 interface ISP {
   id: number;
   name: string;
+  province: string;
   isActive: boolean;
   speed?: string; // Include if speed is a property for any of the ISPs
 }
@@ -25,6 +27,11 @@ interface ISP {
 interface ISPSectionProps {
   title: string;
   ispList: ISP[];
+  ispStatus?: {
+    [x: string]: {
+      isActive: boolean;
+    };
+  } | null;
   link: string;
   isXlgScreen: boolean;
   hasMoreInfo?: boolean;
@@ -34,18 +41,21 @@ export const InternalISPList = [
   {
     id: 1,
     name: "زیرساخت - کرج",
+    province: "alborz",
     isActive: false,
     speed: "6200",
   },
   {
     id: 2,
     name: "زیر ساخت - اهواز",
+    province: "ahvaz",
     isActive: true,
     speed: "4362",
   },
   {
     id: 3,
     name: "فن آوا - تهران",
+    province: "tehran",
     isActive: true,
     speed: "862",
   },
@@ -102,6 +112,7 @@ const ExternalISPList = [
 const ISPSection: React.FC<ISPSectionProps> = ({
   title,
   ispList,
+  ispStatus,
   link,
   isXlgScreen,
   hasMoreInfo,
@@ -125,7 +136,15 @@ const ISPSection: React.FC<ISPSectionProps> = ({
             marginX=".5rem"
           >
             <Typography>{isp.name}</Typography>
-            <ActiveIndicator isActive={isp.isActive} />
+            <ActiveIndicator
+              isActive={
+                ispStatus
+                  ? ispStatus
+                    ? ispStatus[isp.province].isActive
+                    : true
+                  : true
+              }
+            />
           </Stack>
           <Divider
             style={{
@@ -166,6 +185,7 @@ const LeftSide: React.FC = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const ispStateData = useISPState();
 
   return (
     <Box
@@ -198,6 +218,7 @@ const LeftSide: React.FC = () => {
       <ISPSection
         title="وضعیت مراکز داده‌داخلی"
         ispList={InternalISPList}
+        ispStatus={ispStateData}
         link="/isp"
         isXlgScreen={isXlgScreen}
         hasMoreInfo={false}
