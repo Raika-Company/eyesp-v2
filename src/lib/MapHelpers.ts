@@ -27,6 +27,8 @@ export const getProvinceData = async () => {
       color: getColor(data[0].IXP.color, data[0].IGW.color),
       igw: getStatus(data[0].IGW.color),
       ipx: getStatus(data[0].IXP.color),
+      igwColor: getStateColor(data[0].IGW.color),
+      ipxColor: getStateColor(data[0].IXP.color),
     },
     {
       id: 2,
@@ -34,6 +36,8 @@ export const getProvinceData = async () => {
       color: getColor(data[1].IXP.color, data[1].IGW.color),
       igw: getStatus(data[1].IGW.color),
       ipx: getStatus(data[1].IXP.color),
+      igwColor: getStateColor(data[1].IGW.color),
+      ipxColor: getStateColor(data[1].IXP.color),
     },
     {
       id: 3,
@@ -41,6 +45,8 @@ export const getProvinceData = async () => {
       color: getColor(data[2].IXP.color, data[2].IGW.color),
       igw: getStatus(data[2].IGW.color),
       ipx: getStatus(data[2].IXP.color),
+      igwColor: getStateColor(data[2].IGW.color),
+      ipxColor: getStateColor(data[2].IXP.color),
     },
   ];
 };
@@ -57,6 +63,16 @@ export const getColor = (ixp: string, igw: string): string => {
   } else if (ixp === "yellow" || igw === "yellow") {
     return "#FFF500";
   } else if (ixp === "orange" || igw === "orange") {
+    return "#FF6B6B";
+  } else return "#1CC760";
+};
+
+export const getStateColor = (value: string): string => {
+  if (value === "green") {
+    return "#1CC760";
+  } else if (value === "yellow") {
+    return "#FFF500";
+  } else if (value === "orange") {
     return "#FF6B6B";
   } else return "#1CC760";
 };
