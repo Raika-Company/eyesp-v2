@@ -175,21 +175,6 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                     fill={province.color}
                     r="8"
                   />
-                  <circle
-                    cx={provinceCoords[province.name].x}
-                    cy={provinceCoords[province.name].y}
-                    fill="transparent"
-                    onMouseEnter={(e) => {
-                      setTooltipPosition({ x: e.pageX, y: e.pageY });
-
-                      setHoveredProvince(province.name);
-                    }}
-                    onMouseLeave={() => setHoveredProvince(null)}
-                    r="20"
-                    style={{
-                      zIndex: "20",
-                    }}
-                  />
                   <AnimatedCircle
                     cx={provinceCoords[province.name].x}
                     cy={provinceCoords[province.name].y}
@@ -213,6 +198,21 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                     opacity=".2"
                     index={index}
                     r="16"
+                  />
+                  <circle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    fill="transparent"
+                    onMouseEnter={(e) => {
+                      setTooltipPosition({ x: e.pageX, y: e.pageY });
+
+                      setHoveredProvince(province.name);
+                    }}
+                    onMouseLeave={() => setHoveredProvince(null)}
+                    r="20"
+                    style={{
+                      zIndex: "20",
+                    }}
                   />
                 </Fragment>
               ))}
