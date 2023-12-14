@@ -1,3 +1,9 @@
+import {
+  getAhvazPingStatus,
+  getAlborzPingStatus,
+  getTehranPingStatus,
+} from "../services/pingStatus";
+
 export type ProvinceCoordsType = {
   [key: string]: {
     name: string;
@@ -7,43 +13,37 @@ export type ProvinceCoordsType = {
   };
 };
 
-export const mockProvinceData = [
-  {
-    id: 1,
-    name: "tehran",
-    numberOfIssues: 3,
-  },
-  {
-    id: 2,
-    name: "azerbaijan, east",
-    numberOfIssues: 1,
-  },
-  {
-    id: 3,
-    name: "khorasan, razavi",
-    numberOfIssues: 6,
-  },
-  {
-    id: 4,
-    name: "fars",
-    numberOfIssues: 1,
-  },
-  {
-    id: 5,
-    name: "isfahan",
-    numberOfIssues: 2,
-  },
-  {
-    id: 6,
-    name: "alborz",
-    numberOfIssues: 2,
-  },
-  {
-    id: 7,
-    name: "khozestan",
-    numberOfIssues: 1,
-  },
-];
+export const getProvinceData = async () => {
+  const data = await Promise.all([
+    getTehranPingStatus().then((res) => res.data),
+    getAlborzPingStatus().then((res) => res.data),
+    getAhvazPingStatus().then((res) => res.data),
+  ]);
+
+  return [
+    {
+      id: 1,
+      name: "tehran",
+      color: getColor(data[0].IXP.color, data[0].IGW.color),
+      igw: getStatus(data[0].IGW.color),
+      ipx: getStatus(data[0].IXP.color),
+    },
+    {
+      id: 2,
+      name: "alborz",
+      color: getColor(data[1].IXP.color, data[1].IGW.color),
+      igw: getStatus(data[1].IGW.color),
+      ipx: getStatus(data[1].IXP.color),
+    },
+    {
+      id: 3,
+      name: "khozestan",
+      color: getColor(data[2].IXP.color, data[2].IGW.color),
+      igw: getStatus(data[2].IGW.color),
+      ipx: getStatus(data[2].IXP.color),
+    },
+  ];
+};
 
 export const mockProvinceListsForPrivate = {
   tehran: "#BD2626",
@@ -51,12 +51,25 @@ export const mockProvinceListsForPrivate = {
   isfahan: "#7FCD9F",
 };
 
-export const getColor = (value: number): string => {
-  if (value <= 4) {
+export const getColor = (ixp: string, igw: string): string => {
+  if (ixp === "green" && igw === "green") {
     return "#1CC760";
-  } else if (value <= 9) {
+  } else if (ixp === "yellow" || igw === "yellow") {
     return "#FFF500";
-  } else {
+  } else if (ixp === "orange" || igw === "orange") {
     return "#FF6B6B";
+  } else return "#1CC760";
+};
+
+export const getStatus = (color: string): string => {
+  switch (color) {
+    case "green":
+      return "مطلوب";
+    case "yellow":
+      return "اختلالات جزيی";
+    case "orange":
+      return "اختلالات کلی";
+    default:
+      return "مطلوب";
   }
 };
