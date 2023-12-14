@@ -7,9 +7,9 @@ const config = {
 };
 
 export type AxiosReturnType<T> = {
-  statusCode: number;
+  status: number;
+  data: T;
   message: string;
-  datas: T;
 };
 
 export default config;
