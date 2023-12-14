@@ -1,7 +1,7 @@
-import { Typography, Container, Box, Button } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import { keyframes } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
-import React, { startTransition } from "react";
+import { useNavigate } from "react-router-dom";
+import { startTransition } from "react";
 
 // Keyframes for animations
 const colorSlide = keyframes`

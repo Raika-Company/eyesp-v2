@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import NumberValue from "./ـcomponents/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
@@ -19,27 +27,27 @@ interface ISPSectionProps {
   ispList: ISP[];
   link: string;
   isXlgScreen: boolean;
+  hasMoreInfo?: boolean;
 }
-
 
 export const InternalISPList = [
   {
     id: 1,
-    name: "همراه اول",
+    name: "زیرساخت - کرج",
     isActive: false,
-    speed: "15",
+    speed: "6200",
   },
   {
     id: 2,
-    name: "ایرانسل",
+    name: "زیر ساخت - اهواز",
     isActive: true,
-    speed: "12",
+    speed: "4362",
   },
   {
     id: 3,
-    name: "رایتل",
+    name: "فن آوا - تهران",
     isActive: true,
-    speed: "10",
+    speed: "862",
   },
   // {
   //   id: 3,
@@ -91,7 +99,13 @@ const ExternalISPList = [
   },
 ];
 
-const ISPSection: React.FC<ISPSectionProps> = ({ title, ispList, link, isXlgScreen }) => (
+const ISPSection: React.FC<ISPSectionProps> = ({
+  title,
+  ispList,
+  link,
+  isXlgScreen,
+  hasMoreInfo,
+}) => (
   <InfoBox title={title} iconPath={ChartIcon} hasButton={true}>
     <Box
       sx={{
@@ -122,26 +136,28 @@ const ISPSection: React.FC<ISPSectionProps> = ({ title, ispList, link, isXlgScre
         </Box>
       ))}
 
-      <Stack
-        direction="row"
-        sx={{
-          cursor: "pointer",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button component={Link} to={link} sx={{color: "#7FCD9F"}}>
-          مشاهده جذئیات بیشتر
-        </Button>
-        <img
-          src={ArrowLeftGreen}
-          style={{
+      {hasMoreInfo && (
+        <Stack
+          direction="row"
+          sx={{
             cursor: "pointer",
-            marginLeft: ".5rem",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
-          alt="Arrow icon"
-        />
-      </Stack>
+        >
+          <Button component={Link} to={link} sx={{ color: "#7FCD9F" }}>
+            مشاهده جذئیات بیشتر
+          </Button>
+          <img
+            src={ArrowLeftGreen}
+            style={{
+              cursor: "pointer",
+              marginLeft: ".5rem",
+            }}
+            alt="Arrow icon"
+          />
+        </Stack>
+      )}
     </Box>
   </InfoBox>
 );
@@ -184,6 +200,7 @@ const LeftSide: React.FC = () => {
         ispList={InternalISPList}
         link="/isp"
         isXlgScreen={isXlgScreen}
+        hasMoreInfo={false}
       />
 
       <ISPSection
@@ -191,6 +208,7 @@ const LeftSide: React.FC = () => {
         ispList={ExternalISPList}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
+        hasMoreInfo={true}
       />
     </Box>
   );
