@@ -151,7 +151,7 @@ const RightSide = () => {
       <InfoBox
         title="ترافیک فعلی (IXP,IGW)"
         iconPath={WifiIcon}
-        hasButton={true}
+        hasButton={false}
       >
         <Box
           sx={{
