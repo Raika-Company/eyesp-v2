@@ -15,7 +15,7 @@ from {
 `;
 
 const ActiveIndicator: FC<Props> = ({ isActive }) => {
-  const innerColor = isActive ? "#BA3535" : "#84D1A3";
+  const innerColor = isActive ? "#84D1A3" : "#BA3535";
 
   return (
     <Box

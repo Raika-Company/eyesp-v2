@@ -1,11 +1,15 @@
 import { Box, SvgIcon, useMediaQuery, useTheme } from "@mui/material";
-import { FC, Fragment, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
 import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import { ProvinceCoordsType, getColor, mockProvinceData, mockProvinceListsForPrivate } from '../../lib/MapHelpers';
+import {
+  ProvinceCoordsType,
+  getProvinceData,
+  mockProvinceListsForPrivate,
+} from "../../lib/MapHelpers";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -22,8 +26,14 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
 
   const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [startPos, setStartPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [startPos, setStartPos] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
@@ -74,6 +84,22 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
     }
   };
 
+  const [provinceData, setProvinceData] = useState<
+    | {
+        id: number;
+        name: string;
+        color: string;
+        igw: string;
+        ipx: string;
+      }[]
+    | null
+  >(null);
+  useEffect(() => {
+    getProvinceData().then((res) => setProvinceData(res));
+  }, []);
+
+  provinceData && console.log(provinceCoords["تهران"]);
+
   return (
     <Box
       sx={{
@@ -120,19 +146,20 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
             provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
           />
           {!isPrivate &&
-            mockProvinceData.map((province, index) => (
+            provinceData &&
+            provinceData.map((province, index) => (
               <Fragment key={province.id}>
                 <circle
                   key={province.id}
                   cx={provinceCoords[province.name].x}
                   cy={provinceCoords[province.name].y}
-                  fill={getColor(province.numberOfIssues)}
+                  fill={province.color}
                   r="8"
                 />
                 <AnimatedCircle
                   cx={provinceCoords[province.name].x}
                   cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
+                  stroke={province.color}
                   opacity=".40"
                   index={index}
                   r="8"
@@ -140,7 +167,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                 <AnimatedCircle
                   cx={provinceCoords[province.name].x}
                   cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
+                  stroke={province.color}
                   opacity=".30"
                   index={index}
                   r="12"
@@ -148,7 +175,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                 <AnimatedCircle
                   cx={provinceCoords[province.name].x}
                   cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
+                  stroke={province.color}
                   opacity=".2"
                   index={index}
                   r="16"
