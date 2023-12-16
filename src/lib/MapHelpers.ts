@@ -1,8 +1,4 @@
-import {
-  getAhvazPingStatus,
-  getAlborzPingStatus,
-  getTehranPingStatus,
-} from "../services/pingStatus";
+import api from "../services";
 
 export type ProvinceCoordsType = {
   [key: string]: {
@@ -15,9 +11,9 @@ export type ProvinceCoordsType = {
 
 export const getProvinceData = async () => {
   const data = await Promise.all([
-    getTehranPingStatus().then((res) => res.data),
-    getAlborzPingStatus().then((res) => res.data),
-    getAhvazPingStatus().then((res) => res.data),
+    api.pingStatuses.getTehranPingStatus().then((res) => res.data),
+    api.pingStatuses.getAlborzPingStatus().then((res) => res.data),
+    api.pingStatuses.getAhvazPingStatus().then((res) => res.data),
   ]);
 
   return [

@@ -12,7 +12,7 @@ interface ReturnStatusType {
   };
 }
 
-interface ReturnStateType {
+export interface ReturnStateType {
   data: {
     IGW: {
       [key in string]: {
