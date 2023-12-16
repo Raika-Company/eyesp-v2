@@ -31,16 +31,16 @@ interface ReturnStateType {
   };
 }
 export const getTehranPingStatus = async (): Promise<ReturnStatusType> =>
-  axios.get("/api-tehran");
+  axios.get("http://95.38.58.62:666/ping-status");
 export const getTehranPingState = async (): Promise<ReturnStateType> =>
-  axios.get("/tehran-state");
+  axios.get("http://95.38.58.62:555/ping-status");
 
 export const getAlborzPingStatus = async (): Promise<ReturnStatusType> =>
-  axios.get("/api-alborz");
+  axios.get("http://2.189.59.168:666/ping-status");
 export const getAlborzPingState = async (): Promise<ReturnStateType> =>
-  axios.get("/alborz-state");
+  axios.get("http://2.189.59.168:555/ping-status");
 
 export const getAhvazPingStatus = async (): Promise<ReturnStatusType> =>
-  axios.get("/api-ahvaz");
+  axios.get("http://2.189.59.146:666/ping-status");
 export const getAhvazPingState = async (): Promise<ReturnStateType> =>
-  axios.get("/ahvaz-state");
+  axios.get("http://2.189.59.146:555/ping-status");

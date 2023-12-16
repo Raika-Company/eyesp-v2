@@ -170,13 +170,6 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
               provinceData.map((province, index) => (
                 <Fragment key={province.id}>
                   <circle
-                    onMouseEnter={(e) => {
-                      setTooltipPosition({ x: e.pageX, y: e.pageY });
-
-                      setHoveredProvince(province.name);
-                    }}
-                    onMouseLeave={() => setHoveredProvince(null)}
-                    key={province.id}
                     cx={provinceCoords[province.name].x}
                     cy={provinceCoords[province.name].y}
                     fill={province.color}
@@ -205,6 +198,21 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                     opacity=".2"
                     index={index}
                     r="16"
+                  />
+                  <circle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    fill="transparent"
+                    onMouseEnter={(e) => {
+                      setTooltipPosition({ x: e.pageX, y: e.pageY });
+
+                      setHoveredProvince(province.name);
+                    }}
+                    onMouseLeave={() => setHoveredProvince(null)}
+                    r="20"
+                    style={{
+                      zIndex: "20",
+                    }}
                   />
                 </Fragment>
               ))}
