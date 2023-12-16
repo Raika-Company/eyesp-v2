@@ -32,7 +32,7 @@ const DisorderHistory: React.FC = () => {
   );
 
   return (
-    <div style={{ backgroundColor: "#2B2E31", height: "100vh" }}>
+    <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Suspense fallback={<div>Loading...</div>}>
         <Header
           clickedButton={clickedButton}
