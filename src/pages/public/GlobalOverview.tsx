@@ -218,10 +218,12 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         px: "1.5em",
       }}
     >
-      <Box sx={{ textTransform: "uppercase" }}>
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap="0.5rem" sx={{ textTransform: "uppercase" }}>
         <img
-          src={`https://status.eyesp.live/images/${data.name}.svg`}
+          src={`/images/${data.name}.svg`}
           alt={data.name}
+          width={64}
+          height={64}
         />
         <Typography
           sx={{
