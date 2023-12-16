@@ -47,10 +47,13 @@ const DisorderHistory: React.FC = () => {
           sx={{
             overflowX: isMdScreen ? "scroll" : "hidden",
             "&::-webkit-scrollbar": { display: "none" },
-            width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%",
           }}
         >
-          <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+          <Box
+            sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}
+          >
+            <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+          </Box>{" "}
         </Box>
       </Suspense>
     </div>
