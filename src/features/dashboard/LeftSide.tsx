@@ -19,7 +19,7 @@ import { useISPState } from "./hooks/useISPState";
 interface ISP {
   id: number;
   name: string;
-  province: string;
+  province?: string;
   isActive: boolean;
   speed?: string; // Include if speed is a property for any of the ISPs
 }
@@ -140,7 +140,7 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               isActive={
                 ispStatus
                   ? ispStatus
-                    ? ispStatus[isp.province].isActive
+                    ? ispStatus[isp.province!].isActive
                     : true
                   : true
               }
@@ -226,7 +226,6 @@ const LeftSide: React.FC = () => {
 
       <ISPSection
         title="وضعیت مراکز داده بین‌الملل"
-        //@ts-ignore
         ispList={ExternalISPList}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
