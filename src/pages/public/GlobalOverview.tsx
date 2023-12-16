@@ -42,22 +42,17 @@ type WebsiteData = {
   hourly_status: HourlyStatus[];
 };
 
-
-
-/**
- * Represents a single history item with status code and check time.
- */
 type HistoryItem = {
-  status: number; // HTTP status code of the website check.
-  check_time: string; // Time at which the check was performed, in ISO format.
+  status: number;
+  check_time: string;
 };
 
 /**
  * Represents a period of outage with start and end times.
  */
 interface OutagePeriod {
-  start: string; // Start time of the outage period.
-  end: string; // End time of the outage period.
+  start: string;
+  end: string;
 }
 
 export const REFRESH_INTERVAL = 60000;
@@ -88,14 +83,6 @@ const errorTitel: Record<number, string> = {
   503: "⚠️ قطعی جزئی",
 };
 
-/**
- * Generates a status message based on status code and outage period.
- * @param statusCode - HTTP status code.
- * @param startTime - Start time of the outage.
- * @param endTime - End time of the outage.
- * @param isOngoing - Flag indicating if the outage is ongoing.
- * @returns A string message detailing the status.
- */
 const generateStatusMessage = (
   statusCode: number,
   startTime: string,
@@ -110,11 +97,6 @@ const generateStatusMessage = (
   return `قطعی سرویس از ${formattedStartTime} تا ${formattedEndTime}`;
 };
 
-/**
- * Finds outage periods based on the history of status checks.
- * @param history - Array of history items for a website.
- * @returns Array of OutagePeriod objects indicating the outage periods.
- */
 const findOutagePeriods = (history: HistoryItem[]): OutagePeriod[] => {
   const outagePeriods: OutagePeriod[] = [];
   let outageStart: string | null = null;
@@ -283,10 +265,6 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
   )
 };
 
-/**
- * Component for rendering the global overview of website statuses.
- * It fetches and displays data for multiple websites and their historical statuses.
- */
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
   const [showModal, setShowModal] = useState(false);

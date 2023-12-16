@@ -1,11 +1,22 @@
-import { Box, SvgIcon, useMediaQuery, useTheme } from "@mui/material";
-import { FC, Fragment, useRef, useState } from "react";
+import {
+  Box,
+  Stack,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
 import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
-import { ProvinceCoordsType, getColor, mockProvinceData, mockProvinceListsForPrivate } from '../../lib/MapHelpers';
+import {
+  ProvinceCoordsType,
+  getProvinceData,
+  mockProvinceListsForPrivate,
+} from "../../lib/MapHelpers";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -22,8 +33,14 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
 
   const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [startPos, setStartPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [startPos, setStartPos] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
@@ -74,104 +91,209 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
     }
   };
 
+  const [provinceData, setProvinceData] = useState<
+    | {
+        id: number;
+        name: string;
+        color: string;
+        igw: string;
+        ipx: string;
+        igwColor: string;
+        ipxColor: string;
+      }[]
+    | null
+  >(null);
+  useEffect(() => {
+    getProvinceData().then((res) => setProvinceData(res));
+  }, []);
+
+  const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  console.log(tooltipPosition);
+
   return (
-    <Box
-      sx={{
-        position: "relative",
-        overflow: "hidden",
-        width: "100%",
-        height: "100%",
-        order: isLgDownScreen ? "-1" : "0",
-        gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
-      }}
-      ref={svgContainerRef}
-    >
-      <SvgIcon
-        sx={{
-          width: "100%",
-          height: "100%",
-          boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
-        }}
-      >
-        {/* <Link to="/disorders"> */}
-        <svg
-          preserveAspectRatio="none"
-          viewBox="0 0 1140 1110"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            position: "relative",
-            transform: `scale(${scale})`,
-            top: `${position.y}px`,
-            left: `${position.x}px`,
-            transition: "transform .2s ease",
-            cursor: dragging ? "grabbing" : scale !== 1 ? "pointer" : "initial",
-          }}
-          onMouseDown={startDrag}
-          onMouseMove={onDrag}
-          onMouseUp={endDrag}
-          onMouseLeave={endDrag}
-          onClick={() => {
-            if (isPrivate) return;
-            navigate("/last-disorders");
-          }}
-        >
-          <MapPaths
-            provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
-          />
-          {!isPrivate &&
-            mockProvinceData.map((province, index) => (
-              <Fragment key={province.id}>
-                <circle
-                  key={province.id}
-                  cx={provinceCoords[province.name].x}
-                  cy={provinceCoords[province.name].y}
-                  fill={getColor(province.numberOfIssues)}
-                  r="8"
-                />
-                <AnimatedCircle
-                  cx={provinceCoords[province.name].x}
-                  cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
-                  opacity=".40"
-                  index={index}
-                  r="8"
-                />
-                <AnimatedCircle
-                  cx={provinceCoords[province.name].x}
-                  cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
-                  opacity=".30"
-                  index={index}
-                  r="12"
-                />
-                <AnimatedCircle
-                  cx={provinceCoords[province.name].x}
-                  cy={provinceCoords[province.name].y}
-                  stroke={getColor(province.numberOfIssues)}
-                  opacity=".2"
-                  index={index}
-                  r="16"
-                />
-              </Fragment>
-            ))}
-        </svg>
-        {/* </Link> */}
-      </SvgIcon>
+    <>
       <Box
         sx={{
-          display: isPrivate ? "flex" : "none",
-          bottom: "1rem",
-          left: "1rem",
-          gap: "1rem",
-          position: "absolute",
-          color: "#FFF",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          height: "100%",
+          order: isLgDownScreen ? "-1" : "0",
+          gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
         }}
+        ref={svgContainerRef}
       >
-        <Button onClick={zoomIn} text="+" disable={scale === 10} />
-        <Button onClick={zoomOut} text="-" disable={scale === 1} />
+        <SvgIcon
+          sx={{
+            width: "100%",
+            height: "100%",
+            boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
+          }}
+        >
+          {/* <Link to="/disorders"> */}
+          <svg
+            preserveAspectRatio="none"
+            viewBox="0 0 1140 1110"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              position: "relative",
+              transform: `scale(${scale})`,
+              top: `${position.y}px`,
+              left: `${position.x}px`,
+              transition: "transform .2s ease",
+              cursor: dragging
+                ? "grabbing"
+                : scale !== 1
+                ? "pointer"
+                : "initial",
+            }}
+            onMouseDown={startDrag}
+            onMouseMove={onDrag}
+            onMouseUp={endDrag}
+            onMouseLeave={endDrag}
+            onClick={() => {
+              if (isPrivate) return;
+              navigate("/last-disorders");
+            }}
+          >
+            <MapPaths
+              provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
+            />
+            {!isPrivate &&
+              provinceData &&
+              provinceData.map((province, index) => (
+                <Fragment key={province.id}>
+                  <circle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    fill={province.color}
+                    r="8"
+                  />
+                  <AnimatedCircle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    stroke={province.color}
+                    opacity=".40"
+                    index={index}
+                    r="8"
+                  />
+                  <AnimatedCircle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    stroke={province.color}
+                    opacity=".30"
+                    index={index}
+                    r="12"
+                  />
+                  <AnimatedCircle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    stroke={province.color}
+                    opacity=".2"
+                    index={index}
+                    r="16"
+                  />
+                  <circle
+                    cx={provinceCoords[province.name].x}
+                    cy={provinceCoords[province.name].y}
+                    fill="transparent"
+                    onMouseEnter={(e) => {
+                      setTooltipPosition({ x: e.pageX, y: e.pageY });
+
+                      setHoveredProvince(province.name);
+                    }}
+                    onMouseLeave={() => setHoveredProvince(null)}
+                    r="20"
+                    style={{
+                      zIndex: "20",
+                    }}
+                  />
+                </Fragment>
+              ))}
+          </svg>
+          {/* </Link> */}
+        </SvgIcon>
+        <Box
+          sx={{
+            display: isPrivate ? "flex" : "none",
+            bottom: "1rem",
+            left: "1rem",
+            gap: "1rem",
+            position: "absolute",
+            color: "#FFF",
+          }}
+        >
+          <Button onClick={zoomIn} text="+" disable={scale === 10} />
+          <Button onClick={zoomOut} text="-" disable={scale === 1} />
+        </Box>
       </Box>
-    </Box>
+      {hoveredProvince && (
+        <Box
+          sx={{
+            width: "150px",
+            height: "150px",
+            borderRadius: "2rem",
+            position: "fixed",
+            zIndex: "100",
+            top: tooltipPosition!.y - 165,
+            left: tooltipPosition!.x - 80,
+            background: "#000000aa",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            paddingX: "1rem",
+            gap: "1rem",
+          }}
+        >
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
+            <Typography
+              color={
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.ipxColor
+              }
+            >
+              {
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.ipx
+              }
+            </Typography>
+          </Stack>
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
+            <Typography
+              color={
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.igwColor
+              }
+            >
+              {
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.igw
+              }
+            </Typography>
+          </Stack>
+        </Box>
+      )}
+    </>
   );
 };
 

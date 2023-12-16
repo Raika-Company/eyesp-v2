@@ -40,11 +40,7 @@ export const mainRoutes = [
     element: <LastDisorders />,
     title: "ISP",
   },
-  {
-    path: "/operators",
-    element: <Operators />,
-    title: "Operators",
-  },
+
   {
     path: "/current-traffic",
     element: <CurrentTraffic />,
@@ -77,5 +73,10 @@ export const privateMainRoutes = [
     path: "/private/chat",
     element: <Chart />,
     title: "chatBot",
+  },
+  {
+    path: "/private/operators",
+    element: <Operators />,
+    title: "Operators",
   },
 ];
