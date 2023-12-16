@@ -137,8 +137,8 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
           {animatedRows.map((row, idx) => {
             const animationDelay = delay ? `${idx * delay}s` : "0s";
             const handleColor = getColorBasedOnHandle(row.handle);
-            let dateObj = new Date(row.date);
-            let persianDate = dateObj.toLocaleDateString("fa-IR");
+            // const dateObj = new Date(row.date);
+            // let persianDate = dateObj.toLocaleDateString("fa-IR");
 
             return (
               <React.Fragment key={idx}>

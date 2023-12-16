@@ -47,6 +47,7 @@ interface ISPSectionProps {
       ipxColor: string;
     };
   };
+  internal: boolean;
   link: string;
   isXlgScreen: boolean;
   hasMoreInfo?: boolean;
@@ -98,6 +99,7 @@ const ISPSection: React.FC<ISPSectionProps> = ({
   title,
   ispList,
   ispStatus,
+  internal,
   link,
   isXlgScreen,
   hasMoreInfo,
@@ -141,11 +143,12 @@ const ISPSection: React.FC<ISPSectionProps> = ({
                   borderRadius: "50%",
                   width: "11px",
                   height: "11px",
-                  background: ispStatus
-                    ? ispStatus[isp.province!].isActive
-                      ? "#84D1A3"
-                      : "#BA3535"
-                    : "#84D1A3",
+                  background:
+                    internal && ispStatus
+                      ? ispStatus[isp.province!].isActive
+                        ? "#84D1A3"
+                        : "#BA3535"
+                      : "#84D1A3",
                   position: "relative",
                   "&::after": {
                     content: '""',
@@ -155,11 +158,12 @@ const ISPSection: React.FC<ISPSectionProps> = ({
                     left: "0",
                     width: "100%",
                     height: "100%",
-                    background: ispStatus
-                      ? ispStatus[isp.province!].isActive
-                        ? "#84D1A333"
-                        : "#BA353533"
-                      : "#84D1A388",
+                    background:
+                      internal && ispStatus
+                        ? ispStatus[isp.province!].isActive
+                          ? "#84D1A333"
+                          : "#BA353533"
+                        : "#84D1A388",
                     animation: `${pulse} ${
                       0.6 * Math.random() + 0.5
                     }s infinite alternate linear`,
@@ -249,6 +253,7 @@ const LeftSide: React.FC = () => {
 
       <ISPSection
         title="وضعیت مراکز داده‌داخلی"
+        internal
         ispList={InternalISPList}
         ispStatus={ispStateData!}
         link="/isp"
@@ -259,6 +264,8 @@ const LeftSide: React.FC = () => {
       <ISPSection
         title="وضعیت مراکز داده بین‌الملل"
         ispList={ExternalISPList}
+        ispStatus={ispStateData!}
+        internal={false}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
         hasMoreInfo={false}
