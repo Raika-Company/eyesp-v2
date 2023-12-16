@@ -212,7 +212,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => (
   >
     <Box sx={{ textTransform: "uppercase" }}>
       <img
-        src={`https://status.eyesp.live/images/${data.name}.svg`}
+        src={`/images/${data.name}.svg`}
         alt={data.name}
       />
       <Typography
