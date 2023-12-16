@@ -32,7 +32,7 @@ const DisorderHistory: React.FC = () => {
   );
 
   return (
-    <div style={{ backgroundColor: "#2B2E31", height: "100vh" }}>
+    <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Suspense fallback={<div>Loading...</div>}>
         <Header
           clickedButton={clickedButton}
@@ -47,10 +47,13 @@ const DisorderHistory: React.FC = () => {
           sx={{
             overflowX: isMdScreen ? "scroll" : "hidden",
             "&::-webkit-scrollbar": { display: "none" },
-            width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%",
           }}
         >
-          <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+          <Box
+            sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}
+          >
+            <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+          </Box>{" "}
         </Box>
       </Suspense>
     </div>
