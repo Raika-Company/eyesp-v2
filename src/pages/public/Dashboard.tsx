@@ -72,11 +72,11 @@ const Dashboard: FC = () => {
         >
           <LeftSide />
 
-          <Map />
+          <Map isScreenShot={true} />
           <RightSide />
         </Box>
       </Box>
-      {/* <Button onClick={handleScreenshot}>Screenshot Map</Button> */}
+      <Button onClick={handleScreenshot}>Screenshot Map</Button>
     </Box>
   );
 };

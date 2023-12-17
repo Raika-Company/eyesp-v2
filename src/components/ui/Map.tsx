@@ -16,9 +16,10 @@ const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
 interface Props {
   isPrivate?: boolean;
+  isScreenShot?: boolean;
 }
 
-const Map: FC<Props> = ({ isPrivate = false }) => {
+const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -210,6 +211,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                 </Fragment>
               ))}
           </svg>
+
           {/* </Link> */}
         </SvgIcon>
         <Box
@@ -222,6 +224,28 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
             color: "#FFF",
           }}
         >
+          {/* {isScreenShot ? (
+            <div style={{ display: "flex" }}>
+              {!isPrivate &&
+                provinceData &&
+                provinceData.map((province) => (
+                  <StatusTooltip
+                    key={province.id}
+                    ipx={province.ipx || "مطلوب"}
+                    ipxColor={province.ipxColor}
+                    igw={province.igw || "مطلوب"}
+                    igwColor={province.igwColor}
+                    x={provinceCoords[province.name].x + 80}
+                    y={provinceCoords[province.name].y + 10}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div>
+              <Button onClick={zoomIn} text="+" disable={scale === 10} />
+              <Button onClick={zoomOut} text="-" disable={scale === 1} />
+            </div>
+          )} */}
           <Button onClick={zoomIn} text="+" disable={scale === 10} />
           <Button onClick={zoomOut} text="-" disable={scale === 1} />
         </Box>
