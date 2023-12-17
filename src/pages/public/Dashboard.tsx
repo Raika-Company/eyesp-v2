@@ -76,7 +76,7 @@ const Dashboard: FC = () => {
           <RightSide />
         </Box>
       </Box>
-      <Button onClick={handleScreenshot}>Screenshot Map</Button>
+      {/* <Button onClick={handleScreenshot}>Screenshot Map</Button> */}
     </Box>
   );
 };
