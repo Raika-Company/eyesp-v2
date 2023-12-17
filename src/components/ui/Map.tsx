@@ -214,7 +214,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
         </SvgIcon>
         <Box
           sx={{
-            display: isPrivate ? "flex" : "none",
+            display: isPrivate ? "flex" : "flex",
             bottom: "1rem",
             left: "1rem",
             gap: "1rem",
