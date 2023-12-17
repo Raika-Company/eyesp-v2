@@ -18,9 +18,9 @@ const Dashboard: FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "#000",
         marginY: "auto",
-        marginX: "1.5rem",
+        background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+        boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
       }}
     >
       <Box
@@ -29,8 +29,6 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
-          boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
 
           // Maybe temporary
           paddingY: isLgScreen ? "2rem" : "1rem",
