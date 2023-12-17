@@ -1,8 +1,9 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { FC } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";
 import Map from "../../components/ui/Map";
+import html2canvas from "html2canvas";
 
 const Dashboard: FC = () => {
   const theme = useTheme();
@@ -10,6 +11,21 @@ const Dashboard: FC = () => {
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
 
+  const handleScreenshot = () => {
+    const mapElement = document.getElementById("mapContainer");
+    if (mapElement) {
+      html2canvas(mapElement)
+        .then((canvas) => {
+          // Process the canvas or convert it to an image URL
+          const image = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = image;
+          link.download = "map-screenshot.png";
+          link.click();
+        })
+        .catch((err) => console.error("Screenshot failed", err));
+    }
+  };
   return (
     // The code that surely will be changed.
     <Box
@@ -55,10 +71,12 @@ const Dashboard: FC = () => {
           }}
         >
           <LeftSide />
+
           <Map />
           <RightSide />
         </Box>
       </Box>
+      <Button onClick={handleScreenshot}>Screenshot Map</Button>
     </Box>
   );
 };

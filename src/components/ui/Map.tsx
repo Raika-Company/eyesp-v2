@@ -110,6 +110,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
   return (
     <>
       <Box
+        id="mapContainer"
         sx={{
           position: "relative",
           overflow: "hidden",
