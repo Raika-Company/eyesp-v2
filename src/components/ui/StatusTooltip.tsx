@@ -6,8 +6,10 @@ interface Props {
   ipxColor?: string;
   igw: string;
   igwColor?: string;
-  x: number | string;
-  y: number | string;
+  x?: number | string;
+  y?: number | string;
+  isSecond?: boolean;
+  isScreenShot?: boolean;
 }
 
 const StatusTooltip: FC<Props> = ({
@@ -17,43 +19,96 @@ const StatusTooltip: FC<Props> = ({
   igwColor = "#fff",
   x,
   y,
+  isSecond,
+  isScreenShot,
 }) => {
   return (
-    <Box
-      sx={{
-        transition: "all .2s ease",
-        width: "150px",
-        height: "150px",
-        borderRadius: "2rem",
-        position: "fixed",
-        zIndex: "100",
-        top: y,
-        left: x,
-        background: "#000000aa",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        paddingX: "1rem",
-        gap: "1rem",
-      }}
-    >
-      <Stack
-        sx={{
-          whiteSpace: "nowrap",
-        }}
-      >
-        <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
-        <Typography color={ipxColor}>{ipx}</Typography>
-      </Stack>
-      <Stack
-        sx={{
-          whiteSpace: "nowrap",
-        }}
-      >
-        <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
-        <Typography color={igwColor}>{igw}</Typography>
-      </Stack>
-    </Box>
+    <>
+      {isSecond ? (
+        <Box
+          sx={{
+            transition: "all .2s ease",
+            width: "150px",
+            height: "150px",
+            borderRadius: "2rem",
+            position: isSecond ? "static" : "fixed",
+            zIndex: isSecond ? "auto" : "100",
+            top: y,
+            left: x,
+            background: "#000000aa",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            paddingX: "1rem",
+            gap: "1rem",
+            ...(isScreenShot && {
+              // Conditional animation based on isScreenShot
+              animation: "pulseAnimation 2s infinite",
+              "@keyframes pulseAnimation": {
+                "0%": { transform: "scale(1)" },
+                "50%": { transform: "scale(1.1)" },
+                "100%": { transform: "scale(1)" },
+              },
+            }),
+          }}
+        >
+          {" "}
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
+            <Typography color={ipxColor}>{ipx}</Typography>
+          </Stack>
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
+            <Typography color={igwColor}>{igw}</Typography>
+          </Stack>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            transition: "all .2s ease",
+            width: "150px",
+            height: "150px",
+            borderRadius: "2rem",
+            position: "fixed",
+            zIndex: "100",
+            top: y,
+            left: x,
+            background: "#000000aa",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            paddingX: "1rem",
+            gap: "1rem",
+          }}
+        >
+          {" "}
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
+            <Typography color={ipxColor}>{ipx}</Typography>
+          </Stack>
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
+            <Typography color={igwColor}>{igw}</Typography>
+          </Stack>
+        </Box>
+      )}
+    </>
   );
 };
 
