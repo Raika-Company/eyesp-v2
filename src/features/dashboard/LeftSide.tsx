@@ -268,7 +268,7 @@ const LeftSide: React.FC = () => {
         internal={false}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
-        hasMoreInfo={false}
+        hasMoreInfo={true}
       />
     </Box>
   );
