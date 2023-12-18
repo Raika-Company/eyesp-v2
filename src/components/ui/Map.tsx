@@ -236,6 +236,7 @@ const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
                     igw={province.igw || "مطلوب"}
                     igwColor={province.igwColor}
                     isSecond={true}
+                    isScreenShot={isScreenShot}
                   />
                 ))}
             </div>

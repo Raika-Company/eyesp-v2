@@ -9,6 +9,7 @@ interface Props {
   x?: number | string;
   y?: number | string;
   isSecond?: boolean;
+  isScreenShot?: boolean;
 }
 
 const StatusTooltip: FC<Props> = ({
@@ -19,6 +20,7 @@ const StatusTooltip: FC<Props> = ({
   x,
   y,
   isSecond,
+  isScreenShot,
 }) => {
   return (
     <>
@@ -29,12 +31,25 @@ const StatusTooltip: FC<Props> = ({
             width: "150px",
             height: "150px",
             borderRadius: "2rem",
+            position: isSecond ? "static" : "fixed",
+            zIndex: isSecond ? "auto" : "100",
+            top: y,
+            left: x,
             background: "#000000aa",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             paddingX: "1rem",
             gap: "1rem",
+            ...(isScreenShot && {
+              // Conditional animation based on isScreenShot
+              animation: "pulseAnimation 2s infinite",
+              "@keyframes pulseAnimation": {
+                "0%": { transform: "scale(1)" },
+                "50%": { transform: "scale(1.1)" },
+                "100%": { transform: "scale(1)" },
+              },
+            }),
           }}
         >
           {" "}

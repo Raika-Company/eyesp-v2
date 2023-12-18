@@ -13,32 +13,27 @@ const Dashboard: FC = () => {
   const [isScreenShot, setIsScreenShot] = useState(false);
 
   const handleScreenshot = () => {
-    setIsScreenShot(true); // Set isScreenShot to true when taking a screenshot
+    setIsScreenShot(true);
 
-    // Use a timeout to allow any UI updates to occur before taking the screenshot
     setTimeout(() => {
-      // Target the Map component by its container ID
       const mapElement = document.getElementById("mapContainer");
       if (mapElement) {
         html2canvas(mapElement)
           .then((canvas) => {
-            // Convert the canvas to an image URL
             const image = canvas.toDataURL("image/png");
 
-            // Trigger a download of the image
             const link = document.createElement("a");
             link.href = image;
             link.download = "map-screenshot.png";
             link.click();
 
-            // Reset isScreenShot after 1 second
             setTimeout(() => {
               setIsScreenShot(false);
             }, 1000);
           })
           .catch((err) => {
             console.error("Screenshot failed", err);
-            setIsScreenShot(false); // Ensure it resets even if there's an error
+            setIsScreenShot(false);
           });
       } else {
         console.error("Map element not found");
