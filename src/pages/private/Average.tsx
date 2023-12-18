@@ -1,11 +1,10 @@
-import { lazy, useCallback, useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { useState } from "react";
 import { Box, FormControl, MenuItem } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
 import AverageIcon from "../../assets/images/average-icon.svg";
 import { SelectButton } from "../../components/ui/SelectButton";
 import ispData from "../../../public/data/ISPData.json";
-import { SelectChangeEvent } from "@mui/material/Select";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import convertToEnglishNumbers from "../../utils/convertToEnglishNumbers";
@@ -14,13 +13,13 @@ const Header = lazy(() => import("../../components/ui/Header"));
 const CircleChart = lazy(() => import("../../components/ui/CircularChart"));
 const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
 
-interface ChartData {
-  id: number;
-  percentage: number;
-  value: number;
-  title: string;
-  unit: string;
-}
+// interface ChartData {
+//   id: number;
+//   percentage: number;
+//   value: number;
+//   title: string;
+//   unit: string;
+// }
 
 interface MockData {
   id: number;
@@ -28,38 +27,38 @@ interface MockData {
   value: string;
 }
 
-const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
-  {
-    id: 1,
-    percentage: parseFloat(ispData[0].upload),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین سرعت آپلود",
-    unit: "Mbps",
-  },
-  {
-    id: 2,
-    percentage: parseFloat(ispData[0].speed),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین سرعت دانلود",
-    unit: "Mbps",
-  },
-  {
-    id: 3,
-    percentage: parseFloat(ispData[0].pings),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین پینگ",
-    unit: "Ms",
-  },
-  {
-    id: 4,
-    percentage: parseFloat(ispData[0].packet),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین جیتر",
-    unit: "Ms",
-  },
-];
+// const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
+//   {
+//     id: 1,
+//     percentage: parseFloat(ispData[0].upload),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین سرعت آپلود",
+//     unit: "Mbps",
+//   },
+//   {
+//     id: 2,
+//     percentage: parseFloat(ispData[0].speed),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین سرعت دانلود",
+//     unit: "Mbps",
+//   },
+//   {
+//     id: 3,
+//     percentage: parseFloat(ispData[0].pings),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین پینگ",
+//     unit: "Ms",
+//   },
+//   {
+//     id: 4,
+//     percentage: parseFloat(ispData[0].packet),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین جیتر",
+//     unit: "Ms",
+//   },
+// ];
 
-const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
+// const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
 
 const mockData: MockData[] = [
   {
@@ -90,8 +89,8 @@ const mockData: MockData[] = [
 ];
 
 const Average = () => {
-  const [isp, setIsp] = useState<string | null>(null);
-  const [province, setProvince] = useState<string | null>(null);
+  // const [isp, setIsp] = useState<string | null>(null);
+  // const [province, setProvince] = useState<string | null>(null);
 
   const [category, setCategory] = useState<string | null>(null);
 

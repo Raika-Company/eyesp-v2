@@ -1,7 +1,6 @@
 import {
   Box,
   SvgIcon,
-  styled,
   useMediaQuery,
   useTheme,
   Button,
@@ -25,7 +24,7 @@ interface Props {
   isPrivate?: boolean;
   isScreenShot?: boolean;
   exports?: () => void;
-  isExportButtonVisible: boolean;
+  isExportButtonVisible?: boolean;
 }
 
 const Map: FC<Props> = ({

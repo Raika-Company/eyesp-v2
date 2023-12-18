@@ -1,308 +1,336 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-  Typography,
-  Container,
-  Button,
   CircularProgress,
+  Button,
   Tooltip,
+  Typography,
+  Modal,
+  useMediaQuery,
+  useTheme,
+  Container,
+  // SxProps,
+  // Theme,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { Link, useNavigate } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
-import zitel from "../../assets/images/zitel.png";
-import mokhaberat from "../../assets/images/mokhaberat.png";
-import hamrahaval from "../../assets/images/hamrahaval.png";
-import irancell from "../../assets/images/irancell.svg";
-import { Link } from "react-router-dom";
-import { REFRESH_INTERVAL } from "./GlobalOverview";
-import { GetGlobalOverview } from "../../services/GlobalOverview";
+import serverStatusData from "../../../public/data/server_status.json";
 
-/**
- * Type for individual history items in the website data.
- * @param status The status code of the website check.
- * @param check_time The timestamp of the website check.
- */
-type HistoryItem = {
-  status: number;
-  check_time: string;
+// enum Time {
+//   FiveMinutes = '5min',
+//   TenMinutes = '10min',
+//   TwentyMinutes = '20min'
+// }
+
+type StatusDetail = {
+  time: string;
+  status: string;
 };
 
-/**
- * Type for website data structure.
- * @param domain The domain name of the website.
- * @param history Array of history items.
- */
+type HourlyStatus = {
+  hour: string;
+  details: StatusDetail[];
+};
+
 type WebsiteData = {
-  domain: string;
-  history: HistoryItem[];
+  name: string;
+  url: string;
+  date: string;
+  hourly_status: HourlyStatus[];
 };
 
-/**
- * Type for an array of website data.
- */
-export type HistoryData = WebsiteData[];
-
-/**
- * Props for the DataBlock component.
- * @param value The status code of the website check.
- * @param checkTime The timestamp of the website check.
- */
-interface DataBlockProps {
-  value: number;
-  checkTime: string;
-}
-
-/**
- * Constants for mapping logos and error messages.
- */
-const LOGOS = [
-  { src: zitel, name: "زیتل" },
-  { src: mokhaberat, name: "مخابرات" },
-  { src: hamrahaval, name: "همراه اول" },
-  { src: irancell, name: "ایرانسل" },
-];
-
-const errorMessages: Record<number, string> = {
-  200: "درخواست با موفقیت انجام شد.",
-  403: "دسترسی به صورت موقت قطع شده است.",
-  404: "صفحه مورد نظر یافت نشد.",
-  503: "سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.",
+const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
+  const non200Count = hourlyDetails.filter(
+    (detail) => parseInt(detail.status, 10) !== 200
+  ).length;
+  if (non200Count > 4) return "#E93F3F";
+  if (non200Count >= 2) return "#f19e2c";
+  return "#7FCD9F";
 };
 
-const errorTitel: Record<number, string> = {
-  200: "✅ بدون قطعی",
-  403: "❌ قطعی کامل",
-  404: "❌ صفحه مورد نظر در دسترس نیست",
-  503: "⚠️ قطعی جزئی",
-};
-
-/**
- * Custom hook for using the history data query.
- * @returns The query object containing the data, error, loading state, etc.
- */
-const useHistoryData = () =>
-  useQuery<HistoryData, Error>({
-    queryKey: ["historyDataKey"],
-    queryFn: GetGlobalOverview,
-    staleTime: REFRESH_INTERVAL,
-    refetchOnWindowFocus: false,
-  });
-
-/**
- * Gets the status message for a given status code.
- * @param statusCode The status code to get the message for.
- * @returns The corresponding message string.
- */
-const getStatusMessage = (statusCode: number): string => {
-  return errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
-};
-
-/**
- * Gets the title message for a given status code.
- * @param statusCode The status code to get the title for.
- * @returns The corresponding title string.
- */
-const getTitleMessage = (statusCode: number): string => {
-  return errorTitel[statusCode] || "عنوان خطای ناشناخته";
-};
-
-/**
- * Converts a date string to a Persian date format.
- * @param dateString The date string to convert.
- * @returns The formatted Persian date string.
- */
-const convertToPersianDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    calendar: "persian",
-    numberingSystem: "arabext",
-    localeMatcher: "best fit",
-  };
-  const formatter = new Intl.DateTimeFormat("fa-IR-u-nu-latn", options);
-  return formatter.format(date);
-};
-
-/**
- * DataBlock component representing a single data point in the history.
- * @param props DataBlockProps
- * @returns A JSX element representing the data block.
- */
-const DataBlock = React.memo<DataBlockProps>(({ value, checkTime }) => {
-  const errorMessage = getStatusMessage(value);
-  const statusTitle = getTitleMessage(value);
-  const persianDate = convertToPersianDate(checkTime);
-
-  return (
-    <Tooltip
-      arrow
-      title={
-        <Box sx={{ p: "0.3em", userSelect: "none" }}>
-          <Typography
-            color={
-              value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
-            }
-            fontSize="1.3rem"
-          >
-            وضعیت: {value}
-          </Typography>
-          <Typography
-            sx={{
-              my: "1em",
-              bgcolor: "#777777",
-              p: ".4em",
-              borderRadius: ".2em",
-              fontSize: "1.2rem",
-            }}
-          >
-            {statusTitle}: <br /> {persianDate}
-          </Typography>
-          <Typography>{errorMessage}</Typography>
-        </Box>
-      }
-    >
-      <Box
-        width="3%"
-        height="62px"
-        borderRadius="2em"
-        bgcolor={
-          value === 200 ? "#7FCD9F" : value === 503 ? "#f19e2c" : "#E93F3F"
-        }
-        mx={0.3}
-        sx={{
-          cursor: "pointer",
-          "&:hover": {
-            bgcolor: "darkgray",
-          },
-        }}
-      />
-    </Tooltip>
+const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
+  const non200Details = hourlyDetails.filter(
+    (detail) => parseInt(detail.status, 10) !== 200
   );
-});
+  let tooltipContent = [];
 
-/**
- * GridItem component for displaying a single website's data.
- * @param props Contains the website data and associated logo.
- * @returns A JSX element representing the grid item.
- */
-const GridItem: React.FC<{ data: WebsiteData; logo: (typeof LOGOS)[0] }> = ({
-  data,
-  logo,
-}) => (
-  <Grid
-    xs={12}
-    sx={{
-      maxWidth: { md: "48%" },
-      borderRadius: "0.5rem",
-      background: "#2B2E31",
-      boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      mx: "auto",
-      my: ".85em",
-      px: "1.5em",
-      userSelect: "none",
-    }}
-  >
-    <Box display="flex" flexDirection="column" alignItems="center" gap="0.5rem">
-      <img src={logo.src} alt={logo.name} height="52px" />
-      <Typography sx={{ textAlign: "center" }}>{logo.name}</Typography>
-    </Box>
-    <Box
-      display="flex"
-      flexDirection="row"
-      justifyContent="center"
-      alignItems="center"
-      width="77%"
-      height="100%"
-      padding="1rem"
-    >
-      {data.history.map((historyItem, index) => (
-        <DataBlock
-          key={index}
-          value={historyItem.status}
-          checkTime={historyItem.check_time}
-        />
-      ))}
-    </Box>
-  </Grid>
-);
-
-/**
- * ISP component for displaying the status of various websites.
- * Fetches and displays data using a custom hook and renders a grid of GridItems.
- * @returns A JSX element representing the ISP component.
- */
-const ISP: React.FC = () => {
-  const { data, error, isLoading, refetch } = useHistoryData();
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      refetch();
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, [refetch]);
-
-  if (isLoading) {
-    return (
-      <Box
+  if (color === "#E93F3F") {
+    const start = non200Details[0].time;
+    const end = non200Details[non200Details.length - 1].time;
+    tooltipContent.push(
+      <Typography
+        sx={{ color: color, fontSize: "1.3rem", py: "0.5em", px: "0.5em" }}
+      >
+        ❌ قطعی کامل سرویس
+      </Typography>,
+      <Typography sx={{ bgcolor: "#2B2E31", p: "1em" }}>
+        قطعی کامل سرویس از ساعت {start} تا ساعت {end}
+      </Typography>,
+      <Typography sx={{ mt: "0.5em" }}>
+        دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.
+      </Typography>
+    );
+  } else if (color === "#7FCD9F") {
+    tooltipContent.push(
+      <Typography sx={{ color: color, fontSize: "1.3rem", mt: "0.2em" }}>
+        وضعیت : 200
+      </Typography>,
+      <Typography
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          bgcolor: "#2B2E31",
+          py: "0.5em",
+          px: "0.5em",
+          color: color,
+          fontSize: "1.3rem",
+          mt: "0.2em",
         }}
       >
-        <CircularProgress color="primary" />
-      </Box>
+        ✅ بدون قطعی
+      </Typography>,
+      <Typography sx={{ mt: "0.2em", mx: "0.2em" }}>
+        درخواست با موفقیت انجام شد.
+      </Typography>
+    );
+  } else if (color === "#f19e2c" && non200Details.length > 0) {
+    const start = non200Details[0].time;
+    const end = non200Details[non200Details.length - 1].time;
+    tooltipContent.push(
+      <Typography sx={{ color: color, fontSize: "1.3rem", my: "0.4rem" }}>
+        ⚠️ اختلال جزئی در اتصال
+      </Typography>,
+      <Typography sx={{ bgcolor: "#2B2E31", py: "0.5em", px: "0.5em" }}>
+        اختلال جزئی از ساعت {start} تا ساعت {end}
+      </Typography>,
+      <Typography sx={{ mt: "0.5em" }}>
+        سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.
+      </Typography>
     );
   }
 
-  if (error) return <div>Error: {error.message}</div>;
-
   return (
-    <Container maxWidth="xl">
-      <Button
-        component={Link}
-        to="/"
-        sx={{
-          fontSize: "1.5rem",
-          textDecoration: "none",
-          textAlign: "center",
-          width: "100%",
-          color: "#FFF",
-          marginTop: "1.5em",
-        }}
-        endIcon={<WestIcon sx={{ marginRight: ".5em" }} />}
-      >
-        بازگشت
-      </Button>
-      <Grid
-        container
-        rowSpacing={4}
-        columnSpacing={{ xs: -5, sm: -5 }}
-        paddingY="2rem"
-      >
-        {data &&
-          Array.isArray(data) &&
-          data.map((websiteData: WebsiteData, index: number) => (
-            <GridItem
-              key={index}
-              data={websiteData}
-              logo={LOGOS[index % LOGOS.length]}
-            />
-          ))}
-      </Grid>
-    </Container>
+    <Typography>
+      {tooltipContent.map((content, index) => (
+        <React.Fragment key={index}>{content}</React.Fragment>
+      ))}
+    </Typography>
   );
 };
 
-export default ISP;
+const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
+  return (
+    <Grid
+      xs={12}
+      sx={{
+        maxWidth: { md: "48%", lg: "31%" },
+        borderRadius: "0.5rem",
+        background: "#2B2E31",
+        boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        mx: "auto",
+        my: "1.1em",
+        px: "1em",
+      }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="0.5rem"
+        sx={{ textTransform: "uppercase" }}
+      >
+        <img
+          src={`/images/${data.name}.svg`}
+          alt={data.name}
+          width={64}
+          height={64}
+        />
+        <Typography
+          sx={{
+            textAlign: "center",
+            textTransform: "uppercase",
+            fontWeight: 600,
+          }}
+        >
+          {data.name}
+        </Typography>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        alignItems="center"
+        width="60%"
+        height="100%"
+        padding="1rem"
+      >
+        {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
+          const bgColor = getHourlyStatusColor(hourlyStatus.details);
+          const statusMessage = getTooltipMessage(
+            hourlyStatus.details,
+            bgColor
+          );
+
+          return (
+            <Tooltip
+              key={index}
+              title={<Typography>{statusMessage}</Typography>}
+              arrow
+            >
+              <Box
+                bgcolor={bgColor}
+                my={0.3}
+                sx={{
+                  width: "10px",
+                  height: "50px",
+                  mx: "0.1em",
+                  cursor: "pointer",
+                  borderRadius: "2em",
+                  "&:hover": {
+                    bgcolor: "darkgray",
+                  },
+                }}
+              />
+            </Tooltip>
+          );
+        })}
+      </Box>
+    </Grid>
+  );
+};
+
+const GlobalOverview: React.FC = () => {
+  const theme = useTheme();
+  const [showModal, setShowModal] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const navigate = useNavigate();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    if (serverStatusData && serverStatusData.length > 0) {
+      setDataLoaded(true);
+    } else {
+      const timer = setTimeout(() => {
+        setShowModal(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  if (showModal && !dataLoaded) {
+    return (
+      <Modal open={showModal}>
+        <Box
+          sx={{
+            textAlign: "center",
+            bgcolor: "#2c2e32",
+            width: isSmScreen ? "22rem" : "27rem",
+            p: isSmScreen ? "1em" : "3em",
+            mx: "auto",
+            my: "20em",
+            borderRadius: ".5em",
+          }}
+        >
+          <Typography sx={{ mb: "2em", fontSize: "0.9rem" }}>
+            متاسفانه در حال حاضر قادر به دریافت دیتا نمی باشیم, <br /> لطفا بعدا
+            امتحان کنید.
+          </Typography>
+          <Button
+            sx={{ bgcolor: "#4D765F" }}
+            onClick={() => {
+              window.location.reload();
+              handleCloseModal();
+            }}
+          >
+            بروزرسانی صفحه
+          </Button>
+          <Button
+            sx={{ bgcolor: "#4D765F", mr: "2em" }}
+            onClick={() => {
+              navigate("/");
+              handleCloseModal();
+            }}
+          >
+            رفتن به صفحه اصلی
+          </Button>
+        </Box>
+      </Modal>
+    );
+  }
+
+  // const [activeTime, setActiveTime] = useState<Time | null>(null);
+
+  // const buttonStyles = (time: Time): SxProps<Theme> => ({
+  //   borderRadius: "0.7em",
+  //   bgcolor: activeTime === time ? '#fff' : '#000',
+  //   color: activeTime === time ? '#2B2E31' : '#fff',
+  //   mx: time === Time.TenMinutes ? '0.7em' : 0,
+  // });
+
+  // const times = [Time.FiveMinutes, Time.TenMinutes, Time.TwentyMinutes];
+
+  return (
+    <Box
+      sx={{
+        bgcolor: "transparent",
+        background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+      }}
+    >
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+            pt: "1em",
+          }}
+        >
+          {/* <Box sx={{ display: "flex", justifyContent: "space-between", mr: '1.2em' }}>
+          {times.map(time => (
+            <Button
+              key={time}
+              sx={buttonStyles(time)}
+              onClick={() => setActiveTime(time)}
+            >
+              {time}
+            </Button>
+          ))}
+        </Box> */}
+          <Button
+            component={Link}
+            to="/"
+            sx={{
+              fontSize: "1.5rem",
+              textDecoration: "none",
+              textAlign: "center",
+              width: "10%",
+              color: "#FFF",
+            }}
+            endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
+          >
+            بازگشت
+          </Button>
+        </Box>
+        {dataLoaded ? (
+          <Grid container rowSpacing={4} paddingY="1rem">
+            {serverStatusData.map((serverData, index) => (
+              <GridItem key={index} data={serverData} />
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Container>
+    </Box>
+  );
+};
+
+export default GlobalOverview;
