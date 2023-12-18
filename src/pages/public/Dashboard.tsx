@@ -1,5 +1,5 @@
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";
 import Map from "../../components/ui/Map";
@@ -10,22 +10,43 @@ const Dashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const [isScreenShot, setIsScreenShot] = useState(false);
 
   const handleScreenshot = () => {
-    const mapElement = document.getElementById("mapContainer");
-    if (mapElement) {
-      html2canvas(mapElement)
-        .then((canvas) => {
-          // Process the canvas or convert it to an image URL
-          const image = canvas.toDataURL("image/png");
-          const link = document.createElement("a");
-          link.href = image;
-          link.download = "map-screenshot.png";
-          link.click();
-        })
-        .catch((err) => console.error("Screenshot failed", err));
-    }
+    setIsScreenShot(true); // Set isScreenShot to true when taking a screenshot
+
+    // Use a timeout to allow any UI updates to occur before taking the screenshot
+    setTimeout(() => {
+      // Target the Map component by its container ID
+      const mapElement = document.getElementById("mapContainer");
+      if (mapElement) {
+        html2canvas(mapElement)
+          .then((canvas) => {
+            // Convert the canvas to an image URL
+            const image = canvas.toDataURL("image/png");
+
+            // Trigger a download of the image
+            const link = document.createElement("a");
+            link.href = image;
+            link.download = "map-screenshot.png";
+            link.click();
+
+            // Reset isScreenShot after 1 second
+            setTimeout(() => {
+              setIsScreenShot(false);
+            }, 1000);
+          })
+          .catch((err) => {
+            console.error("Screenshot failed", err);
+            setIsScreenShot(false); // Ensure it resets even if there's an error
+          });
+      } else {
+        console.error("Map element not found");
+        setIsScreenShot(false);
+      }
+    }, 100);
   };
+
   return (
     // The code that surely will be changed.
     <Box
@@ -72,7 +93,7 @@ const Dashboard: FC = () => {
         >
           <LeftSide />
 
-          <Map isScreenShot={true} />
+          <Map isScreenShot={isScreenShot} />
           <RightSide />
         </Box>
       </Box>

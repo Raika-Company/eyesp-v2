@@ -224,8 +224,8 @@ const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
             color: "#FFF",
           }}
         >
-          {/* {isScreenShot ? (
-            <div style={{ display: "flex" }}>
+          {isScreenShot ? (
+            <div style={{ display: "flex", gap: "0.2rem" }}>
               {!isPrivate &&
                 provinceData &&
                 provinceData.map((province) => (
@@ -235,19 +235,16 @@ const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
                     ipxColor={province.ipxColor}
                     igw={province.igw || "مطلوب"}
                     igwColor={province.igwColor}
-                    x={provinceCoords[province.name].x + 80}
-                    y={provinceCoords[province.name].y + 10}
+                    isSecond={true}
                   />
                 ))}
             </div>
           ) : (
-            <div>
+            <div style={{ display: "flex", gap: "1rem" }}>
               <Button onClick={zoomIn} text="+" disable={scale === 10} />
               <Button onClick={zoomOut} text="-" disable={scale === 1} />
             </div>
-          )} */}
-          <Button onClick={zoomIn} text="+" disable={scale === 10} />
-          <Button onClick={zoomOut} text="-" disable={scale === 1} />
+          )}
         </Box>
       </Box>
       {hoveredProvince && (
