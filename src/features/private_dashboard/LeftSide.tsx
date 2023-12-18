@@ -15,8 +15,10 @@ import FullArrowGreen from "../../assets/images/fullarrow-left-green.svg";
 import TaggedNumber from "./ـcomponents/TaggedNumber";
 import CircleChart from "../../components/ui/CircularChart";
 import InfoBox from "../../components/ui/InfoBox";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { MetricsReturnType } from "../../services/dashboard/metrics";
+import api from "../../services";
 
 const ConflictsData = [
   {
@@ -69,6 +71,18 @@ const LeftSide: React.FC = () => {
   const navigate = useNavigate();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const [metricsData, setMetricsData] = useState<MetricsReturnType | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setLoading(true);
+    api.metrics.getAllMetrics().then((res) => {
+      setMetricsData(res.data);
+      setLoading(false);
+    });
+  }, []);
 
   const navigateToAverage = () => {
     navigate("/private/average");
@@ -267,21 +281,21 @@ const LeftSide: React.FC = () => {
               finalPercentage={66}
               size={90}
               textTitle="میانگین سرعت دانلود"
-              value={15}
+              value={loading ? "--" : metricsData!.downloadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={40}
               size={90}
               textTitle="میانگین سرعت آپلود"
-              value={10}
+              value={loading ? "--" : metricsData!.uploadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={52}
               size={90}
               textTitle="میانگین پینگ"
-              value={10}
+              value={loading ? "--" : metricsData!.pingAverage}
               unit="Ms"
             />
           </Stack>

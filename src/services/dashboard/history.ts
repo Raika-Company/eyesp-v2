@@ -17,18 +17,21 @@ interface HistoryReturnType {
 
 export const getAllHistories = async (): Promise<
   AxiosReturnType<HistoryReturnType>
-> => axios.http.get(config.rootAddress + "/dashboard/get-issue-stats/history");
+> =>
+  await axios.http.get(
+    config.rootAddress + "/dashboard/get-issue-stats/history"
+  );
 
 export const getOpenHistories = async (): Promise<
   AxiosReturnType<HistoryReturnType>
 > =>
-  axios.http.get(
+  await axios.http.get(
     config.rootAddress + "/dashboard/get-issue-stats/history?status=open"
   );
 
 export const getResolvedHistories = async (): Promise<
   AxiosReturnType<HistoryReturnType>
 > =>
-  axios.http.get(
+  await axios.http.get(
     config.rootAddress + "/dashboard/get-issue-stats/history?status=resolved"
   );

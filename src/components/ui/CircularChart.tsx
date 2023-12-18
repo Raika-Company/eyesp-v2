@@ -3,7 +3,7 @@ import { Stack, Typography } from "@mui/material";
 
 interface Props {
   textTitle: string;
-  value: number;
+  value: number | string;
   unit: string;
   finalPercentage?: number;
   strokeWidth?: number;
