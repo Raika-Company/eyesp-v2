@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   CircularProgress,
-  Container,
   Button,
   Tooltip,
   Typography,
   Modal,
   useMediaQuery,
   useTheme,
+  // SxProps,
+  // Theme,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Link, useNavigate } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from '../../../public/data/server_status.json';
 
+// enum Time {
+//   FiveMinutes = '5min',
+//   TenMinutes = '10min',
+//   TwentyMinutes = '20min'
+// }
 
 type StatusDetail = {
   time: string;
@@ -83,7 +89,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     <Grid
       xs={12}
       sx={{
-        maxWidth: { md: "48%" },
+        maxWidth: { md: "48%", lg: "31%" },
         borderRadius: "0.5rem",
         background: "#2B2E31",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -91,8 +97,8 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         alignItems: "center",
         justifyContent: "space-between",
         mx: "auto",
-        my: ".85em",
-        px: "1.5em",
+        my: "1.1em",
+        px: "1em",
       }}
     >
       <Box sx={{ textTransform: "uppercase" }}>
@@ -184,35 +190,61 @@ const GlobalOverview: React.FC = () => {
       </Modal>
     );
   }
+
+  // const [activeTime, setActiveTime] = useState<Time | null>(null);
+
+  // const buttonStyles = (time: Time): SxProps<Theme> => ({
+  //   borderRadius: "0.7em",
+  //   bgcolor: activeTime === time ? '#fff' : '#000',
+  //   color: activeTime === time ? '#2B2E31' : '#fff',
+  //   mx: time === Time.TenMinutes ? '0.7em' : 0,
+  // });
+
+  // const times = [Time.FiveMinutes, Time.TenMinutes, Time.TwentyMinutes];
+
   return (
-    <Container maxWidth="xl">
-      <Button
-        component={Link}
-        to="/"
-        sx={{
-          fontSize: "1.5rem",
-          textDecoration: "none",
-          textAlign: "center",
-          width: "100%",
-          color: "#FFF",
-          marginTop: "2rem",
-        }}
-        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
-      >
-        بازگشت
-      </Button>
-      {dataLoaded ? (
-        <Grid container rowSpacing={4} paddingY="2rem">
-          {serverStatusData.map((serverData, index) => (
-            <GridItem key={index} data={serverData} />
+    <Box sx={{ bgcolor: 'transparent', background: 'linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)', px: "1em" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: "center", pt: "1em" }}>
+        {/* <Box sx={{ display: "flex", justifyContent: "space-between", mr: '1.2em' }}>
+          {times.map(time => (
+            <Button
+              key={time}
+              sx={buttonStyles(time)}
+              onClick={() => setActiveTime(time)}
+            >
+              {time}
+            </Button>
           ))}
-        </Grid>
-      ) : (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress />
-        </Box>
-      )}
-    </Container>
+        </Box> */}
+        <Button
+          component={Link}
+          to="/"
+          sx={{
+            fontSize: "1.5rem",
+            textDecoration: "none",
+            textAlign: "center",
+            width: "10%",
+            color: "#FFF",
+          }}
+          endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
+        >
+          بازگشت
+        </Button>
+      </Box>
+      {
+        dataLoaded ? (
+          <Grid container rowSpacing={4} paddingY="1rem">
+            {serverStatusData.map((serverData, index) => (
+              <GridItem key={index} data={serverData} />
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )
+      }
+    </Box >
   );
 };
 
