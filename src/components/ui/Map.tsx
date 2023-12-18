@@ -16,9 +16,10 @@ const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
 interface Props {
   isPrivate?: boolean;
+  isScreenShot?: boolean;
 }
 
-const Map: FC<Props> = ({ isPrivate = false }) => {
+const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -110,6 +111,7 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
   return (
     <>
       <Box
+        id="mapContainer"
         sx={{
           position: "relative",
           overflow: "hidden",
@@ -209,11 +211,12 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                 </Fragment>
               ))}
           </svg>
+
           {/* </Link> */}
         </SvgIcon>
         <Box
           sx={{
-            display: isPrivate ? "flex" : "none",
+            display: "flex",
             bottom: "1rem",
             left: "1rem",
             gap: "1rem",
@@ -221,8 +224,28 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
             color: "#FFF",
           }}
         >
-          <Button onClick={zoomIn} text="+" disable={scale === 10} />
-          <Button onClick={zoomOut} text="-" disable={scale === 1} />
+          {isScreenShot ? (
+            <div style={{ display: "flex", gap: "0.2rem" }}>
+              {!isPrivate &&
+                provinceData &&
+                provinceData.map((province) => (
+                  <StatusTooltip
+                    key={province.id}
+                    ipx={province.ipx || "مطلوب"}
+                    ipxColor={province.ipxColor}
+                    igw={province.igw || "مطلوب"}
+                    igwColor={province.igwColor}
+                    isSecond={true}
+                    isScreenShot={isScreenShot}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Button onClick={zoomIn} text="+" disable={scale === 10} />
+              <Button onClick={zoomOut} text="-" disable={scale === 1} />
+            </div>
+          )}
         </Box>
       </Box>
       {hoveredProvince && (
