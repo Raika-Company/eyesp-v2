@@ -11,8 +11,10 @@ const Dashboard: FC = () => {
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const [isScreenShot, setIsScreenShot] = useState(false);
+  const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
 
   const handleScreenshot = () => {
+    setIsExportButtonVisible(false);
     setIsScreenShot(true);
 
     setTimeout(() => {
@@ -21,7 +23,6 @@ const Dashboard: FC = () => {
         html2canvas(mapElement)
           .then((canvas) => {
             const image = canvas.toDataURL("image/png");
-
             const link = document.createElement("a");
             link.href = image;
             link.download = "map-screenshot.png";
@@ -29,15 +30,18 @@ const Dashboard: FC = () => {
 
             setTimeout(() => {
               setIsScreenShot(false);
+              setIsExportButtonVisible(true);
             }, 1000);
           })
           .catch((err) => {
             console.error("Screenshot failed", err);
             setIsScreenShot(false);
+            setIsExportButtonVisible(true);
           });
       } else {
         console.error("Map element not found");
         setIsScreenShot(false);
+        setIsExportButtonVisible(true);
       }
     }, 100);
   };
@@ -88,11 +92,14 @@ const Dashboard: FC = () => {
         >
           <LeftSide />
 
-          <Map isScreenShot={isScreenShot} />
+          <Map
+            isExportButtonVisible={isExportButtonVisible}
+            exports={handleScreenshot}
+            isScreenShot={isScreenShot}
+          />
           <RightSide />
         </Box>
       </Box>
-      {/* <Button onClick={handleScreenshot}>Screenshot Map</Button> */}
     </Box>
   );
 };
