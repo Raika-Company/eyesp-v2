@@ -12,8 +12,10 @@ const Dashboard: FC = () => {
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
-
+  const [scale, setScale] = useState<number>(1);
   const handleScreenshot = () => {
+    setScale(Math.max(scale / 1.9, 1));
+
     setIsExportButtonVisible(false);
     setIsScreenShot(true);
 
@@ -93,6 +95,8 @@ const Dashboard: FC = () => {
           <LeftSide />
 
           <Map
+            scale={scale}
+            setScale={setScale}
             isExportButtonVisible={isExportButtonVisible}
             exports={handleScreenshot}
             isScreenShot={isScreenShot}

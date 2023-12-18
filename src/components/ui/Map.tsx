@@ -26,6 +26,8 @@ interface Props {
   isScreenShot?: boolean;
   exports?: () => void;
   isExportButtonVisible: boolean;
+  scale: number;
+  setScale: (scale: number) => void;
 }
 
 const Map: FC<Props> = ({
@@ -33,6 +35,8 @@ const Map: FC<Props> = ({
   isScreenShot = false,
   exports,
   isExportButtonVisible,
+  scale,
+  setScale,
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -40,7 +44,6 @@ const Map: FC<Props> = ({
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({
     x: 0,
@@ -53,9 +56,11 @@ const Map: FC<Props> = ({
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
-    setScale(Math.min(scale * 1.1, 10));
+    setScale((prevScale) => prevScale * 1.04); // Adjust the factor as needed
   };
-
+  useEffect(() => {
+    zoomIn();
+  }, []);
   const zoomOut = () => {
     setScale(Math.max(scale / 1.1, 1));
   };
