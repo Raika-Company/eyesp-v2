@@ -1,15 +1,22 @@
-import { Box, SvgIcon, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  SvgIcon,
+  styled,
+  useMediaQuery,
+  useTheme,
+  Button,
+} from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
-import { Button } from "./Button";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
 import {
   ProvinceCoordsType,
   getProvinceData,
   mockProvinceListsForPrivate,
 } from "../../lib/MapHelpers";
+import { Buttons } from "./Button";
 import StatusTooltip from "./StatusTooltip";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
@@ -17,9 +24,16 @@ const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 interface Props {
   isPrivate?: boolean;
   isScreenShot?: boolean;
+  exports?: () => void;
+  isExportButtonVisible: boolean;
 }
 
-const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
+const Map: FC<Props> = ({
+  isPrivate = false,
+  isScreenShot = false,
+  exports,
+  isExportButtonVisible,
+}) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -217,6 +231,36 @@ const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
         <Box
           sx={{
             display: "flex",
+            top: "1rem",
+            gap: "1rem",
+            right: "1rem",
+            position: "absolute",
+            color: "#FFF",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          {isExportButtonVisible && (
+            <Button
+              onClick={exports}
+              variant="contained"
+              sx={{
+                backgroundColor: "#505050",
+                paddingX: "2rem",
+                "&:hover": {
+                  backgroundColor: "#1A1F25",
+                  color: "#505050",
+                },
+              }}
+            >
+              Export
+            </Button>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
             bottom: "1rem",
             left: "1rem",
             gap: "1rem",
@@ -242,8 +286,8 @@ const Map: FC<Props> = ({ isPrivate = false, isScreenShot = false }) => {
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>
-              <Button onClick={zoomIn} text="+" disable={scale === 10} />
-              <Button onClick={zoomOut} text="-" disable={scale === 1} />
+              <Buttons onClick={zoomIn} text="+" disable={scale === 10} />
+              <Buttons onClick={zoomOut} text="-" disable={scale === 1} />
             </div>
           )}
         </Box>
