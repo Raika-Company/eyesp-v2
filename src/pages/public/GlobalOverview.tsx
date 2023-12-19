@@ -118,6 +118,45 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
 };
 
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const [activeGraphMobile, setActiveGraphMobile] = useState<number | null>(
+    null
+  );
+  const [activeGraphDesktop, setActiveGraphDesktop] = useState<number | null>(
+    null
+  );
+  const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const handleGraphClick = (index: number) => {
+    if (isMobile) {
+      setActiveGraphMobile(index);
+
+      if (tooltipTimer) clearTimeout(tooltipTimer);
+      const newTimer = setTimeout(() => {
+        setActiveGraphMobile(null);
+      }, 1000); // 1 second
+      setTooltipTimer(newTimer);
+    }
+  };
+
+  const handleGraphHover = (index: number) => {
+    if (!isMobile) {
+      setActiveGraphDesktop(index);
+    }
+  };
+
+  const handleGraphLeave = () => {
+    if (!isMobile) {
+      setActiveGraphDesktop(null);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (tooltipTimer) clearTimeout(tooltipTimer);
+    };
+  }, [tooltipTimer]);
+
   return (
     <Grid
       xs={12}
@@ -179,6 +218,14 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
               key={index}
               title={<Typography>{statusMessage}</Typography>}
               arrow
+              open={
+                isMobile
+                  ? activeGraphMobile === index
+                  : activeGraphDesktop === index
+              }
+              onClick={() => handleGraphClick(index)}
+              onMouseEnter={() => handleGraphHover(index)}
+              onMouseLeave={handleGraphLeave}
             >
               <Box
                 bgcolor={bgColor}
@@ -190,7 +237,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
                   cursor: "pointer",
                   borderRadius: "2em",
                   "&:hover": {
-                    bgcolor: "darkgray",
+                    bgcolor: "#c3c3c3",
                   },
                 }}
               />
@@ -208,6 +255,7 @@ const GlobalOverview: React.FC = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const navigate = useNavigate();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   useEffect(() => {
     if (serverStatusData && serverStatusData.length > 0) {
@@ -289,6 +337,7 @@ const GlobalOverview: React.FC = () => {
             justifyContent: "end",
             alignItems: "center",
             pt: "1em",
+            overflowX: "hidden",
           }}
         >
           {/* <Box sx={{ display: "flex", justifyContent: "space-between", mr: '1.2em' }}>
@@ -311,6 +360,7 @@ const GlobalOverview: React.FC = () => {
               textAlign: "center",
               width: "10%",
               color: "#FFF",
+              ml: isLgScreen ? "1em" : "0em",
             }}
             endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
           >
