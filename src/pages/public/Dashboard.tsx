@@ -1,50 +1,50 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";
 import Map from "../../components/ui/Map";
-import html2canvas from "html2canvas";
 
 const Dashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
-  const [isScreenShot, setIsScreenShot] = useState(false);
-  const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
 
-  const handleScreenshot = () => {
-    setIsExportButtonVisible(false);
-    setIsScreenShot(true);
+  // const [isScreenShot, setIsScreenShot] = useState(false);
+  // const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
 
-    setTimeout(() => {
-      const mapElement = document.getElementById("mapContainer");
-      if (mapElement) {
-        html2canvas(mapElement)
-          .then((canvas) => {
-            const image = canvas.toDataURL("image/png");
-            const link = document.createElement("a");
-            link.href = image;
-            link.download = "map-screenshot.png";
-            link.click();
+  // const handleScreenshot = () => {
+  //   setIsExportButtonVisible(false);
+  //   setIsScreenShot(true);
 
-            setTimeout(() => {
-              setIsScreenShot(false);
-              setIsExportButtonVisible(true);
-            }, 1000);
-          })
-          .catch((err) => {
-            console.error("Screenshot failed", err);
-            setIsScreenShot(false);
-            setIsExportButtonVisible(true);
-          });
-      } else {
-        console.error("Map element not found");
-        setIsScreenShot(false);
-        setIsExportButtonVisible(true);
-      }
-    }, 100);
-  };
+  //   setTimeout(() => {
+  //     const mapElement = document.getElementById("mapContainer");
+  //     if (mapElement) {
+  //       html2canvas(mapElement)
+  //         .then((canvas) => {
+  //           const image = canvas.toDataURL("image/png");
+  //           const link = document.createElement("a");
+  //           link.href = image;
+  //           link.download = "map-screenshot.png";
+  //           link.click();
+
+  //           setTimeout(() => {
+  //             setIsScreenShot(false);
+  //             setIsExportButtonVisible(true);
+  //           }, 1000);
+  //         })
+  //         .catch((err) => {
+  //           console.error("Screenshot failed", err);
+  //           setIsScreenShot(false);
+  //           setIsExportButtonVisible(true);
+  //         });
+  //     } else {
+  //       console.error("Map element not found");
+  //       setIsScreenShot(false);
+  //       setIsExportButtonVisible(true);
+  //     }
+  //   }, 100);
+  // };
 
   return (
     // The code that surely will be changed.

@@ -6,7 +6,6 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  keyframes,
 } from "@mui/material";
 import NumberValue from "./ـcomponents/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
@@ -20,15 +19,6 @@ import StatusTooltip from "../../components/ui/StatusTooltip";
 import PulseCircle from "../../components/ui/PulseCircle";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
-
-const pulse = keyframes`
-from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(2.5);
-  }
-`;
 
 interface ISP {
   id: number;
