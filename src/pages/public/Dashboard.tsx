@@ -93,9 +93,9 @@ const Dashboard: FC = () => {
           <LeftSide />
 
           <Map
-            isExportButtonVisible={isExportButtonVisible}
-            exports={handleScreenshot}
-            isScreenShot={isScreenShot}
+          // isExportButtonVisible={isExportButtonVisible}
+          // exports={handleScreenshot}
+          // isScreenShot={isScreenShot}
           />
           <RightSide />
         </Box>

@@ -1,9 +1,10 @@
 import {
   Box,
+  Stack,
   SvgIcon,
+  Typography,
   useMediaQuery,
   useTheme,
-  Button,
 } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,24 +16,15 @@ import {
   getProvinceData,
   mockProvinceListsForPrivate,
 } from "../../lib/MapHelpers";
-import { Buttons } from "./Button";
-import StatusTooltip from "./StatusTooltip";
+import { Button } from "./Button";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
 interface Props {
   isPrivate?: boolean;
-  isScreenShot?: boolean;
-  exports?: () => void;
-  isExportButtonVisible?: boolean;
 }
 
-const Map: FC<Props> = ({
-  isPrivate = false,
-  isScreenShot = false,
-  exports,
-  isExportButtonVisible,
-}) => {
+const Map: FC<Props> = ({ isPrivate = false }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
@@ -121,10 +113,11 @@ const Map: FC<Props> = ({
     y: number;
   } | null>(null);
 
+  console.log(tooltipPosition);
+
   return (
     <>
       <Box
-        id="mapContainer"
         sx={{
           position: "relative",
           overflow: "hidden",
@@ -224,42 +217,11 @@ const Map: FC<Props> = ({
                 </Fragment>
               ))}
           </svg>
-
           {/* </Link> */}
         </SvgIcon>
         <Box
           sx={{
-            display: "flex",
-            top: "1rem",
-            gap: "1rem",
-            right: "1rem",
-            position: "absolute",
-            color: "#FFF",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          {isExportButtonVisible && (
-            <Button
-              onClick={exports}
-              variant="contained"
-              sx={{
-                backgroundColor: "#505050",
-                paddingX: "2rem",
-                "&:hover": {
-                  backgroundColor: "#1A1F25",
-                  color: "#505050",
-                },
-              }}
-            >
-              Export
-            </Button>
-          )}
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
+            display: isPrivate ? "flex" : "none",
             bottom: "1rem",
             left: "1rem",
             gap: "1rem",
@@ -267,51 +229,69 @@ const Map: FC<Props> = ({
             color: "#FFF",
           }}
         >
-          {isScreenShot ? (
-            <div style={{ display: "flex", gap: "0.2rem" }}>
-              {!isPrivate &&
-                provinceData &&
-                provinceData.map((province) => (
-                  <StatusTooltip
-                    key={province.id}
-                    ipx={province.ipx || "مطلوب"}
-                    ipxColor={province.ipxColor}
-                    igw={province.igw || "مطلوب"}
-                    igwColor={province.igwColor}
-                    isSecond={true}
-                    isScreenShot={isScreenShot}
-                  />
-                ))}
-            </div>
-          ) : (
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <Buttons onClick={zoomIn} text="+" disable={scale === 10} />
-              <Buttons onClick={zoomOut} text="-" disable={scale === 1} />
-            </div>
-          )}
+          <Button onClick={zoomIn} text="+" disable={scale === 10} />
+          <Button onClick={zoomOut} text="-" disable={scale === 1} />
         </Box>
       </Box>
       {hoveredProvince && (
-        <StatusTooltip
-          ipx={
-            provinceData?.find((province) => province.name === hoveredProvince)
-              ?.ipx || "مطلوب"
-          }
-          ipxColor={
-            provinceData?.find((province) => province.name === hoveredProvince)
-              ?.ipxColor
-          }
-          igw={
-            provinceData?.find((province) => province.name === hoveredProvince)
-              ?.igw || "مطلوب"
-          }
-          igwColor={
-            provinceData?.find((province) => province.name === hoveredProvince)
-              ?.igwColor
-          }
-          x={tooltipPosition!.x - 80}
-          y={tooltipPosition!.y - 165}
-        />
+        <Box
+          sx={{
+            width: "150px",
+            height: "150px",
+            borderRadius: "2rem",
+            position: "fixed",
+            zIndex: "100",
+            top: tooltipPosition!.y - 165,
+            left: tooltipPosition!.x - 80,
+            background: "#000000aa",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            paddingX: "1rem",
+            gap: "1rem",
+          }}
+        >
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
+            <Typography
+              color={
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.ipxColor
+              }
+            >
+              {
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.ipx
+              }
+            </Typography>
+          </Stack>
+          <Stack
+            sx={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
+            <Typography
+              color={
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.igwColor
+              }
+            >
+              {
+                provinceData?.find(
+                  (province) => province.name === hoveredProvince
+                )?.igw
+              }
+            </Typography>
+          </Stack>
+        </Box>
       )}
     </>
   );

@@ -14,10 +14,12 @@ import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ChartIcon from "../../assets/images/chart-icon.svg";
 import { Link } from "react-router-dom";
 import InfoBox from "../../components/ui/InfoBox";
-import { useISPState } from "./hooks/useISPState";
-import { useState } from "react";
+import { ISPStateType, useISPState } from "./hooks/useISPState";
+import { useEffect, useState } from "react";
 import StatusTooltip from "../../components/ui/StatusTooltip";
 import PulseCircle from "../../components/ui/PulseCircle";
+import api from "../../services";
+import { MetricsReturnType } from "../../services/dashboard/metrics";
 
 const pulse = keyframes`
 from {
@@ -31,7 +33,7 @@ from {
 interface ISP {
   id: number;
   name: string;
-  province?: string;
+  province?: "tehran" | "alborz" | "ahvaz";
   isActive: boolean;
   speed?: string; // Include if speed is a property for any of the ISPs
 }
@@ -40,13 +42,11 @@ interface ISPSectionProps {
   title: string;
   ispList: ISP[];
   ispStatus: {
-    [x: string]: {
-      isActive: boolean;
-      igw: string;
-      igwColor: string;
-      ipx: string;
-      ipxColor: string;
-    };
+    ipxAverage: number;
+    igwAverage: number;
+    tehran: ISPStateType;
+    alborz: ISPStateType;
+    ahvaz: ISPStateType;
   };
   internal: boolean;
   link: string;
@@ -54,7 +54,13 @@ interface ISPSectionProps {
   hasMoreInfo?: boolean;
 }
 
-export const InternalISPList = [
+export const InternalISPList: {
+  id: number;
+  name: string;
+  province: "tehran" | "ahvaz" | "alborz";
+  isActive: boolean;
+  speed: string;
+}[] = [
   {
     id: 1,
     name: "زیرساخت - کرج",
@@ -105,7 +111,9 @@ const ISPSection: React.FC<ISPSectionProps> = ({
   isXlgScreen,
   hasMoreInfo,
 }) => {
-  const [hoveredIsp, setHoveredIsp] = useState<string | null>(null);
+  const [hoveredIsp, setHoveredIsp] = useState<
+    "tehran" | "ahvaz" | "alborz" | null
+  >(null);
   const [tooltipPosition, setTooltipPosition] = useState<{
     x: number;
     y: number;
@@ -193,6 +201,18 @@ const LeftSide: React.FC = () => {
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const ispStateData = useISPState();
 
+  const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setLoading(true);
+    api.metrics.getAllMetrics().then((res) => {
+      setNetworkState(res.data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <Box
       sx={{
@@ -216,8 +236,16 @@ const LeftSide: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <NumberValue title="Upload" value={6} unit="mbps" />
-          <NumberValue title="Download" value={12} unit="mbps" />
+          <NumberValue
+            title="Upload"
+            value={loading ? 0 : networkState!.uploadAverage!}
+            unit="mbps"
+          />
+          <NumberValue
+            title="Download"
+            value={loading ? 0 : networkState!.downloadAverage!}
+            unit="mbps"
+          />
         </Stack>
       </InfoBox>
 

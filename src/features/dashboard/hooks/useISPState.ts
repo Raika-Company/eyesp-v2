@@ -4,19 +4,24 @@ import { ReturnStateType } from "../../../services/pingStatus";
 
 const LAST_SECOND_INDEX = 59;
 
+export interface ISPStateType {
+  isActive: boolean;
+  igw: string;
+  igwAverage: number;
+  igwColor: string;
+  ipx: string;
+  ipxAverage: number;
+  ipxColor: string;
+}
+
 export const useISPState = () => {
-  const [ISPStateData, setISPStateData] = useState<
-    | ({
-        [key in string]: {
-          isActive: boolean;
-          igw: string;
-          ipx: string;
-          igwColor: string;
-          ipxColor: string;
-        };
-      } & { igwAverage: number; ipxAverage: number })
-    | null
-  >(null);
+  const [ISPStateData, setISPStateData] = useState<{
+    ipxAverage: number;
+    igwAverage: number;
+    tehran: ISPStateType;
+    alborz: ISPStateType;
+    ahvaz: ISPStateType;
+  } | null>(null);
 
   useEffect(() => {
     Promise.all([
