@@ -2,28 +2,26 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   CircularProgress,
-  Container,
   Button,
   Tooltip,
   Typography,
   Modal,
   useMediaQuery,
   useTheme,
+  Container,
+  // SxProps,
+  // Theme,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Link, useNavigate } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
-import { convertToPersianDate } from "../../utils/convertToPersianDate";
-import serverStatusData from '../../../public/data/server_status.json';
+import serverStatusData from "../../../public/data/server_status.json";
 
-
-interface DataBlockProps {
-  value: number; // The HTTP status code of the website check.
-  checkTime: string; // The time at which the check was performed.
-  data: WebsiteData; // Data about the website.
-  statusMessage?: string; // Optional status message.
-}
-
+// enum Time {
+//   FiveMinutes = '5min',
+//   TenMinutes = '10min',
+//   TwentyMinutes = '20min'
+// }
 
 type StatusDetail = {
   time: string;
@@ -42,171 +40,128 @@ type WebsiteData = {
   hourly_status: HourlyStatus[];
 };
 
-type HistoryItem = {
-  status: number;
-  check_time: string;
+const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
+  const non200Count = hourlyDetails.filter(
+    (detail) => parseInt(detail.status, 10) !== 200
+  ).length;
+  if (non200Count > 4) return "#E93F3F";
+  if (non200Count >= 2) return "#f19e2c";
+  return "#7FCD9F";
 };
 
-/**
- * Represents a period of outage with start and end times.
- */
-interface OutagePeriod {
-  start: string;
-  end: string;
-}
+const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
+  const non200Details = hourlyDetails.filter(
+    (detail) => parseInt(detail.status, 10) !== 200
+  );
+  let tooltipContent = [];
 
-export const REFRESH_INTERVAL = 60000;
-
-
-const getStatusMessage = (statusCode: number): string =>
-  errorMessages[statusCode] || "یک خطای ناشناخته رخ داده است.";
-
-const getTitleMessage = (statusCode: number): string =>
-  errorTitel[statusCode] || "عنوان خطای ناشناخته";
-
-
-const errorMessages: Record<number, string> = {
-  200: "درخواست با موفقیت انجام شد.",
-  401: "دسترسی به صورت موقت قطع شده است لطفا دقایقی بعد تلاش کنید.",
-  403: "دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.",
-  404: "صفحه مورد نظر یافت نشد.",
-  500: "سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.",
-  503: "سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.",
-};
-
-const errorTitel: Record<number, string> = {
-  200: "✅ بدون قطعی",
-  401: "❌ قطعی کامل سرویس",
-  403: "❌ قطعی کامل سرویس",
-  404: "❌ قطعی کامل سرویس",
-  500: "⚠️ قطعی جزئي",
-  503: "⚠️ قطعی جزئی",
-};
-
-const generateStatusMessage = (
-  statusCode: number,
-  startTime: string,
-  endTime: string
-): string => {
-  if (statusCode === 200) {
-    return "";
-  }
-
-  const formattedStartTime = convertToPersianDate(startTime);
-  const formattedEndTime = convertToPersianDate(endTime);
-  return `قطعی سرویس از ${formattedStartTime} تا ${formattedEndTime}`;
-};
-
-const findOutagePeriods = (history: HistoryItem[]): OutagePeriod[] => {
-  const outagePeriods: OutagePeriod[] = [];
-  let outageStart: string | null = null;
-
-  history.forEach((item) => {
-    if (item.status !== 200 && !outageStart) {
-      outageStart = item.check_time;
-    } else if (item.status === 200 && outageStart) {
-      outagePeriods.push({
-        start: outageStart,
-        end: item.check_time,
-      });
-      outageStart = null;
-    }
-  });
-
-  if (outageStart) {
-    outagePeriods.push({
-      start: outageStart,
-      end: history[history.length - 1].check_time,
-    });
-  }
-
-  return outagePeriods;
-};
-
-/**
- * Functional component to display a single data block representing the status
- * of a website check at a specific time.
- *
- * @param value - The HTTP status code of the website check.
- * @param checkTime - The time at which the check was performed.
- */
-const DataBlock: React.FC<DataBlockProps> = React.memo(({ value, statusMessage }) => {
-  const errorMessage = getStatusMessage(value);
-  const statusTitle = getTitleMessage(value);
-
-  let bgColor = "#E93F3F";
-  if (value === 200) {
-    bgColor = "#7FCD9F";
-  } else if (value === 403) {
-    bgColor = "#E93F3F";
-  } else if (value === 503 || value === 500) {
-    bgColor = "#f19e2c";
+  if (color === "#E93F3F") {
+    const start = non200Details[0].time;
+    const end = non200Details[non200Details.length - 1].time;
+    tooltipContent.push(
+      <Typography
+        sx={{ color: color, fontSize: "1.3rem", py: "0.5em", px: "0.5em" }}
+      >
+        ❌ قطعی کامل سرویس
+      </Typography>,
+      <Typography sx={{ bgcolor: "#2B2E31", p: "1em" }}>
+        قطعی کامل سرویس از ساعت {start} تا ساعت {end}
+      </Typography>,
+      <Typography sx={{ mt: "0.5em" }}>
+        دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.
+      </Typography>
+    );
+  } else if (color === "#7FCD9F") {
+    tooltipContent.push(
+      <Typography sx={{ color: color, fontSize: "1.3rem", mt: "0.2em" }}>
+        وضعیت : 200
+      </Typography>,
+      <Typography
+        sx={{
+          bgcolor: "#2B2E31",
+          py: "0.5em",
+          px: "0.5em",
+          color: color,
+          fontSize: "1.3rem",
+          mt: "0.2em",
+        }}
+      >
+        ✅ بدون قطعی
+      </Typography>,
+      <Typography sx={{ mt: "0.2em", mx: "0.2em" }}>
+        درخواست با موفقیت انجام شد.
+      </Typography>
+    );
+  } else if (color === "#f19e2c" && non200Details.length > 0) {
+    const start = non200Details[0].time;
+    const end = non200Details[non200Details.length - 1].time;
+    tooltipContent.push(
+      <Typography sx={{ color: color, fontSize: "1.3rem", my: "0.4rem" }}>
+        ⚠️ اختلال جزئی در اتصال
+      </Typography>,
+      <Typography sx={{ bgcolor: "#2B2E31", py: "0.5em", px: "0.5em" }}>
+        اختلال جزئی از ساعت {start} تا ساعت {end}
+      </Typography>,
+      <Typography sx={{ mt: "0.5em" }}>
+        سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.
+      </Typography>
+    );
   }
 
   return (
-    <Tooltip
-      arrow
-      title={
-        <Box sx={{ p: "0.3em", userSelect: "none" }}>
-          <Typography color={bgColor} fontSize="1.3rem">
-            وضعیت: {value}
-          </Typography>
-          <Typography
-            sx={{
-              my: "0.5em",
-              bgcolor: "#777777",
-              p: ".4em",
-              borderRadius: ".2em",
-              fontSize: "1.2rem",
-            }}
-          >
-            {statusMessage && (
-              <Typography sx={{ mt: "0.5em" }}>{statusMessage}</Typography>
-            )}
-            {statusTitle}:
-            <Typography>{errorMessage}</Typography>
-          </Typography>
-        </Box>
-      }
-    >
-      <Box
-        bgcolor={bgColor}
-        my={0.3}
-        sx={{
-          width: "10px",
-          height: "50px",
-          mx: "0.1em",
-          cursor: "pointer",
-          borderRadius: '2em',
-          "&:hover": {
-            bgcolor: "darkgray",
-          },
-        }}
-      />
-    </Tooltip>
+    <Typography>
+      {tooltipContent.map((content, index) => (
+        <React.Fragment key={index}>{content}</React.Fragment>
+      ))}
+    </Typography>
   );
-});
+};
 
-
-/**
- * Functional component to display information about a single website
- * including its history of status checks.
- * @param data - Data pertaining to a single website.
- */
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
-  const allStatuses = data.hourly_status.flatMap(hourlyStatus =>
-    hourlyStatus.details.map(detail => ({
-      status: parseInt(detail.status, 10),
-      check_time: `${data.date}T${hourlyStatus.hour}:${detail.time}`
-    }))
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const [activeGraphMobile, setActiveGraphMobile] = useState<number | null>(
+    null
   );
+  const [activeGraphDesktop, setActiveGraphDesktop] = useState<number | null>(
+    null
+  );
+  const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
 
-  const outagePeriods = findOutagePeriods(allStatuses);
+  const handleGraphClick = (index: number) => {
+    if (isMobile) {
+      setActiveGraphMobile(index);
+
+      if (tooltipTimer) clearTimeout(tooltipTimer);
+      const newTimer = setTimeout(() => {
+        setActiveGraphMobile(null);
+      }, 1000); // 1 second
+      setTooltipTimer(newTimer);
+    }
+  };
+
+  const handleGraphHover = (index: number) => {
+    if (!isMobile) {
+      setActiveGraphDesktop(index);
+    }
+  };
+
+  const handleGraphLeave = () => {
+    if (!isMobile) {
+      setActiveGraphDesktop(null);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (tooltipTimer) clearTimeout(tooltipTimer);
+    };
+  }, [tooltipTimer]);
+
   return (
     <Grid
       xs={12}
       sx={{
-        maxWidth: { md: "48%" },
+        maxWidth: { md: "48%", lg: "31%" },
         borderRadius: "0.5rem",
         background: "#2B2E31",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -214,11 +169,18 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         alignItems: "center",
         justifyContent: "space-between",
         mx: "auto",
-        my: ".85em",
-        px: "1.5em",
+        my: "1.1em",
+        px: "1em",
       }}
     >
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap="0.5rem" sx={{ textTransform: "uppercase" }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="0.5rem"
+        sx={{ textTransform: "uppercase" }}
+      >
         <img
           src={`/images/${data.name}.svg`}
           alt={data.name}
@@ -244,27 +206,47 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         height="100%"
         padding="1rem"
       >
-        {allStatuses.slice(-24).map((item, index) => {
-          const statusMessage = item.status !== 200
-            ? outagePeriods
-              .filter(period => item.check_time >= period.start && item.check_time <= period.end)
-              .map(period => generateStatusMessage(item.status, period.start, period.end))
-              .join(", ") || "وضعیت نامشخص"
-            : "";
+        {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
+          const bgColor = getHourlyStatusColor(hourlyStatus.details);
+          const statusMessage = getTooltipMessage(
+            hourlyStatus.details,
+            bgColor
+          );
 
           return (
-            <DataBlock
+            <Tooltip
               key={index}
-              value={item.status}
-              checkTime={item.check_time}
-              data={data}
-              statusMessage={statusMessage}
-            />
+              title={<Typography>{statusMessage}</Typography>}
+              arrow
+              open={
+                isMobile
+                  ? activeGraphMobile === index
+                  : activeGraphDesktop === index
+              }
+              onClick={() => handleGraphClick(index)}
+              onMouseEnter={() => handleGraphHover(index)}
+              onMouseLeave={handleGraphLeave}
+            >
+              <Box
+                bgcolor={bgColor}
+                my={0.3}
+                sx={{
+                  width: "10px",
+                  height: "50px",
+                  mx: "0.1em",
+                  cursor: "pointer",
+                  borderRadius: "2em",
+                  "&:hover": {
+                    bgcolor: "#c3c3c3",
+                  },
+                }}
+              />
+            </Tooltip>
           );
         })}
       </Box>
     </Grid>
-  )
+  );
 };
 
 const GlobalOverview: React.FC = () => {
@@ -273,12 +255,12 @@ const GlobalOverview: React.FC = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const navigate = useNavigate();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   useEffect(() => {
     if (serverStatusData && serverStatusData.length > 0) {
       setDataLoaded(true);
     } else {
-
       const timer = setTimeout(() => {
         setShowModal(true);
       }, 3000);
@@ -292,43 +274,112 @@ const GlobalOverview: React.FC = () => {
   if (showModal && !dataLoaded) {
     return (
       <Modal open={showModal}>
-        <Box sx={{ textAlign: "center", bgcolor: "#2c2e32", width: isSmScreen ? "22rem" : "27rem", p: isSmScreen ? "1em" : "3em", mx: "auto", my: "20em", borderRadius: ".5em" }}>
-          <Typography sx={{ mb: "2em", fontSize: "0.9rem" }}>متاسفانه در حال حاضر قادر به دریافت دیتا نمی باشیم, <br /> لطفا بعدا امتحان کنید.</Typography>
-          <Button sx={{ bgcolor: "#4D765F" }} onClick={() => { window.location.reload(); handleCloseModal(); }}>بروزرسانی صفحه</Button>
-          <Button sx={{ bgcolor: "#4D765F", mr: "2em" }} onClick={() => { navigate("/"); handleCloseModal(); }}>رفتن به صفحه اصلی</Button>
+        <Box
+          sx={{
+            textAlign: "center",
+            bgcolor: "#2c2e32",
+            width: isSmScreen ? "22rem" : "27rem",
+            p: isSmScreen ? "1em" : "3em",
+            mx: "auto",
+            my: "20em",
+            borderRadius: ".5em",
+          }}
+        >
+          <Typography sx={{ mb: "2em", fontSize: "0.9rem" }}>
+            متاسفانه در حال حاضر قادر به دریافت دیتا نمی باشیم, <br /> لطفا بعدا
+            امتحان کنید.
+          </Typography>
+          <Button
+            sx={{ bgcolor: "#4D765F" }}
+            onClick={() => {
+              window.location.reload();
+              handleCloseModal();
+            }}
+          >
+            بروزرسانی صفحه
+          </Button>
+          <Button
+            sx={{ bgcolor: "#4D765F", mr: "2em" }}
+            onClick={() => {
+              navigate("/");
+              handleCloseModal();
+            }}
+          >
+            رفتن به صفحه اصلی
+          </Button>
         </Box>
       </Modal>
     );
   }
+
+  // const [activeTime, setActiveTime] = useState<Time | null>(null);
+
+  // const buttonStyles = (time: Time): SxProps<Theme> => ({
+  //   borderRadius: "0.7em",
+  //   bgcolor: activeTime === time ? '#fff' : '#000',
+  //   color: activeTime === time ? '#2B2E31' : '#fff',
+  //   mx: time === Time.TenMinutes ? '0.7em' : 0,
+  // });
+
+  // const times = [Time.FiveMinutes, Time.TenMinutes, Time.TwentyMinutes];
+
   return (
-    <Container maxWidth="xl">
-      <Button
-        component={Link}
-        to="/"
-        sx={{
-          fontSize: "1.5rem",
-          textDecoration: "none",
-          textAlign: "center",
-          width: "100%",
-          color: "#FFF",
-          marginTop: "2rem",
-        }}
-        endIcon={<WestIcon sx={{ marginRight: "1rem" }} />}
-      >
-        بازگشت
-      </Button>
-      {dataLoaded ? (
-        <Grid container rowSpacing={4} paddingY="2rem">
-          {serverStatusData.map((serverData, index) => (
-            <GridItem key={index} data={serverData} />
+    <Box
+      sx={{
+        bgcolor: "transparent",
+        background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+      }}
+    >
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+            pt: "1em",
+            overflowX: "hidden",
+          }}
+        >
+          {/* <Box sx={{ display: "flex", justifyContent: "space-between", mr: '1.2em' }}>
+          {times.map(time => (
+            <Button
+              key={time}
+              sx={buttonStyles(time)}
+              onClick={() => setActiveTime(time)}
+            >
+              {time}
+            </Button>
           ))}
-        </Grid>
-      ) : (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress />
+        </Box> */}
+          <Button
+            component={Link}
+            to="/"
+            sx={{
+              fontSize: "1.5rem",
+              textDecoration: "none",
+              textAlign: "center",
+              width: "10%",
+              color: "#FFF",
+              ml: isLgScreen ? "1em" : "0em",
+            }}
+            endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
+          >
+            بازگشت
+          </Button>
         </Box>
-      )}
-    </Container>
+        {dataLoaded ? (
+          <Grid container rowSpacing={4} paddingY="1rem">
+            {serverStatusData.map((serverData, index) => (
+              <GridItem key={index} data={serverData} />
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Container>
+    </Box>
   );
 };
 

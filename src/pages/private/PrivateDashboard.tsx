@@ -57,7 +57,7 @@ const PrivateDashboard: FC = () => {
           }}
         >
           <LeftSide />
-          <Map isPrivate />
+          <Map isPrivate/>
           <RightSide />
         </Box>
       </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { FC, useState } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";

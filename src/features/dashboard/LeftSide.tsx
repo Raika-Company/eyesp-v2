@@ -17,6 +17,7 @@ import InfoBox from "../../components/ui/InfoBox";
 import { useISPState } from "./hooks/useISPState";
 import { useState } from "react";
 import StatusTooltip from "../../components/ui/StatusTooltip";
+import PulseCircle from "../../components/ui/PulseCircle";
 
 const pulse = keyframes`
 from {
@@ -130,46 +131,15 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               marginX=".5rem"
             >
               <Typography>{isp.name}</Typography>
-              <Box
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  if (!hoveredIsp || tooltipPosition) {
-                    setHoveredIsp(isp.province!);
-                    setTooltipPosition({ x: e.pageX, y: e.pageY });
-                  }
-                }}
-                onMouseLeave={() => setHoveredIsp(null)}
-                sx={{
-                  borderRadius: "50%",
-                  width: "11px",
-                  height: "11px",
-                  background:
-                    internal && ispStatus
-                      ? ispStatus[isp.province!].isActive
-                        ? "#84D1A3"
-                        : "#BA3535"
-                      : "#84D1A3",
-                  position: "relative",
-                  "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    borderRadius: "50%",
-                    top: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "100%",
-                    background:
-                      internal && ispStatus
-                        ? ispStatus[isp.province!].isActive
-                          ? "#84D1A333"
-                          : "#BA353533"
-                        : "#84D1A388",
-                    animation: `${pulse} ${
-                      0.6 * Math.random() + 0.5
-                    }s infinite alternate linear`,
-                  },
-                }}
-              ></Box>
+              <PulseCircle
+                internal={internal}
+                hoveredIsp={hoveredIsp}
+                province={isp.province!}
+                setHoveredIsp={setHoveredIsp}
+                setTooltipPosition={setTooltipPosition}
+                tooltipPosition={tooltipPosition}
+                isActive={isp.isActive}
+              />
             </Stack>
             <Divider
               style={{
@@ -268,7 +238,7 @@ const LeftSide: React.FC = () => {
         internal={false}
         link="/global-overview"
         isXlgScreen={isXlgScreen}
-        hasMoreInfo={false}
+        hasMoreInfo={true}
       />
     </Box>
   );

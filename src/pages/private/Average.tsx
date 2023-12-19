@@ -1,23 +1,25 @@
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { useState } from "react";
 import { Box, FormControl, MenuItem } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
 import AverageIcon from "../../assets/images/average-icon.svg";
 import { SelectButton } from "../../components/ui/SelectButton";
 import ispData from "../../../public/data/ISPData.json";
-import { SelectChangeEvent } from "@mui/material/Select";
+import api from "../../services";
+import { MetricsReturnType } from "../../services/dashboard/metrics";
+import convertToEnglishNumbers from "../../utils/convertToEnglishNumbers";
 
 const Header = lazy(() => import("../../components/ui/Header"));
 const CircleChart = lazy(() => import("../../components/ui/CircularChart"));
 const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
 
-interface ChartData {
-  id: number;
-  percentage: number;
-  value: number;
-  title: string;
-  unit: string;
-}
+// interface ChartData {
+//   id: number;
+//   percentage: number;
+//   value: number;
+//   title: string;
+//   unit: string;
+// }
 
 interface MockData {
   id: number;
@@ -25,38 +27,38 @@ interface MockData {
   value: string;
 }
 
-const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
-  {
-    id: 1,
-    percentage: parseFloat(ispData[0].upload),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین سرعت آپلود",
-    unit: "Mbps",
-  },
-  {
-    id: 2,
-    percentage: parseFloat(ispData[0].speed),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین سرعت دانلود",
-    unit: "Mbps",
-  },
-  {
-    id: 3,
-    percentage: parseFloat(ispData[0].pings),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین پینگ",
-    unit: "Ms",
-  },
-  {
-    id: 4,
-    percentage: parseFloat(ispData[0].packet),
-    value: parseFloat(ispData[0].performance),
-    title: "میانگین جیتر",
-    unit: "Ms",
-  },
-];
+// const parseChartData = (/* data: (typeof ispData)[0] */): ChartData[] => [
+//   {
+//     id: 1,
+//     percentage: parseFloat(ispData[0].upload),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین سرعت آپلود",
+//     unit: "Mbps",
+//   },
+//   {
+//     id: 2,
+//     percentage: parseFloat(ispData[0].speed),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین سرعت دانلود",
+//     unit: "Mbps",
+//   },
+//   {
+//     id: 3,
+//     percentage: parseFloat(ispData[0].pings),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین پینگ",
+//     unit: "Ms",
+//   },
+//   {
+//     id: 4,
+//     percentage: parseFloat(ispData[0].packet),
+//     value: parseFloat(ispData[0].performance),
+//     title: "میانگین جیتر",
+//     unit: "Ms",
+//   },
+// ];
 
-const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
+// const mockChartData: ChartData[] = parseChartData(/* ispData[0] */);
 
 const mockData: MockData[] = [
   {
@@ -67,7 +69,7 @@ const mockData: MockData[] = [
   {
     id: 2,
     title: "تاریخ",
-    value: "1402/06/27",
+    value: convertToEnglishNumbers(new Date().toLocaleDateString("fa-IR")),
   },
   {
     id: 3,
@@ -77,32 +79,36 @@ const mockData: MockData[] = [
   {
     id: 4,
     title: "زمان",
-    value: "22:41",
+    value: convertToEnglishNumbers(
+      new Date().toLocaleTimeString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    ),
   },
 ];
 
 const Average = () => {
-  const [selectedISP, setSelectedISP] = useState("");
-  const [province, setProvince] = useState("");
-  const [category, setCategory] = useState("");
+  // const [isp, setIsp] = useState<string | null>(null);
+  // const [province, setProvince] = useState<string | null>(null);
 
-  const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
-  };
-  const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
-    setProvince(event.target.value as string);
-  };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
+  const [category, setCategory] = useState<string | null>(null);
+
+  const handleChangeCategory = (buttonName: string) => {
+    setCategory(buttonName);
   };
 
-  const calculateFinalPercentage = (
-    selectedISP: string,
-    province: string,
-    category: string
-  ) => {
-    return selectedISP.length + province.length + category.length;
-  };
+  const [metricsData, setMetricsData] = useState<MetricsReturnType | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setLoading(true);
+    api.metrics.getAllMetrics().then((res) => {
+      setMetricsData(res.data);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <Box
@@ -112,15 +118,12 @@ const Average = () => {
       }}
     >
       <Header
-        title="میانگین کلی"
-        selectTitle="ترتیب بر اساس"
+        isButton={true}
+        clickedButton={category}
+        handleButtonClick={handleChangeCategory}
+        title="اختلالات فعلی"
         iconPath={AverageIcon}
-        category={category}
-        province={province}
-        selectedISP={selectedISP}
-        handleISPChange={handleISPChange}
-        handleProvinceChange={handleProvinceChange}
-        handleCategory={handleCategory}
+        selectTitle="ترتیب بندی براساس:"
       />
 
       <Box
@@ -143,22 +146,42 @@ const Average = () => {
             rowGap: "3rem",
           }}
         >
-          {mockChartData.map((chart) => (
-            <CircleChart
-              big
-              key={chart.id}
-              textTitle={chart.title}
-              value={chart.value}
-              finalPercentage={calculateFinalPercentage(
-                selectedISP,
-                province,
-                category
-              )}
-              unit={chart.unit}
-              size={150}
-              strokeWidth={12}
-            />
-          ))}
+          <CircleChart
+            big
+            finalPercentage={66}
+            size={150}
+            textTitle="میانگین سرعت دانلود"
+            value={loading ? "--" : metricsData!.downloadAverage}
+            unit="Mbps"
+            strokeWidth={12}
+          />
+          <CircleChart
+            big
+            finalPercentage={40}
+            size={150}
+            textTitle="میانگین سرعت آپلود"
+            value={loading ? "--" : metricsData!.uploadAverage}
+            unit="Mbps"
+            strokeWidth={12}
+          />
+          <CircleChart
+            big
+            finalPercentage={52}
+            size={150}
+            textTitle="میانگین پینگ"
+            value={loading ? "--" : metricsData!.pingAverage}
+            unit="Ms"
+            strokeWidth={12}
+          />
+          <CircleChart
+            big
+            finalPercentage={52}
+            size={150}
+            textTitle="میانگین جیترi"
+            value={loading ? "--" : metricsData!.jitterAverage}
+            unit="Ms"
+            strokeWidth={12}
+          />
         </Box>
         <Box
           sx={{

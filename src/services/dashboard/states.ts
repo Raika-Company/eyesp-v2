@@ -21,12 +21,13 @@ interface StateReturnType {
 
 export const getAllStates = async (): Promise<
   AxiosReturnType<StateReturnType>
-> => axios.http.get(config.rootAddress + "/dashboard/get-issue-stats/stats");
+> =>
+  await axios.http.get(config.rootAddress + "/dashboard/get-issue-stats/stats");
 
 export const getStatesByISP = async (
   isp = "Irancell"
 ): Promise<AxiosReturnType<StateReturnType>> =>
-  axios.http.get(
+  await axios.http.get(
     config.rootAddress + "/dashboard/get-issue-stats/stats?isp=" + isp
   );
 
@@ -34,7 +35,7 @@ export const getStatesByISPAndCity = async (
   isp = "Irancell",
   city = "Tehran"
 ): Promise<AxiosReturnType<StateReturnType>> =>
-  axios.http.get(
+  await axios.http.get(
     config.rootAddress +
       "/dashboard/get-issue-stats/stats?isp=" +
       isp +
@@ -45,6 +46,6 @@ export const getStatesByISPAndCity = async (
 export const getStatesByIssue = async (
   issue = "download"
 ): Promise<AxiosReturnType<StateReturnType>> =>
-  axios.http.get(
+  await axios.http.get(
     config.rootAddress + "/dashboard/get-issue-stats/stats?issue=" + issue
   );
