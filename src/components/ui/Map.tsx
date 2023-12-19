@@ -171,8 +171,11 @@ const Map: FC<Props> = ({
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
             onClick={() => {
-              if (isPrivate) return;
-              navigate("/last-disorders");
+              if (isPrivate) {
+                navigate("/last-disorders");
+              } else {
+                navigate("/disorders");
+              }
             }}
           >
             <MapPaths
