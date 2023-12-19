@@ -16,6 +16,7 @@ import { InternalISPList } from "./LeftSide";
 import BadgedValue from "./ـcomponents/BadgedValue";
 import { useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
+import { useISPState } from "./hooks/useISPState";
 
 interface ISPListDisplayProps {
   isp: typeof InternalISPList;
@@ -74,6 +75,7 @@ const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const ispStateData = useISPState();
 
   const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
@@ -100,8 +102,16 @@ const RightSide = () => {
             alignItems: "center",
           }}
         >
-          <NumberValue title="داخل" value={31} unit="ms" />
-          <NumberValue title="خارج" value={55} unit="ms" />
+          <NumberValue
+            title="داخل"
+            value={ispStateData?.ipxAverage || 0}
+            unit="ms"
+          />
+          <NumberValue
+            title="خارج"
+            value={ispStateData?.igwAverage || 0}
+            unit="ms"
+          />
         </Stack>
       </InfoBox>
       <InfoBox
