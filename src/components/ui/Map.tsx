@@ -9,7 +9,7 @@ import {
   getProvinceData,
   mockProvinceListsForPrivate,
 } from "../../lib/MapHelpers";
-import { Buttons } from "./Button";
+import { ClickableButton } from "./Button";
 import StatusTooltip from "./StatusTooltip";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
@@ -289,8 +289,8 @@ const Map: FC<Props> = ({
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>
-              <Buttons onClick={zoomIn} text="+" disable={scale === 10} />
-              <Buttons onClick={zoomOut} text="-" disable={scale === 1} />
+              <ClickableButton onClick={zoomIn} text="+" disable={scale === 10} />
+              <ClickableButton onClick={zoomOut} text="-" disable={scale === 1} />
             </div>
           )}
         </Box>
