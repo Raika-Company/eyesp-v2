@@ -10,7 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SelectButton } from "./SelectButton";
 import { HeaderButton } from "./HeaderButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
@@ -134,7 +134,8 @@ const Header: FC<Props> = ({
 
       <Box sx={getBackButtonBoxStyle(isMdScreen)}>
         <Button
-          onClick={() => navigate(-1)}
+          component={Link}
+          to="/"
           variant="contained"
           sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
           endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}
