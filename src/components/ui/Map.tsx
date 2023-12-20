@@ -49,8 +49,10 @@ const Map: FC<Props> = ({
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
-    setScale((prevScale) => prevScale * 1.04); // Adjust the factor as needed
+    const newScale = scale * 1.04;
+    setScale(newScale);
   };
+
   useEffect(() => {
     zoomIn();
   }, []);
