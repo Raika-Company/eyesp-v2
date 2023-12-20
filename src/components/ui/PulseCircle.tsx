@@ -16,12 +16,14 @@ from {
 interface Props {
   hoveredIsp: string | null;
   tooltipPosition: { x: number; y: number } | null;
-  setHoveredIsp: React.Dispatch<React.SetStateAction<string | null>>;
+  setHoveredIsp: React.Dispatch<
+    React.SetStateAction<"tehran" | "alborz" | "ahvaz" | null>
+  >;
   setTooltipPosition: React.Dispatch<
     React.SetStateAction<{ x: number; y: number } | null>
   >;
   isActive: boolean;
-  province: string;
+  province: "tehran" | "alborz" | "ahvaz";
   internal?: boolean;
 }
 
