@@ -14,38 +14,38 @@ const Dashboard: FC = () => {
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
   const [scale, setScale] = useState<number>(1);
   const handleScreenshot = () => {
-    setScale(Math.max(scale / 1.9, 1));
-
-    setIsExportButtonVisible(false);
-    setIsScreenShot(true);
-
     setTimeout(() => {
-      const mapElement = document.getElementById("mapContainer");
-      if (mapElement) {
-        html2canvas(mapElement)
-          .then((canvas) => {
-            const image = canvas.toDataURL("image/png");
-            const link = document.createElement("a");
-            link.href = image;
-            link.download = "map-screenshot.png";
-            link.click();
+      setIsExportButtonVisible(false);
+      setIsScreenShot(true);
+      setTimeout(() => {
+        const mapElement = document.getElementById("mapContainer");
+        if (mapElement) {
+          html2canvas(mapElement)
+            .then((canvas) => {
+              const image = canvas.toDataURL("image/png");
+              const link = document.createElement("a");
+              link.href = image;
+              link.download = "map-screenshot.png";
+              link.click();
 
-            setTimeout(() => {
+              setTimeout(() => {
+                setIsScreenShot(false);
+                setIsExportButtonVisible(true);
+              }, 1000);
+            })
+            .catch((err) => {
+              console.error("Screenshot failed", err);
               setIsScreenShot(false);
               setIsExportButtonVisible(true);
-            }, 1000);
-          })
-          .catch((err) => {
-            console.error("Screenshot failed", err);
-            setIsScreenShot(false);
-            setIsExportButtonVisible(true);
-          });
-      } else {
-        console.error("Map element not found");
-        setIsScreenShot(false);
-        setIsExportButtonVisible(true);
-      }
-    }, 100);
+            });
+        } else {
+          console.error("Map element not found");
+          setIsScreenShot(false);
+          setIsExportButtonVisible(true);
+        }
+      }, 100);
+    }, 1000);
+    setScale(Math.max(scale / 1.9, 1));
   };
 
   return (
