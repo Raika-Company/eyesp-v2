@@ -1,11 +1,4 @@
-import {
-  Box,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, SvgIcon, useMediaQuery, useTheme, Button } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
@@ -16,22 +9,34 @@ import {
   getProvinceData,
   mockProvinceListsForPrivate,
 } from "../../lib/MapHelpers";
-import { Button } from "./Button";
+import { Buttons } from "./Button";
+import StatusTooltip from "./StatusTooltip";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
 interface Props {
   isPrivate?: boolean;
+  isScreenShot?: boolean;
+  exports?: () => void;
+  isExportButtonVisible: boolean;
+  scale: number;
+  setScale: (scale: number) => void;
 }
 
-const Map: FC<Props> = ({ isPrivate = false }) => {
+const Map: FC<Props> = ({
+  isPrivate = false,
+  isScreenShot = false,
+  exports,
+  isExportButtonVisible,
+  scale,
+  setScale,
+}) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const [scale, setScale] = useState<number>(1);
   const [dragging, setDragging] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({
     x: 0,
@@ -44,9 +49,13 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
 
   const zoomIn = () => {
-    setScale(Math.min(scale * 1.1, 10));
+    const newScale = scale * 1.04;
+    setScale(newScale);
   };
 
+  useEffect(() => {
+    zoomIn();
+  }, []);
   const zoomOut = () => {
     setScale(Math.max(scale / 1.1, 1));
   };
@@ -113,11 +122,10 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
     y: number;
   } | null>(null);
 
-  console.log(tooltipPosition);
-
   return (
     <>
       <Box
+        id="mapContainer"
         sx={{
           position: "relative",
           overflow: "hidden",
@@ -158,8 +166,11 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
             onClick={() => {
-              if (isPrivate) return;
-              navigate("/last-disorders");
+              if (isPrivate) {
+                navigate("/last-disorders");
+              } else {
+                navigate("/disorders");
+              }
             }}
           >
             <MapPaths
@@ -217,11 +228,42 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
                 </Fragment>
               ))}
           </svg>
+
           {/* </Link> */}
         </SvgIcon>
         <Box
           sx={{
-            display: isPrivate ? "flex" : "none",
+            display: "flex",
+            top: "1rem",
+            gap: "1rem",
+            right: "1rem",
+            position: "absolute",
+            color: "#FFF",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          {isExportButtonVisible && (
+            <Button
+              onClick={exports}
+              variant="contained"
+              sx={{
+                backgroundColor: "#505050",
+                paddingX: "2rem",
+                "&:hover": {
+                  backgroundColor: "#1A1F25",
+                  color: "#505050",
+                },
+              }}
+            >
+              Export
+            </Button>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
             bottom: "1rem",
             left: "1rem",
             gap: "1rem",
@@ -229,69 +271,51 @@ const Map: FC<Props> = ({ isPrivate = false }) => {
             color: "#FFF",
           }}
         >
-          <Button onClick={zoomIn} text="+" disable={scale === 10} />
-          <Button onClick={zoomOut} text="-" disable={scale === 1} />
+          {isScreenShot ? (
+            <div style={{ display: "flex", gap: "0.2rem" }}>
+              {!isPrivate &&
+                provinceData &&
+                provinceData.map((province) => (
+                  <StatusTooltip
+                    key={province.id}
+                    ipx={province.ipx || "مطلوب"}
+                    ipxColor={province.ipxColor}
+                    igw={province.igw || "مطلوب"}
+                    igwColor={province.igwColor}
+                    isSecond={true}
+                    isScreenShot={isScreenShot}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Buttons onClick={zoomIn} text="+" disable={scale === 10} />
+              <Buttons onClick={zoomOut} text="-" disable={scale === 1} />
+            </div>
+          )}
         </Box>
       </Box>
       {hoveredProvince && (
-        <Box
-          sx={{
-            width: "150px",
-            height: "150px",
-            borderRadius: "2rem",
-            position: "fixed",
-            zIndex: "100",
-            top: tooltipPosition!.y - 165,
-            left: tooltipPosition!.x - 80,
-            background: "#000000aa",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingX: "1rem",
-            gap: "1rem",
-          }}
-        >
-          <Stack
-            sx={{
-              whiteSpace: "nowrap",
-            }}
-          >
-            <Typography fontSize=".8rem">سرویس‌های داخلی:</Typography>
-            <Typography
-              color={
-                provinceData?.find(
-                  (province) => province.name === hoveredProvince
-                )?.ipxColor
-              }
-            >
-              {
-                provinceData?.find(
-                  (province) => province.name === hoveredProvince
-                )?.ipx
-              }
-            </Typography>
-          </Stack>
-          <Stack
-            sx={{
-              whiteSpace: "nowrap",
-            }}
-          >
-            <Typography fontSize=".8rem">سرویس‌های خارجی:</Typography>
-            <Typography
-              color={
-                provinceData?.find(
-                  (province) => province.name === hoveredProvince
-                )?.igwColor
-              }
-            >
-              {
-                provinceData?.find(
-                  (province) => province.name === hoveredProvince
-                )?.igw
-              }
-            </Typography>
-          </Stack>
-        </Box>
+        <StatusTooltip
+          ipx={
+            provinceData?.find((province) => province.name === hoveredProvince)
+              ?.ipx || "مطلوب"
+          }
+          ipxColor={
+            provinceData?.find((province) => province.name === hoveredProvince)
+              ?.ipxColor
+          }
+          igw={
+            provinceData?.find((province) => province.name === hoveredProvince)
+              ?.igw || "مطلوب"
+          }
+          igwColor={
+            provinceData?.find((province) => province.name === hoveredProvince)
+              ?.igwColor
+          }
+          x={tooltipPosition!.x - 80}
+          y={tooltipPosition!.y - 165}
+        />
       )}
     </>
   );
