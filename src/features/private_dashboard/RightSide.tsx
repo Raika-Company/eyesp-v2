@@ -15,10 +15,10 @@ import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
-import { ISPListDisplay } from "../dashboard/RightSide";
 import { InternalISPList } from "../dashboard/LeftSide";
 import { Link } from "react-router-dom";
 import BadgedValue from "./ـcomponents/BadgedValue";
+import ISPList from "../dashboard/ـcomponents/ISPList";
 
 const aiMessages = [
   {
@@ -185,7 +185,7 @@ const RightSide = () => {
         iconPath={IspAndProvinces}
         onClick={toggleDialog}
       >
-        <ISPListDisplay
+        <ISPList
           style={{ direction: "ltr" }}
           isp={InternalISPList}
           isLimited={true}
