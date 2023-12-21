@@ -186,7 +186,7 @@ const LeftSide: React.FC = () => {
                 style={{
                   textDecoration: "none",
                 }}
-                to="/disorders"
+                to="/last-disorders"
               >
                 <Stack direction="row" gap={0.5} alignItems="center">
                   <Typography

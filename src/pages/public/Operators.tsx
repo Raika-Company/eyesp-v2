@@ -101,6 +101,7 @@ const Operators: React.FC = () => {
         title="اپراتور ها"
         iconPath={operators}
         selectTitle="فیلتر:"
+        isButtonSelect={true}
       />
       <Box
         sx={{
