@@ -330,7 +330,7 @@ const GlobalOverview: React.FC = () => {
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
-      <Container>
+      <Container maxWidth="x2">
         <Box
           sx={{
             display: "flex",
