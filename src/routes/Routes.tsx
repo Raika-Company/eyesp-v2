@@ -40,12 +40,6 @@ export const mainRoutes = [
     element: <LastDisorders />,
     title: "ISP",
   },
-
-  {
-    path: "/current-traffic",
-    element: <CurrentTraffic />,
-    title: "Current-traffic",
-  },
   {
     path: "/speed-test",
     element: <SpeedTest />,
@@ -78,5 +72,10 @@ export const privateMainRoutes = [
     path: "/private/operators",
     element: <Operators />,
     title: "Operators",
+  },
+  {
+    path: "/private/current-traffic",
+    element: <CurrentTraffic />,
+    title: "Current-traffic",
   },
 ];
