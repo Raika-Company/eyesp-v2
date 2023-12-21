@@ -1,5 +1,10 @@
 import { FC, Suspense } from "react";
-import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { mainRoutes, privateMainRoutes } from "./routes/Routes";
 import "./layout/global.css";
 import theme from "./layout/theme";

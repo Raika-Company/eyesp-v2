@@ -45,7 +45,7 @@ const Dashboard: FC = () => {
         }
       }, 100);
     }, 1000);
-    setScale(Math.max(scale / 1.9, 1));
+    setScale(Math.max(scale / 1.8, 1));
   };
 
   return (
