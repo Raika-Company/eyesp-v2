@@ -173,10 +173,10 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
       content: '""',
       display: "block",
       width: "10%",
-      height: "60px",
+      height: "70px",
       backgroundColor: "#3f4145",
       position: "absolute",
-      top: "-21px",
+      top: "-35px",
       left: "-1px",
     } : {}
   });
@@ -326,7 +326,7 @@ const GlobalOverview: React.FC = () => {
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
-      <Container>
+      <Container maxWidth="x2">
         <Box
           sx={{
             display: "flex",
