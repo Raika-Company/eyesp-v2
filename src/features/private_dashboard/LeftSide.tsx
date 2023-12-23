@@ -70,6 +70,7 @@ const conflictsHistoryMockData = [
 const LeftSide: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -90,7 +91,15 @@ const LeftSide: React.FC = () => {
   };
 
   return (
-    <Box sx={getBoxStyle(isXlgScreen, isMDScreen)}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        alignItems: isSmScreen ? "center" : "start",
+      }}
+    >
       <InfoBox title="اختلال‌های فعلی" iconPath={Conflicts}>
         <Box
           sx={{
@@ -313,14 +322,5 @@ const LeftSide: React.FC = () => {
     </Box>
   );
 };
-
-const getBoxStyle = (isXlgScreen: boolean, isMDScreen: boolean) => ({
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  gap: isXlgScreen ? "1.5rem" : "1rem",
-  maxWidth: isXlgScreen ? "initial" : "19rem",
-  justifySelf: isMDScreen ? "start" : "",
-});
 
 export default LeftSide;

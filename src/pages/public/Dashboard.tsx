@@ -49,7 +49,6 @@ const Dashboard: FC = () => {
   };
 
   return (
-    // The code that surely will be changed.
     <Box
       sx={{
         minHeight: "100vh",
@@ -67,10 +66,7 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          // Maybe temporary
-          paddingY: isLgScreen ? "2rem" : "1rem",
-          paddingX: "3rem",
+          padding: "1rem",
         }}
       >
         <Box
@@ -80,7 +76,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "2fr 1fr"
-              : `1fr 2.8fr 1fr`,
+              : `1fr ${isLgScreen ? "2.8" : "2.6"}fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
@@ -89,7 +85,8 @@ const Dashboard: FC = () => {
               ? "1fr"
               : "1fr",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "2rem",
+            gap: isLgScreen ? "2rem" : "1rem",
+            paddingX: "2rem",
           }}
         >
           <LeftSide />
