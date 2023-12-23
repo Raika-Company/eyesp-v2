@@ -13,6 +13,7 @@ const Dashboard: FC = () => {
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
   const [scale, setScale] = useState<number>(1);
+
   const handleScreenshot = () => {
     setTimeout(() => {
       setIsExportButtonVisible(false);
@@ -20,9 +21,16 @@ const Dashboard: FC = () => {
       setTimeout(() => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
-          html2canvas(mapElement)
+          const desiredWidth = 700; // Set your desired width
+          const desiredHeight = 760; // Set your desired height
+
+          html2canvas(mapElement, {
+            width: desiredWidth,
+            height: desiredHeight,
+          })
             .then((canvas) => {
-              const image = canvas.toDataURL("image/png");
+              const croppedCanvas = cropCanvas(canvas); // Crop the canvas to remove white frame
+              const image = croppedCanvas.toDataURL("image/png");
               const link = document.createElement("a");
               link.href = image;
               link.download = "map-screenshot.png";
@@ -45,11 +53,10 @@ const Dashboard: FC = () => {
         }
       }, 100);
     }, 1000);
-    setScale(Math.max(scale / 1.9, 1));
+    setScale(Math.max(scale / 1.8, 1));
   };
 
   return (
-    // The code that surely will be changed.
     <Box
       sx={{
         minHeight: "100vh",
@@ -67,8 +74,6 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          // Maybe temporary
           paddingY: isLgScreen ? "2rem" : "1rem",
           paddingX: "3rem",
         }}
@@ -93,7 +98,6 @@ const Dashboard: FC = () => {
           }}
         >
           <LeftSide />
-
           <Map
             scale={scale}
             setScale={setScale}
@@ -109,3 +113,37 @@ const Dashboard: FC = () => {
 };
 
 export default Dashboard;
+
+function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+  // Ensure that canvas is an instance of HTMLCanvasElement
+  if (!(canvas instanceof HTMLCanvasElement)) {
+    throw new Error("Invalid canvas element");
+  }
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    // Handle the case where getContext returns null
+    throw new Error("Failed to get 2D context");
+  }
+
+  const cropHeight = 20;
+  const croppedCanvas = ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height - cropHeight
+  );
+
+  const newCanvas = document.createElement("canvas");
+  newCanvas.width = canvas.width;
+  newCanvas.height = canvas.height - cropHeight;
+
+  const newCtx = newCanvas.getContext("2d");
+  if (!newCtx) {
+    throw new Error("Failed to get 2D context for new canvas");
+  }
+
+  newCtx.putImageData(croppedCanvas, 0, 0);
+
+  return newCanvas;
+}
