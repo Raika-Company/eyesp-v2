@@ -19,6 +19,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import api from "../../services";
+import { FullscreenExitRounded } from "@mui/icons-material";
 
 const ConflictsData = [
   {
@@ -315,7 +316,8 @@ const LeftSide: React.FC = () => {
 
 const getBoxStyle = (isXlgScreen: boolean, isMDScreen: boolean) => ({
   height: "100%",
-  display: "grid",
+  display: "flex",
+  flexDirection: "column",
   gap: isXlgScreen ? "1.5rem" : "1rem",
   maxWidth: isXlgScreen ? "initial" : "19rem",
   justifySelf: isMDScreen ? "start" : "",
