@@ -68,9 +68,11 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        display: "grid",
+        alignItems: isSmScreen ? "center" : "end",
+        display: "flex",
+        flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
-        maxWidth: isXlgScreen ? "initial" : "19rem",
+        minWidth: "20rem",
       }}
     >
       <InfoBox title="هوش مصنوعی" iconPath={Ai}>
