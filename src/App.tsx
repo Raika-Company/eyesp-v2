@@ -1,4 +1,4 @@
-import { FC, Suspense } from "react";
+import { FC, Suspense, startTransition, useEffect } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -19,6 +19,10 @@ const DASHBOARD_PATH_PRIVATE = "/private";
 const App: FC = () => {
   const AppContent: FC = () => {
     const location = useLocation();
+
+    useEffect(() => {
+      startTransition(() => {});
+    }, [location]);
     const showSuspense =
       location.pathname !== DASHBOARD_PATH &&
       location.pathname !== DASHBOARD_PATH_PRIVATE;
