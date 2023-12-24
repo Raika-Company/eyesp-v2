@@ -1,6 +1,4 @@
-import { lazy } from "react";
-
-const LastDis = lazy(() => import("../../features/lastDisorders/LastDis"));
+import LastDis from "../../features/lastDisorders/LastDis";
 
 const LastDisorders = () => {
   return <LastDis />;

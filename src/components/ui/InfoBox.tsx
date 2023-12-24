@@ -21,7 +21,7 @@ const InfoBox: FC<Props> = ({
     <Box
       sx={{
         position: "relative",
-        flexBasis: "17.5rem",
+        flexBasis: "14.5rem",
         flexGrow: "1",
         borderRadius: ".5rem",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",

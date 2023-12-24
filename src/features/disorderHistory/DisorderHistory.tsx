@@ -1,10 +1,11 @@
-import React, { lazy, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import history from "../../assets/images/history.svg";
 import provinceCompare from "../../../public/data/provinceCompare.json";
-
-const Header = lazy(() => import("../../components/ui/Header"));
-const CustomTable = lazy(() => import("../../components/ui/CustomTable"));
+import Header from "../../components/ui/Header";
+import CustomTable from "../../components/ui/CustomTable";
+// const Header = lazy(() => import("../../components/ui/Header"));
+// const CustomTable = lazy(() => import("../../components/ui/CustomTable"));
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 type RowType = (typeof provinceCompare)[number];
