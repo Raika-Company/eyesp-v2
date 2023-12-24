@@ -44,7 +44,7 @@ const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
     (detail) => parseInt(detail.status, 10) !== 200
   ).length;
   if (non200Count > 4) return "#E93F3F";
-  if (non200Count >= 2) return "#f19e2c";
+  if (non200Count >= 2) return "#C99143";
   return "#7FCD9F";
 };
 
@@ -91,7 +91,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         درخواست با موفقیت انجام شد.
       </Typography>
     );
-  } else if (color === "#f19e2c" && non200Details.length > 0) {
+  } else if (color === "#C99143" && non200Details.length > 0) {
     const start = non200Details[0].time;
     const end = non200Details[non200Details.length - 1].time;
     tooltipContent.push(
