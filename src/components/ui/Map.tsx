@@ -53,9 +53,9 @@ const Map: FC<Props> = ({
     setScale(newScale);
   };
 
-  // useEffect(() => {
-  //   zoomIn();
-  // }, []);
+  useEffect(() => {
+    zoomIn();
+  }, []);
   const zoomOut = () => {
     setScale(Math.max(scale / 1.1, 1));
   };

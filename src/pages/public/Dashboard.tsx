@@ -21,15 +21,15 @@ const Dashboard: FC = () => {
       setTimeout(() => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
-          const desiredWidth = 700; // Set your desired width
-          const desiredHeight = 760; // Set your desired height
+          const desiredWidth = 780;
+          const desiredHeight = 860;
 
           html2canvas(mapElement, {
             width: desiredWidth,
             height: desiredHeight,
           })
             .then((canvas) => {
-              const croppedCanvas = cropCanvas(canvas); // Crop the canvas to remove white frame
+              const croppedCanvas = cropCanvas(canvas);
               const image = croppedCanvas.toDataURL("image/png");
               const link = document.createElement("a");
               link.href = image;
@@ -115,28 +115,26 @@ const Dashboard: FC = () => {
 export default Dashboard;
 
 function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
-  // Ensure that canvas is an instance of HTMLCanvasElement
   if (!(canvas instanceof HTMLCanvasElement)) {
     throw new Error("Invalid canvas element");
   }
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    // Handle the case where getContext returns null
     throw new Error("Failed to get 2D context");
   }
 
-  const cropHeight = 20;
+  const cropWidth = 20;
   const croppedCanvas = ctx.getImageData(
+    cropWidth,
     0,
-    0,
-    canvas.width,
-    canvas.height - cropHeight
+    canvas.width - cropWidth,
+    canvas.height
   );
 
   const newCanvas = document.createElement("canvas");
-  newCanvas.width = canvas.width;
-  newCanvas.height = canvas.height - cropHeight;
+  newCanvas.width = canvas.width - cropWidth;
+  newCanvas.height = canvas.height;
 
   const newCtx = newCanvas.getContext("2d");
   if (!newCtx) {
