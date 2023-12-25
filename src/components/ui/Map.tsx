@@ -53,9 +53,9 @@ const Map: FC<Props> = ({
     setScale(newScale);
   };
 
-  useEffect(() => {
-    zoomIn();
-  }, []);
+  // useEffect(() => {
+  //   zoomIn();
+  // }, []);
   const zoomOut = () => {
     setScale(Math.max(scale / 1.1, 1));
   };
@@ -147,7 +147,7 @@ const Map: FC<Props> = ({
           <svg
             preserveAspectRatio="none"
             width="980"
-            height="504"
+            height="694"
             viewBox="0 0 1100 964"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
