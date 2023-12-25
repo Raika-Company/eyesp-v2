@@ -94,7 +94,7 @@ const Dashboard: FC = () => {
               : "1fr",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "1rem",
-            paddingX: isMdScreen ? "10rem" : "2rem",
+            paddingX: "2rem",
           }}
         >
           <LeftSide />
