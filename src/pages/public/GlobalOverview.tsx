@@ -101,7 +101,9 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
       <Typography sx={{ bgcolor: "#2B2E31", py: "0.5em", px: "0.5em" }}>
         اختلال جزئی از ساعت {start} تا ساعت {end}
       </Typography>,
-      <Typography sx={{ mt: "0.5em" }}>سرویس دچار اختلالات جزئی شده است.</Typography>
+      <Typography sx={{ mt: "0.5em" }}>
+        سرویس دچار اختلالات جزئی شده است.
+      </Typography>
     );
   }
 
@@ -221,12 +223,13 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         sx={{ textTransform: "uppercase" }}
       >
         <img
-          src={`/images/${data.name}.svg`}
+          src={`/images/${data.name}.png`}
           alt={data.name}
           width={60}
           height={60}
         />
         <Typography
+          color="white"
           sx={{
             textAlign: "center",
             textTransform: "uppercase",
