@@ -58,7 +58,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         <Typography
           sx={{
             fontWeight: "800",
-            fontSize: isXlgScreen ? "4rem" : "2.5rem",
+            fontSize: isXlgScreen ? "3rem" : "2rem",
             marginBottom: "-.5rem",
           }}
         >

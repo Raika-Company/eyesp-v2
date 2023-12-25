@@ -22,7 +22,7 @@ const Dashboard: FC = () => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
           const desiredWidth = 780;
-          const desiredHeight = 860;
+          const desiredHeight = 750;
 
           html2canvas(mapElement, {
             width: desiredWidth,
