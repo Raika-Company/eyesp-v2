@@ -22,7 +22,7 @@ const Dashboard: FC = () => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
           const desiredWidth = 780;
-          const desiredHeight = 860;
+          const desiredHeight = 750;
 
           html2canvas(mapElement, {
             width: desiredWidth,
@@ -94,7 +94,7 @@ const Dashboard: FC = () => {
               : "1fr",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "1rem",
-            paddingX: "2rem",
+            paddingX: isMdScreen ? "10rem" : "2rem",
           }}
         >
           <LeftSide />
