@@ -146,8 +146,8 @@ const Map: FC<Props> = ({
           {/* <Link to="/disorders"> */}
           <svg
             preserveAspectRatio="none"
-            width="980"
-            height="694"
+            width="1380"
+            height="794"
             viewBox="0 0 1100 964"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
