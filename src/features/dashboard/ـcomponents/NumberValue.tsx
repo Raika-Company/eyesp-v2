@@ -39,14 +39,14 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         alignItems: "center",
       }}
     >
-      {renderText(title, "5.5rem")}
+      {renderText(title, "4.5rem")}
       <Box
         sx={{
           background: "#232629",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: isXlgScreen ? "7rem" : "6rem",
+          width: isXlgScreen ? "7.5rem" : "6.5rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
@@ -58,7 +58,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         <Typography
           sx={{
             fontWeight: "800",
-            fontSize: isXlgScreen ? "2.5rem" : "1.5rem",
+            fontSize: isXlgScreen ? "2.6rem" : "1.8rem",
             marginBottom: "-.5rem",
           }}
         >
