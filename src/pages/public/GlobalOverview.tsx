@@ -5,23 +5,22 @@ import {
   Button,
   Tooltip,
   Typography,
-  Modal,
   useMediaQuery,
   useTheme,
   Container,
-  // SxProps,
-  // Theme,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
+import ModalNotData from "../../components/ui/ModalNotData";
 
-// enum Time {
-//   FiveMinutes = '5min',
-//   TenMinutes = '10min',
-//   TwentyMinutes = '20min'
-// }
+type Detail = {
+  time: string;
+  status: string;
+};
+
+type Details = Detail[];
 
 type StatusDetail = {
   time: string;
@@ -45,7 +44,7 @@ const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
     (detail) => parseInt(detail.status, 10) !== 200
   ).length;
   if (non200Count > 4) return "#E93F3F";
-  if (non200Count >= 2) return "#f19e2c";
+  if (non200Count >= 2) return "#C99143";
   return "#7FCD9F";
 };
 
@@ -68,7 +67,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         قطعی کامل سرویس از ساعت {start} تا ساعت {end}
       </Typography>,
       <Typography sx={{ mt: "0.5em" }}>
-        دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.
+        دسترسی به صورت موقت قطع شده است.
       </Typography>
     );
   } else if (color === "#7FCD9F") {
@@ -92,7 +91,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         درخواست با موفقیت انجام شد.
       </Typography>
     );
-  } else if (color === "#f19e2c" && non200Details.length > 0) {
+  } else if (color === "#C99143" && non200Details.length > 0) {
     const start = non200Details[0].time;
     const end = non200Details[non200Details.length - 1].time;
     tooltipContent.push(
@@ -103,7 +102,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         اختلال جزئی از ساعت {start} تا ساعت {end}
       </Typography>,
       <Typography sx={{ mt: "0.5em" }}>
-        سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.
+        سرویس دچار اختلالات جزئی شده است.
       </Typography>
     );
   }
@@ -126,9 +125,13 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     null
   );
   const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
+  const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(
+    null
+  );
 
   const handleGraphClick = (index: number) => {
     if (isMobile) {
+      setCurrentActiveGraph(index);
       setActiveGraphMobile(index);
 
       if (tooltipTimer) clearTimeout(tooltipTimer);
@@ -152,16 +155,54 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
   };
 
   useEffect(() => {
+    if (currentActiveGraph !== null) {
+    }
+  }, [currentActiveGraph]);
+
+  useEffect(() => {
     return () => {
       if (tooltipTimer) clearTimeout(tooltipTimer);
     };
   }, [tooltipTimer]);
 
+  const totalStatuses = data.hourly_status.slice(-24);
+  const statusesCount = totalStatuses.length;
+  const quarter = Math.floor(statusesCount / 4);
+  const displayIndexes = [
+    0,
+    quarter,
+    2 * quarter,
+    3 * quarter,
+    statusesCount - 1,
+  ];
+
+  const getFirstValidTimeForHour = (details: Details) => {
+    const validDetail = details.find(
+      (detail: Detail) => detail.status === "200" || detail.status === "403"
+    );
+    return validDetail ? validDetail.time : "N/A";
+  };
+
+  const statusLineStyle = (index: number) => ({
+    "&::before": displayIndexes.includes(index)
+      ? {
+          content: '""',
+          display: "block",
+          width: "10%",
+          height: "70px",
+          backgroundColor: "#3f4145",
+          position: "absolute",
+          top: "-35px",
+          left: "-1px",
+        }
+      : {},
+  });
+
   return (
     <Grid
       xs={12}
       sx={{
-        maxWidth: { md: "48%", lg: "31%" },
+        maxWidth: { md: "48%", lg: "31.7%" },
         borderRadius: "0.5rem",
         background: "#2B2E31",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -169,8 +210,8 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         alignItems: "center",
         justifyContent: "space-between",
         mx: "auto",
-        my: "1.1em",
-        px: "1em",
+        my: "0.66em",
+        px: "1.5em",
       }}
     >
       <Box
@@ -182,68 +223,124 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         sx={{ textTransform: "uppercase" }}
       >
         <img
-          src={`/images/${data.name}.svg`}
+          src={`/images/${data.name}.png`}
           alt={data.name}
-          width={64}
-          height={64}
+          width={60}
+          height={60}
         />
         <Typography
+          color="white"
           sx={{
             textAlign: "center",
             textTransform: "uppercase",
             fontWeight: 600,
+            fontSize: "0.9rem",
           }}
         >
           {data.name}
         </Typography>
       </Box>
       <Box
+        position="relative"
         display="flex"
-        flexDirection="row"
+        flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        width="60%"
-        height="100%"
-        padding="1rem"
+        width="65%"
+        mt="2em"
       >
-        {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
-          const bgColor = getHourlyStatusColor(hourlyStatus.details);
-          const statusMessage = getTooltipMessage(
-            hourlyStatus.details,
-            bgColor
-          );
-
-          return (
-            <Tooltip
-              key={index}
-              title={<Typography>{statusMessage}</Typography>}
-              arrow
-              open={
-                isMobile
-                  ? activeGraphMobile === index
-                  : activeGraphDesktop === index
-              }
-              onClick={() => handleGraphClick(index)}
-              onMouseEnter={() => handleGraphHover(index)}
-              onMouseLeave={handleGraphLeave}
-            >
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="flex-end"
+          width="100%"
+          height="100%"
+        >
+          {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
+            const bgColor = getHourlyStatusColor(hourlyStatus.details);
+            return (
+              <Tooltip
+                title={
+                  <Typography>
+                    {getTooltipMessage(hourlyStatus.details, bgColor)}
+                  </Typography>
+                }
+                arrow
+                open={
+                  isMobile
+                    ? activeGraphMobile === index
+                    : activeGraphDesktop === index
+                }
+                onClick={() => handleGraphClick(index)}
+                onMouseEnter={() => handleGraphHover(index)}
+                onMouseLeave={handleGraphLeave}
+              >
+                <Box
+                  bgcolor={bgColor}
+                  sx={{
+                    width: "10px",
+                    height: "40px",
+                    cursor: "pointer",
+                    borderRadius: "2em",
+                    mx: "0.1em",
+                    "&:hover": {
+                      bgcolor: "#c3c3c3",
+                    },
+                    position: "relative",
+                    ...statusLineStyle(index),
+                  }}
+                />
+              </Tooltip>
+            );
+          })}
+          <Typography
+            sx={{
+              transform: "rotate(-90deg)",
+              fontSize: "9.574px",
+              color: "#7A7775",
+              position: "absolute",
+              left: "-25px",
+              top: "-10px",
+            }}
+          >
+            Disorders
+          </Typography>
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          width="19.7rem"
+          mt="0.5em"
+        >
+          {data.hourly_status.map((hourlyStatus, index) => {
+            const shouldDisplayHour = displayIndexes.includes(index);
+            return (
               <Box
-                bgcolor={bgColor}
-                my={0.3}
+                key={index}
                 sx={{
-                  width: "10px",
-                  height: "50px",
-                  mx: "0.1em",
-                  cursor: "pointer",
-                  borderRadius: "2em",
-                  "&:hover": {
-                    bgcolor: "#c3c3c3",
-                  },
+                  width: shouldDisplayHour ? "auto" : "0px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
-              />
-            </Tooltip>
-          );
-        })}
+              >
+                {shouldDisplayHour && (
+                  <Typography
+                    sx={{
+                      color: "#7A7775",
+                      fontSize: "9.574px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {getFirstValidTimeForHour(hourlyStatus.details)}
+                  </Typography>
+                )}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
     </Grid>
   );
@@ -251,77 +348,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
-  const [showModal, setShowModal] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const navigate = useNavigate();
-  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
-
-  useEffect(() => {
-    if (serverStatusData && serverStatusData.length > 0) {
-      setDataLoaded(true);
-    } else {
-      const timer = setTimeout(() => {
-        setShowModal(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  if (showModal && !dataLoaded) {
-    return (
-      <Modal open={showModal}>
-        <Box
-          sx={{
-            textAlign: "center",
-            bgcolor: "#2c2e32",
-            width: isSmScreen ? "22rem" : "27rem",
-            p: isSmScreen ? "1em" : "3em",
-            mx: "auto",
-            my: "20em",
-            borderRadius: ".5em",
-          }}
-        >
-          <Typography sx={{ mb: "2em", fontSize: "0.9rem" }}>
-            متاسفانه در حال حاضر قادر به دریافت دیتا نمی باشیم, <br /> لطفا بعدا
-            امتحان کنید.
-          </Typography>
-          <Button
-            sx={{ bgcolor: "#4D765F" }}
-            onClick={() => {
-              window.location.reload();
-              handleCloseModal();
-            }}
-          >
-            بروزرسانی صفحه
-          </Button>
-          <Button
-            sx={{ bgcolor: "#4D765F", mr: "2em" }}
-            onClick={() => {
-              navigate("/");
-              handleCloseModal();
-            }}
-          >
-            رفتن به صفحه اصلی
-          </Button>
-        </Box>
-      </Modal>
-    );
-  }
-
-  // const [activeTime, setActiveTime] = useState<Time | null>(null);
-
-  // const buttonStyles = (time: Time): SxProps<Theme> => ({
-  //   borderRadius: "0.7em",
-  //   bgcolor: activeTime === time ? '#fff' : '#000',
-  //   color: activeTime === time ? '#2B2E31' : '#fff',
-  //   mx: time === Time.TenMinutes ? '0.7em' : 0,
-  // });
-
-  // const times = [Time.FiveMinutes, Time.TenMinutes, Time.TwentyMinutes];
 
   return (
     <Box
@@ -330,7 +357,7 @@ const GlobalOverview: React.FC = () => {
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
-      <Container>
+      <Container maxWidth="x2">
         <Box
           sx={{
             display: "flex",
@@ -340,17 +367,6 @@ const GlobalOverview: React.FC = () => {
             overflowX: "hidden",
           }}
         >
-          {/* <Box sx={{ display: "flex", justifyContent: "space-between", mr: '1.2em' }}>
-          {times.map(time => (
-            <Button
-              key={time}
-              sx={buttonStyles(time)}
-              onClick={() => setActiveTime(time)}
-            >
-              {time}
-            </Button>
-          ))}
-        </Box> */}
           <Button
             component={Link}
             to="/"
@@ -367,7 +383,7 @@ const GlobalOverview: React.FC = () => {
             بازگشت
           </Button>
         </Box>
-        {dataLoaded ? (
+        {serverStatusData ? (
           <Grid container rowSpacing={4} paddingY="1rem">
             {serverStatusData.map((serverData, index) => (
               <GridItem key={index} data={serverData} />
@@ -379,6 +395,7 @@ const GlobalOverview: React.FC = () => {
           </Box>
         )}
       </Container>
+      <ModalNotData serverStatusData={serverStatusData} />
     </Box>
   );
 };

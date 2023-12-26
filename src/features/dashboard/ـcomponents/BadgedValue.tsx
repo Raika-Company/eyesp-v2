@@ -21,7 +21,7 @@ const BadgedValue: FC<Props> = ({ badgeName, value, unit = "Mbps" }) => {
       }}
     >
       <Stack direction="row-reverse" alignItems="baseline">
-        <Typography fontSize="2.5rem">{value.toLocaleString()}</Typography>
+        <Typography fontSize="2rem">{value.toLocaleString()}</Typography>
         <Typography>{unit}</Typography>
       </Stack>
 

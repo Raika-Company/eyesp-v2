@@ -19,9 +19,9 @@ const PrivateDashboard: FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "#000",
+        background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+        boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
         marginY: "auto",
-        marginX: "1.5rem",
       }}
     >
       <Box
@@ -30,12 +30,9 @@ const PrivateDashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
-          boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
 
           // Maybe temporary
-          paddingY: "1rem",
-          paddingX: "1rem",
+          padding: "1rem",
         }}
       >
         <Box
@@ -55,10 +52,12 @@ const PrivateDashboard: FC = () => {
               : "1fr",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "1rem",
+            paddingX: "2rem",
           }}
         >
           <LeftSide />
           <Map
+            isPrivate
             scale={scale}
             setScale={setScale}
             isExportButtonVisible={false}

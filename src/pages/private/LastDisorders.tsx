@@ -1,14 +1,7 @@
-import { Suspense, lazy } from "react";
-
-
-const LastDis = lazy(() => import("../../features/lastDisorders/LastDis"));
+import LastDis from "../../features/lastDisorders/LastDis";
 
 const LastDisorders = () => {
-  return (
-    <Suspense fallback={<div>loading</div>}>
-      <LastDis />
-    </Suspense>
-  );
+  return <LastDis />;
 };
 
 export default LastDisorders;

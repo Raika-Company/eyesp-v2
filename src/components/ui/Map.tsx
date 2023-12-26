@@ -53,9 +53,9 @@ const Map: FC<Props> = ({
     setScale(newScale);
   };
 
-  useEffect(() => {
-    zoomIn();
-  }, []);
+  // useEffect(() => {
+  //   zoomIn();
+  // }, []);
   const zoomOut = () => {
     setScale(Math.max(scale / 1.1, 1));
   };
@@ -146,7 +146,9 @@ const Map: FC<Props> = ({
           {/* <Link to="/disorders"> */}
           <svg
             preserveAspectRatio="none"
-            viewBox="0 0 1140 1110"
+            width="980"
+            height="694"
+            viewBox="0 0 1100 964"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
@@ -289,8 +291,16 @@ const Map: FC<Props> = ({
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>
-              <ClickableButton onClick={zoomIn} text="+" disable={scale === 10} />
-              <ClickableButton onClick={zoomOut} text="-" disable={scale === 1} />
+              <ClickableButton
+                onClick={zoomIn}
+                text="+"
+                disable={scale === 10}
+              />
+              <ClickableButton
+                onClick={zoomOut}
+                text="-"
+                disable={scale === 1}
+              />
             </div>
           )}
         </Box>

@@ -19,6 +19,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import api from "../../services";
+import { FullscreenExitRounded } from "@mui/icons-material";
 
 const ConflictsData = [
   {
@@ -69,6 +70,7 @@ const conflictsHistoryMockData = [
 const LeftSide: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -89,7 +91,15 @@ const LeftSide: React.FC = () => {
   };
 
   return (
-    <Box sx={getBoxStyle(isXlgScreen, isMDScreen)}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
+        alignItems: isSmScreen ? "center" : "start",
+      }}
+    >
       <InfoBox title="اختلال‌های فعلی" iconPath={Conflicts}>
         <Box
           sx={{
@@ -186,7 +196,7 @@ const LeftSide: React.FC = () => {
                 style={{
                   textDecoration: "none",
                 }}
-                to="/disorders"
+                to="/last-disorders"
               >
                 <Stack direction="row" gap={0.5} alignItems="center">
                   <Typography
@@ -312,13 +322,5 @@ const LeftSide: React.FC = () => {
     </Box>
   );
 };
-
-const getBoxStyle = (isXlgScreen: boolean, isMDScreen: boolean) => ({
-  height: "100%",
-  display: "grid",
-  gap: isXlgScreen ? "1.5rem" : "1rem",
-  maxWidth: isXlgScreen ? "initial" : "19rem",
-  justifySelf: isMDScreen ? "start" : "",
-});
 
 export default LeftSide;

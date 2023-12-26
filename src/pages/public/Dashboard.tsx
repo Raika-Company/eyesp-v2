@@ -13,6 +13,7 @@ const Dashboard: FC = () => {
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
   const [scale, setScale] = useState<number>(1);
+
   const handleScreenshot = () => {
     setTimeout(() => {
       setIsExportButtonVisible(false);
@@ -20,9 +21,16 @@ const Dashboard: FC = () => {
       setTimeout(() => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
-          html2canvas(mapElement)
+          const desiredWidth = 780;
+          const desiredHeight = 750;
+
+          html2canvas(mapElement, {
+            width: desiredWidth,
+            height: desiredHeight,
+          })
             .then((canvas) => {
-              const image = canvas.toDataURL("image/png");
+              const croppedCanvas = cropCanvas(canvas);
+              const image = croppedCanvas.toDataURL("image/png");
               const link = document.createElement("a");
               link.href = image;
               link.download = "map-screenshot.png";
@@ -45,11 +53,10 @@ const Dashboard: FC = () => {
         }
       }, 100);
     }, 1000);
-    setScale(Math.max(scale / 1.9, 1));
+    setScale(Math.max(scale / 1.8, 1));
   };
 
   return (
-    // The code that surely will be changed.
     <Box
       sx={{
         minHeight: "100vh",
@@ -67,10 +74,7 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          // Maybe temporary
-          paddingY: isLgScreen ? "2rem" : "1rem",
-          paddingX: "3rem",
+          padding: "1rem",
         }}
       >
         <Box
@@ -80,7 +84,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "2fr 1fr"
-              : `1fr 2.8fr 1fr`,
+              : `1fr ${isLgScreen ? "2.8" : "2.6"}fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
@@ -89,11 +93,11 @@ const Dashboard: FC = () => {
               ? "1fr"
               : "1fr",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "2rem",
+            gap: isLgScreen ? "2rem" : "1rem",
+            paddingX: "2rem",
           }}
         >
           <LeftSide />
-
           <Map
             scale={scale}
             setScale={setScale}
@@ -109,3 +113,35 @@ const Dashboard: FC = () => {
 };
 
 export default Dashboard;
+
+function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+  if (!(canvas instanceof HTMLCanvasElement)) {
+    throw new Error("Invalid canvas element");
+  }
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Failed to get 2D context");
+  }
+
+  const cropWidth = 20;
+  const croppedCanvas = ctx.getImageData(
+    cropWidth,
+    0,
+    canvas.width - cropWidth,
+    canvas.height
+  );
+
+  const newCanvas = document.createElement("canvas");
+  newCanvas.width = canvas.width - cropWidth;
+  newCanvas.height = canvas.height;
+
+  const newCtx = newCanvas.getContext("2d");
+  if (!newCtx) {
+    throw new Error("Failed to get 2D context for new canvas");
+  }
+
+  newCtx.putImageData(croppedCanvas, 0, 0);
+
+  return newCanvas;
+}

@@ -10,6 +10,7 @@ import ISPRanking from "./ـcomponents/ISPRanking";
 
 const RightSide = () => {
   const theme = useTheme();
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const ispStateData = useISPState();
 
@@ -17,10 +18,10 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
+        alignItems: isSmScreen ? "center" : "end",
         display: "flex",
         flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
-        maxWidth: isXlgScreen ? "initial" : "19rem",
       }}
     >
       <InfoBox title="میانگین پینگ مراکز داده" iconPath={ChartIcon}>

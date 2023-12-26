@@ -1,10 +1,11 @@
-import React, { Suspense, lazy, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import history from "../../assets/images/history.svg";
 import provinceCompare from "../../../public/data/provinceCompare.json";
-
-const Header = lazy(() => import("../../components/ui/Header"));
-const CustomTable = lazy(() => import("../../components/ui/CustomTable"));
+import Header from "../../components/ui/Header";
+import CustomTable from "../../components/ui/CustomTable";
+// const Header = lazy(() => import("../../components/ui/Header"));
+// const CustomTable = lazy(() => import("../../components/ui/CustomTable"));
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 type RowType = (typeof provinceCompare)[number];
@@ -33,29 +34,25 @@ const DisorderHistory: React.FC = () => {
 
   return (
     <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Header
-          clickedButton={clickedButton}
-          handleButtonClick={handleButtonClick}
-          title="تاریخچه اختلالات"
-          iconPath={history}
-          selectTitle=""
-          isButton={false}
-          isButtonSelect={false}
-        />
-        <Box
-          sx={{
-            overflowX: isMdScreen ? "scroll" : "hidden",
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
-        >
-          <Box
-            sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}
-          >
-            <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
-          </Box>{" "}
-        </Box>
-      </Suspense>
+      <Header
+        clickedButton={clickedButton}
+        handleButtonClick={handleButtonClick}
+        title="تاریخچه اختلالات"
+        iconPath={history}
+        selectTitle=""
+        isButton={false}
+        isButtonSelect={false}
+      />
+      <Box
+        sx={{
+          overflowX: isMdScreen ? "scroll" : "hidden",
+          "&::-webkit-scrollbar": { display: "none" },
+        }}
+      >
+        <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
+          <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+        </Box>{" "}
+      </Box>
     </div>
   );
 };
