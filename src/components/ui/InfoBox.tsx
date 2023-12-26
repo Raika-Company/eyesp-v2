@@ -30,7 +30,8 @@ const InfoBox: FC<Props> = ({
         display: "flex",
         flexDirection: "column",
         minHeight: "15rem",
-        minWidth: "20rem",
+        minWidth: "17rem",
+        width: "100%",
       }}
     >
       <Box

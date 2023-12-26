@@ -46,7 +46,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: isXlgScreen ? "8rem" : "7rem",
+          width: isXlgScreen ? "7rem" : "6rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
@@ -58,7 +58,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         <Typography
           sx={{
             fontWeight: "800",
-            fontSize: isXlgScreen ? "3rem" : "2rem",
+            fontSize: isXlgScreen ? "2.5rem" : "1.5rem",
             marginBottom: "-.5rem",
           }}
         >

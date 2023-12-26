@@ -1,17 +1,8 @@
-import { Box, keyframes } from "@mui/material";
+import { Box } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 
 const GREEN_COLOR = "#84D1A3";
 const RED_COLOR = "#BA3535";
-
-const pulse = keyframes`
-from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(2.5);
-  }
-`;
 
 interface Props {
   hoveredIsp: string | null;
@@ -74,9 +65,18 @@ const PulseCircle: FC<Props> = ({
           width: "100%",
           height: "100%",
           background: !isActive && internal ? color + 30 : GREEN_COLOR + 30,
-          animation: `${pulse} 1s ${
+          animation: `pulse 1s ${
             Math.random() * 0.5
           }s infinite alternate linear`,
+
+          "@keyframs pulse": {
+            from: {
+              transform: "scale(1)",
+            },
+            to: {
+              transform: "scale(2.5)",
+            },
+          },
         },
       }}
     ></Box>

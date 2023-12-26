@@ -33,8 +33,9 @@ const Map: FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const [dragging, setDragging] = useState<boolean>(false);
@@ -146,9 +147,20 @@ const Map: FC<Props> = ({
           {/* <Link to="/disorders"> */}
           <svg
             preserveAspectRatio="none"
-            width="1380"
-            height="794"
-            viewBox="0 0 1100 964"
+            // width="980"
+            // height="694"
+
+            width="5061"
+            height="3498"
+            viewBox={
+              isSmScreen
+                ? "700 750 1100 964"
+                : isMdScreen
+                ? "600 650 1261 1098"
+                : isLgDownScreen
+                ? "550 600 1361 1198"
+                : "400 450 1701 1398"
+            }
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
