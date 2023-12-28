@@ -32,6 +32,7 @@ const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const toggleDialog = () => {
@@ -69,6 +70,7 @@ const RightSide = () => {
       sx={{
         height: "100%",
         alignItems: isSmScreen ? "center" : "end",
+        marginRight: isMdScreen ? "auto" : "",
         display: "flex",
         flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",

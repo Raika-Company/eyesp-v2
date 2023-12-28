@@ -213,7 +213,7 @@ const LeftSide: React.FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const ispStateData = useISPState();
 
   const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
@@ -235,7 +235,9 @@ const LeftSide: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
-        alignItems: isSmScreen ? "center" : "start",
+        alignItems: isMdScreen ? "center" : "start",
+        marginLeft: isMdScreen ? "auto" : "",
+        minWidth: "17rem",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>

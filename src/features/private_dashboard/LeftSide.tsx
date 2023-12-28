@@ -72,7 +72,7 @@ const LeftSide: React.FC = () => {
   const navigate = useNavigate();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [metricsData, setMetricsData] = useState<MetricsReturnType | null>(
     null
@@ -98,6 +98,7 @@ const LeftSide: React.FC = () => {
         flexDirection: "column",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         alignItems: isSmScreen ? "center" : "start",
+        marginLeft: isMdScreen ? "auto" : "",
       }}
     >
       <InfoBox title="اختلال‌های فعلی" iconPath={Conflicts}>
