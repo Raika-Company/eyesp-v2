@@ -20,6 +20,9 @@ import PulseCircle from "../../components/ui/PulseCircle";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 
+const GREEN_COLOR = "#84D1A3";
+const RED_COLOR = "#BA3535";
+
 interface ISP {
   id: number;
   name: string;
@@ -109,6 +112,17 @@ const ISPSection: React.FC<ISPSectionProps> = ({
     y: number;
   } | null>(null);
 
+  const [color, setColor] = useState(GREEN_COLOR);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (color === GREEN_COLOR) setColor(RED_COLOR);
+      else setColor(GREEN_COLOR);
+    }, 700 + Math.random() * 1000);
+
+    return () => clearInterval(interval);
+  });
+
   return (
     <InfoBox title={title} iconPath={ChartIcon} hasButton={true}>
       <Box
@@ -129,14 +143,24 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               marginX=".5rem"
             >
               <Typography>{isp.name}</Typography>
-              <PulseCircle
-                internal={internal}
-                hoveredIsp={hoveredIsp}
-                province={isp.province!}
-                setHoveredIsp={setHoveredIsp}
-                setTooltipPosition={setTooltipPosition}
-                tooltipPosition={tooltipPosition}
-                isActive={isp.isActive}
+              <div
+                className="pulse-circle"
+                onMouseEnter={(e) => {
+                  e.stopPropagation();
+                  if (!hoveredIsp || tooltipPosition) {
+                    setHoveredIsp(isp.province!);
+                    setTooltipPosition({ x: e.pageX, y: e.pageY });
+                  }
+                }}
+                onMouseLeave={() => setHoveredIsp(null)}
+                style={{
+                  borderRadius: "50%",
+                  transition: "background .2s ease-in-out",
+                  width: "11px",
+                  height: "11px",
+                  background: !isp.isActive && internal ? color : GREEN_COLOR,
+                  position: "relative",
+                }}
               />
             </Stack>
             <Divider
