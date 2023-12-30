@@ -10,6 +10,7 @@ const Dashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
   const [scale, setScale] = useState<number>(1);
@@ -22,7 +23,7 @@ const Dashboard: FC = () => {
         const mapElement = document.getElementById("mapContainer");
         if (mapElement) {
           const desiredWidth = 780;
-          const desiredHeight = 860;
+          const desiredHeight = 750;
 
           html2canvas(mapElement, {
             width: desiredWidth,

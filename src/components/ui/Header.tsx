@@ -134,8 +134,9 @@ const Header: FC<Props> = ({
 
       <Box sx={getBackButtonBoxStyle(isMdScreen)}>
         <Button
-          component={Link}
-          to="/"
+          onClick={() => {
+            navigate(-1);
+          }}
           variant="contained"
           sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
           endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}

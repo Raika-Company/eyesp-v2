@@ -188,9 +188,9 @@ const ISPSection: React.FC<ISPSectionProps> = ({
 const LeftSide: React.FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const ispStateData = useISPState();
 
   const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
