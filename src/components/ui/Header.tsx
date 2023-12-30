@@ -10,7 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SelectButton } from "./SelectButton";
 import { HeaderButton } from "./HeaderButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
@@ -19,7 +19,7 @@ import Category from "../../../public/data/category.json";
 
 interface Props {
   title: string;
-  selectTitle: string;
+  selectTitle?: string;
   iconPath: string;
   onClick?: () => void;
   handleISPChange?: (event: SelectChangeEvent<string>) => void;
@@ -29,8 +29,8 @@ interface Props {
   province?: string;
   selectedISP?: string;
   isButton?: boolean;
-  isButtonSelect?: boolean;
-  handleButtonClick?: (buttonName: string) => void;
+  showButton?: boolean;
+  handleButtonSelect?: (buttonName: string) => void;
   clickedButton?: string | null;
 }
 
@@ -45,11 +45,10 @@ const Header: FC<Props> = ({
   handleISPChange,
   handleCategory,
   isButton,
-  isButtonSelect,
-  handleButtonClick,
+  showButton,
+  handleButtonSelect,
   clickedButton,
 }) => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -66,19 +65,19 @@ const Header: FC<Props> = ({
     >
       <HeaderButton
         clicked={clickedButton === "province" ? "true" : "false"} // Convert boolean to string
-        onClick={() => handleButtonClick?.("province")}
+        onClick={() => handleButtonSelect?.("province")}
       >
         استان
       </HeaderButton>
       <HeaderButton
         clicked={clickedButton === "operator" ? "true" : "false"} // Convert boolean to string
-        onClick={() => handleButtonClick?.("operator")}
+        onClick={() => handleButtonSelect?.("operator")}
       >
         اپراتور
       </HeaderButton>
       <HeaderButton
         clicked={clickedButton === "type" ? "true" : "false"} // Convert boolean to string
-        onClick={() => handleButtonClick?.("type")}
+        onClick={() => handleButtonSelect?.("type")}
       >
         نوع
       </HeaderButton>
@@ -119,18 +118,19 @@ const Header: FC<Props> = ({
           {title}
         </Typography>
       </Box>
-
-      <Box sx={getSelectsBoxStyle(isSmScreen, isMdScreen)}>
-        <Typography
-          color="#7A7775"
-          mr={isSmScreen ? "0" : isMdScreen ? "0.5rem" : "3rem"}
-        >
-          {selectTitle}
-        </Typography>
-        <Box sx={getSelectsWrapperStyle(isSmScreen)}>
-          {isButton ? renderButtons() : isButtonSelect ? renderSelects() : null}
+      {showButton && (
+        <Box sx={getSelectsBoxStyle(isSmScreen, isMdScreen)}>
+          <Typography
+            color="#7A7775"
+            mr={isSmScreen ? "0" : isMdScreen ? "0.5rem" : "3rem"}
+          >
+            {selectTitle}
+          </Typography>
+          <Box sx={getSelectsWrapperStyle(isSmScreen)}>
+            {isButton ? renderButtons() : renderSelects()}
+          </Box>
         </Box>
-      </Box>
+      )}
 
       <Box sx={getBackButtonBoxStyle(isMdScreen)}>
         <Button

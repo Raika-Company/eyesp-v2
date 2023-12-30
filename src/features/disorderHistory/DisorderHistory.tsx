@@ -36,12 +36,11 @@ const DisorderHistory: React.FC = () => {
     <div style={{ backgroundColor: "#2B2E31", height: "100dvh" }}>
       <Header
         clickedButton={clickedButton}
-        handleButtonClick={handleButtonClick}
+        handleButtonSelect={handleButtonClick}
         title="تاریخچه اختلالات"
         iconPath={history}
-        selectTitle=""
         isButton={false}
-        isButtonSelect={false}
+        showButton={false}
       />
       <Box
         sx={{

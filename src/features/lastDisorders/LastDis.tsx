@@ -44,7 +44,7 @@ const LastDis: React.FC = () => {
       <Header
         isButton={true}
         clickedButton={clickedButton}
-        handleButtonClick={handleButtonClick}
+        handleButtonSelect={handleButtonClick}
         title="اختلالات فعلی"
         iconPath={history}
         selectTitle="ترتیب بندی براساس:"
