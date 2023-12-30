@@ -19,7 +19,6 @@ import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import api from "../../services";
-import { FullscreenExitRounded } from "@mui/icons-material";
 
 const ConflictsData = [
   {
@@ -71,8 +70,9 @@ const LeftSide: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [metricsData, setMetricsData] = useState<MetricsReturnType | null>(
     null
@@ -94,10 +94,11 @@ const LeftSide: React.FC = () => {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        display: "grid",
+        gridTemplateColumns:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
-        alignItems: isSmScreen ? "center" : "start",
+        gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
       }}
     >
       <InfoBox title="اختلال‌های فعلی" iconPath={Conflicts}>
@@ -137,7 +138,7 @@ const LeftSide: React.FC = () => {
                 >
                   <Typography
                     sx={{
-                      fontSize: ".7rem",
+                      fontSize: isLgScreen ? ".75rem" : ".5rem",
                     }}
                   >
                     {conflict.title}
@@ -145,10 +146,11 @@ const LeftSide: React.FC = () => {
                   <Button
                     sx={{
                       color: "#fff",
-                      fontSize: ".6rem",
+                      fontSize: ".5rem",
                       background: "#7A7775",
                       paddingY: ".2rem",
                       borderRadius: ".5rem",
+                      marginRight: "auto",
                     }}
                   >
                     هوش مصنوعی
@@ -187,7 +189,7 @@ const LeftSide: React.FC = () => {
                     fontSize: ".8rem",
                   }}
                 >
-                  گزارش خطا در اطلاعات
+                  گزارش خطا
                 </Typography>
               </Stack>
             </Button>
@@ -289,22 +291,22 @@ const LeftSide: React.FC = () => {
           <Stack direction="row" justifyContent="space-around" gap={1}>
             <CircleChart
               finalPercentage={66}
-              size={90}
-              textTitle="میانگین سرعت دانلود"
+              size={isLgScreen ? 90 : 70}
+              textTitle="میانگین دانلود"
               value={loading ? "--" : metricsData!.downloadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={40}
-              size={90}
-              textTitle="میانگین سرعت آپلود"
+              size={isLgScreen ? 90 : 70}
+              textTitle="میانگین آپلود"
               value={loading ? "--" : metricsData!.uploadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={52}
-              size={90}
-              textTitle="میانگین پینگ"
+              size={isLgScreen ? 90 : 70}
+              textTitle="میانگین "
               value={loading ? "--" : metricsData!.pingAverage}
               unit="Ms"
             />

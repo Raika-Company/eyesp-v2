@@ -17,8 +17,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
 import { InternalISPList } from "../dashboard/LeftSide";
 import { Link } from "react-router-dom";
-import BadgedValue from "./ـcomponents/BadgedValue";
 import ISPList from "../dashboard/ـcomponents/ISPList";
+import BadgedValue from "../dashboard/ـcomponents/BadgedValue";
 
 const aiMessages = [
   {
@@ -32,6 +32,8 @@ const RightSide = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const toggleDialog = () => {
@@ -68,11 +70,10 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        alignItems: isSmScreen ? "center" : "end",
-        display: "flex",
-        flexDirection: "column",
+        display: "grid",
+        gridTemplateColumns:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
-        minWidth: "20rem",
       }}
     >
       <InfoBox title="هوش مصنوعی" iconPath={Ai}>
@@ -100,7 +101,6 @@ const RightSide = () => {
               overflowY: "auto",
               maxHeight: "10rem",
               paddingBottom: isSmScreen ? "2rem" : ".5rem",
-              // marginBottom: isSmScreen ? "1rem" : "0",
             }}
           >
             {messages.map((message) => (
@@ -131,7 +131,6 @@ const RightSide = () => {
                     borderTopRightRadius: "0",
                     padding: ".5rem",
                     fontSize: ".8rem",
-                    width: "15rem",
                   }}
                 >
                   {message.text}
