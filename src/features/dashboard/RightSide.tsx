@@ -25,6 +25,7 @@ const RightSide = () => {
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
+        minWidth: "17rem",
       }}
     >
       <InfoBox title="پینگ مراکز داده" iconPath={ChartIcon}>
