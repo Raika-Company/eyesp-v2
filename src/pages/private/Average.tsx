@@ -120,7 +120,7 @@ const Average = () => {
       <Header
         isButton={true}
         clickedButton={category}
-        handleButtonClick={handleChangeCategory}
+        handleButtonSelect={handleChangeCategory}
         title="اختلالات فعلی"
         iconPath={AverageIcon}
         selectTitle="ترتیب بندی براساس:"
