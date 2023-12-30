@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Button, Tooltip, Typography, useMediaQuery, useTheme, Container } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  CircularProgress,
+  Button,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Container,
+} from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
-import ModalNotData from '../../components/ui/ModalNotData';
+import ModalNotData from "../../components/ui/ModalNotData";
 
 type Detail = {
   time: string;
@@ -35,7 +44,7 @@ const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
     (detail) => parseInt(detail.status, 10) !== 200
   ).length;
   if (non200Count > 4) return "#E93F3F";
-  if (non200Count >= 2) return "#f19e2c";
+  if (non200Count >= 2) return "#C99143";
   return "#7FCD9F";
 };
 
@@ -58,7 +67,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         قطعی کامل سرویس از ساعت {start} تا ساعت {end}
       </Typography>,
       <Typography sx={{ mt: "0.5em" }}>
-        دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.
+        دسترسی به صورت موقت قطع شده است.
       </Typography>
     );
   } else if (color === "#7FCD9F") {
@@ -82,7 +91,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         درخواست با موفقیت انجام شد.
       </Typography>
     );
-  } else if (color === "#f19e2c" && non200Details.length > 0) {
+  } else if (color === "#C99143" && non200Details.length > 0) {
     const start = non200Details[0].time;
     const end = non200Details[non200Details.length - 1].time;
     tooltipContent.push(
@@ -93,7 +102,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
         اختلال جزئی از ساعت {start} تا ساعت {end}
       </Typography>,
       <Typography sx={{ mt: "0.5em" }}>
-        سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.
+        سرویس دچار اختلالات جزئی شده است.
       </Typography>
     );
   }
@@ -107,7 +116,6 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
   );
 };
 
-
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [activeGraphMobile, setActiveGraphMobile] = useState<number | null>(
@@ -117,7 +125,9 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     null
   );
   const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
-  const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(null);
+  const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(
+    null
+  );
 
   const handleGraphClick = (index: number) => {
     if (isMobile) {
@@ -149,36 +159,43 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     }
   }, [currentActiveGraph]);
 
-
   useEffect(() => {
     return () => {
       if (tooltipTimer) clearTimeout(tooltipTimer);
     };
   }, [tooltipTimer]);
 
-
   const totalStatuses = data.hourly_status.slice(-24);
   const statusesCount = totalStatuses.length;
   const quarter = Math.floor(statusesCount / 4);
-  const displayIndexes = [0, quarter, 2 * quarter, 3 * quarter, statusesCount - 1]
+  const displayIndexes = [
+    0,
+    quarter,
+    2 * quarter,
+    3 * quarter,
+    statusesCount - 1,
+  ];
 
   const getFirstValidTimeForHour = (details: Details) => {
-    const validDetail = details.find((detail: Detail) => detail.status === "200" || detail.status === "403");
+    const validDetail = details.find(
+      (detail: Detail) => detail.status === "200" || detail.status === "403"
+    );
     return validDetail ? validDetail.time : "N/A";
   };
 
-
   const statusLineStyle = (index: number) => ({
-    "&::before": displayIndexes.includes(index) ? {
-      content: '""',
-      display: "block",
-      width: "10%",
-      height: "70px",
-      backgroundColor: "#3f4145",
-      position: "absolute",
-      top: "-35px",
-      left: "-1px",
-    } : {}
+    "&::before": displayIndexes.includes(index)
+      ? {
+          content: '""',
+          display: "block",
+          width: "10%",
+          height: "70px",
+          backgroundColor: "#3f4145",
+          position: "absolute",
+          top: "-35px",
+          left: "-1px",
+        }
+      : {},
   });
 
   return (
@@ -206,17 +223,18 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         sx={{ textTransform: "uppercase" }}
       >
         <img
-          src={`/images/${data.name}.svg`}
+          src={`/images/${data.name}.png`}
           alt={data.name}
           width={60}
           height={60}
         />
         <Typography
+          color="white"
           sx={{
             textAlign: "center",
             textTransform: "uppercase",
             fontWeight: 600,
-            fontSize: "0.9rem"
+            fontSize: "0.9rem",
           }}
         >
           {data.name}
@@ -243,7 +261,11 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
             const bgColor = getHourlyStatusColor(hourlyStatus.details);
             return (
               <Tooltip
-                title={<Typography>{getTooltipMessage(hourlyStatus.details, bgColor)}</Typography>}
+                title={
+                  <Typography>
+                    {getTooltipMessage(hourlyStatus.details, bgColor)}
+                  </Typography>
+                }
                 arrow
                 open={
                   isMobile
@@ -266,13 +288,22 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
                       bgcolor: "#c3c3c3",
                     },
                     position: "relative",
-                    ...statusLineStyle(index)
+                    ...statusLineStyle(index),
                   }}
                 />
               </Tooltip>
             );
           })}
-          <Typography sx={{ transform: "rotate(-90deg)", fontSize: "9.574px", color: "#7A7775", position: "absolute", left: '-25px', top: "-10px" }}>
+          <Typography
+            sx={{
+              transform: "rotate(-90deg)",
+              fontSize: "9.574px",
+              color: "#7A7775",
+              position: "absolute",
+              left: "-25px",
+              top: "-10px",
+            }}
+          >
             Disorders
           </Typography>
         </Box>
@@ -280,7 +311,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          width="100%"
+          width="19.7rem"
           mt="0.5em"
         >
           {data.hourly_status.map((hourlyStatus, index) => {
@@ -290,9 +321,9 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
                 key={index}
                 sx={{
                   width: shouldDisplayHour ? "auto" : "0px",
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center'
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
                 {shouldDisplayHour && (

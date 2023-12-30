@@ -14069,7 +14069,7 @@
         ]
     },
     {
-        "name": "google translate",
+        "name": "translate",
         "url": "https://translate.google.com/",
         "date": "2023-12-14",
         "hourly_status": [
@@ -30696,7 +30696,7 @@
         ]
     },
     {
-        "name": "google map",
+        "name": "map",
         "url": "https://www.google.com/maps",
         "date": "2023-12-14",
         "hourly_status": [
