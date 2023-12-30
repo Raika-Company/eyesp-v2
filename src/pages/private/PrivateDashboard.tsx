@@ -41,18 +41,13 @@ const PrivateDashboard: FC = () => {
             gridTemplateColumns: isSmScreen
               ? "1fr"
               : isMdScreen
-              ? "2fr 1fr"
-              : `1fr ${isLgScreen ? "2.8" : "2.6"}fr 1fr`,
-            gridTemplateRows: isSmScreen
-              ? "repeat(3, auto)"
-              : isMdScreen
-              ? "repeat(2, auto)"
-              : isLgScreen
               ? "1fr"
-              : "1fr",
+              : `1fr ${isLgScreen ? "3.5" : "2.6"}fr 1fr`,
+            gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "1rem",
-            paddingX: "2rem",
+            gap: isLgScreen ? "2rem" : "0rem",
+            rowGap: "1rem",
+            paddingX: isLgScreen ? "0" : "1rem",
           }}
         >
           <LeftSide />

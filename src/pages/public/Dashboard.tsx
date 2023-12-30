@@ -10,6 +10,7 @@ const Dashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
   const [scale, setScale] = useState<number>(1);
@@ -83,18 +84,13 @@ const Dashboard: FC = () => {
             gridTemplateColumns: isSmScreen
               ? "1fr"
               : isMdScreen
-              ? "2fr 1fr"
-              : `.8fr ${isLgScreen ? "2.8" : "2.6"}fr .8fr`,
-            gridTemplateRows: isSmScreen
-              ? "repeat(3, auto)"
-              : isMdScreen
-              ? "repeat(2, auto)"
-              : isLgScreen
               ? "1fr"
-              : "1fr",
+              : `1fr ${isLgScreen ? "3.5" : "2.6"}fr 1fr`,
+            gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "1rem",
-            paddingX: "2rem",
+            gap: isLgScreen ? "2rem" : "0rem",
+            rowGap: "1rem",
+            paddingX: isLgScreen ? "0" : "2rem",
           }}
         >
           <LeftSide />

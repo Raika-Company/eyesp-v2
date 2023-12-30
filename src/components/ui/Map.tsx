@@ -33,10 +33,14 @@ const Map: FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const isXlgScreen = useMediaQuery("(min-width:2000px)");
+  const is2XlgScreen = useMediaQuery("(min-width:2400px)");
+  const is3XlgScreen = useMediaQuery("(min-width:2800px)");
+  const is4XlgScreen = useMediaQuery("(min-width:3200px)");
 
   const [dragging, setDragging] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({
@@ -147,19 +151,18 @@ const Map: FC<Props> = ({
           {/* <Link to="/disorders"> */}
           <svg
             preserveAspectRatio="none"
-            // width="980"
-            // height="694"
-
-            width="5061"
-            height="3498"
+            width="980"
+            height="694"
             viewBox={
-              isSmScreen
-                ? "700 750 1100 964"
-                : isMdScreen
-                ? "600 650 1261 1098"
-                : isLgDownScreen
-                ? "550 600 1361 1198"
-                : "400 450 1701 1398"
+              is4XlgScreen
+                ? "450 450 1600 1400"
+                : is3XlgScreen
+                ? "550 550 1400 1200"
+                : is2XlgScreen
+                ? "600 650 1300 1100"
+                : isXlgScreen
+                ? "700 700 1200 1100"
+                : "780 750 980 980"
             }
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

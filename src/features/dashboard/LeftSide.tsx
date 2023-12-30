@@ -20,9 +20,6 @@ import PulseCircle from "../../components/ui/PulseCircle";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 
-const GREEN_COLOR = "#84D1A3";
-const RED_COLOR = "#BA3535";
-
 interface ISP {
   id: number;
   name: string;
@@ -112,23 +109,12 @@ const ISPSection: React.FC<ISPSectionProps> = ({
     y: number;
   } | null>(null);
 
-  const [color, setColor] = useState(GREEN_COLOR);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (color === GREEN_COLOR) setColor(RED_COLOR);
-      else setColor(GREEN_COLOR);
-    }, 700 + Math.random() * 1000);
-
-    return () => clearInterval(interval);
-  });
-
   return (
     <InfoBox title={title} iconPath={ChartIcon} hasButton={true}>
       <Box
         sx={{
           marginY: "auto",
-          padding: "1rem",
+          padding: ".6rem",
           display: "flex",
           flexDirection: "column",
           gap: isXlgScreen ? ".5rem" : "",
@@ -143,24 +129,14 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               marginX=".5rem"
             >
               <Typography>{isp.name}</Typography>
-              <div
-                className="pulse-circle"
-                onMouseEnter={(e) => {
-                  e.stopPropagation();
-                  if (!hoveredIsp || tooltipPosition) {
-                    setHoveredIsp(isp.province!);
-                    setTooltipPosition({ x: e.pageX, y: e.pageY });
-                  }
-                }}
-                onMouseLeave={() => setHoveredIsp(null)}
-                style={{
-                  borderRadius: "50%",
-                  transition: "background .2s ease-in-out",
-                  width: "11px",
-                  height: "11px",
-                  background: !isp.isActive && internal ? color : GREEN_COLOR,
-                  position: "relative",
-                }}
+              <PulseCircle
+                internal={internal}
+                hoveredIsp={hoveredIsp}
+                province={isp.province!}
+                setHoveredIsp={setHoveredIsp}
+                setTooltipPosition={setTooltipPosition}
+                tooltipPosition={tooltipPosition}
+                isActive={isp.isActive}
               />
             </Stack>
             <Divider
@@ -212,8 +188,9 @@ const ISPSection: React.FC<ISPSectionProps> = ({
 const LeftSide: React.FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const ispStateData = useISPState();
 
   const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
@@ -232,9 +209,11 @@ const LeftSide: React.FC = () => {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        display: "grid",
+        gridTemplateColumns:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
+        gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
         alignItems: isSmScreen ? "center" : "start",
       }}
     >
@@ -242,9 +221,7 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           sx={{
-            paddingY: "1rem",
             marginY: "auto",
-            paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
@@ -264,7 +241,7 @@ const LeftSide: React.FC = () => {
       </InfoBox>
 
       <ISPSection
-        title="وضعیت مراکز داده‌داخلی"
+        title="مراکز داده‌داخلی"
         internal
         ispList={InternalISPList}
         ispStatus={ispStateData!}
@@ -274,7 +251,7 @@ const LeftSide: React.FC = () => {
       />
 
       <ISPSection
-        title="وضعیت مراکز داده بین‌الملل"
+        title="مراکز داده بین‌الملل"
         ispList={ExternalISPList}
         ispStatus={ispStateData!}
         internal={false}

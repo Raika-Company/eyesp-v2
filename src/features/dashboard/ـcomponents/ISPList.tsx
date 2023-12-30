@@ -21,7 +21,6 @@ export const ISPList: React.FC<Props> = ({ isp, isLimited, style }) => {
   const combinedStyles = {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem",
     gap: isXlgScreen ? ".5rem" : "",
     marginY: "auto",
     ...style,
@@ -41,7 +40,7 @@ export const ISPList: React.FC<Props> = ({ isp, isLimited, style }) => {
             {/* temporary */}
             <Stack direction="row-reverse" gap=".5rem">
               <Typography color="#7A7775">#{isp.id}</Typography>
-              <Typography>{isp.name}</Typography>
+              <Typography whiteSpace="nowrap">{isp.name}</Typography>
             </Stack>
             <Typography color="#7A7775">{isp.speed}Mbps</Typography>
           </Stack>

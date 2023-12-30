@@ -41,7 +41,7 @@ const ISPRanking = () => {
           hasButton={false}
           onClick={toggleDialog}
         >
-          <Box padding=".5rem">
+          <Box>
             <ISPList
               isp={InternalISPList}
               isLimited={false}

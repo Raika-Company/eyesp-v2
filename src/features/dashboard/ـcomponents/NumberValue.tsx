@@ -46,7 +46,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: isXlgScreen ? "7.5rem" : "6.5rem",
+          width: isXlgScreen ? "7rem" : "6rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",
