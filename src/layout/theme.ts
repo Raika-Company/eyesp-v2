@@ -5,7 +5,7 @@ declare module "@mui/system" {
     x2: true;
   }
 }
-
+const themes = createTheme();
 const BACKGROUND_GRADIENT =
   "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)";
 
@@ -25,6 +25,77 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "Peyda",
+    h1: {
+      fontSize: "18px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "28px",
+      },
+      fontFamily: "PeydaSemibold",
+    },
+    h2: {
+      fontSize: "18px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "24px",
+      },
+      fontFamily: "PeydaRegular",
+    },
+    h3: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "20px",
+      },
+      fontFamily: "PeydaRegular",
+    },
+    h4: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "16px",
+      },
+      fontFamily: "PeydaSemibold",
+    },
+    h5: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "16px",
+      },
+      fontFamily: "PeydaLight",
+    },
+    h6: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "16px",
+      },
+      fontFamily: "PeydaRegular",
+    },
+    body1: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "16px",
+      },
+      fontFamily: "PeydaBakh",
+    },
+    body2: {
+      fontSize: "12px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "14px",
+      },
+      fontFamily: "PeydaBakh",
+    },
+    subtitle1: {
+      fontSize: "12px",
+      fontFamily: "PeydaRegular",
+    },
+    subtitle2: {
+      fontSize: "10px",
+      fontFamily: "PeydaLight",
+    },
+    button: {
+      fontSize: "14px",
+      [themes.breakpoints.up("md")]: {
+        fontSize: "16px",
+      },
+      fontFamily: "PeydaSemibold",
+    },
   },
   components: {
     MuiCssBaseline: {

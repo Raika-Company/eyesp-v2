@@ -9,6 +9,8 @@ import {
   styled,
   keyframes,
   TableRow,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React from "react";
 
@@ -63,7 +65,7 @@ const RowBox = styled(TableRow)(() => ({
     flex: 0.5,
   },
   "& > *:nth-of-type(4)": {
-    flex: 0.3,
+    flex: 0.5,
   },
 }));
 const RowBoxHead = styled(TableRow)(() => ({
@@ -91,11 +93,13 @@ const RowBoxHead = styled(TableRow)(() => ({
     flex: 0.5,
   },
   "& > *:nth-of-type(4)": {
-    flex: 0.3,
+    flex: 0.5,
   },
 }));
 
 const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
+  const theme = useTheme();
+
   const animatedRows =
     rows.length >= 2
       ? rows
@@ -105,7 +109,9 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
     const color = handle === "برطرف شده" ? "green" : "red";
     return color;
   };
-
+  // const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  // const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
   return (
     <>
       <MuiTable
@@ -181,6 +187,10 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                           backgroundColor: "#7A7775",
                           borderRadius: "0.597rem",
                           color: "white",
+                          paddinX: "1rem",
+                          paddingY: "0.6rem",
+                          fontFamily: "PeydaLight",
+                          fontSize: isLgScreen ? "0.7rem" : "1rem",
                         }}
                       >
                         کمک از هوش مصنوعی
