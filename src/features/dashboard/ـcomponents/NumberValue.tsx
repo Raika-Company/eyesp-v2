@@ -39,14 +39,14 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         alignItems: "center",
       }}
     >
-      {renderText(title, "5.5rem")}
+      {renderText(title, "4.5rem")}
       <Box
         sx={{
           background: "#232629",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: isXlgScreen ? "8rem" : "7rem",
+          width: isXlgScreen ? "7rem" : "6rem",
           color: "#C7C6C3",
           marginTop: "-.5rem",
           marginBottom: "-.5rem",

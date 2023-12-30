@@ -21,7 +21,6 @@ const InfoBox: FC<Props> = ({
     <Box
       sx={{
         position: "relative",
-        flexBasis: "17.5rem",
         flexGrow: "1",
         borderRadius: ".5rem",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -29,8 +28,7 @@ const InfoBox: FC<Props> = ({
         border: "1px solid #2B2E31",
         display: "flex",
         flexDirection: "column",
-        minHeight: "15rem",
-        minWidth: "20rem",
+        minHeight: "16rem",
       }}
     >
       <Box
@@ -61,7 +59,7 @@ const InfoBox: FC<Props> = ({
               height: "20px",
             }}
           />
-          <Typography>{title}</Typography>
+          <Typography whiteSpace="nowrap">{title}</Typography>
         </Stack>
         {hasButton && (
           <img

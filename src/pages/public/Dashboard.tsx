@@ -74,7 +74,7 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1rem",
+          paddingY: "1rem",
         }}
       >
         <Box
@@ -83,18 +83,19 @@ const Dashboard: FC = () => {
             gridTemplateColumns: isSmScreen
               ? "1fr"
               : isMdScreen
-              ? "2fr 1fr"
-              : `1fr ${isLgScreen ? "2.8" : "2.6"}fr 1fr`,
+              ? "1fr"
+              : `1fr ${isLgScreen ? "3.5" : "2.6"}fr 1fr`,
             gridTemplateRows: isSmScreen
               ? "repeat(3, auto)"
               : isMdScreen
-              ? "repeat(2, auto)"
+              ? "repeat(3, auto)"
               : isLgScreen
               ? "1fr"
               : "1fr",
             alignItems: "center",
-            gap: isLgScreen ? "2rem" : "1rem",
-            paddingX: "2rem",
+            gap: isLgScreen ? "2rem" : "0rem",
+            rowGap: "1rem",
+            paddingX: isLgScreen ? "0" : "2rem",
           }}
         >
           <LeftSide />

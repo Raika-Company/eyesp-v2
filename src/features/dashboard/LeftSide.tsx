@@ -114,7 +114,7 @@ const ISPSection: React.FC<ISPSectionProps> = ({
       <Box
         sx={{
           marginY: "auto",
-          padding: "1rem",
+          padding: ".6rem",
           display: "flex",
           flexDirection: "column",
           gap: isXlgScreen ? ".5rem" : "",
@@ -189,7 +189,8 @@ const LeftSide: React.FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
-  const isMDScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const ispStateData = useISPState();
 
   const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
@@ -208,9 +209,11 @@ const LeftSide: React.FC = () => {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        display: "grid",
+        gridTemplateColumns:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
+        gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
         alignItems: isSmScreen ? "center" : "start",
       }}
     >
@@ -218,9 +221,7 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           sx={{
-            paddingY: "1rem",
             marginY: "auto",
-            paddingX: ".8rem",
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
@@ -240,7 +241,7 @@ const LeftSide: React.FC = () => {
       </InfoBox>
 
       <ISPSection
-        title="وضعیت مراکز داده‌داخلی"
+        title="مراکز داده‌داخلی"
         internal
         ispList={InternalISPList}
         ispStatus={ispStateData!}
@@ -250,7 +251,7 @@ const LeftSide: React.FC = () => {
       />
 
       <ISPSection
-        title="وضعیت مراکز داده بین‌الملل"
+        title="مراکز داده بین‌الملل"
         ispList={ExternalISPList}
         ispStatus={ispStateData!}
         internal={false}
