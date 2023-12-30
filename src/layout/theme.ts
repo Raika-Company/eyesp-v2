@@ -24,7 +24,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Peyda",
+    fontFamily: "PeydaRegular",
     h1: {
       fontSize: "18px",
       [themes.breakpoints.up("md")]: {
@@ -72,14 +72,14 @@ const theme = createTheme({
       [themes.breakpoints.up("md")]: {
         fontSize: "16px",
       },
-      fontFamily: "PeydaBakh",
+      fontFamily: "PeydaSemibold",
     },
     body2: {
       fontSize: "12px",
       [themes.breakpoints.up("md")]: {
         fontSize: "14px",
       },
-      fontFamily: "PeydaBakh",
+      fontFamily: "PeydaRegular",
     },
     subtitle1: {
       fontSize: "12px",

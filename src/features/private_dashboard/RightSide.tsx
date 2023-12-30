@@ -73,7 +73,10 @@ const RightSide = () => {
         display: "grid",
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
+        gridTemplateRows:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
+        minWidth: "17rem",
       }}
     >
       <InfoBox title="هوش مصنوعی" iconPath={Ai}>
