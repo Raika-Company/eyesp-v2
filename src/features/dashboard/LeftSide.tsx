@@ -214,7 +214,6 @@ const LeftSide: React.FC = () => {
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
-        alignItems: isSmScreen ? "center" : "start",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>

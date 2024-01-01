@@ -9,6 +9,7 @@ const PrivateDashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  const isXgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const [scale, setScale] = useState<number>(1);
 
   return (
@@ -18,10 +19,10 @@ const PrivateDashboard: FC = () => {
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: isMdScreen && !isLgScreen ? "start" : "center",
+        marginY: "auto",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
         boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
-        marginY: "auto",
       }}
     >
       <Box
@@ -30,13 +31,12 @@ const PrivateDashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          // Maybe temporary
           padding: "1rem",
         }}
       >
         <Box
           sx={{
+            maxWidth: isXgScreen ? "80%" : "100%",
             display: "grid",
             gridTemplateColumns: isSmScreen
               ? "1fr"
@@ -47,7 +47,7 @@ const PrivateDashboard: FC = () => {
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",
             rowGap: "1rem",
-            paddingX: isLgScreen ? "0" : "1rem",
+            paddingX: isLgScreen ? "0" : "2rem",
           }}
         >
           <LeftSide />
