@@ -10,12 +10,14 @@ import {
   useTheme,
 } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useNavigate } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { SelectButton } from "./SelectButton";
 import { HeaderButton } from "./HeaderButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../../public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
+import { Padding } from "@mui/icons-material";
 
 interface Props {
   title: string;
@@ -53,7 +55,7 @@ const Header: FC<Props> = ({
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const navigate = useNavigate();
   const renderButtons = () => (
     <Box
       sx={{
@@ -115,7 +117,11 @@ const Header: FC<Props> = ({
     <Box sx={getMainBoxStyle(isMdScreen)}>
       <Box sx={getIconBoxStyle(isMdScreen)}>
         <img alt="Icon" src={iconPath} />
-        <Typography color="white" fontSize={isMdScreen ? "1rem" : "1.3rem"}>
+        <Typography
+          variant="h2"
+          color="white"
+          fontSize={isMdScreen ? "1rem" : "1.3rem"}
+        >
           {title}
         </Typography>
       </Box>
@@ -139,10 +145,14 @@ const Header: FC<Props> = ({
             navigate(-1);
           }}
           variant="contained"
-          sx={{ bgcolor: "transparent", boxShadow: 0, color: "#fff" }}
+          sx={{
+            bgcolor: "transparent",
+            boxShadow: 0,
+            color: "#fff",
+          }}
           endIcon={<KeyboardBackspaceIcon sx={{ mr: "0.4em" }} />}
         >
-          بازگشت
+          <Typography variant="h2"> بازگشت</Typography>
         </Button>
       </Box>
     </Box>
@@ -153,11 +163,12 @@ const getMainBoxStyle = (isMdScreen: boolean) => ({
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
-  paddingTop: isMdScreen ? "1rem" : "0",
-  paddingBottom: isMdScreen ? "1rem" : "0",
+  paddingTop: isMdScreen ? "1rem" : "1rem",
+  paddingBottom: isMdScreen ? "1rem" : "1rem",
   justifyContent: "space-between",
   background: "#232629",
   paddingX: "1rem",
+  PaddingY: "1rem",
 });
 
 const getIconBoxStyle = (isMdScreen: boolean) => ({
