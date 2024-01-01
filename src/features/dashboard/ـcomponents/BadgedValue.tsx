@@ -29,12 +29,12 @@ const BadgedValue: FC<Props> = ({ badgeName, value, unit = "Mbps" }) => {
         <Typography
           fontSize={
             isSmScreen
-              ? "1.5rem"
+              ? "1.5rem !important"
               : isMdScreen
-              ? "2rem"
+              ? "2rem !important"
               : isLgScreen
-              ? "2.5rem"
-              : "2rem"
+              ? "2.5rem !important"
+              : "2rem !important"
           }
         >
           {value.toLocaleString()}

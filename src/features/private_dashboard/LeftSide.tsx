@@ -138,7 +138,9 @@ const LeftSide: React.FC = () => {
                 >
                   <Typography
                     sx={{
-                      fontSize: isLgScreen ? ".75rem" : ".5rem",
+                      fontSize: isLgScreen
+                        ? ".75rem !important"
+                        : ".5rem !important",
                     }}
                   >
                     {conflict.title}
@@ -146,7 +148,7 @@ const LeftSide: React.FC = () => {
                   <Button
                     sx={{
                       color: "#fff",
-                      fontSize: ".5rem",
+                      fontSize: ".5rem !important",
                       background: "#7A7775",
                       paddingY: ".2rem",
                       borderRadius: ".5rem",

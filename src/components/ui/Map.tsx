@@ -35,6 +35,7 @@ const Map: FC<Props> = ({
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const isXlgScreen = useMediaQuery("(min-width:2000px)");
@@ -134,7 +135,7 @@ const Map: FC<Props> = ({
         sx={{
           position: "relative",
           overflow: "hidden",
-          width: "100%",
+          maxWidth: "100%",
           height: "100%",
           order: isLgDownScreen ? "-1" : "0",
           gridColumnEnd: !isLgScreen && !isSmScreen ? "span 2" : "span 1",
@@ -145,24 +146,35 @@ const Map: FC<Props> = ({
           sx={{
             width: "100%",
             height: "100%",
+            maxHeight: "80dvh",
             boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
           }}
         >
           {/* <Link to="/disorders"> */}
           <svg
             preserveAspectRatio="none"
-            width="980"
-            height="694"
+            width={
+              is4XlgScreen
+                ? "1600"
+                : is3XlgScreen
+                ? "1500"
+                : is2XlgScreen
+                ? "1400"
+                : isXlgScreen
+                ? "1200"
+                : "1000"
+            }
+            height="950"
             viewBox={
               is4XlgScreen
-                ? "450 450 1600 1400"
+                ? "450 600 1600 1200"
                 : is3XlgScreen
-                ? "550 550 1400 1200"
+                ? "500 600 1500 1200"
                 : is2XlgScreen
-                ? "600 650 1300 1100"
+                ? "550 650 1400 1100"
                 : isXlgScreen
-                ? "700 700 1200 1100"
-                : "780 750 980 980"
+                ? "600 700 1300 1100"
+                : "680 750 1200 1000"
             }
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

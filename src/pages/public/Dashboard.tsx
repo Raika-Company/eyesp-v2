@@ -63,7 +63,7 @@ const Dashboard: FC = () => {
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: isMdScreen && !isLgScreen ? "start" : "center",
         marginY: "auto",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
         boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
