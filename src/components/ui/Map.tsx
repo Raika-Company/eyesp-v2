@@ -301,7 +301,7 @@ const Map: FC<Props> = ({
           }}
         >
           {isScreenShot ? (
-            <div style={{ display: "flex", gap: "0.4rem" }}>
+            <div style={{ display: "flex", gap: "1rem" }}>
               {!isPrivate &&
                 provinceData &&
                 provinceData.map((province) => (

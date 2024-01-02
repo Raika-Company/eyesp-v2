@@ -41,15 +41,15 @@ const StatusTooltip: FC<Props> = ({
             justifyContent: "center",
             paddingRight: "1rem",
             gap: "1rem",
-            // ...(isScreenShot && {
-            //   // Conditional animation based on isScreenShot
-            //   animation: "pulse 2s infinite",
-            //   "@keyframes pulseAnimation": {
-            //     "0%": { transform: "scale(1)" },
-            //     "50%": { transform: "scale(1.1)" },
-            //     "100%": { transform: "scale(1)" },
-            //   },
-            // }),
+            ...(isScreenShot && {
+              // Conditional animation based on isScreenShot
+              animation: "pulseAnimation  2s infinite",
+              "@keyframes pulseAnimation": {
+                "0%": { transform: "scale(1)" },
+                "50%": { transform: "scale(1.1)" },
+                "100%": { transform: "scale(1)" },
+              },
+            }),
           }}
         >
           {" "}
