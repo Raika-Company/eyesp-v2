@@ -51,7 +51,6 @@ const Header: FC<Props> = ({
   handleButtonSelect,
   clickedButton,
 }) => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
