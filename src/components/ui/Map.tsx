@@ -302,7 +302,7 @@ const Map: FC<Props> = ({
         >
           {isScreenShot ? (
             <div style={{ display: "flex", gap: "2rem" }}>
-              {!isPrivate &&
+              {/* {!isPrivate &&
                 provinceData &&
                 provinceData.map((province) => (
                   <StatusTooltip
@@ -314,7 +314,7 @@ const Map: FC<Props> = ({
                     isSecond={true}
                     isScreenShot={isScreenShot}
                   />
-                ))}
+                ))} */}
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>
