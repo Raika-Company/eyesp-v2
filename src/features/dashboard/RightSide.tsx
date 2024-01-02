@@ -20,10 +20,11 @@ const RightSide = () => {
     <Box
       sx={{
         height: "100%",
-        alignItems: isSmScreen ? "center" : "end",
         display: "grid",
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
+        gridTemplateRows:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         minWidth: "17rem",
       }}

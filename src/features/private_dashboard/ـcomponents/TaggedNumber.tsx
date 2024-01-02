@@ -11,7 +11,7 @@ const TaggedNumber: FC<Props> = ({ value, title }) => {
     <Stack alignItems="center">
       <Typography
         sx={{
-          fontSize: "2.5rem",
+          fontSize: "2.5rem !important",
           fontWeight: "bold",
         }}
       >

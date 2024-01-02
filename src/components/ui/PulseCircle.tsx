@@ -65,18 +65,7 @@ const PulseCircle: FC<Props> = ({
           width: "100%",
           height: "100%",
           background: !isActive && internal ? color + 30 : GREEN_COLOR + 30,
-          animation: `pulse 1s ${
-            Math.random() * 0.5
-          }s infinite alternate linear`,
-
-          "@keyframs pulse": {
-            from: {
-              transform: "scale(1)",
-            },
-            to: {
-              transform: "scale(2.5)",
-            },
-          },
+          animation: `pulse 1s .2s infinite alternate linear`,
         },
       }}
     ></Box>

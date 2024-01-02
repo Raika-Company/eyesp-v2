@@ -59,10 +59,9 @@ const RowBox = styled(TableRow)(() => ({
   },
   "& > *": {
     flex: 1,
-    fontFamily: "PeydaLight",
   },
   "& > *:nth-of-type(1)": {
-    flex: 0.5,
+    flex: 0.8,
   },
   "& > *:nth-of-type(4)": {
     flex: 0.5,
@@ -81,16 +80,16 @@ const RowBoxHead = styled(TableRow)(() => ({
     width: "100%",
     right: "0",
     height: "2px",
+
     backgroundColor: "white",
     top: "100%",
     alignItems: "center",
   },
   "& > *": {
     flex: 1,
-    fontFamily: "PeydaLight",
   },
   "& > *:nth-of-type(1)": {
-    flex: 0.5,
+    flex: 0.8,
   },
   "& > *:nth-of-type(4)": {
     flex: 0.5,
@@ -133,7 +132,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                 scope="row"
                 key={idx}
               >
-                {header}
+                <Typography variant="h3"> {header}</Typography>
               </TableCell>
             ))}
           </RowBoxHead>
@@ -155,8 +154,14 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                     animation: `${fadeIn} 1s ease-in-out ${animationDelay} forwards`,
                   }}
                 >
-                  <TableCell align="right" sx={{ color: "white" }}>
-                    <Box
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: "white",
+                    }}
+                  >
+                    <Typography
+                      variant="h3"
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -172,13 +177,25 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                         }}
                       />{" "}
                       <span>{row.hour}</span>
-                    </Box>
+                    </Typography>
                   </TableCell>
-                  <TableCell align="right" sx={{ color: "white" }}>
-                    {row.categoryDis}
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: "white",
+                    }}
+                  >
+                    <Typography variant="h3"> {row.categoryDis}</Typography>
                   </TableCell>
-                  <TableCell align="right" sx={{ color: "white" }}>
-                    {row.causeDis}
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: "white",
+                      fontFamily: "PeydaLight",
+                      fontSize: isLgScreen ? "0.7rem" : "1rem",
+                    }}
+                  >
+                    <Typography variant="h3"> {row.causeDis}</Typography>
                   </TableCell>
                   <TableCell align="right">
                     {isAI ? (
@@ -196,7 +213,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                         کمک از هوش مصنوعی
                       </Button>
                     ) : (
-                      <Typography sx={{ color: handleColor }}>
+                      <Typography variant="h2" sx={{ color: handleColor }}>
                         {row.handle}
                       </Typography>
                     )}

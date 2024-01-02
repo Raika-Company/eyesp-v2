@@ -9,19 +9,19 @@ interface Props {
 
 const NumberValue: FC<Props> = ({ value, title, unit }) => {
   const theme = useTheme();
-  const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const isXlgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const renderText = (value: string, minWidth = "initial") => {
     return (
       <Typography
+        variant="body1"
         sx={{
           color: "#7A7775",
           background: "#1D1E20",
           borderRadius: ".5rem",
           paddingY: ".5rem",
-          paddingX: "1rem",
+          paddingX: ".8rem",
           fontWeight: "600",
-          fontSize: ".9rem",
           textAlign: "center",
           minWidth,
         }}
@@ -39,7 +39,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         alignItems: "center",
       }}
     >
-      {renderText(title, "4.5rem")}
+      {renderText(title, "4rem")}
       <Box
         sx={{
           background: "#232629",
@@ -58,7 +58,7 @@ const NumberValue: FC<Props> = ({ value, title, unit }) => {
         <Typography
           sx={{
             fontWeight: "800",
-            fontSize: isXlgScreen ? "2.6rem" : "1.8rem",
+            fontSize: isXlgScreen ? "3.6rem !important" : "2.5rem !important",
             marginBottom: "-.5rem",
           }}
         >
