@@ -3,8 +3,7 @@ import { FC, useState } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";
 import Map from "../../components/ui/Map";
-import html2canvas from "html2canvas";
-
+import domtoimage from "dom-to-image";
 const Dashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -16,47 +15,36 @@ const Dashboard: FC = () => {
   const [scale, setScale] = useState<number>(1);
 
   const handleScreenshot = () => {
+    setIsExportButtonVisible(false);
+    setIsScreenShot(true);
+
     setTimeout(() => {
-      setIsExportButtonVisible(false);
-      setIsScreenShot(true);
-      setTimeout(() => {
-        const mapElement = document.getElementById("mapContainer");
-        if (mapElement) {
-          const desiredWidth = 780;
-          const desiredHeight = 750;
+      const mapElement = document.getElementById("mapContainer");
+      if (mapElement) {
+        domtoimage
+          .toPng(mapElement)
+          .then((dataUrl) => {
+            const link = document.createElement("a");
+            link.href = dataUrl;
+            link.download = "map-screenshot.png";
+            link.click();
 
-          html2canvas(mapElement, {
-            width: desiredWidth,
-            height: desiredHeight,
+            setIsScreenShot(false);
+            setIsExportButtonVisible(true);
           })
-            .then((canvas) => {
-              const croppedCanvas = cropCanvas(canvas);
-              const image = croppedCanvas.toDataURL("image/png");
-              const link = document.createElement("a");
-              link.href = image;
-              link.download = "map-screenshot.png";
-              link.click();
-
-              setTimeout(() => {
-                setIsScreenShot(false);
-                setIsExportButtonVisible(true);
-              }, 1000);
-            })
-            .catch((err) => {
-              console.error("Screenshot failed", err);
-              setIsScreenShot(false);
-              setIsExportButtonVisible(true);
-            });
-        } else {
-          console.error("Map element not found");
-          setIsScreenShot(false);
-          setIsExportButtonVisible(true);
-        }
-      }, 100);
+          .catch((error) => {
+            console.error("Screenshot failed", error);
+            setIsScreenShot(false);
+            setIsExportButtonVisible(true);
+          });
+      } else {
+        console.error("Map element not found");
+        setIsScreenShot(false);
+        setIsExportButtonVisible(true);
+      }
     }, 1000);
     setScale(Math.max(scale / 1.8, 1));
   };
-
   return (
     <Box
       sx={{
@@ -110,34 +98,78 @@ const Dashboard: FC = () => {
 
 export default Dashboard;
 
-function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    throw new Error("Invalid canvas element");
-  }
+// function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+//   if (!(canvas instanceof HTMLCanvasElement)) {
+//     throw new Error("Invalid canvas element");
+//   }
 
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    throw new Error("Failed to get 2D context");
-  }
+//   const ctx = canvas.getContext("2d");
+//   if (!ctx) {
+//     throw new Error("Failed to get 2D context");
+//   }
 
-  const cropWidth = 20;
-  const croppedCanvas = ctx.getImageData(
-    cropWidth,
-    0,
-    canvas.width - cropWidth,
-    canvas.height
-  );
+//   const cropWidth = 20;
+//   const croppedCanvas = ctx.getImageData(
+//     cropWidth,
+//     0,
+//     canvas.width - cropWidth,
+//     canvas.height
+//   );
 
-  const newCanvas = document.createElement("canvas");
-  newCanvas.width = canvas.width - cropWidth;
-  newCanvas.height = canvas.height;
+//   const newCanvas = document.createElement("canvas");
+//   newCanvas.width = canvas.width - cropWidth;
+//   newCanvas.height = canvas.height;
 
-  const newCtx = newCanvas.getContext("2d");
-  if (!newCtx) {
-    throw new Error("Failed to get 2D context for new canvas");
-  }
+//   const newCtx = newCanvas.getContext("2d");
+//   if (!newCtx) {
+//     throw new Error("Failed to get 2D context for new canvas");
+//   }
 
-  newCtx.putImageData(croppedCanvas, 0, 0);
+//   newCtx.putImageData(croppedCanvas, 0, 0);
 
-  return newCanvas;
-}
+//   return newCanvas;
+// }
+
+// const handleScreenshot = () => {
+//   setTimeout(() => {
+//     setIsExportButtonVisible(false);
+//     setIsScreenShot(true);
+//     setTimeout(() => {
+//       const mapElement = document.getElementById("mapContainer");
+//       if (mapElement) {
+//         const desiredWidth = 780;
+//         const desiredHeight = 750;
+
+//         html2canvas(mapElement, {
+//           width: desiredWidth,
+//           height: desiredHeight,
+
+//           backgroundColor: null,
+//         })
+//           .then((canvas) => {
+//             const croppedCanvas = cropCanvas(canvas);
+//             const image = croppedCanvas.toDataURL("image/png");
+//             const link = document.createElement("a");
+//             link.href = image;
+//             link.download = "map-screenshot.jpg";
+//             link.click();
+
+//             setTimeout(() => {
+//               setIsScreenShot(false);
+//               setIsExportButtonVisible(true);
+//             }, 1000);
+//           })
+//           .catch((err) => {
+//             console.error("Screenshot failed", err);
+//             setIsScreenShot(false);
+//             setIsExportButtonVisible(true);
+//           });
+//       } else {
+//         console.error("Map element not found");
+//         setIsScreenShot(false);
+//         setIsExportButtonVisible(true);
+//       }
+//     }, 100);
+//   }, 1000);
+//   setScale(Math.max(scale / 1.8, 1));
+// };
