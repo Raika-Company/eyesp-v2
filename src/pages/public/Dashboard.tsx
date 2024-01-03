@@ -75,7 +75,7 @@ const Dashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1rem",
+          paddingY: "1rem",
         }}
       >
         <Box

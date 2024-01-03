@@ -62,7 +62,7 @@ const CircleChart: FC<Props> = ({
         </Typography>
       </div>
       <Stack>
-        <Typography color="#7A7775" sx={titleStyle(big)}>
+        <Typography color="#7A7775" whiteSpace="nowrap" sx={titleStyle(big)}>
           {textTitle}
         </Typography>
         <Typography sx={valueStyle(big)}>
@@ -99,7 +99,7 @@ const textStyle = (big: boolean, textColor: string): CSSProperties => ({
   left: "50%",
   transform: "translate(-50%, -50%)",
   fontWeight: 800,
-  fontSize: big ? "2.5rem" : "1.4rem",
+  fontSize: big ? "2.5rem" : ".8rem",
   color: textColor,
   transition: "stroke-dashoffset .6s linear",
 });

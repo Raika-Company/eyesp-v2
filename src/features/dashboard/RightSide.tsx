@@ -36,7 +36,6 @@ const RightSide = () => {
             marginY: "auto",
             gap: "1rem",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
           <NumberValue
