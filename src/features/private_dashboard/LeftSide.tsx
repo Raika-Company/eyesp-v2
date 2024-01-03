@@ -108,6 +108,7 @@ const LeftSide: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: ".5rem",
+            minWidth: "20rem",
             marginY: "auto",
           }}
         >

@@ -11,13 +11,11 @@ import {
 } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
 import { SelectButton } from "./SelectButton";
 import { HeaderButton } from "./HeaderButton";
 import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../../public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
-import { Padding } from "@mui/icons-material";
 
 interface Props {
   title: string;
