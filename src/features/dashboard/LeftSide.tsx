@@ -114,10 +114,10 @@ const ISPSection: React.FC<ISPSectionProps> = ({
       <Box
         sx={{
           marginY: "auto",
-          padding: ".6rem",
+          paddingX: ".6rem",
           display: "flex",
           flexDirection: "column",
-          gap: isXlgScreen ? ".5rem" : "",
+          gap: ".5rem",
         }}
       >
         {ispList.map((isp) => (
@@ -165,6 +165,8 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               cursor: "pointer",
               alignItems: "center",
               justifyContent: "space-between",
+              height: ".5rem",
+              marginTop: ".5rem",
             }}
           >
             <Button component={Link} to={link} sx={{ color: "#7FCD9F" }}>
@@ -212,8 +214,8 @@ const LeftSide: React.FC = () => {
         display: "grid",
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
-        gap: isXlgScreen ? "1.5rem" : "1rem",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>
@@ -221,6 +223,7 @@ const LeftSide: React.FC = () => {
           direction="row"
           sx={{
             marginY: "auto",
+            marginX: "1rem",
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",

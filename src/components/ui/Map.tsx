@@ -145,8 +145,9 @@ const Map: FC<Props> = ({
         <SvgIcon
           sx={{
             width: "100%",
+            minHeight: "100%",
             height: "100%",
-            maxHeight: "80dvh",
+            maxHeight: "90dvh",
             boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
           }}
         >
