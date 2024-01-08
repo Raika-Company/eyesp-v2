@@ -257,7 +257,7 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           component={Link}
-          to="/last-disorders"
+          to="/disorders"
           sx={{
             textDecoration: "none",
             cursor: "pointer",
