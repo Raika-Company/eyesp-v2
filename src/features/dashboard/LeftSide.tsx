@@ -166,10 +166,14 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               alignItems: "center",
               justifyContent: "space-between",
               height: ".5rem",
-              marginTop: ".5rem",
+              marginY: ".5rem",
             }}
           >
-            <Button component={Link} to={link} sx={{ color: "#7FCD9F" }}>
+            <Button
+              component={Link}
+              to={link}
+              sx={{ color: "#7FCD9F", fontSize: ".8rem" }}
+            >
               مشاهده جذئیات بیشتر
             </Button>
             <img
@@ -215,6 +219,8 @@ const LeftSide: React.FC = () => {
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
+        gridTemplateRows:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
       }}
     >
@@ -222,11 +228,10 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           sx={{
+            // paddingY: "1rem",
             marginY: "auto",
-            marginX: "1rem",
             gap: "1rem",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
           <NumberValue
