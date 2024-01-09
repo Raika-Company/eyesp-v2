@@ -13,7 +13,6 @@ const PrivateDashboard: FC = () => {
   const [scale, setScale] = useState<number>(1);
 
   return (
-    // The code that surely will be changed.
     <Box
       sx={{
         minHeight: "100vh",
@@ -42,13 +41,12 @@ const PrivateDashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "1fr"
-              : `1fr 3.5fr 1fr`,
+              : `1fr 4fr 1fr`,
             gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",
             rowGap: "1rem",
-            // paddingX: isLgScreen ? "0rem" : "2rem",
-            // paddingX: "2rem",
+            paddingX: isLgScreen ? "0" : "1rem",
           }}
         >
           <LeftSide />

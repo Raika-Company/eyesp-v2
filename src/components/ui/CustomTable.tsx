@@ -206,7 +206,7 @@ const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
                           color: "white",
                           paddinX: "1rem",
                           paddingY: "0.6rem",
-                          fontFamily: "PeydaLight",
+                          fontFamily: "PeydaBold",
                           fontSize: isLgScreen ? "0.7rem" : "1rem",
                         }}
                       >
