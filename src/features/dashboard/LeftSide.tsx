@@ -98,7 +98,6 @@ const ISPSection: React.FC<ISPSectionProps> = ({
   ispStatus,
   internal,
   link,
-  isXlgScreen,
   hasMoreInfo,
 }) => {
   const [hoveredIsp, setHoveredIsp] = useState<
