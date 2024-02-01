@@ -35,7 +35,6 @@ const Map: FC<Props> = ({
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const isXlgScreen = useMediaQuery("(min-width:2000px)");
