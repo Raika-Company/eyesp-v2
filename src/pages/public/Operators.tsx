@@ -106,7 +106,7 @@ const Operators: React.FC = () => {
       <Box
         sx={{
           bgcolor: "#2B2E31",
-          overflowX: "hidden",
+          overflow: "hidden",
           height: "100dvh",
         }}
       >
