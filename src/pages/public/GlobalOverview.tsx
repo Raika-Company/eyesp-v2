@@ -166,7 +166,13 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     const validDetail = details.find(
       (detail: Detail) => detail.status === "200" || detail.status === "0"
     );
-    return validDetail ? validDetail.time : "N/A";
+    if (validDetail) {
+      const timeParts = validDetail.time.split("T");
+      const timeOnly = timeParts[1]; // assuming the format is "YYYY-MM-DDTHH:MM:SS"
+      return timeOnly;
+    } else {
+      return "N/A";
+    }
   };
 
   const statusLineStyle = (index: number, total: number) => {
