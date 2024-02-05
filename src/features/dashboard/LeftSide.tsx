@@ -98,7 +98,6 @@ const ISPSection: React.FC<ISPSectionProps> = ({
   ispStatus,
   internal,
   link,
-  isXlgScreen,
   hasMoreInfo,
 }) => {
   const [hoveredIsp, setHoveredIsp] = useState<
@@ -114,10 +113,10 @@ const ISPSection: React.FC<ISPSectionProps> = ({
       <Box
         sx={{
           marginY: "auto",
-          padding: ".6rem",
+          paddingX: ".6rem",
           display: "flex",
           flexDirection: "column",
-          gap: isXlgScreen ? ".5rem" : "",
+          gap: ".5rem",
         }}
       >
         {ispList.map((isp) => (
@@ -165,9 +164,15 @@ const ISPSection: React.FC<ISPSectionProps> = ({
               cursor: "pointer",
               alignItems: "center",
               justifyContent: "space-between",
+              height: ".5rem",
+              marginY: ".5rem",
             }}
           >
-            <Button component={Link} to={link} sx={{ color: "#7FCD9F" }}>
+            <Button
+              component={Link}
+              to={link}
+              sx={{ color: "#7FCD9F", fontSize: ".8rem" }}
+            >
               مشاهده جذئیات بیشتر
             </Button>
             <img
@@ -212,18 +217,20 @@ const LeftSide: React.FC = () => {
         display: "grid",
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
-        gap: isXlgScreen ? "1.5rem" : "1rem",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
+        gridTemplateRows:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
+        gap: isXlgScreen ? "1.5rem" : "1rem",
       }}
     >
       <InfoBox title="میانگین کلی" iconPath={AverageIcon}>
         <Stack
           direction="row"
           sx={{
+            // paddingY: "1rem",
             marginY: "auto",
             gap: "1rem",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
           <NumberValue

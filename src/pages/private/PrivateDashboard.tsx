@@ -9,11 +9,10 @@ const PrivateDashboard: FC = () => {
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
-  const isXgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const isXgScreen = useMediaQuery("(min-width:1921px)");
   const [scale, setScale] = useState<number>(1);
 
   return (
-    // The code that surely will be changed.
     <Box
       sx={{
         minHeight: "100vh",
@@ -42,12 +41,12 @@ const PrivateDashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "1fr"
-              : `1fr ${isLgScreen ? "3.5" : "2.6"}fr 1fr`,
+              : `1fr 4fr 1fr`,
             gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",
             rowGap: "1rem",
-            paddingX: isLgScreen ? "0" : "2rem",
+            paddingX: isLgScreen ? "0" : "1rem",
           }}
         >
           <LeftSide />

@@ -25,6 +25,7 @@ const aiMessages = [
     id: 1,
     text: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون ",
     time: "امروز 22:30",
+    isAi: true,
   },
 ];
 
@@ -44,7 +45,9 @@ const RightSide = () => {
   const chatRef = useRef<HTMLDivElement | null>(null);
 
   const [messages, setMessages] =
-    useState<{ id: number; text: string; time: string }[]>(aiMessages);
+    useState<{ id: number; text: string; time: string; isAi: boolean }[]>(
+      aiMessages
+    );
 
   const [enteredMessage, setEnteredMessage] = useState<string>("");
   const handleSubmit = (e: FormEvent) => {
@@ -55,6 +58,7 @@ const RightSide = () => {
         id: messages.length + 1,
         text: enteredMessage,
         time: `${new Date().getHours()}:${new Date().getMinutes()} امروز`,
+        isAi: false,
       },
     ]);
     setEnteredMessage("");
@@ -84,8 +88,8 @@ const RightSide = () => {
           sx={{
             position: "absolute",
             left: ".5rem",
-            fontSize: ".7rem",
-            top: ".5rem",
+            fontSize: ".8rem !important",
+            top: ".25rem",
           }}
           onClick={() => setMessages([])}
         >
@@ -108,15 +112,28 @@ const RightSide = () => {
           >
             {messages.map((message) => (
               <Box key={message.id}>
-                <Stack direction="row" alignItems="center" gap={0.5}>
-                  <img
-                    src={Ai}
-                    style={{
-                      width: "13px",
-                      height: "13px",
-                    }}
-                  />
-                  <Typography>هوش مصنوعی</Typography>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: message.isAi ? "row" : "row-reverse",
+                    alignItems: "center",
+                    gap: ".5rem",
+                    marginRight: "auto",
+                  }}
+                >
+                  {message.isAi && (
+                    <img
+                      src={Ai}
+                      style={{
+                        width: "13px",
+                        height: "13px",
+                      }}
+                    />
+                  )}
+                  <Typography>
+                    {message.isAi ? "هوش مصنوعی" : "کاربر"}
+                  </Typography>
                   <Typography
                     sx={{
                       color: "#7A7775",
@@ -125,15 +142,17 @@ const RightSide = () => {
                   >
                     {message.time}
                   </Typography>
-                </Stack>
+                </Box>
                 <Typography
                   sx={{
+                    marginX: ".5rem",
                     color: "#FFF",
                     background: "#7A7775",
                     borderRadius: ".5rem",
-                    borderTopRightRadius: "0",
+                    borderTopRightRadius: message.isAi ? "0" : ".5rem",
+                    borderTopLeftRadius: message.isAi ? ".5rem" : "0",
                     padding: ".5rem",
-                    fontSize: ".8rem",
+                    fontSize: ".8rem !important",
                   }}
                 >
                   {message.text}

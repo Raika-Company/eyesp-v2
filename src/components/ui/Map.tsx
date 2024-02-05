@@ -35,7 +35,6 @@ const Map: FC<Props> = ({
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const isXlgScreen = useMediaQuery("(min-width:2000px)");
@@ -145,8 +144,9 @@ const Map: FC<Props> = ({
         <SvgIcon
           sx={{
             width: "100%",
+            minHeight: "100%",
             height: "100%",
-            maxHeight: "80dvh",
+            maxHeight: "90dvh",
             boxShadow: "0px 12px 32.13126px 0px rgba(0, 0, 0, 0.50)",
           }}
         >
@@ -301,8 +301,8 @@ const Map: FC<Props> = ({
           }}
         >
           {isScreenShot ? (
-            <div style={{ display: "flex", gap: "0.2rem" }}>
-              {!isPrivate &&
+            <div style={{ display: "flex", gap: "2rem" }}>
+              {/* {!isPrivate &&
                 provinceData &&
                 provinceData.map((province) => (
                   <StatusTooltip
@@ -314,7 +314,7 @@ const Map: FC<Props> = ({
                     isSecond={true}
                     isScreenShot={isScreenShot}
                   />
-                ))}
+                ))} */}
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>

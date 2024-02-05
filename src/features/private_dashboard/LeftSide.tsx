@@ -97,6 +97,8 @@ const LeftSide: React.FC = () => {
         display: "grid",
         gridTemplateColumns:
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
+        gridTemplateRows:
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
       }}
@@ -140,7 +142,7 @@ const LeftSide: React.FC = () => {
                     sx={{
                       fontSize: isLgScreen
                         ? ".75rem !important"
-                        : ".5rem !important",
+                        : ".4rem !important",
                     }}
                   >
                     {conflict.title}
@@ -229,10 +231,11 @@ const LeftSide: React.FC = () => {
         >
           {conflictsHistoryMockData.map((data) => (
             <Fragment key={data.id}>
-              <Stack direction="row" justifyContent="space-between">
+              <Stack direction="row" gap=".5rem" justifyContent="space-between">
                 <Typography
                   sx={{
                     whiteSpace: "nowrap",
+                    fontSize: ".7rem",
                   }}
                 >
                   {data.conflicts.join(",")}|{data.isp.join(",")}|
@@ -254,19 +257,18 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           component={Link}
-          to="/last-disorders"
+          to="/disorders"
           sx={{
             textDecoration: "none",
             cursor: "pointer",
             alignItems: "center",
-            marginX: "1rem",
             justifyContent: "space-between",
             ":active": {
               textDecoration: "none",
             },
           }}
         >
-          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات و موارد بیشتر</Button>
+          <Button sx={{ color: "#7FCD9F" }}>مشاهده جذئیات و بیشتر</Button>
           <img
             src={ArrowLeftGreen}
             style={{
@@ -293,21 +295,21 @@ const LeftSide: React.FC = () => {
           <Stack direction="row" justifyContent="space-around" gap={1}>
             <CircleChart
               finalPercentage={66}
-              size={isLgScreen ? 90 : 70}
+              size={isLgScreen ? 90 : 60}
               textTitle="میانگین دانلود"
               value={loading ? "--" : metricsData!.downloadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={40}
-              size={isLgScreen ? 90 : 70}
+              size={isLgScreen ? 90 : 60}
               textTitle="میانگین آپلود"
               value={loading ? "--" : metricsData!.uploadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={52}
-              size={isLgScreen ? 90 : 70}
+              size={isLgScreen ? 90 : 60}
               textTitle="میانگین "
               value={loading ? "--" : metricsData!.pingAverage}
               unit="Ms"
