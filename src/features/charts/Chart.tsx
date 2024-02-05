@@ -18,7 +18,6 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import { SelectButton } from "../../components/ui/SelectButton";
-import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Props for the Chart component.
@@ -34,7 +33,6 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
-  chartData?: ChartReturnType;
 }
 
 /**
@@ -83,7 +81,7 @@ const generateRandomData = (
 };
 
 // A predefined list of cities for selection in the chart.
-const cities: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
+const steps: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
 
 /**
  * A custom tooltip component for the chart.
@@ -172,9 +170,9 @@ const Chart: React.FC<ChartProps> = ({
               borderRadius: "0.7em",
             }}
           >
-            {cities.map((city) => (
-              <MenuItem key={city} value={city}>
-                {city}
+            {steps.map((step) => (
+              <MenuItem key={step} value={step}>
+                {step}
               </MenuItem>
             ))}
           </SelectButton>
