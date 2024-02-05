@@ -5,7 +5,14 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   server: {
     proxy: {
-      "/get-history": "http://2.189.59.122:3000",
+      // Match the path you use for API requests
+      "/api/v1": {
+        // The target is your actual API server
+        target: "http://95.38.58.11:8000",
+        changeOrigin: true,
+        // Optionally rewrite the path
+        rewrite: (path) => path.replace(/^\/api\/v1/, ""),
+      },
     },
   },
   plugins: [react()],

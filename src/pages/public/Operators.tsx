@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import operators from "../../assets/images/operators-icon.svg";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import irancell from "../../assets/images/irancell.svg";
+import hamraheAval from "../../assets/images/hamraheAval-logo.svg";
 import Chart from "../../features/charts/Chart";
 import HistoryOperators from "./HistoryOperators";
 
 import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
+import api from "../../services";
+import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Interface for InfoItem properties.
@@ -67,10 +70,19 @@ const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => {
  * Operators component: Displays operator information and charts.
  * It utilizes Material UI components and custom components like Chart and HistoryOperators.
  */
+interface Operator {
+  name: string;
+  logo: string;
+}
+type ChartData = ChartReturnType | null;
 const Operators: React.FC = () => {
   const theme = useTheme();
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
+  const [selectedOperator, setSelectedOperator] = useState<Operator | null>(
+    null
+  );
+  const [chartData, setChartData] = useState<ChartData>(null);
   const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -80,15 +92,80 @@ const Operators: React.FC = () => {
    * @param event - The event object containing the selected value.
    */
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
+    const newCategory = event.target.value as string;
+    setCategory(newCategory);
+
+    switch (newCategory) {
+      case "سالانه":
+        api.Chart.getYearsChart()
+          .then((response) => {
+            console.log(response.data);
+
+            setChartData(response.data);
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "ماهانه":
+        api.Chart.getMonthsChart()
+          .then((response) => {
+            console.log(response.data);
+
+            setChartData(response.data);
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "هفتگی":
+        api.Chart.getweeksChart()
+          .then((response) => {
+            console.log(response.data);
+
+            setChartData(response.data);
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "روزانه":
+        api.Chart.getDaysChart()
+          .then((response) => {
+            console.log(response.data);
+
+            setChartData(response.data);
+          })
+          .catch((err) => console.error(err));
+        break;
+      default:
+        api.Chart.getYearsChart()
+          .then((response) => setChartData(response.data))
+          .catch((err) => console.error(err));
+        break;
+    }
   };
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
+  const handleISPChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedISP = event.target.value as string;
+    setSelectedISP(selectedISP);
+    const operator = logos.find((operator) => operator.name === selectedISP);
+    if (operator) {
+      setSelectedOperator(operator);
+    }
   };
 
+  const logos: Operator[] = [
+    {
+      name: "ایرانسل",
+      logo: irancell,
+    },
+    {
+      name: "همراه اول",
+      logo: hamraheAval,
+    },
+  ];
+  useEffect(() => {
+    api.Chart.getYearsChart()
+      .then((response) => setChartData(response.data))
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <>
       <Header
@@ -101,7 +178,7 @@ const Operators: React.FC = () => {
         title="اپراتور ها"
         iconPath={operators}
         selectTitle="فیلتر:"
-        // isButtonSelect={true}
+        showButton={true}
       />
       <Box
         sx={{
@@ -128,14 +205,34 @@ const Operators: React.FC = () => {
               textAlign: "center",
             }}
           >
-            <img src={irancell} alt="operator-logo" />
-            <Box>
-              <Typography sx={commonStyles.infoValue}>اپراتور</Typography>
-              <Typography sx={commonStyles.mainInfo}>ایرانسل</Typography>
-            </Box>
+            {selectedOperator && (
+              <>
+                <img
+                  src={selectedOperator.logo}
+                  alt="operator-logo"
+                  style={{ width: "226px", height: "123px" }}
+                />
+                <Box>
+                  <Typography sx={{ color: "#7A7775", fontSize: "1.3rem" }}>
+                    اپراتور
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#fff",
+                      fontSize: "1.8rem",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {selectedOperator.name}
+                  </Typography>
+                </Box>
+              </>
+            )}
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
+              // chartData={chartData}
+
               province={province}
               selectedISP={selectedISP}
               category={category}

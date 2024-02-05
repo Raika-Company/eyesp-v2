@@ -81,7 +81,7 @@ const generateRandomData = (
 };
 
 // A predefined list of cities for selection in the chart.
-const cities: string[] = ["سرعت", "پینگ", "جیتر"];
+const cities: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
 
 /**
  * A custom tooltip component for the chart.
@@ -111,7 +111,7 @@ const Chart: React.FC<ChartProps> = ({
 }) => {
   const theme = useTheme();
   const location = useLocation();
-  const [selectedCity, setSelectedCity] = useState<string>("سرعت");
+  const [selectedCity, setSelectedCity] = useState<string>("دانلود");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const chartData = useMemo(
