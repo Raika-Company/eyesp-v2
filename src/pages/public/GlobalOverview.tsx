@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
 import ModalNotData from '../../components/ui/ModalNotData';
+import axios from 'axios';
 
 type Detail = {
   time: string;
@@ -16,6 +17,10 @@ type Details = Detail[];
 type StatusDetail = {
   time: string;
   status: string;
+  messageFA: string;
+  messageEN: string;
+  color: string;
+  time_range: string;
 };
 
 type HourlyStatus = {
@@ -30,81 +35,60 @@ type WebsiteData = {
   hourly_status: HourlyStatus[];
 };
 
-const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
-  const non200Count = hourlyDetails.filter(
-    (detail) => parseInt(detail.status, 10) !== 200
-  ).length;
-  if (non200Count > 4) return "#E93F3F";
-  if (non200Count >= 2) return "#C99143";
-  return "#7FCD9F";
-};
 
-const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
-  const non200Details = hourlyDetails.filter(
-    (detail) => parseInt(detail.status, 10) !== 200
-  );
-  let tooltipContent = [];
+const getTooltipMessage = (details: StatusDetail[], color: string) => {
+  const detail = details[0];
+  let icon;
 
-  if (color === "#E93F3F") {
-    const start = non200Details[0].time;
-    const end = non200Details[non200Details.length - 1].time;
-    tooltipContent.push(
-      <Typography variant="h2" sx={{ color: color, py: "0.5em", px: "0.5em" }}>
-        ❌ قطعی کامل سرویس
-      </Typography>,
-      <Typography variant="h4" sx={{ bgcolor: "#2B2E31", p: "1em" }}>
-        قطعی کامل سرویس از ساعت {start} تا ساعت {end}
-      </Typography>,
-      <Typography variant="h4" sx={{ mt: "0.5em" }}>
-        دسترسی به صورت موقت قطع شده است.
-      </Typography>
-    );
-  } else if (color === "#7FCD9F") {
-    tooltipContent.push(
-      <Typography variant="h2" sx={{ color: color, mt: "0.2em" }}>
-        وضعیت : 200
-      </Typography>,
-      <Typography
-        variant="h4"
-        sx={{
-          bgcolor: "#2B2E31",
-          py: "0.5em",
-          px: "0.5em",
-          color: color,
-          my: "0.4em",
-        }}
-      >
-        ✅ بدون قطعی
-      </Typography>,
-      <Typography variant="h4" sx={{ mt: "0.5em", mx: "0.2em" }}>
-        درخواست با موفقیت انجام شد.
-      </Typography>
-    );
-  } else if (color === "#C99143" && non200Details.length > 0) {
-    const start = non200Details[0].time;
-    const end = non200Details[non200Details.length - 1].time;
-    tooltipContent.push(
-      <Typography variant="h2" sx={{ color: color, my: "0.4rem" }}>
-        ⚠️ اختلال جزئی در اتصال
-      </Typography>,
-      <Typography
-        variant="h4"
-        sx={{ bgcolor: "#2B2E31", py: "0.5em", px: "0.5em" }}
-      >
-        اختلال جزئی از ساعت {start} تا ساعت {end}
-      </Typography>,
-      <Typography variant="h4" sx={{ mt: "0.5em" }}>
-        سرویس دچار اختلالات جزئی شده است.
-      </Typography>
-    );
+  switch (detail.color) {
+    case 'yellow':
+      icon = '⚠️';
+      break;
+    case 'green':
+      icon = '✅';
+      break;
+    default:
+      icon = '❌';
+      break;
   }
 
   return (
-    <Typography>
-      {tooltipContent.map((content, index) => (
-        <React.Fragment key={index}>{content}</React.Fragment>
-      ))}
-    </Typography>
+    <Box sx={{
+      color: color,
+      py: "0.7em",
+      px: '0.5em',
+      background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 69.56%)",
+      borderRadius: '0.3em',
+    }}>
+      <Typography variant='h3' fontWeight={800} borderBottom="1px solid #2B2E31" pb={1}>
+        وضعیت: {detail.status}
+      </Typography>
+      {detail.time_range && (
+        <Typography sx={{
+          py: '0.5em',
+          borderRadius: '0.2em',
+          px: '0.4em',
+          my: "0.4rem",
+          borderBottom: "1px solid #2B2E31"
+        }}>
+          زمان‌ اختلال: {detail.time_range}
+        </Typography>
+      )}
+      <Box
+        sx={{
+          py: "0.5em",
+          px: '0.4em',
+          my: "0.4rem",
+        }}
+      >
+        <Typography component="span">{icon} </Typography>
+        <Typography sx={{ px: '0.2em', }} component="span">{detail.messageFA}</Typography>
+        <Typography sx={{ direction: "ltr", mt: '0.6em' }}>
+          <Typography component="span">{icon} </Typography>
+          {detail.messageEN}
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
@@ -170,25 +154,30 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 
   const getFirstValidTimeForHour = (details: Details) => {
     const validDetail = details.find(
-      (detail: Detail) => detail.status === "200" || detail.status === "403"
+      (detail: Detail) => detail.status === "200" || detail.status === "0"
     );
     return validDetail ? validDetail.time : "N/A";
   };
 
-  const statusLineStyle = (index: number) => ({
-    "&::before": displayIndexes.includes(index)
-      ? {
+  const statusLineStyle = (index: number, total: number) => {
+    const displayInterval = Math.floor(total / 4);
+
+    return {
+      "&::before": (index % displayInterval === 0 || index === total - 1)
+        ? {
           content: '""',
           display: "block",
-          width: "10%",
+          width: "1.5px",
           height: "70px",
           backgroundColor: "#3f4145",
           position: "absolute",
-          top: "-35px",
-          left: "-1px",
+          top: "10%",
+          transform: "translateY(-50%)",
+          right: "0",
         }
-      : {},
-  });
+        : {},
+    };
+  };
 
   return (
     <Grid
@@ -248,13 +237,13 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
           width="100%"
           height="100%"
         >
-          {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
-            const bgColor = getHourlyStatusColor(hourlyStatus.details);
+          {data.hourly_status[0].details.map((statusDetail, index) => {
+            const bgColor = statusDetail.color === 'yellow' ? "#C99143" : statusDetail.color === "red" ? "#E93F3F" : "#7FCD9F";
             return (
               <Tooltip
                 title={
                   <Typography>
-                    {getTooltipMessage(hourlyStatus.details, bgColor)}
+                    {getTooltipMessage([statusDetail], bgColor)}
                   </Typography>
                 }
                 arrow
@@ -279,7 +268,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
                       bgcolor: "#c3c3c3",
                     },
                     position: "relative",
-                    ...statusLineStyle(index),
+                    ...statusLineStyle(index, data.hourly_status[0].details.length),
                   }}
                 />
               </Tooltip>
@@ -340,6 +329,64 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const [serverData, setServerData] = useState<WebsiteData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/v1/analysis/result');
+        const fetchedData: WebsiteData[] = transformData(response.data);
+        setServerData(fetchedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const transformData = (data: any): WebsiteData[] => {
+    return Object.keys(data).map(category => {
+      const dailyStatuses = data[category].reduce((acc: HourlyStatus[], item: any, index: number) => {
+        let analysisObjects;
+        try {
+          const jsonString = item.primary_analysis.replace(/'/g, '"');
+          analysisObjects = JSON.parse(jsonString);
+        } catch (error) {
+          console.error('Error parsing primary_analysis:', error);
+          analysisObjects = []; // Use an empty array in case of an error
+        }
+
+        if (index % 24 === 0) { // Every 24 items, push a new daily status object
+          acc.push({
+            hour: item.analysis_at.substring(0, 10), // Use only the date part
+            details: [],
+          });
+        }
+
+        // Add the current hour's status to the last daily status object in the accumulator
+        acc[acc.length - 1].details.push({
+          time: item.analysis_at,
+          status: item.status_code.toString(),
+          color: item.color,
+          messageFA: analysisObjects[0]?.analysis?.persian || '',
+          messageEN: analysisObjects[0]?.analysis?.english || '',
+          time_range: item.time_range || '',
+        });
+
+        return acc;
+      }, []);
+
+      return {
+        name: category,
+        url: '', // Set this to the appropriate value
+        date: dailyStatuses[0]?.hour || '', // Use the date from the first hourly status
+        hourly_status: dailyStatuses,
+      };
+    });
+  };
+
+
 
   return (
     <Box
@@ -374,10 +421,10 @@ const GlobalOverview: React.FC = () => {
             بازگشت
           </Button>
         </Box>
-        {serverStatusData ? (
+        {serverData ? (
           <Grid container rowSpacing={4} paddingY="1rem">
-            {serverStatusData.map((serverData, index) => (
-              <GridItem key={index} data={serverData} />
+            {serverData.map((dataItem, index) => (
+              <GridItem key={index} data={dataItem} />
             ))}
           </Grid>
         ) : (
