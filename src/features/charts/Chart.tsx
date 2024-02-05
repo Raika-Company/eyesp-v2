@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import { SelectButton } from "../../components/ui/SelectButton";
+import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Props for the Chart component.
@@ -33,6 +34,7 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
+  chartData?: ChartReturnType;
 }
 
 /**
@@ -108,13 +110,14 @@ const Chart: React.FC<ChartProps> = ({
   selectedISP,
   province,
   category,
+  chartData,
 }) => {
   const theme = useTheme();
   const location = useLocation();
   const [selectedCity, setSelectedCity] = useState<string>("دانلود");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const chartData = useMemo(
+  const convertedData = useMemo(
     () => generateRandomData(selectedISP, province, category, selectedCity),
     [selectedISP, province, category, selectedCity]
   );
@@ -178,7 +181,7 @@ const Chart: React.FC<ChartProps> = ({
         )}
       </Box>
       <ResponsiveContainer height={220}>
-        <AreaChart data={chartData}>
+        <AreaChart data={convertedData}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
