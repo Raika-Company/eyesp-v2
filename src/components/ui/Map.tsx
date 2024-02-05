@@ -67,7 +67,7 @@ const Map: FC<Props> = ({
   };
 
   const startDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    if (isPrivate && scale !== 1) {
+    if (scale !== calculateScale()) {
       setDragging(true);
       setStartPos({
         x: e.clientX - position.x,
@@ -77,7 +77,7 @@ const Map: FC<Props> = ({
   };
 
   const onDrag = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    if (isPrivate && scale !== 1) {
+    if (scale !== calculateScale()) {
       if (dragging) {
         const dx = e.clientX - startPos.x;
         const dy = e.clientY - startPos.y;
@@ -101,7 +101,7 @@ const Map: FC<Props> = ({
   };
 
   const endDrag = () => {
-    if (isPrivate && scale !== 1) {
+    if (scale !== calculateScale()) {
       setDragging(false);
     }
   };
@@ -118,6 +118,7 @@ const Map: FC<Props> = ({
       }[]
     | null
   >(null);
+
   useEffect(() => {
     getProvinceData().then((res) => setProvinceData(res));
   }, []);
