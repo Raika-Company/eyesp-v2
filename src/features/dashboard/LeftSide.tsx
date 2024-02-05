@@ -227,7 +227,7 @@ const LeftSide: React.FC = () => {
         <Stack
           direction="row"
           sx={{
-            // paddingY: "1rem",
+            padding: "1rem",
             marginY: "auto",
             gap: "1rem",
             justifyContent: "center",
