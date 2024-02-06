@@ -231,7 +231,7 @@ const Operators: React.FC = () => {
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
-              chartData={chartData}
+              // chartData={chartData}
               province={province}
               selectedISP={selectedISP}
               category={category}
