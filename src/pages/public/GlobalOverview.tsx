@@ -81,7 +81,7 @@ const getTooltipMessage = (details: StatusDetail[], color: string) => {
           px: "0.6em",
           my: "0.4rem",
           borderRadius: "0.3em",
-          bgcolor: "#111",
+          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 70.56%)",
         }}
       >
         <Typography
@@ -100,7 +100,10 @@ const getTooltipMessage = (details: StatusDetail[], color: string) => {
 };
 
 const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
+  const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
+  const isMiniMobile = useMediaQuery("(max-width:350px)");
+  const isTablet = useMediaQuery(theme.breakpoints.between(600, 960));
   const [activeGraphMobile, setActiveGraphMobile] = useState<number | null>(
     null
   );
@@ -148,11 +151,28 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     };
   }, [tooltipTimer]);
 
+  const totalStatuses = data.hourly_status.slice(-24);
+  const statusesCount = totalStatuses.length;
+  const quarter = Math.floor(statusesCount / 4);
+  const displayIndexes = [
+    0,
+    quarter,
+    2 * quarter,
+    3 * quarter,
+    statusesCount - 1,
+  ];
+
   const getFirstValidTimeForHour = (details: Details) => {
     const validDetail = details.find(
       (detail: Detail) => detail.status === "200" || detail.status === "0"
     );
-    return validDetail ? validDetail.time : "N/A";
+    if (validDetail) {
+      const timeParts = validDetail.time.split("T");
+      const timeOnly = timeParts[1]; // assuming the format is "YYYY-MM-DDTHH:MM:SS"
+      return timeOnly;
+    } else {
+      return "N/A";
+    }
   };
 
   const statusLineStyle = (index: number, total: number) => {
@@ -212,6 +232,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
             textAlign: "center",
             textTransform: "uppercase",
             fontWeight: 600,
+            fontSize: isMiniMobile ? "0.37rem" : "0.8rem",
           }}
         >
           {data.name}
@@ -296,26 +317,34 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          width="100%"
           mt="0.5em"
+          // width="100%"
+          sx={{ width: isTablet ? "19rem" : "100%" }}
         >
-          {data.hourly_status.slice(-5).map((hourlyStatus, index) => {
-            const timeToShow = getFirstValidTimeForHour(hourlyStatus.details);
+          {data.hourly_status.map((hourlyStatus, index) => {
+            const shouldDisplayHour = displayIndexes.includes(index);
             return (
               <Box
                 key={index}
                 sx={{
+                  width: shouldDisplayHour ? "auto" : "0px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                 }}
               >
-                <Typography
-                  variant="subtitle1"
-                  sx={{ color: "#7A7775", textAlign: "center" }}
-                >
-                  {timeToShow}
-                </Typography>
+                {shouldDisplayHour && (
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      color: "#7A7775",
+                      textAlign: "center",
+                      fontSize: isMiniMobile ? "0.23rem" : "0.6rem",
+                    }}
+                  >
+                    {getFirstValidTimeForHour(hourlyStatus.details)}
+                  </Typography>
+                )}
               </Box>
             );
           })}
@@ -348,13 +377,6 @@ const GlobalOverview: React.FC = () => {
     return Object.keys(data).map((category) => {
       const dailyStatuses = data[category].reduce(
         (acc: HourlyStatus[], item: any, index: number) => {
-          const analysisDate = new Date(item.analysis_at);
-          const timeFormatted = analysisDate.toLocaleTimeString("fa-IR", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-            timeZone: "Asia/Tehran",
-          });
           let analysisObjects;
           try {
             const jsonString = item.primary_analysis.replace(/'/g, '"');
@@ -374,7 +396,7 @@ const GlobalOverview: React.FC = () => {
 
           // Add the current hour's status to the last daily status object in the accumulator
           acc[acc.length - 1].details.push({
-            time: timeFormatted,
+            time: item.analysis_at,
             status: item.status_code.toString(),
             color: item.color,
             messageFA: analysisObjects[0]?.analysis?.persian || "",
