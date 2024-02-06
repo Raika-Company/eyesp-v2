@@ -82,7 +82,8 @@ const Operators: React.FC = () => {
   const [selectedOperator, setSelectedOperator] = useState<Operator | null>(
     null
   );
-  const [chartData, setChartData] = useState<ChartData>(null);
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<string>("دانلود");
   const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -137,6 +138,25 @@ const Operators: React.FC = () => {
           .then((response) => setChartData(response.data))
           .catch((err) => console.error(err));
         break;
+    }
+  };
+
+  const filteredData = (): ChartReturnType | null => {
+    if (!chartData) return null;
+
+    switch (selectedMetric) {
+      case "آپلود":
+        return { upload: chartData.data.upload };
+      case "جیتر":
+        return { jitter: chartData.data.jitter };
+      case "پینگ":
+        console.log("DWWWWWWW", chartData.data.ping);
+
+        return { ping: chartData.data.ping };
+      case "پکت لاس":
+        return { packetloss: chartData.data.packet_loss };
+      default:
+        return chartData;
     }
   };
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
@@ -232,11 +252,14 @@ const Operators: React.FC = () => {
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
               // chartData={chartData}
+              chartData={filteredData()}
               province={province}
               selectedISP={selectedISP}
-              category={category}
+              category={selectedMetric}
               title=""
               desc="نمودار وضعیت"
+              selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
             />
           </Box>
           <Box
