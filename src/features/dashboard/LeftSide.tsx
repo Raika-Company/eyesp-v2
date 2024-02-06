@@ -204,10 +204,17 @@ const LeftSide: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     setLoading(true);
-    api.metrics.getAllMetrics().then((res) => {
-      setNetworkState(res.data);
-      setLoading(false);
-    });
+    api.metrics
+      .getAllMetrics()
+      .then((res) => {
+        console.log(res, "this is the end");
+
+        setNetworkState(res.data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e, "this is the end");
+      });
   }, []);
 
   return (
