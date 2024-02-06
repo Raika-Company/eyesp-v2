@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  CircularProgress,
-  Button,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Container,
-} from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Box, CircularProgress, Button, Tooltip, Typography, useMediaQuery, useTheme, Container } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { Link, useLocation } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
-import ModalNotData from "../../components/ui/ModalNotData";
-import axios from "axios";
+import ModalNotData from '../../components/ui/ModalNotData';
+import axios from 'axios';
 
 type Detail = {
   time: string;
@@ -42,6 +33,7 @@ type WebsiteData = {
   date: string;
   hourly_status: HourlyStatus[];
 };
+
 
 const getTooltipMessage = (details: StatusDetail[], color: string) => {
   const detail = details[0];
@@ -182,16 +174,16 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
       "&::before":
         index % displayInterval === 0 || index === total - 1
           ? {
-              content: '""',
-              display: "block",
-              width: "1px",
-              height: "25px",
-              backgroundColor: "#3f4145",
-              position: "absolute",
-              top: "-26%",
-              transform: "translateY(-50%)",
-              right: "-0.8px",
-            }
+            content: '""',
+            display: "block",
+            width: "1px",
+            height: "25px",
+            backgroundColor: "#3f4145",
+            position: "absolute",
+            top: "-26%",
+            transform: "translateY(-50%)",
+            right: "-0.8px",
+          }
           : {},
     };
   };
@@ -260,8 +252,8 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
               statusDetail.color === "yellow"
                 ? "#C99143"
                 : statusDetail.color === "red"
-                ? "#E93F3F"
-                : "#7FCD9F";
+                  ? "#E93F3F"
+                  : "#7FCD9F";
             return (
               <Tooltip
                 title={
@@ -357,37 +349,59 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const type = queryParams.get('type');
+
   const [serverData, setServerData] = useState<WebsiteData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/v1/analysis/result");
-        const fetchedData: WebsiteData[] = transformData(response.data);
-        setServerData(fetchedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    if (type === 'internal') {
+      // تنظیم مستقیم داده‌های داخلی بدون نیاز به فراخوانی API یا تبدیل اضافی
+      setServerData(transformData(serverStatusData));
+      setLoading(false);
+    } else if (type === 'global') {
+      // فراخوانی داده‌های بین‌المللی از API و تبدیل آن‌ها به فرمت مناسب
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('/api/v1/analysis/result');
+          // فرض بر اینکه داده‌های بین‌المللی به صورت شیء با کلیدهای مختلف برگشت داده می‌شوند و نیاز به تبدیل دارند
+          setServerData(transformData(response.data));
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching global data:', error);
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }
+  }, [type]);
 
-    fetchData();
-  }, []);
+
 
   const transformData = (data: any): WebsiteData[] => {
-    return Object.keys(data).map((category) => {
-      const dailyStatuses = data[category].reduce(
-        (acc: HourlyStatus[], item: any, index: number) => {
+    if (Array.isArray(data)) {
+
+      return data.map(item => ({
+        name: item.name,
+        url: item.url,
+        date: item.date,
+        hourly_status: item.hourly_status,
+      }));
+    } else {
+      return Object.keys(data).map(category => {
+        const dailyStatuses = data[category].reduce((acc: HourlyStatus[], item: any, index: number) => {
           let analysisObjects;
           try {
             const jsonString = item.primary_analysis.replace(/'/g, '"');
             analysisObjects = JSON.parse(jsonString);
           } catch (error) {
-            console.error("Error parsing primary_analysis:", error);
+            console.error('Error parsing primary_analysis:', error);
             analysisObjects = []; // Use an empty array in case of an error
           }
 
-          if (index % 24 === 0) {
-            // Every 24 items, push a new daily status object
+          if (index % 24 === 0) { // Every 24 items, push a new daily status object
             acc.push({
               hour: item.analysis_at.substring(0, 10), // Use only the date part
               details: [],
@@ -399,23 +413,25 @@ const GlobalOverview: React.FC = () => {
             time: item.analysis_at,
             status: item.status_code.toString(),
             color: item.color,
-            messageFA: analysisObjects[0]?.analysis?.persian || "",
-            time_range: item.time_range || "",
+            messageFA: analysisObjects[0]?.analysis?.persian || '',
+            time_range: item.time_range || '',
           });
 
           return acc;
-        },
-        []
-      );
+        }, []);
 
-      return {
-        name: category,
-        url: "", // Set this to the appropriate value
-        date: dailyStatuses[0]?.hour || "", // Use the date from the first hourly status
-        hourly_status: dailyStatuses,
-      };
-    });
+        return {
+          name: category,
+          url: '', // Set this to the appropriate value
+          date: dailyStatuses[0]?.hour || '', // Use the date from the first hourly status
+          hourly_status: dailyStatuses,
+        };
+      });
+    }
   };
+
+
+
 
   return (
     <Box

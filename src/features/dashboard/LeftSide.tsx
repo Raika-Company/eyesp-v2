@@ -51,28 +51,28 @@ export const InternalISPList: {
   isActive: boolean;
   speed: string;
 }[] = [
-  {
-    id: 1,
-    name: "زیرساخت - کرج",
-    province: "alborz",
-    isActive: false,
-    speed: "6200",
-  },
-  {
-    id: 2,
-    name: "زیر ساخت - اهواز",
-    province: "ahvaz",
-    isActive: true,
-    speed: "4362",
-  },
-  {
-    id: 3,
-    name: "فن آوا - تهران",
-    province: "tehran",
-    isActive: true,
-    speed: "862",
-  },
-];
+    {
+      id: 1,
+      name: "زیرساخت - کرج",
+      province: "alborz",
+      isActive: false,
+      speed: "6200",
+    },
+    {
+      id: 2,
+      name: "زیر ساخت - اهواز",
+      province: "ahvaz",
+      isActive: true,
+      speed: "4362",
+    },
+    {
+      id: 3,
+      name: "فن آوا - تهران",
+      province: "tehran",
+      isActive: true,
+      speed: "862",
+    },
+  ];
 
 const ExternalISPList = [
   {
@@ -251,9 +251,9 @@ const LeftSide: React.FC = () => {
         internal
         ispList={InternalISPList}
         ispStatus={ispStateData!}
-        link="/isp"
+        link="/global-overview?type=internal"
         isXlgScreen={isXlgScreen}
-        hasMoreInfo={false}
+        hasMoreInfo={true}
       />
 
       <ISPSection
@@ -261,7 +261,8 @@ const LeftSide: React.FC = () => {
         ispList={ExternalISPList}
         ispStatus={ispStateData!}
         internal={false}
-        link="/global-overview"
+        // link="/global-overview"
+        link="/global-overview?type=global"
         isXlgScreen={isXlgScreen}
         hasMoreInfo={true}
       />
