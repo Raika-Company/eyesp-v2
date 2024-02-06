@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Box,
   MenuItem,
@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import { SelectButton } from "../../components/ui/SelectButton";
+import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Props for the Chart component.
@@ -33,7 +34,7 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
-  chartData: { name: string; value: number }[];
+  chartData: ChartReturnType | null;
   selectedMetric: string;
   setSelectedMetric: (value: string) => void;
 }
@@ -100,7 +101,7 @@ const Chart: React.FC<ChartProps> = ({
   const handleMetricChange = (event: SelectChangeEvent<unknown>) => {
     setSelectedMetric(event.target.value as string);
   };
-  const data = chartData ? chartData[selectedMetric] : [];
+  const data = chartData ? [selectedMetric] || [] : [];
   return (
     <div
       style={{
