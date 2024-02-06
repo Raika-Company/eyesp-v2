@@ -6,11 +6,11 @@ const axios = new ClientApi();
 export interface ChartReturnType {
   id: "string";
   data: {
-    download: { name: string; value: number }[];
-    upload: { name: string; value: number }[];
-    ping: { name: string; value: number }[];
-    packet_loss: { name: string; value: number }[];
-    jitter: { name: string; value: number }[];
+    download?: { name: string; value: number }[] | undefined;
+    upload?: { name: string; value: number }[] | undefined;
+    ping?: { name: string; value: number }[] | undefined;
+    packet_loss?: { name: string; value: number }[] | undefined;
+    jitter?: { name: string; value: number }[] | undefined;
   };
 }
 

@@ -100,36 +100,56 @@ const Operators: React.FC = () => {
       case "سالانه":
         api.Chart.getYearsChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "ماهانه":
         api.Chart.getMonthsChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "هفتگی":
         api.Chart.getweeksChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "روزانه":
         api.Chart.getDaysChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
@@ -144,21 +164,41 @@ const Operators: React.FC = () => {
   const filteredData = (): ChartReturnType | null => {
     if (!chartData) return null;
 
+    // Initialize an object that conforms to the structure of ChartReturnType
+    let result: Partial<ChartReturnType> = {
+      id: chartData.id, // Assuming id is needed as part of the return
+      data: {
+        download: [], // Default empty arrays or ideally, keep original data if needed
+        upload: [],
+        ping: [],
+        packet_loss: [],
+        jitter: [],
+      },
+    };
+
+    // Based on selectedMetric, filter and assign the data accordingly
     switch (selectedMetric) {
       case "آپلود":
-        return { upload: chartData.data.upload };
+        result.data.upload = chartData.data.upload;
+        break;
       case "جیتر":
-        return { jitter: chartData.data.jitter };
+        result.data.jitter = chartData.data.jitter;
+        break;
       case "پینگ":
-        console.log("DWWWWWWW", chartData.data.ping);
-
-        return { ping: chartData.data.ping };
+        result.data.ping = chartData.data.ping;
+        break;
       case "پکت لاس":
-        return { packetloss: chartData.data.packet_loss };
+        result.data.packet_loss = chartData.data.packet_loss;
+        break;
+      // Add cases for other metrics as necessary
       default:
-        return chartData;
+        return chartData; // Return original data if no metric matches
     }
+
+    // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
+    return result as ChartReturnType;
   };
+
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
