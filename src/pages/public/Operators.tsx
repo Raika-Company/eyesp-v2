@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import operators from "../../assets/images/operators-icon.svg";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import irancell from "../../assets/images/irancell.svg";
+import hamraheAval from "../../assets/images/hamraheAval-logo.svg";
 import Chart from "../../features/charts/Chart";
 import HistoryOperators from "./HistoryOperators";
 
 import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
+import api from "../../services";
+import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Interface for InfoItem properties.
@@ -67,10 +70,20 @@ const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => {
  * Operators component: Displays operator information and charts.
  * It utilizes Material UI components and custom components like Chart and HistoryOperators.
  */
+interface Operator {
+  name: string;
+  logo: string;
+}
+type ChartData = ChartReturnType | null;
 const Operators: React.FC = () => {
   const theme = useTheme();
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
+  const [selectedOperator, setSelectedOperator] = useState<Operator | null>(
+    null
+  );
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<string>("دانلود");
   const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -80,15 +93,139 @@ const Operators: React.FC = () => {
    * @param event - The event object containing the selected value.
    */
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string);
+    const newCategory = event.target.value as string;
+    setCategory(newCategory);
+
+    switch (newCategory) {
+      case "سالانه":
+        api.Chart.getYearsChart()
+          .then((response) => {
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "ماهانه":
+        api.Chart.getMonthsChart()
+          .then((response) => {
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "هفتگی":
+        api.Chart.getweeksChart()
+          .then((response) => {
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
+          })
+          .catch((err) => console.error(err));
+        break;
+      case "روزانه":
+        api.Chart.getDaysChart()
+          .then((response) => {
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
+          })
+          .catch((err) => console.error(err));
+        break;
+      default:
+        api.Chart.getYearsChart()
+          .then((response) => setChartData(response.data))
+          .catch((err) => console.error(err));
+        break;
+    }
   };
+
+  const filteredData = (): ChartReturnType | null => {
+    if (!chartData) return null;
+
+    // Initialize an object that conforms to the structure of ChartReturnType
+    let result: Partial<ChartReturnType> = {
+      id: chartData.id, // Assuming id is needed as part of the return
+      data: {
+        download: [], // Default empty arrays or ideally, keep original data if needed
+        upload: [],
+        ping: [],
+        packet_loss: [],
+        jitter: [],
+      },
+    };
+
+    // Based on selectedMetric, filter and assign the data accordingly
+    switch (selectedMetric) {
+      case "آپلود":
+        result.data.upload = chartData.data.upload;
+        break;
+      case "جیتر":
+        result.data.jitter = chartData.data.jitter;
+        break;
+      case "پینگ":
+        result.data.ping = chartData.data.ping;
+        break;
+      case "پکت لاس":
+        result.data.packet_loss = chartData.data.packet_loss;
+        break;
+      // Add cases for other metrics as necessary
+      default:
+        return chartData; // Return original data if no metric matches
+    }
+
+    // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
+    return result as ChartReturnType;
+  };
+
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
-  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedISP(event.target.value as string);
+  const handleISPChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedISP = event.target.value as string;
+    setSelectedISP(selectedISP);
+    const operator = logos.find((operator) => operator.name === selectedISP);
+    if (operator) {
+      setSelectedOperator(operator);
+    }
   };
 
+  const logos: Operator[] = [
+    {
+      name: "ایرانسل",
+      logo: irancell,
+    },
+    {
+      name: "همراه اول",
+      logo: hamraheAval,
+    },
+  ];
+  useEffect(() => {
+    api.Chart.getYearsChart()
+      .then((response) => setChartData(response.data))
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <>
       <Header
@@ -101,13 +238,13 @@ const Operators: React.FC = () => {
         title="اپراتور ها"
         iconPath={operators}
         selectTitle="فیلتر:"
-        // isButtonSelect={true}
+        showButton={true}
       />
       <Box
         sx={{
           bgcolor: "#2B2E31",
-          overflowX: "hidden",
-          height: "100%",
+          overflow: "hidden",
+          height: "100dvh",
         }}
       >
         <Box
@@ -128,19 +265,41 @@ const Operators: React.FC = () => {
               textAlign: "center",
             }}
           >
-            <img src={irancell} alt="operator-logo" />
-            <Box>
-              <Typography sx={commonStyles.infoValue}>اپراتور</Typography>
-              <Typography sx={commonStyles.mainInfo}>ایرانسل</Typography>
-            </Box>
+            {selectedOperator && (
+              <>
+                <img
+                  src={selectedOperator.logo}
+                  alt="operator-logo"
+                  style={{ width: "226px", height: "123px" }}
+                />
+                <Box>
+                  <Typography sx={{ color: "#7A7775", fontSize: "1.3rem" }}>
+                    اپراتور
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#fff",
+                      fontSize: "1.8rem",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {selectedOperator.name}
+                  </Typography>
+                </Box>
+              </>
+            )}
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
+              // chartData={chartData}
+              chartData={filteredData()}
               province={province}
               selectedISP={selectedISP}
-              category={category}
+              category={selectedMetric}
               title=""
               desc="نمودار وضعیت"
+              selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
             />
           </Box>
           <Box

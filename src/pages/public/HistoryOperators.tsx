@@ -111,6 +111,7 @@ const HistoryOperators = () => {
       </Stack>
       <Box
         sx={{
+          height: "100dvh",
           borderRadius: "0.8em",
           borderBottomLeftRadius: "0",
           borderBottomRightRadius: "0",

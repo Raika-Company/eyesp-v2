@@ -121,8 +121,9 @@ const Average = () => {
         isButton={true}
         clickedButton={category}
         handleButtonSelect={handleChangeCategory}
-        title="اختلالات فعلی"
+        title="میانگین کلی"
         iconPath={AverageIcon}
+        showButton={true}
         selectTitle="ترتیب بندی براساس:"
       />
 

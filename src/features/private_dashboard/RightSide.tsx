@@ -216,7 +216,7 @@ const RightSide = () => {
         <Stack
           direction="row"
           component={Link}
-          to="/isp"
+          to="/private/operators"
           sx={{
             textDecoration: "none",
             cursor: "pointer",
