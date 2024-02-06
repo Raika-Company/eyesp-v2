@@ -81,7 +81,7 @@ const generateRandomData = (
 };
 
 // A predefined list of cities for selection in the chart.
-const cities: string[] = ["سرعت", "پینگ", "جیتر"];
+const steps: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
 
 /**
  * A custom tooltip component for the chart.
@@ -108,13 +108,14 @@ const Chart: React.FC<ChartProps> = ({
   selectedISP,
   province,
   category,
+  chartData,
 }) => {
   const theme = useTheme();
   const location = useLocation();
-  const [selectedCity, setSelectedCity] = useState<string>("سرعت");
+  const [selectedCity, setSelectedCity] = useState<string>("دانلود");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const chartData = useMemo(
+  const convertedData = useMemo(
     () => generateRandomData(selectedISP, province, category, selectedCity),
     [selectedISP, province, category, selectedCity]
   );
@@ -169,16 +170,16 @@ const Chart: React.FC<ChartProps> = ({
               borderRadius: "0.7em",
             }}
           >
-            {cities.map((city) => (
-              <MenuItem key={city} value={city}>
-                {city}
+            {steps.map((step) => (
+              <MenuItem key={step} value={step}>
+                {step}
               </MenuItem>
             ))}
           </SelectButton>
         )}
       </Box>
       <ResponsiveContainer height={220}>
-        <AreaChart data={chartData}>
+        <AreaChart data={convertedData}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />

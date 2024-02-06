@@ -102,7 +102,7 @@ const Header: FC<Props> = ({
         }))}
       />
       <SelectControl
-        label="نوع"
+        label="سالانه"
         value={category || ""}
         onChange={handleCategory}
         options={Category.map((cat) => ({ value: cat.name, label: cat.name }))}
