@@ -134,15 +134,15 @@ const LeftSide: React.FC = () => {
               <Fragment key={conflict.id}>
                 <Stack
                   direction="row"
+                  gap=".5rem"
                   whiteSpace="nowrap"
                   alignItems="center"
-                  gap="1rem"
                 >
                   <Typography
                     sx={{
                       fontSize: isLgScreen
-                        ? ".75rem !important"
-                        : ".4rem !important",
+                        ? ".65rem !important"
+                        : ".3rem !important",
                     }}
                   >
                     {conflict.title}
@@ -295,21 +295,21 @@ const LeftSide: React.FC = () => {
           <Stack direction="row" justifyContent="space-around" gap={1}>
             <CircleChart
               finalPercentage={66}
-              size={isLgScreen ? 90 : 60}
+              size={60}
               textTitle="میانگین دانلود"
               value={loading ? "--" : metricsData!.downloadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={40}
-              size={isLgScreen ? 90 : 60}
+              size={60}
               textTitle="میانگین آپلود"
               value={loading ? "--" : metricsData!.uploadAverage}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={52}
-              size={isLgScreen ? 90 : 60}
+              size={60}
               textTitle="میانگین "
               value={loading ? "--" : metricsData!.pingAverage}
               unit="Ms"

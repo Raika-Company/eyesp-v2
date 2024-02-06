@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Button, Tooltip, Typography, useMediaQuery, useTheme, Container } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  CircularProgress,
+  Button,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Container,
+} from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Link } from "react-router-dom";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
-import ModalNotData from '../../components/ui/ModalNotData';
+import ModalNotData from "../../components/ui/ModalNotData";
+import axios from "axios";
 
 type Detail = {
   time: string;
@@ -16,6 +26,9 @@ type Details = Detail[];
 type StatusDetail = {
   time: string;
   status: string;
+  messageFA: string;
+  color: string;
+  time_range: string;
 };
 
 type HourlyStatus = {
@@ -30,85 +43,63 @@ type WebsiteData = {
   hourly_status: HourlyStatus[];
 };
 
-const getHourlyStatusColor = (hourlyDetails: StatusDetail[]) => {
-  const non200Count = hourlyDetails.filter(
-    (detail) => parseInt(detail.status, 10) !== 200
-  ).length;
-  if (non200Count > 4) return "#E93F3F";
-  if (non200Count >= 2) return "#f19e2c";
-  return "#7FCD9F";
-};
+const getTooltipMessage = (details: StatusDetail[], color: string) => {
+  const detail = details[0];
+  let icon;
 
-const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
-  const non200Details = hourlyDetails.filter(
-    (detail) => parseInt(detail.status, 10) !== 200
-  );
-  let tooltipContent = [];
-
-  if (color === "#E93F3F") {
-    const start = non200Details[0].time;
-    const end = non200Details[non200Details.length - 1].time;
-    tooltipContent.push(
-      <Typography
-        sx={{ color: color, fontSize: "1.3rem", py: "0.5em", px: "0.5em" }}
-      >
-        ❌ قطعی کامل سرویس
-      </Typography>,
-      <Typography sx={{ bgcolor: "#2B2E31", p: "1em" }}>
-        قطعی کامل سرویس از ساعت {start} تا ساعت {end}
-      </Typography>,
-      <Typography sx={{ mt: "0.5em" }}>
-        دسترسی به صورت موقت قطع شده است لطفا بعدا تلاش کنید.
-      </Typography>
-    );
-  } else if (color === "#7FCD9F") {
-    tooltipContent.push(
-      <Typography sx={{ color: color, fontSize: "1.3rem", mt: "0.2em" }}>
-        وضعیت : 200
-      </Typography>,
-      <Typography
-        sx={{
-          bgcolor: "#2B2E31",
-          py: "0.5em",
-          px: "0.5em",
-          color: color,
-          fontSize: "1.3rem",
-          mt: "0.2em",
-        }}
-      >
-        ✅ بدون قطعی
-      </Typography>,
-      <Typography sx={{ mt: "0.2em", mx: "0.2em" }}>
-        درخواست با موفقیت انجام شد.
-      </Typography>
-    );
-  } else if (color === "#f19e2c" && non200Details.length > 0) {
-    const start = non200Details[0].time;
-    const end = non200Details[non200Details.length - 1].time;
-    tooltipContent.push(
-      <Typography sx={{ color: color, fontSize: "1.3rem", my: "0.4rem" }}>
-        ⚠️ اختلال جزئی در اتصال
-      </Typography>,
-      <Typography sx={{ bgcolor: "#2B2E31", py: "0.5em", px: "0.5em" }}>
-        اختلال جزئی از ساعت {start} تا ساعت {end}
-      </Typography>,
-      <Typography sx={{ mt: "0.5em" }}>
-        سرویس موقتا در دسترس نیست. لطفا دقایقی بعد تلاش کنید.
-      </Typography>
-    );
+  switch (detail.color) {
+    case "yellow":
+      icon = "⚠️ اختلال جزیی در اتصال";
+      break;
+    case "green":
+      icon = "✅ اتصال بدون مشکل و سالم است";
+      break;
+    case "red":
+      icon = "❌ قطعی کامل سرور";
+      break;
+    default:
+      icon =
+        "🔍 در حال بررسی وضعیت - لطفاً صبر کنید تا اطلاعات بیشتری دریافت کنید";
+      break;
   }
 
   return (
-    <Typography>
-      {tooltipContent.map((content, index) => (
-        <React.Fragment key={index}>{content}</React.Fragment>
-      ))}
-    </Typography>
+    <Box
+      sx={{
+        color: color,
+        py: "0.7em",
+        px: "0.5em",
+      }}
+    >
+      {/* <Typography variant="h3" fontWeight={800} pb={1}>
+        وضعیت: {detail.status}
+      </Typography> */}
+      <Typography>{icon}</Typography>
+      <Box
+        sx={{
+          py: "0.7em",
+          px: "0.6em",
+          my: "0.4rem",
+          borderRadius: "0.3em",
+          bgcolor: "#111",
+        }}
+      >
+        <Typography
+          sx={{
+            mt: "0.4rem",
+          }}
+        >
+          زمان‌ اختلال: {detail.time_range || "محاسبه نشده"}
+        </Typography>
+      </Box>
+      <Typography sx={{ px: "0.2em", color: "#fff" }} component="span">
+        {detail.messageFA}
+      </Typography>
+    </Box>
   );
 };
 
-
-const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index }) => {
+const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [activeGraphMobile, setActiveGraphMobile] = useState<number | null>(
     null
@@ -117,7 +108,9 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
     null
   );
   const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
-  const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(null);
+  const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(
+    null
+  );
 
   const handleGraphClick = (index: number) => {
     if (isMobile) {
@@ -149,50 +142,45 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
     }
   }, [currentActiveGraph]);
 
-
   useEffect(() => {
     return () => {
       if (tooltipTimer) clearTimeout(tooltipTimer);
     };
   }, [tooltipTimer]);
 
-
-  const totalStatuses = data.hourly_status.slice(-24);
-  const statusesCount = totalStatuses.length;
-  const quarter = Math.floor(statusesCount / 4);
-  const displayIndexes = [0, quarter, 2 * quarter, 3 * quarter, statusesCount - 1]
-
   const getFirstValidTimeForHour = (details: Details) => {
-    const validDetail = details.find((detail: Detail) => detail.status === "200" || detail.status === "403");
+    const validDetail = details.find(
+      (detail: Detail) => detail.status === "200" || detail.status === "0"
+    );
     return validDetail ? validDetail.time : "N/A";
   };
 
-  const getFontSize = (index: number) => {
+  const statusLineStyle = (index: number, total: number) => {
+    const displayInterval = Math.floor(total / 4);
 
-    if (index === 1 || index === 2 || index === 17) {
-      return isMobile ? "0.57rem" : "0.9rem";
-    }
-    return "0.9rem";
+    return {
+      "&::before":
+        index % displayInterval === 0 || index === total - 1
+          ? {
+              content: '""',
+              display: "block",
+              width: "1px",
+              height: "25px",
+              backgroundColor: "#3f4145",
+              position: "absolute",
+              top: "-26%",
+              transform: "translateY(-50%)",
+              right: "-0.8px",
+            }
+          : {},
+    };
   };
-
-  const statusLineStyle = (index: number) => ({
-    "&::before": displayIndexes.includes(index) ? {
-      content: '""',
-      display: "block",
-      width: "10%",
-      height: "70px",
-      backgroundColor: "#3f4145",
-      position: "absolute",
-      top: "-35px",
-      left: "-1px",
-    } : {}
-  });
 
   return (
     <Grid
       xs={12}
       sx={{
-        maxWidth: { md: "48%", lg: "31.7%" },
+        maxWidth: { md: "48%", lg: "31.9%" },
         borderRadius: "0.5rem",
         background: "#2B2E31",
         boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
@@ -200,7 +188,7 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
         alignItems: "center",
         justifyContent: "space-between",
         mx: "auto",
-        my: "0.66em",
+        my: "0.75em",
         px: "1.5em",
       }}
     >
@@ -219,11 +207,11 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
           height={60}
         />
         <Typography
+          variant="h4"
           sx={{
             textAlign: "center",
             textTransform: "uppercase",
             fontWeight: 600,
-            fontSize: getFontSize(index)
           }}
         >
           {data.name}
@@ -235,7 +223,7 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        width="65%"
+        width="60%"
         mt="2em"
       >
         <Box
@@ -246,11 +234,20 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
           width="100%"
           height="100%"
         >
-          {data.hourly_status.slice(-24).map((hourlyStatus, index) => {
-            const bgColor = getHourlyStatusColor(hourlyStatus.details);
+          {data.hourly_status[0].details.map((statusDetail, index) => {
+            const bgColor =
+              statusDetail.color === "yellow"
+                ? "#C99143"
+                : statusDetail.color === "red"
+                ? "#E93F3F"
+                : "#7FCD9F";
             return (
               <Tooltip
-                title={<Typography>{getTooltipMessage(hourlyStatus.details, bgColor)}</Typography>}
+                title={
+                  <Typography>
+                    {getTooltipMessage([statusDetail], bgColor)}
+                  </Typography>
+                }
                 arrow
                 open={
                   isMobile
@@ -273,13 +270,25 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
                       bgcolor: "#c3c3c3",
                     },
                     position: "relative",
-                    ...statusLineStyle(index)
+                    ...statusLineStyle(
+                      index,
+                      data.hourly_status[0].details.length
+                    ),
                   }}
                 />
               </Tooltip>
             );
           })}
-          <Typography sx={{ transform: "rotate(-90deg)", fontSize: "9.574px", color: "#7A7775", position: "absolute", left: '-25px', top: "-10px" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              transform: "rotate(-90deg)",
+              color: "#7A7775",
+              position: "absolute",
+              left: "-34px",
+              top: "-10px",
+            }}
+          >
             Disorders
           </Typography>
         </Box>
@@ -290,29 +299,23 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
           width="100%"
           mt="0.5em"
         >
-          {data.hourly_status.map((hourlyStatus, index) => {
-            const shouldDisplayHour = displayIndexes.includes(index);
+          {data.hourly_status.slice(-5).map((hourlyStatus, index) => {
+            const timeToShow = getFirstValidTimeForHour(hourlyStatus.details);
             return (
               <Box
                 key={index}
                 sx={{
-                  width: shouldDisplayHour ? "auto" : "0px",
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center'
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
-                {shouldDisplayHour && (
-                  <Typography
-                    sx={{
-                      color: "#7A7775",
-                      fontSize: "9.574px",
-                      textAlign: "center",
-                    }}
-                  >
-                    {getFirstValidTimeForHour(hourlyStatus.details)}
-                  </Typography>
-                )}
+                <Typography
+                  variant="subtitle1"
+                  sx={{ color: "#7A7775", textAlign: "center" }}
+                >
+                  {timeToShow}
+                </Typography>
               </Box>
             );
           })}
@@ -325,6 +328,72 @@ const GridItem: React.FC<{ data: WebsiteData, index: number }> = ({ data, index 
 const GlobalOverview: React.FC = () => {
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const [serverData, setServerData] = useState<WebsiteData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/v1/analysis/result");
+        const fetchedData: WebsiteData[] = transformData(response.data);
+        setServerData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const transformData = (data: any): WebsiteData[] => {
+    return Object.keys(data).map((category) => {
+      const dailyStatuses = data[category].reduce(
+        (acc: HourlyStatus[], item: any, index: number) => {
+          const analysisDate = new Date(item.analysis_at);
+          const timeFormatted = analysisDate.toLocaleTimeString("fa-IR", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Tehran",
+          });
+          let analysisObjects;
+          try {
+            const jsonString = item.primary_analysis.replace(/'/g, '"');
+            analysisObjects = JSON.parse(jsonString);
+          } catch (error) {
+            console.error("Error parsing primary_analysis:", error);
+            analysisObjects = []; // Use an empty array in case of an error
+          }
+
+          if (index % 24 === 0) {
+            // Every 24 items, push a new daily status object
+            acc.push({
+              hour: item.analysis_at.substring(0, 10), // Use only the date part
+              details: [],
+            });
+          }
+
+          // Add the current hour's status to the last daily status object in the accumulator
+          acc[acc.length - 1].details.push({
+            time: timeFormatted,
+            status: item.status_code.toString(),
+            color: item.color,
+            messageFA: analysisObjects[0]?.analysis?.persian || "",
+            time_range: item.time_range || "",
+          });
+
+          return acc;
+        },
+        []
+      );
+
+      return {
+        name: category,
+        url: "", // Set this to the appropriate value
+        date: dailyStatuses[0]?.hour || "", // Use the date from the first hourly status
+        hourly_status: dailyStatuses,
+      };
+    });
+  };
 
   return (
     <Box
@@ -359,10 +428,10 @@ const GlobalOverview: React.FC = () => {
             بازگشت
           </Button>
         </Box>
-        {serverStatusData ? (
+        {serverData ? (
           <Grid container rowSpacing={4} paddingY="1rem">
-            {serverStatusData.map((serverData, index) => (
-              <GridItem key={index} data={serverData} index={index} />
+            {serverData.map((dataItem, index) => (
+              <GridItem key={index} data={dataItem} />
             ))}
           </Grid>
         ) : (
