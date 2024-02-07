@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import operators from "../../assets/images/operators-icon.svg";
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  CircularProgress,
+} from "@mui/material";
 import irancell from "../../assets/images/irancell.svg";
 import hamraheAval from "../../assets/images/hamraheAval-logo.svg";
 import Chart from "../../features/charts/Chart";
@@ -10,13 +16,15 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import Header from "../../components/ui/Header";
 import api from "../../services";
 import { ChartReturnType } from "../../services/Chart";
+import { MetricsReturnType } from "../../services/dashboard/metrics";
 
 /**
  * Interface for InfoItem properties.
  */
 interface InfoItemProps {
   title: string;
-  value: string;
+  value: string | number;
+  isLoading?: boolean;
 }
 
 /**
@@ -43,7 +51,7 @@ const commonStyles = {
  * @param props.title - The title of the information item.
  * @param props.value - The value of the information item.
  */
-const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => {
+const InfoItem: React.FC<InfoItemProps> = ({ title, value, isLoading }) => {
   const theme = useTheme();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -59,9 +67,13 @@ const InfoItem: React.FC<InfoItemProps> = ({ title, value }) => {
       >
         {title}:{" "}
       </Typography>
-      <Typography component="span" sx={{ fontSize: "1.3rem", color: "#fff" }}>
-        {value}
-      </Typography>
+      {isLoading ? (
+        <CircularProgress size={24} />
+      ) : (
+        <Typography component="span" sx={{ fontSize: "1.3rem", color: "#fff" }}>
+          {value}
+        </Typography>
+      )}
     </Box>
   );
 };
@@ -84,9 +96,27 @@ const Operators: React.FC = () => {
   );
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>("دانلود");
+  const [isloading, setIsLoading] = useState<boolean>(false);
+
   const [category, setCategory] = useState("");
+  const [averageDetail, setAverageDetail] = useState<MetricsReturnType | null>(
+    null
+  );
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  useEffect(() => {
+    setIsLoading(true); // Start loading
+    api.metrics
+      .getAllMetrics()
+      .then((res) => {
+        setAverageDetail(res.data);
+        setIsLoading(false); // Stop loading once data is fetched
+      })
+      .catch(() => {
+        setIsLoading(false); // Ensure loading is stopped on error
+      });
+  }, []);
 
   /**
    * Handles changes to the category selection.
@@ -253,7 +283,6 @@ const Operators: React.FC = () => {
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
-              // chartData={chartData}
               chartData={chartData}
               province={province}
               selectedISP={selectedISP}
@@ -270,13 +299,33 @@ const Operators: React.FC = () => {
             gap={2}
             width={isMdScreen ? "90%" : "20%"}
           >
-            <InfoItem title="سرعت دانلود" value="18Mbps" />
-            <InfoItem title="سرعت دانلود" value="18Mbps" />
-            <InfoItem title="سرعت آپلود" value="18Mbps" />
-            <InfoItem title="پینگ" value="40ms" />
-            <InfoItem title="جیتر" value="7ms" />
+            <InfoItem
+              title="سرعت دانلود"
+              value={averageDetail?.downloadAverage || "N/A"}
+              isLoading={isloading}
+            />
+            {/* <InfoItem title="سرعت دانلود" value="18Mbps" /> */}
+            <InfoItem
+              title="سرعت آپلود"
+              value={averageDetail?.packetLossAverage || "N/A"}
+              isLoading={isloading}
+            />
+            <InfoItem
+              title="پینگ"
+              value={averageDetail?.pingAverage || "N/A"}
+              isLoading={isloading}
+            />
+            <InfoItem
+              title="جیتر"
+              value={averageDetail?.jitterAverage || "N/A"}
+              isLoading={isloading}
+            />
             <InfoItem title="رتبه کشوری" value="2" />
-            <InfoItem title="رتبه جهانی" value="90" />
+            <InfoItem
+              title="رتبه جهانی"
+              value={averageDetail?.speedAverage || "N/A"}
+              isLoading={isloading}
+            />
           </Box>
           <HistoryOperators />
         </Box>

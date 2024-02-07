@@ -6,6 +6,7 @@ import {
   SelectChangeEvent,
   useMediaQuery,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import {
   XAxis,
@@ -225,28 +226,41 @@ const Chart: React.FC<ChartProps> = ({
           </SelectButton>
         )}
       </Box>
-      <ResponsiveContainer height={220}>
-        <AreaChart data={data}>
-          <defs>
-            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid vertical={true} horizontal={false} stroke="#243240" />
-          <YAxis tick={{ transform: "translate(-45, 0)" }} />
-          {!isCurrentTrafficRoute && <XAxis dataKey="name" />}
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            strokeWidth={3}
-            type="monotone"
-            fillOpacity={0.1}
-            dataKey="uv"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      {!chartData ? (
+        <CircularProgress />
+      ) : (
+        <ResponsiveContainer height={220}>
+          <AreaChart data={data}>
+            {" "}
+            <defs>
+              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid
+              vertical={true}
+              horizontal={false}
+              stroke="#243240"
+            />
+            <XAxis
+              dataKey="name"
+              tickFormatter={(value) => {
+                return value;
+              }}
+            />
+            <YAxis />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#82ca9d"
+              fillOpacity={1}
+              fill="url(#colorValue)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 };
