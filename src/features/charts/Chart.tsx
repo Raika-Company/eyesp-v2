@@ -101,7 +101,76 @@ const Chart: React.FC<ChartProps> = ({
   const handleMetricChange = (event: SelectChangeEvent<unknown>) => {
     setSelectedMetric(event.target.value as string);
   };
-  const data = chartData ? [selectedMetric] || [] : [];
+
+  // const filteredData = (): ChartReturnType | null => {
+  //   if (!chartData) return null;
+
+  //   // Initialize an object that conforms to the structure of ChartReturnType
+  //   let result: Partial<ChartReturnType> = {
+  //     id: chartData.id,
+  //     data: {
+  //       download: [],
+  //       upload: [],
+  //       ping: [],
+  //       packet_loss: [],
+  //       jitter: [],
+  //     },
+  //   };
+
+  //   switch (selectedMetric) {
+  //     case "دانلود":
+  //       console.log(chartData.data.download);
+
+  //       result.data.download = chartData.data.download;
+  //       break;
+  //     case "آپلود":
+  //       result.data.upload = chartData.data.upload;
+  //       break;
+  //     case "جیتر":
+  //       result.data.jitter = chartData.data.jitter;
+  //       break;
+  //     case "پینگ":
+  //       console.log(chartData.data.ping);
+
+  //       result.data.ping = chartData.data.ping;
+  //       break;
+  //     case "پکت لاس":
+  //       result.data.packet_loss = chartData.data.packet_loss;
+  //       break;
+  //     default:
+  //       console.log(chartData.data.download);
+  //       result.data.download = chartData.data.download;
+  //       break;
+  //   }
+
+  //   return result as ChartReturnType;
+  // };
+  const metricMapping = {
+    دانلود: "download",
+    آپلود: "upload",
+    پینگ: "ping",
+    پکت_لاس: "packet_loss",
+    جیتر: "jitter",
+  };
+  const filteredData = () => {
+    if (!chartData || !chartData.data) return [];
+
+    const dataKey = metricMapping[selectedMetric];
+
+    const metricData = chartData.data[dataKey];
+
+    if (!metricData) {
+      console.warn(
+        `No data found for metric: ${selectedMetric} (mapped to key: ${dataKey})`
+      );
+      return [];
+    }
+
+    return metricData;
+  };
+
+  const data = filteredData();
+
   return (
     <div
       style={{
