@@ -1,9 +1,11 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import LeftSide from "../../features/dashboard/LeftSide";
 import RightSide from "../../features/dashboard/RightSide";
 import Map from "../../components/ui/Map";
 import domtoimage from "dom-to-image";
+import calculateScale from "../../utils/convertWindowToScaleForMap";
+
 const Dashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -12,7 +14,15 @@ const Dashboard: FC = () => {
 
   const [isScreenShot, setIsScreenShot] = useState(false);
   const [isExportButtonVisible, setIsExportButtonVisible] = useState(true);
-  const [scale, setScale] = useState<number>(1);
+  const [scale, setScale] = useState<number>(calculateScale());
+
+  useEffect(() => {
+    const handler = () => setScale(calculateScale());
+    window.addEventListener("resize", handler);
+    return () => {
+      window.removeEventListener("resize", handler);
+    };
+  }, []);
 
   const handleScreenshot = () => {
     setIsExportButtonVisible(false);
@@ -43,7 +53,6 @@ const Dashboard: FC = () => {
         setIsExportButtonVisible(true);
       }
     }, 1000);
-    setScale(Math.max(scale / 1.8, 1));
   };
   return (
     <Box
@@ -53,6 +62,7 @@ const Dashboard: FC = () => {
         justifyContent: "center",
         alignItems: isMdScreen && !isLgScreen ? "start" : "center",
         marginY: "auto",
+        paddingX: "1rem",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
         boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
       }}
@@ -64,6 +74,7 @@ const Dashboard: FC = () => {
           justifyContent: "center",
           alignItems: "center",
           paddingY: "1rem",
+          maxWidth: "2000px",
         }}
       >
         <Box
@@ -73,7 +84,7 @@ const Dashboard: FC = () => {
               ? "1fr"
               : isMdScreen
               ? "1fr"
-              : `1fr 4fr 1fr`,
+              : `1fr 3fr 1fr`,
             gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",

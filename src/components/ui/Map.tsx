@@ -11,6 +11,7 @@ import {
 } from "../../lib/MapHelpers";
 import { ClickableButton } from "./Button";
 import StatusTooltip from "./StatusTooltip";
+import calculateScale from "../../utils/convertWindowToScaleForMap";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
@@ -165,17 +166,7 @@ const Map: FC<Props> = ({
                 : "1000"
             }
             height="950"
-            viewBox={
-              is4XlgScreen
-                ? "450 600 1600 1200"
-                : is3XlgScreen
-                ? "500 600 1500 1200"
-                : is2XlgScreen
-                ? "550 650 1400 1100"
-                : isXlgScreen
-                ? "600 700 1300 1100"
-                : "680 750 1200 1000"
-            }
+            viewBox={"-1200 -500 5000 3500"}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
@@ -326,7 +317,7 @@ const Map: FC<Props> = ({
               <ClickableButton
                 onClick={zoomOut}
                 text="-"
-                disable={scale === 1}
+                disable={scale === calculateScale()}
               />
             </div>
           )}

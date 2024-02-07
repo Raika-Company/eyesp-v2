@@ -7,9 +7,13 @@ interface ButtonProps {
   disable: boolean;
 }
 
-export const ClickableButton: FC<ButtonProps> = ({ text, onClick, disable }) => (
+export const ClickableButton: FC<ButtonProps> = ({
+  text,
+  onClick,
+  disable,
+}) => (
   <MuiButton
-    onClick={onClick}
+    onClick={disable ? () => {} : onClick}
     sx={{
       background: disable ? "#66666666" : "#666",
       color: disable ? "#ffffff88" : "#FFF",

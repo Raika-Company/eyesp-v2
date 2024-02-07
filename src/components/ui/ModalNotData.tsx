@@ -7,6 +7,7 @@ interface StatusDetail {
     status: string;
 }
 
+
 interface HourlyStatus {
     hour: string;
     details: StatusDetail[];
@@ -19,9 +20,9 @@ interface ServerStatus {
     hourly_status: HourlyStatus[];
 }
 
-interface ModalNotDataProps {
-    serverStatusData: ServerStatus[];
-}
+type ModalNotDataProps = {
+    serverStatusData: ServerStatus[] | null;
+};
 
 const ModalNotData: React.FC<ModalNotDataProps> = ({ serverStatusData }) => {
     const navigate = useNavigate();

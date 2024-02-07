@@ -1,8 +1,9 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import LeftSide from "../../features/private_dashboard/LeftSide";
 import RightSide from "../../features/private_dashboard/RightSide";
 import Map from "../../components/ui/Map";
+import calculateScale from "../../utils/convertWindowToScaleForMap";
 
 const PrivateDashboard: FC = () => {
   const theme = useTheme();
@@ -10,7 +11,15 @@ const PrivateDashboard: FC = () => {
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const isXgScreen = useMediaQuery("(min-width:1921px)");
-  const [scale, setScale] = useState<number>(1);
+  const [scale, setScale] = useState<number>(calculateScale());
+
+  useEffect(() => {
+    const handler = () => setScale(calculateScale());
+    window.addEventListener("resize", handler);
+    return () => {
+      window.removeEventListener("resize", handler);
+    };
+  }, []);
 
   return (
     <Box
@@ -19,7 +28,7 @@ const PrivateDashboard: FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: isMdScreen && !isLgScreen ? "start" : "center",
-        marginY: "auto",
+        marginY: "autorem",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
         boxShadow: "0 0 17px 10px rgba(255, 255, 255, 0.10)",
       }}
@@ -30,7 +39,8 @@ const PrivateDashboard: FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1rem",
+          padding: "2rem 1rem",
+          maxWidth: "2500px",
         }}
       >
         <Box

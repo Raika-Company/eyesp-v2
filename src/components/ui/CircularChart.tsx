@@ -99,16 +99,16 @@ const textStyle = (big: boolean, textColor: string): CSSProperties => ({
   left: "50%",
   transform: "translate(-50%, -50%)",
   fontWeight: 800,
-  fontSize: big ? "2.5rem" : ".8rem",
+  fontSize: big ? "2.5rem !important" : ".8rem !important",
   color: textColor,
   transition: "stroke-dashoffset .6s linear",
 });
 const titleStyle = (big: boolean): CSSProperties => ({
-  fontSize: big ? "1rem" : ".7rem",
+  fontSize: big ? "1rem !important" : ".7rem !important",
 });
 const valueStyle = (big: boolean): CSSProperties => ({
   textAlign: "center",
-  fontSize: big ? "2.2rem" : "1rem",
+  fontSize: big ? "2.2rem !important" : ".8rem !important",
   fontWeight: "bold",
 });
 
