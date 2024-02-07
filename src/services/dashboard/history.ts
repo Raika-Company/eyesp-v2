@@ -10,7 +10,7 @@ interface Issue {
   description: string;
 }
 
-interface HistoryReturnType {
+export interface HistoryReturnType {
   count: number;
   issues: Issue[];
 }

@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, Button, Stack, useMediaQuery, Theme } from "@mui/material";
 import CustomTable from "../../components/ui/CustomTable";
 import provinceCompare from "../../../public/data/provinceCompare.json";
+import api from "../../services";
 
 /**
  * Interface for the disruption data structure.
@@ -42,7 +43,12 @@ const HistoryOperators = () => {
     ActiveButtonType.Recent
   );
   const [activeData, setActiveData] = useState<Disruption[]>(provinceCompare);
-
+  useEffect(() => {
+    api.history.getAllHistories().then((res) => {
+      console.log(res.data);
+      // setActiveData(res.data.issues);
+    });
+  }, []);
   const recentDisruptions = useMemo(
     () => provinceCompare.filter((item) => item.handle === "برطرف شده"),
     [provinceCompare]
@@ -121,7 +127,8 @@ const HistoryOperators = () => {
         }}
       >
         <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
-          <MemoizedCustomTable rows={activeData} cellHeaders={cellHeaders} />
+          {/* <MemoizedCustomTable rows={activeData} cellHeaders={cellHeaders} /> */}
+          <CustomTable rows={activeData} cellHeaders={cellHeaders} />
         </Box>
       </Box>
     </Box>
