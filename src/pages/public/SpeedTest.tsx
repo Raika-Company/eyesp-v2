@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DownloadGrad from "../../assets/images/download-grad.png";
 import UploadGrad from "../../assets/images/upload-grad.png";
@@ -12,7 +12,9 @@ import axios from "axios";
 import { Socket, io } from "socket.io-client";
 import useFetchServers from "../../hooks/useFetchServers";
 import PulsedNumber from "../../components/ui/PulsedNumber";
-
+import earth from "../../assets/images/earth.svg";
+import etesal from "../../assets/images/etesal.svg";
+import person from "../../assets/images/person.svg";
 const STATUS_MAP = {
   READY: 2,
   RUNNING: 3,
@@ -261,12 +263,13 @@ const SpeedTest = () => {
         width: "100vw",
         height: "100vh",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "start",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
-      <Box
+      <Container
         onClick={handleStartTestClick}
         onMouseEnter={() => setHoverButton(true)}
         onMouseLeave={() => setHoverButton(false)}
@@ -282,6 +285,7 @@ const SpeedTest = () => {
           color: "#fff",
           fontWeight: "bold",
           cursor: "pointer",
+          marginTop: "5rem",
           zIndex: "20",
           ":hover": {
             background: "#498dd615",
@@ -361,7 +365,85 @@ const SpeedTest = () => {
             },
           }}
         />
-      </Box>
+      </Container>
+      <Container
+        sx={{
+          position: "absolute",
+          bottom: "0",
+          top: "60%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6rem",
+          }}
+        >
+          {" "}
+          <Stack direction="row" gap={3}>
+            <img src={earth} alt="earth" />
+            <Stack direction="column" gap={1}>
+              <Typography variant="h1" color="white">
+                سرور مقصد
+              </Typography>
+              <Typography variant="h2" color="#57585A">
+                تهران-امام
+              </Typography>
+              <Typography variant="h3" color="#7FCD9F">
+                تغییر سرور
+              </Typography>
+            </Stack>
+          </Stack>
+          <Stack direction="row" gap={3}>
+            <img src={person} alt="person" />
+            <Stack direction="column" gap={1}>
+              <Typography variant="h1" color="white">
+                همراه اول{" "}
+              </Typography>
+              <Typography variant="h2" color="#57585A">
+                51.15.57.153{" "}
+              </Typography>
+            </Stack>
+          </Stack>{" "}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h2" color="#57585A">
+            نوع اتصال
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mr: "2rem",
+          }}
+        >
+          <Stack direction="row" alignItems="center" gap={2}>
+            <Typography variant="h2" color="#57585A">
+              تکی
+            </Typography>
+            <img src={etesal} alt="etesal" />
+            <Typography variant="h2" color="#FFFFFF">
+              چند تایی
+            </Typography>
+          </Stack>
+        </Box>
+        {/* Invisible Flex Breaker */}
+      </Container>
 
       {startAnimate && (
         <Box
