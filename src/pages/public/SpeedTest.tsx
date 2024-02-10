@@ -20,6 +20,7 @@ import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
 import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
+import ResultTest from "./ResultTest";
 const STATUS_MAP = {
   READY: 2,
   RUNNING: 3,
