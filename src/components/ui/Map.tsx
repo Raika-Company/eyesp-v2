@@ -186,13 +186,13 @@ const Map: FC<Props> = ({
             onMouseMove={onDrag}
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
-            onClick={() => {
-              if (isPrivate) {
-                navigate("/last-disorders");
-              } else {
-                navigate("/disorders");
-              }
-            }}
+            // onClick={() => {
+            //   if (isPrivate) {
+            //     navigate("/last-disorders");
+            //   } else {
+            //     navigate("/disorders");
+            //   }
+            // }}
           >
             <MapPaths
               provinceList={isPrivate ? mockProvinceListsForPrivate : {}}
