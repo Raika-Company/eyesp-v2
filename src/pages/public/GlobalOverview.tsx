@@ -142,6 +142,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 
   useEffect(() => {
     if (currentActiveGraph !== null) {
+      return;
     }
   }, [currentActiveGraph]);
 

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import {
   Box,
   FormControl,
@@ -22,9 +22,9 @@ interface Props {
   selectTitle?: string;
   iconPath: string;
   onClick?: () => void;
-  handleISPChange?: (event: SelectChangeEvent<string>) => void;
-  handleProvinceChange?: (event: SelectChangeEvent<string>) => void;
-  handleCategory?: (event: SelectChangeEvent<string>) => void;
+  handleISPChange?: (event: SelectChangeEvent<unknown>) => void;
+  handleProvinceChange?: (event: SelectChangeEvent<unknown>) => void;
+  handleCategory?: (event: SelectChangeEvent<unknown>) => void;
   category?: string;
   province?: string;
   selectedISP?: string;
@@ -210,7 +210,7 @@ const getOptions = (data: typeof provincesCoords) =>
 const SelectControl: FC<{
   label: string;
   value: string;
-  onChange?: (event: SelectChangeEvent<string>) => void;
+  onChange?: (event: SelectChangeEvent<unknown>) => void;
   options: { value: string; label: string }[];
 }> = ({ label, value, onChange, options }) => (
   <FormControl sx={{ height: "70px", marginTop: "1.8rem" }}>
@@ -219,7 +219,7 @@ const SelectControl: FC<{
       id={`${label}-select`}
       label={label}
       value={value}
-      onChange={(e) => onChange?.(e as SelectChangeEvent<string>)}
+      onChange={(e) => onChange?.(e)}
       displayEmpty
       sx={{ paddingLeft: "2rem", minWidth: "10rem" }}
     >

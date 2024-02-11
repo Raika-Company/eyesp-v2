@@ -108,7 +108,7 @@ const Chart: React.FC<ChartProps> = ({
   selectedISP,
   province,
   category,
-  chartData,
+  // chartData,
 }) => {
   const theme = useTheme();
   const location = useLocation();

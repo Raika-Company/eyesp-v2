@@ -142,7 +142,7 @@ const Operators: React.FC = () => {
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
-  const handleISPChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleISPChange = (event: SelectChangeEvent<unknown>) => {
     const selectedISP = event.target.value as string;
     setSelectedISP(selectedISP);
     const operator = logos.find((operator) => operator.name === selectedISP);
@@ -231,7 +231,7 @@ const Operators: React.FC = () => {
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
-              chartData={chartData}
+              // chartData={chartData}
               province={province}
               selectedISP={selectedISP}
               category={category}
