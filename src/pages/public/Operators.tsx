@@ -82,7 +82,8 @@ const Operators: React.FC = () => {
   const [selectedOperator, setSelectedOperator] = useState<Operator | null>(
     null
   );
-  const [chartData, setChartData] = useState<ChartData>(null);
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<string>("دانلود");
   const [category, setCategory] = useState("");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -99,36 +100,56 @@ const Operators: React.FC = () => {
       case "سالانه":
         api.Chart.getYearsChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "ماهانه":
         api.Chart.getMonthsChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "هفتگی":
         api.Chart.getweeksChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
       case "روزانه":
         api.Chart.getDaysChart()
           .then((response) => {
-            console.log(response.data);
-
-            setChartData(response.data);
+            if (response.data) {
+              // Type guard
+              console.log(response.data);
+              setChartData(response.data);
+            } else {
+              // Handle the case where data is undefined
+              console.error("Data is undefined");
+            }
           })
           .catch((err) => console.error(err));
         break;
@@ -139,6 +160,45 @@ const Operators: React.FC = () => {
         break;
     }
   };
+
+  const filteredData = (): ChartReturnType | null => {
+    if (!chartData) return null;
+
+    // Initialize an object that conforms to the structure of ChartReturnType
+    const result: ChartReturnType = {
+      id: chartData.id, // Assuming id is needed as part of the return
+      data: {
+        download: [], // Default empty arrays or ideally, keep original data if needed
+        upload: [],
+        ping: [],
+        packet_loss: [],
+        jitter: [],
+      },
+    };
+
+    // Based on selectedMetric, filter and assign the data accordingly
+    switch (selectedMetric) {
+      case "آپلود":
+        result.data.upload = chartData.data.upload;
+        break;
+      case "جیتر":
+        result.data.jitter = chartData.data.jitter;
+        break;
+      case "پینگ":
+        result.data.ping = chartData.data.ping;
+        break;
+      case "پکت لاس":
+        result.data.packet_loss = chartData.data.packet_loss;
+        break;
+      // Add cases for other metrics as necessary
+      default:
+        return chartData; // Return original data if no metric matches
+    }
+
+    // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
+    return result as ChartReturnType;
+  };
+
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
@@ -231,12 +291,14 @@ const Operators: React.FC = () => {
           </Box>
           <Box sx={{ width: isSmScreen ? "98%" : isMdScreen ? "98%" : "46%" }}>
             <Chart
-              // chartData={chartData}
+              chartData={chartData}
               province={province}
               selectedISP={selectedISP}
-              category={category}
+              category={selectedMetric}
               title=""
               desc="نمودار وضعیت"
+              selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
             />
           </Box>
           <Box

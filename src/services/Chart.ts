@@ -6,16 +6,12 @@ const axios = new ClientApi();
 export interface ChartReturnType {
   id: "string";
   data: {
-    download: Value[];
-    upload: Value[];
-    ping: Value[];
-    packet_loss: Value[];
-    jitter: Value[];
+    download?: { name: string; value: number }[] | undefined;
+    upload?: { name: string; value: number }[] | undefined;
+    ping?: { name: string; value: number }[] | undefined;
+    packet_loss?: { name: string; value: number }[] | undefined;
+    jitter?: { name: string; value: number }[] | undefined;
   };
-}
-interface Value {
-  name: string;
-  value: number;
 }
 
 export const getYearsChart = async (

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import {
   Box,
   MenuItem,
@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { useLocation } from "react-router-dom";
 import { SelectButton } from "../../components/ui/SelectButton";
+import { ChartReturnType } from "../../services/Chart";
 
 /**
  * Props for the Chart component.
@@ -33,6 +34,9 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
+  selectedMetric: string;
+  setSelectedMetric: (value: string) => void;
+  chartData: ChartReturnType | null;
 }
 
 /**
@@ -55,32 +59,9 @@ interface CustomTooltipProps {
  * @param selectedISP The selected Internet Service Provider.
  * @param province The selected province.
  * @param category The selected category.
- * @param selectedCity The selected city.
  * @returns An array of data objects for the chart. Each object has a 'name' (string) and a 'uv' (number).
  */
-const generateRandomData = (
-  selectedISP: string,
-  province: string,
-  category: string,
-  selectedCity: string
-): { name: string; uv: number }[] => {
-  // The randomFactor is a simple sum of the lengths of input strings.
-  // It's used to influence the UV value of each data point.
-  const randomFactor =
-    selectedISP.length +
-    province.length +
-    category.length +
-    selectedCity.length;
 
-  // Generate an array with 7 elements, each representing a month with a corresponding UV value.
-  // The month names are in Persian, adhering to the initial prompt.
-  return Array.from({ length: 7 }, (_, i) => ({
-    name: ["فروردین", "اسفند", "بهمن", "دی", "آذر", "آبان", "مهر"][i],
-    uv: Math.random() * randomFactor * 10, // Random UV value influenced by the randomFactor
-  }));
-};
-
-// A predefined list of cities for selection in the chart.
 const steps: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
 
 /**
@@ -105,25 +86,19 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 const Chart: React.FC<ChartProps> = ({
   title,
   desc,
-  selectedISP,
-  province,
-  category,
-  // chartData,
+  chartData,
+  selectedMetric,
+  setSelectedMetric,
 }) => {
   const theme = useTheme();
   const location = useLocation();
-  const [selectedCity, setSelectedCity] = useState<string>("دانلود");
   const isCurrentTrafficRoute = location.pathname.includes("/current-traffic");
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const convertedData = useMemo(
-    () => generateRandomData(selectedISP, province, category, selectedCity),
-    [selectedISP, province, category, selectedCity]
-  );
 
-  const handleCityChange = (event: SelectChangeEvent<unknown>) => {
-    setSelectedCity(event.target.value as string);
+  const handleMetricChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedMetric(event.target.value as string);
   };
-
+  const data = chartData ? [selectedMetric] || [] : [];
   return (
     <div
       style={{
@@ -155,9 +130,9 @@ const Chart: React.FC<ChartProps> = ({
           <SelectButton
             labelId="city-select-label"
             id="city-select"
-            value={selectedCity}
             displayEmpty
-            onChange={handleCityChange}
+            value={selectedMetric}
+            onChange={handleMetricChange}
             sx={{
               px: "1.1em",
               ".css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
@@ -179,7 +154,7 @@ const Chart: React.FC<ChartProps> = ({
         )}
       </Box>
       <ResponsiveContainer height={220}>
-        <AreaChart data={convertedData}>
+        <AreaChart data={data}>
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
