@@ -3,10 +3,8 @@ import go from "../../assets/images/go.png";
 import etesal from "../../assets/images/etesal.svg";
 import earth from "../../assets/images/earth.svg";
 import person from "../../assets/images/person.svg";
-import download_blue from "../../assets/images/download_blue.svg";
 import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
-import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
 const ResultTest = () => {
   const detail = [

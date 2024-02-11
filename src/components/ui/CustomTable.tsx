@@ -13,12 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import React from "react";
-import { HistoryReturnType } from "../../services/dashboard/history";
+import { ProvinceCompare } from "../../features/lastDisorders/LastDis";
 
 interface Props {
   cellHeaders: string[];
   isAI?: boolean;
-  rows: HistoryReturnType[];
+  rows: ProvinceCompare[];
   delay?: number;
 }
 

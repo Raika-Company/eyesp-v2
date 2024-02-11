@@ -32,7 +32,7 @@ enum ActiveButtonType {
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
-const MemoizedCustomTable = React.memo(CustomTable);
+// const MemoizedCustomTable = React.memo(CustomTable);
 /**
  * The HistoryOperators component.
  * This component is responsible for displaying a table of disruptions

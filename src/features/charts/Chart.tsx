@@ -153,9 +153,15 @@ const Chart: React.FC<ChartProps> = ({
   const filteredData = () => {
     if (!chartData || !chartData.data) return [];
 
-    const dataKey = metricMapping[selectedMetric];
+    const dataKey =
+      metricMapping[
+        selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
+      ];
 
-    const metricData = chartData.data[dataKey];
+    const metricData =
+      chartData.data[
+        dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
+      ];
 
     if (!metricData) {
       console.warn(

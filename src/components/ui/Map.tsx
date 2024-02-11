@@ -32,7 +32,7 @@ const Map: FC<Props> = ({
   scale,
   setScale,
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
