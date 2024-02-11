@@ -22,20 +22,20 @@ interface InfoItemProps {
 /**
  * Common styles used in the Operators component.
  */
-const commonStyles = {
-  title: {
-    textAlign: "center" as const, // Fix for TypeScript
-  },
-  infoValue: {
-    color: "#7A7775",
-    fontSize: "0.9375rem",
-  },
-  mainInfo: {
-    color: "#fff",
-    fontSize: "1.8rem",
-    fontWeight: "700",
-  },
-} as const; // Ensure immutability and better type inference
+// const commonStyles = {
+//   title: {
+//     textAlign: "center" as const, // Fix for TypeScript
+//   },
+//   infoValue: {
+//     color: "#7A7775",
+//     fontSize: "0.9375rem",
+//   },
+//   mainInfo: {
+//     color: "#fff",
+//     fontSize: "1.8rem",
+//     fontWeight: "700",
+//   },
+// } as const; // Ensure immutability and better type inference
 
 /**
  * InfoItem component: Displays a piece of information with title and value.
@@ -161,43 +161,43 @@ const Operators: React.FC = () => {
     }
   };
 
-  const filteredData = (): ChartReturnType | null => {
-    if (!chartData) return null;
+  // const filteredData = (): ChartReturnType | null => {
+  //   if (!chartData) return null;
 
-    // Initialize an object that conforms to the structure of ChartReturnType
-    const result: ChartReturnType = {
-      id: chartData.id, // Assuming id is needed as part of the return
-      data: {
-        download: [], // Default empty arrays or ideally, keep original data if needed
-        upload: [],
-        ping: [],
-        packet_loss: [],
-        jitter: [],
-      },
-    };
+  //   // Initialize an object that conforms to the structure of ChartReturnType
+  //   const result: ChartReturnType = {
+  //     id: chartData.id, // Assuming id is needed as part of the return
+  //     data: {
+  //       download: [], // Default empty arrays or ideally, keep original data if needed
+  //       upload: [],
+  //       ping: [],
+  //       packet_loss: [],
+  //       jitter: [],
+  //     },
+  //   };
 
-    // Based on selectedMetric, filter and assign the data accordingly
-    switch (selectedMetric) {
-      case "آپلود":
-        result.data.upload = chartData.data.upload;
-        break;
-      case "جیتر":
-        result.data.jitter = chartData.data.jitter;
-        break;
-      case "پینگ":
-        result.data.ping = chartData.data.ping;
-        break;
-      case "پکت لاس":
-        result.data.packet_loss = chartData.data.packet_loss;
-        break;
-      // Add cases for other metrics as necessary
-      default:
-        return chartData; // Return original data if no metric matches
-    }
+  //   // Based on selectedMetric, filter and assign the data accordingly
+  //   switch (selectedMetric) {
+  //     case "آپلود":
+  //       result.data.upload = chartData.data.upload;
+  //       break;
+  //     case "جیتر":
+  //       result.data.jitter = chartData.data.jitter;
+  //       break;
+  //     case "پینگ":
+  //       result.data.ping = chartData.data.ping;
+  //       break;
+  //     case "پکت لاس":
+  //       result.data.packet_loss = chartData.data.packet_loss;
+  //       break;
+  //     // Add cases for other metrics as necessary
+  //     default:
+  //       return chartData; // Return original data if no metric matches
+  //   }
 
-    // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
-    return result as ChartReturnType;
-  };
+  //   // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
+  //   return result as ChartReturnType;
+  // };
 
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);

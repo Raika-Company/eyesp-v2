@@ -34,9 +34,9 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
-  selectedMetric: string;
-  setSelectedMetric: (value: string) => void;
-  chartData: ChartReturnType | null;
+  selectedMetric?: string;
+  setSelectedMetric?: (value: string) => void;
+  chartData?: ChartReturnType | null;
 }
 
 /**
@@ -87,8 +87,8 @@ const Chart: React.FC<ChartProps> = ({
   title,
   desc,
   chartData,
-  selectedMetric,
-  setSelectedMetric,
+  selectedMetric = "",
+  setSelectedMetric = () => {},
 }) => {
   const theme = useTheme();
   const location = useLocation();
