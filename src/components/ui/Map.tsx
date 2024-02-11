@@ -1,6 +1,5 @@
 import { Box, SvgIcon, useMediaQuery, useTheme, Button } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";

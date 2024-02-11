@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Box, Button, Stack, useMediaQuery, Theme } from "@mui/material";
 import CustomTable from "../../components/ui/CustomTable";
 import provinceCompare from "../../../public/data/provinceCompare.json";
