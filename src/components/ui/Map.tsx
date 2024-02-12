@@ -153,7 +153,7 @@ const Map: FC<Props> = ({
         >
           {/* <Link to="/disorders"> */}
           <svg
-            preserveAspectRatio="none"
+            preserveAspectRatio="true"
             width={
               is4XlgScreen
                 ? "1600"
