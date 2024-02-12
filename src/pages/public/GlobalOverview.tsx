@@ -347,38 +347,33 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 };
 
 const GlobalOverview: React.FC = () => {
+  const [serverData, setServerData] = useState<WebsiteData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const location = useLocation();
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
-  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get('type');
 
-  const [serverData, setServerData] = useState<WebsiteData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
   useEffect(() => {
+    const fetchData = async (endpoint: string) => {
+      setLoading(true);
+      try {
+        const response = await axios.get(endpoint);
+        setServerData(transformData(response.data));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (type === 'internal') {
-      // تنظیم مستقیم داده‌های داخلی بدون نیاز به فراخوانی API یا تبدیل اضافی
-      setServerData(transformData(serverStatusData));
-      setLoading(false);
-    } else if (type === 'global') {
-      // فراخوانی داده‌های بین‌المللی از API و تبدیل آن‌ها به فرمت مناسب
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('/api/v1/analysis/result');
-          // فرض بر اینکه داده‌های بین‌المللی به صورت شیء با کلیدهای مختلف برگشت داده می‌شوند و نیاز به تبدیل دارند
-          setServerData(transformData(response.data));
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching global data:', error);
-          setLoading(false);
-        }
-      };
-      fetchData();
+      fetchData('http://95.38.58.41:8000/api/v1/internal/analysis/result');
+    } else if (type === 'external') {
+      fetchData('http://95.38.58.41:8000/api/v1/external/analysis/result');
     }
   }, [type]);
-
-
 
   const transformData = (data: any): WebsiteData[] => {
     if (Array.isArray(data)) {
@@ -398,17 +393,17 @@ const GlobalOverview: React.FC = () => {
             analysisObjects = JSON.parse(jsonString);
           } catch (error) {
             console.error('Error parsing primary_analysis:', error);
-            analysisObjects = []; // Use an empty array in case of an error
+            analysisObjects = [];
           }
 
-          if (index % 24 === 0) { // Every 24 items, push a new daily status object
+          if (index % 24 === 0) {
             acc.push({
-              hour: item.analysis_at.substring(0, 10), // Use only the date part
+              hour: item.analysis_at.substring(0, 10),
               details: [],
             });
           }
 
-          // Add the current hour's status to the last daily status object in the accumulator
+
           acc[acc.length - 1].details.push({
             time: item.analysis_at,
             status: item.status_code.toString(),
@@ -422,16 +417,13 @@ const GlobalOverview: React.FC = () => {
 
         return {
           name: category,
-          url: '', // Set this to the appropriate value
-          date: dailyStatuses[0]?.hour || '', // Use the date from the first hourly status
+          url: '',
+          date: dailyStatuses[0]?.hour || '',
           hourly_status: dailyStatuses,
         };
       });
     }
   };
-
-
-
 
   return (
     <Box

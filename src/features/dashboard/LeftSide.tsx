@@ -269,7 +269,7 @@ const LeftSide: React.FC = () => {
         ispStatus={ispStateData!}
         internal={false}
         // link="/global-overview"
-        link="/global-overview?type=global"
+        link="/global-overview?type=external"
         isXlgScreen={isXlgScreen}
         hasMoreInfo={true}
       />
