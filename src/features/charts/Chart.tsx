@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   MenuItem,
@@ -6,6 +6,7 @@ import {
   SelectChangeEvent,
   useMediaQuery,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import {
   XAxis,
@@ -34,9 +35,9 @@ interface ChartProps {
   selectedISP: string;
   province: string;
   category: string;
-  chartData: ChartReturnType | null;
-  selectedMetric: string;
-  setSelectedMetric: (value: string) => void;
+  selectedMetric?: string;
+  setSelectedMetric?: (value: string) => void;
+  chartData?: ChartReturnType | null;
 }
 
 /**
@@ -86,12 +87,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 const Chart: React.FC<ChartProps> = ({
   title,
   desc,
-  selectedISP,
-  province,
-  category,
   chartData,
-  selectedMetric,
-  setSelectedMetric,
+  selectedMetric = "",
+  setSelectedMetric = () => {},
 }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -101,7 +99,82 @@ const Chart: React.FC<ChartProps> = ({
   const handleMetricChange = (event: SelectChangeEvent<unknown>) => {
     setSelectedMetric(event.target.value as string);
   };
-  const data = chartData ? [selectedMetric] || [] : [];
+
+  // const filteredData = (): ChartReturnType | null => {
+  //   if (!chartData) return null;
+
+  //   // Initialize an object that conforms to the structure of ChartReturnType
+  //   let result: Partial<ChartReturnType> = {
+  //     id: chartData.id,
+  //     data: {
+  //       download: [],
+  //       upload: [],
+  //       ping: [],
+  //       packet_loss: [],
+  //       jitter: [],
+  //     },
+  //   };
+
+  //   switch (selectedMetric) {
+  //     case "دانلود":
+  //       console.log(chartData.data.download);
+
+  //       result.data.download = chartData.data.download;
+  //       break;
+  //     case "آپلود":
+  //       result.data.upload = chartData.data.upload;
+  //       break;
+  //     case "جیتر":
+  //       result.data.jitter = chartData.data.jitter;
+  //       break;
+  //     case "پینگ":
+  //       console.log(chartData.data.ping);
+
+  //       result.data.ping = chartData.data.ping;
+  //       break;
+  //     case "پکت لاس":
+  //       result.data.packet_loss = chartData.data.packet_loss;
+  //       break;
+  //     default:
+  //       console.log(chartData.data.download);
+  //       result.data.download = chartData.data.download;
+  //       break;
+  //   }
+
+  //   return result as ChartReturnType;
+  // };
+  const metricMapping = {
+    دانلود: "download",
+    آپلود: "upload",
+    پینگ: "ping",
+    پکت_لاس: "packet_loss",
+    جیتر: "jitter",
+  };
+  const filteredData = () => {
+    if (!chartData || !chartData.data) return [];
+
+    const dataKey =
+      metricMapping[
+        selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
+      ];
+
+    const metricData =
+      chartData.data[
+        dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
+      ];
+
+    if (!metricData) {
+      console.warn(
+        `No data found for metric: ${selectedMetric} (mapped to key: ${dataKey})`
+      );
+      return [];
+    }
+
+    return metricData;
+  };
+
+  const data = filteredData();
+
   return (
     <div
       style={{
@@ -156,28 +229,41 @@ const Chart: React.FC<ChartProps> = ({
           </SelectButton>
         )}
       </Box>
-      <ResponsiveContainer height={220}>
-        <AreaChart data={data}>
-          <defs>
-            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid vertical={true} horizontal={false} stroke="#243240" />
-          <YAxis tick={{ transform: "translate(-45, 0)" }} />
-          {!isCurrentTrafficRoute && <XAxis dataKey="name" />}
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            strokeWidth={3}
-            type="monotone"
-            fillOpacity={0.1}
-            dataKey="uv"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      {!chartData ? (
+        <CircularProgress />
+      ) : (
+        <ResponsiveContainer height={220}>
+          <AreaChart data={data}>
+            {" "}
+            <defs>
+              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid
+              vertical={true}
+              horizontal={false}
+              stroke="#243240"
+            />
+            <XAxis
+              dataKey="name"
+              tickFormatter={(value) => {
+                return value;
+              }}
+            />
+            <YAxis />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#82ca9d"
+              fillOpacity={1}
+              fill="url(#colorValue)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 };

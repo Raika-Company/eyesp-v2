@@ -13,19 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import React from "react";
-
-type DataRow = {
-  date: string;
-  hour: string;
-  categoryDis: string;
-  causeDis: string;
-  handle: string;
-};
+import { ProvinceCompare } from "../../features/lastDisorders/LastDis";
 
 interface Props {
   cellHeaders: string[];
   isAI?: boolean;
-  rows: DataRow[];
+  rows: ProvinceCompare[];
   delay?: number;
 }
 

@@ -7,7 +7,7 @@ import provinceCompare from "../../../public/data/provinceCompare.json";
 
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "هوش مصنوعی"];
 
-interface ProvinceCompare {
+export interface ProvinceCompare {
   date: string;
   hour: string;
   categoryDis: string;
