@@ -1,6 +1,5 @@
 import { Box, SvgIcon, useMediaQuery, useTheme, Button } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
@@ -32,7 +31,7 @@ const Map: FC<Props> = ({
   scale,
   setScale,
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -186,13 +185,13 @@ const Map: FC<Props> = ({
             onMouseMove={onDrag}
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
-            onClick={() => {
-              if (isPrivate) {
-                navigate("/last-disorders");
-              } else {
-                navigate("/disorders");
-              }
-            }}
+            // onClick={() => {
+            //   if (isPrivate) {
+            //     navigate("/last-disorders");
+            //   } else {
+            //     navigate("/disorders");
+            //   }
+            // }}
           >
             <MapPaths
               provinceList={isPrivate ? mockProvinceListsForPrivate : {}}

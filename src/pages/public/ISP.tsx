@@ -52,7 +52,7 @@ const getTooltipMessage = (hourlyDetails: StatusDetail[], color: string) => {
   const non200Details = hourlyDetails.filter(
     (detail) => parseInt(detail.status, 10) !== 200
   );
-  let tooltipContent = [];
+  const tooltipContent = [];
 
   if (color === "#E93F3F") {
     const start = non200Details[0].time;
@@ -156,6 +156,7 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
 
   useEffect(() => {
     if (currentActiveGraph !== null) {
+      return;
     }
   }, [currentActiveGraph]);
 

@@ -3,7 +3,7 @@ import { Box, useTheme, useMediaQuery } from "@mui/material";
 import history from "../../assets/images/history.svg";
 import provinceCompare from "../../../public/data/provinceCompare.json";
 import Header from "../../components/ui/Header";
-import CustomTable from "../../components/ui/CustomTable";
+import DisdorderHistoryTable from "./DisdorderHistoryTable";
 // const Header = lazy(() => import("../../components/ui/Header"));
 // const CustomTable = lazy(() => import("../../components/ui/CustomTable"));
 
@@ -49,7 +49,8 @@ const DisorderHistory: React.FC = () => {
         }}
       >
         <Box sx={{ width: isXsScreen ? "25em" : isMdScreen ? "60em" : "100%" }}>
-          <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} />
+          {/* <CustomTable rows={rows} cellHeaders={cellHeaders} isAI={false} /> */}
+          <DisdorderHistoryTable rows={rows} cellHeaders={cellHeaders} />
         </Box>{" "}
       </Box>
     </div>
