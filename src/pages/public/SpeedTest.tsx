@@ -339,7 +339,7 @@ const SpeedTest = () => {
           sx={{
             position: "absolute",
             bottom: "0",
-            top: "50%",
+            top: "60%",
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
@@ -438,6 +438,7 @@ const SpeedTest = () => {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            // padding="2rem"
           >
             <Stack direction="row" gap={10}>
               <Stack direction="row" gap={1} alignItems="start">
@@ -514,7 +515,7 @@ const SpeedTest = () => {
           </Box>
           <Box
             sx={{
-              width: "380px",
+              width: "375px",
               height: "380px",
               overflow: "hidden",
               display: "flex",
@@ -524,6 +525,7 @@ const SpeedTest = () => {
               position: "relative",
               borderRadius: "50%",
               marginTop: "1rem",
+              // padding: "2rem",
             }}
           >
             <Box
@@ -856,6 +858,7 @@ const SpeedTest = () => {
               alignItems: "center",
               justifyContent: "center",
               gap: { md: "6rem", xs: "3rem" },
+              // padding: "2rem",
             }}
           >
             {" "}
