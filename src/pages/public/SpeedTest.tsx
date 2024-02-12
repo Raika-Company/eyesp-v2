@@ -253,7 +253,7 @@ const SpeedTest = () => {
           color: "#fff",
           fontWeight: "bold",
           cursor: "pointer",
-          marginTop: "5rem",
+          marginTop: { md: "10rem", xs: "5rem" },
           zIndex: "20",
           ":hover": {
             background: "#498dd615",
@@ -339,7 +339,7 @@ const SpeedTest = () => {
           sx={{
             position: "absolute",
             bottom: "0",
-            top: "60%",
+            top: "50%",
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
@@ -351,7 +351,7 @@ const SpeedTest = () => {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              gap: "6rem",
+              gap: { md: "6rem", xs: "3rem" },
             }}
           >
             {" "}
@@ -369,7 +369,11 @@ const SpeedTest = () => {
                 </Typography>
               </Stack>
             </Stack>
-            <Stack direction="row" gap={3}>
+            <Stack
+              direction="row"
+              gap={3}
+              sx={{ mr: { md: "0", xs: "0.8rem" } }}
+            >
               <img src={person} alt="person" />
               <Stack direction="column" gap={1}>
                 <Typography variant="h1" color="white">
@@ -851,7 +855,7 @@ const SpeedTest = () => {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              gap: "6rem",
+              gap: { md: "6rem", xs: "3rem" },
             }}
           >
             {" "}
