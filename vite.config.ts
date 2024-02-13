@@ -10,16 +10,7 @@ export default defineConfig({
         target: "http://95.38.58.11:8000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/v1/, ""),
-      },
-      "/api/v1/analysis/result": {
-        target: "http://95.38.58.41:8000",
-        changeOrigin: true,
-        rewrite: (path) =>
-          path.replace(
-            /^\/api\/v1\/analysis\/result/,
-            "/api/v1/analysis/result"
-          ),
-      },
+      }
     },
   },
 });

@@ -8,16 +8,39 @@ The Rayka EyeSP Dashboard serves as a critical tool for real-time monitoring of 
 
 The Rayka EyeSP Dashboard is meticulously crafted to offer a wide array of features for comprehensive internet performance monitoring:- Real-time Monitoring: Continuously track live data on internet connectivity status across multiple ISPs.
 
-- Speed Test Metrics: Measure and display key performance indicators such as download and upload speeds.
-- Latency Reporting: Evaluate and report on latency issues with detailed ping statistics.
-- Disruption Alerts: Receive notifications and view details on internet disruptions or disconnections.
-- Interactive Data Visualization: Utilize sophisticated charting libraries to render data intuitively.
-- Customizable Dashboards: Personalize the user experience with dynamic theming and design.
-- Responsive Design: Maintain functionality and aesthetics across a variety of devices and screen sizes.
-- Advanced Data Fetching: Leverage efficient data fetching and state management for a smooth user interface.
-- Material UI Integration: Implement a polished look with a modern design for an intuitive user interface.
-- Client-Server Interaction: Robust data transfer and API interaction managed through Axios.
-- Navigation and Routing: Fluid navigation throughout the application facilitated by React Router.
+- Real-time Monitoring Our dashboard continuously tracks live data on internet connectivity status across multiple ISPs.
+
+- Speed Test Metrics: Our dashboard measures and displays key performance indicators such as download and upload speeds.
+
+- Latency Reporting: Our dashboard evaluates and reports on latency issues with detailed ping statistics.
+
+- Disruption Alerts: Our dashboard allows users to receive notifications and view details on internet disruptions or disconnections.
+
+- Interactive Data Visualization: Our dashboard utilizes sophisticated charting libraries to render data intuitively.
+
+- Customizable Dashboards: Our dashboard enables users to personalize their experience with dynamic theming and design.
+
+- Responsive Design: Our dashboard maintains functionality and aesthetics across a variety of devices and screen sizes.
+
+- Advanced Data Fetching: Our dashboard leverages efficient data fetching and state management for a smooth user interface.
+
+- Material UI Integration: Our dashboard implements a polished look with a modern design for an intuitive user interface.
+
+- Client-Server Interaction: Our dashboard manages robust data transfer and API interaction through Axios.
+
+- Navigation and Routing: Our dashboard facilitates fluid navigation throughout the application with React Router.
+
+- Comprehensive Visibility: Our dashboard provides detailed insights into the availability of internal and internet services.
+
+- Geographical Representation: Our dashboard utilizes a map to display the status of services in different provinces, allowing users to pinpoint areas with disruptions.
+
+- Detailed Information: Our dashboard enables users to access comprehensive details about service availability, distinguishing between areas facing issues and those with uninterrupted services.
+
+### Our Service Availability Map
+
+- Comprehensive Visibility: Our dashboard provides detailed insights into the availability of internal and internet services.
+- Geographical Representation: Utilizing a map, our dashboard displays the status of services in different provinces, allowing users to pinpoint areas with disruptions.
+- Detailed Information: Users can access comprehensive details about service availability, distinguishing between areas facing issues and those with uninterrupted services.
 
 ## Technologies Used
 
