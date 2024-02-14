@@ -19,6 +19,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import api from "../../services";
+import { toast } from "react-toastify";
 
 const ConflictsData = [
   {
@@ -80,10 +81,17 @@ const LeftSide: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     setLoading(true);
-    api.metrics.getAllMetrics().then((res) => {
-      setMetricsData(res.data);
-      setLoading(false);
-    });
+    api.metrics
+      .getAllMetrics()
+      .then((res) => {
+        setMetricsData(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        toast.error(
+          "مشکلی در ارتباط با سرور ایجاد شده است. لطفا دقایقی دیگر تلاش کنید."
+        );
+      });
   }, []);
 
   const navigateToAverage = () => {
@@ -297,21 +305,21 @@ const LeftSide: React.FC = () => {
               finalPercentage={66}
               size={60}
               textTitle="میانگین دانلود"
-              value={loading ? "--" : metricsData!.downloadAverage}
+              value={loading ? "--" : metricsData?.downloadAverage || 0}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={40}
               size={60}
               textTitle="میانگین آپلود"
-              value={loading ? "--" : metricsData!.uploadAverage}
+              value={loading ? "--" : metricsData?.uploadAverage || 0}
               unit="Mbps"
             />
             <CircleChart
               finalPercentage={52}
               size={60}
               textTitle="میانگین "
-              value={loading ? "--" : metricsData!.pingAverage}
+              value={loading ? "--" : metricsData?.pingAverage || 0}
               unit="Ms"
             />
           </Stack>

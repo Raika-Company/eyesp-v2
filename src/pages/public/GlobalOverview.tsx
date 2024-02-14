@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Button, useMediaQuery, useTheme, Container } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  CircularProgress,
+  Button,
+  useMediaQuery,
+  useTheme,
+  Container,
+} from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import WestIcon from "@mui/icons-material/West";
 import serverStatusData from "../../../public/data/server_status.json";
-import ModalNotData from '../../components/ui/ModalNotData';
-import axios from 'axios';
-import GridItem from '../../components/ui/GridItem';
-import TransformData from '../../components/ui/TransformData';
-import { WebsiteData } from '../../utils/types';
+import ModalNotData from "../../components/ui/ModalNotData";
+import axios from "axios";
+import GridItem from "../../components/ui/GridItem";
+import TransformData from "../../components/ui/TransformData";
+import { WebsiteData } from "../../utils/types";
 
 const GlobalOverview: React.FC = () => {
   const [serverData, setServerData] = useState<WebsiteData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const location = useLocation();
   const theme = useTheme();
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const queryParams = new URLSearchParams(location.search);
-  const type = queryParams.get('type');
+  const type = queryParams.get("type");
 
   useEffect(() => {
     const fetchData = async (endpoint: string) => {
@@ -26,16 +33,16 @@ const GlobalOverview: React.FC = () => {
         const response = await axios.get(endpoint);
         setServerData(TransformData(response.data));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (type === 'internal') {
-      fetchData('http://95.38.58.41:8000/api/v1/internal/analysis/result');
-    } else if (type === 'external') {
-      fetchData('http://95.38.58.41:8000/api/v1/external/analysis/result');
+    if (type === "internal") {
+      fetchData("http://95.38.58.41:8000/api/v1/internal/analysis/result");
+    } else if (type === "external") {
+      fetchData("http://95.38.58.41:8000/api/v1/external/analysis/result");
     }
   }, [type]);
 

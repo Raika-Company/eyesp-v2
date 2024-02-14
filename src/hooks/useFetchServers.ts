@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 
 const useFetchServers = () => {
   const [servers, setServers] = useState<any[]>([]);
@@ -21,6 +22,9 @@ const useFetchServers = () => {
       } catch (error) {
         // console.error('Error fetching servers:', error);
         setIsFetchingServers(false);
+        toast.error(
+          "مشکلی در ارتباط با سرور ایجاد شده است. لطفا دقایقی دیگر تلاش کنید."
+        );
       }
     };
 

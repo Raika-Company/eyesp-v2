@@ -11,6 +11,7 @@ import theme from "./layout/theme";
 import { MessageProvider } from "./context/MessageContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient({});
 const DASHBOARD_PATH = "/";

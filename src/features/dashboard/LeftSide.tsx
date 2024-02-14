@@ -19,6 +19,7 @@ import StatusTooltip from "../../components/ui/StatusTooltip";
 import PulseCircle from "../../components/ui/PulseCircle";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
+import { toast } from "react-toastify";
 
 interface ISP {
   id: number;
@@ -210,7 +211,11 @@ const LeftSide: React.FC = () => {
         setNetworkState(res.data);
         setLoading(false);
       })
-      .catch((e) => {});
+      .catch(() => {
+        toast.error(
+          "مشکلی در ارتباط با سرور ایجاد شده است. لطفا دقایقی دیگر تلاش کنید."
+        );
+      });
   }, []);
 
   return (
