@@ -6,7 +6,7 @@ declare global {
 
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import DownloadGrad from "../../assets/images/download-grad.png";
+import DownloadGrad from "../../assets/images/donwload-grad.svg";
 import UploadGrad from "../../assets/images/upload-grad.png";
 import axios from "axios";
 import { Socket, io } from "socket.io-client";
@@ -87,7 +87,23 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-  // const [openSelectServer, setOpenSelectServer] = useState(false);
+  const [clipPathStyle, setClipPathStyle] = useState("circle(41% at 24% 100%)");
+
+  const updateClipPathBasedOnRotation = (rotationAngle) => {
+    const factor = rotationAngle / 360;
+    const newRadius = 50 + factor * 90;
+
+    const newClipPath = `circle(${newRadius}% at 24% 100%)`;
+
+    setClipPathStyle(newClipPath);
+  };
+
+  useEffect(() => {
+    const rotationAngle = calculateAngleOfCarret(
+      isDl ? download || 0 : upload || 0
+    );
+    updateClipPathBasedOnRotation(rotationAngle);
+  }, [download, upload, isDl]); // Add other dependencies as needed
 
   useEffect(() => {
     axios
@@ -848,9 +864,9 @@ const SpeedTest = () => {
                     zIndex: "-5",
                     width: "380px",
                     height: "380px",
-                    clipPath: "circle(41% at 24% 100%)",
-                    // clipPath: "circle(35% at 33% 100%)",
-                    // clipPath: "circle(50% at 51.0% 100%)",
+                    clipPath: clipPathStyle,
+                    // clipPath: "circle(41% at 24% 100%)",
+
                     transition: "clip-path .1s ease-in-out",
                   }}
                 />
