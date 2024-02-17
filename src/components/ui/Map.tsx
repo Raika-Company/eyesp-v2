@@ -1,4 +1,12 @@
-import { Box, SvgIcon, useMediaQuery, useTheme, Button } from "@mui/material";
+import {
+  Box,
+  SvgIcon,
+  useMediaQuery,
+  useTheme,
+  Button,
+  Typography,
+  Stack,
+} from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import MapPaths from "../../features/dashboard/ـcomponents/MapPaths";
 import { AnimatedCircle } from "./AnimatedCircle";
@@ -256,7 +264,7 @@ const Map: FC<Props> = ({
             display: "flex",
             top: "1rem",
             gap: "1rem",
-            right: "1rem",
+            left: "1rem",
             position: "absolute",
             color: "#FFF",
             alignItems: "center",
@@ -322,6 +330,40 @@ const Map: FC<Props> = ({
               />
             </div>
           )}
+        </Box>
+
+        <Box
+          sx={{
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+            gap: ".5rem",
+            top: "2rem",
+            right: "2rem",
+          }}
+        >
+          <Stack direction="row" gap=".5rem" alignItems="center">
+            <Box
+              sx={{
+                width: "1.5rem",
+                height: "1.5rem",
+                borderRadius: ".5rem",
+                background: "#3A3B3A",
+              }}
+            />
+            <Typography>استان های بدون دیتا سنتر</Typography>
+          </Stack>
+          <Stack direction="row" gap=".5rem" alignItems="center">
+            <Box
+              sx={{
+                width: "1.5rem",
+                height: "1.5rem",
+                borderRadius: ".5rem",
+                background: "#7FCD9F",
+              }}
+            />
+            <Typography>PoPs</Typography>
+          </Stack>
         </Box>
       </Box>
       {hoveredProvince && (
