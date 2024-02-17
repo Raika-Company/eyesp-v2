@@ -10,7 +10,7 @@ import "./layout/global.css";
 import theme from "./layout/theme";
 import { MessageProvider } from "./context/MessageContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient({});
@@ -29,7 +29,20 @@ const App: FC = () => {
       location.pathname !== DASHBOARD_PATH_PRIVATE;
 
     return showSuspense ? (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        }
+      >
         <Routes>
           {mainRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
