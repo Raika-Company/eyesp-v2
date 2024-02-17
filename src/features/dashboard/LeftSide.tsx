@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import NumberValue from "./ـcomponents/NumberValue";
 import AverageIcon from "../../assets/images/average-icon.svg";
+import WhiteSpeedTest from "../../assets/images/white-speed.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import ChartIcon from "../../assets/images/chart-icon.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InfoBox from "../../components/ui/InfoBox";
 import { ISPStateType, useISPState } from "./hooks/useISPState";
 import { useEffect, useState } from "react";
@@ -192,6 +193,7 @@ const ISPSection: React.FC<ISPSectionProps> = ({
 };
 
 const LeftSide: React.FC = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
@@ -227,7 +229,7 @@ const LeftSide: React.FC = () => {
           isMdScreen && !isSmScreen && !isLgScreen ? "1fr 1fr 1fr" : "1fr",
         gridRow: isMdScreen && !isLgScreen && !isSmScreen ? "3 / 4" : "",
         gridTemplateRows:
-          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 1fr 1fr",
+          isMdScreen && !isSmScreen && !isLgScreen ? "1fr" : "1fr 3rem 1fr 1fr",
         gap: isXlgScreen ? "1.5rem" : "1rem",
       }}
     >
@@ -258,6 +260,23 @@ const LeftSide: React.FC = () => {
         </Stack>
       </InfoBox>
 
+      <Button
+        sx={{
+          boxShadow: "0px 12px 17px 0px rgba(0, 0, 0, 0.60)",
+          background: "#2B2E31",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          order: isMdScreen && !isSmScreen && !isLgScreen ? 1 : 0,
+          gridColumn:
+            isMdScreen && !isSmScreen && !isLgScreen ? "1/4" : "initial",
+          gap: ".3rem",
+        }}
+        onClick={() => navigate("/speed-test")}
+      >
+        <img src={WhiteSpeedTest} />
+        <Typography fontFamily="PeydaExtraBold">تست سرعت</Typography>
+      </Button>
       <ISPSection
         title="مراکز داده‌داخلی"
         internal
