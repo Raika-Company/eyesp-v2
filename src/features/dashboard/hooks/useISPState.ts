@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../../services";
 import { ReturnStateType } from "../../../services/pingStatus";
+import { toast } from "react-toastify";
 
 const LAST_SECOND_INDEX = 59;
 
@@ -28,58 +29,64 @@ export const useISPState = () => {
       // api.pingStatuses.getTehranPingState(),
       api.pingStatuses.getAlborzPingState(),
       api.pingStatuses.getAhvazPingState(),
-    ]).then((data) => {
-      const igwA =
-        (getAverageOfLastMinute(data[0])[0] +
-          getAverageOfLastMinute(data[1])[0]) /
-        2;
-      const ipxA =
-        (getAverageOfLastMinute(data[0])[1] +
-          getAverageOfLastMinute(data[1])[1]) /
-        2;
-      const convertedData = {
-        igwAverage: igwA,
-        ipxAverage: ipxA,
-        tehran: {
-          // isActive: Object.keys(data[0].data.IXP).every(
-          //   (ip) => data[0].data.IXP[ip][0].last_1_min_avg !== null
-          // ),
-          isActive: true,
-          igw: getPingStateForAllServers(0),
-          igwAverage: 100,
-          igwColor: getStateColor(0),
-          ipx: getPingStateForAllServers(0),
-          ipxAverage: 100,
-          ipxColor: getStateColor(0),
-        },
-        alborz: {
-          isActive:
-            getNumberOfIssues(data[0]).reduce(
-              (sum, issues) => (sum += issues)
-            ) === 0,
-          igw: getPingStateForAllServers(getNumberOfIssues(data[0])[0]),
-          igwAverage: getAverageOfLastMinute(data[0])[0],
-          igwColor: getStateColor(getNumberOfIssues(data[0])[0]),
-          ipx: getPingStateForAllServers(getNumberOfIssues(data[0])[1]),
-          ipxAverage: getAverageOfLastMinute(data[0])[1],
-          ipxColor: getStateColor(getNumberOfIssues(data[0])[1]),
-        },
-        ahvaz: {
-          isActive:
-            getNumberOfIssues(data[1]).reduce(
-              (sum, issues) => (sum += issues)
-            ) === 0,
-          igw: getPingStateForAllServers(getNumberOfIssues(data[1])[0]),
-          igwAverage: getAverageOfLastMinute(data[1])[0],
-          igwColor: getStateColor(getNumberOfIssues(data[1])[0]),
-          ipx: getPingStateForAllServers(getNumberOfIssues(data[1])[1]),
-          ipxAverage: getAverageOfLastMinute(data[1])[1],
-          ipxColor: getStateColor(getNumberOfIssues(data[1])[1]),
-        },
-      };
+    ])
+      .then((data) => {
+        const igwA =
+          (getAverageOfLastMinute(data[0])[0] +
+            getAverageOfLastMinute(data[1])[0]) /
+          2;
+        const ipxA =
+          (getAverageOfLastMinute(data[0])[1] +
+            getAverageOfLastMinute(data[1])[1]) /
+          2;
+        const convertedData = {
+          igwAverage: igwA,
+          ipxAverage: ipxA,
+          tehran: {
+            // isActive: Object.keys(data[0].data.IXP).every(
+            //   (ip) => data[0].data.IXP[ip][0].last_1_min_avg !== null
+            // ),
+            isActive: true,
+            igw: getPingStateForAllServers(0),
+            igwAverage: 100,
+            igwColor: getStateColor(0),
+            ipx: getPingStateForAllServers(0),
+            ipxAverage: 100,
+            ipxColor: getStateColor(0),
+          },
+          alborz: {
+            isActive:
+              getNumberOfIssues(data[0]).reduce(
+                (sum, issues) => (sum += issues)
+              ) === 0,
+            igw: getPingStateForAllServers(getNumberOfIssues(data[0])[0]),
+            igwAverage: getAverageOfLastMinute(data[0])[0],
+            igwColor: getStateColor(getNumberOfIssues(data[0])[0]),
+            ipx: getPingStateForAllServers(getNumberOfIssues(data[0])[1]),
+            ipxAverage: getAverageOfLastMinute(data[0])[1],
+            ipxColor: getStateColor(getNumberOfIssues(data[0])[1]),
+          },
+          ahvaz: {
+            isActive:
+              getNumberOfIssues(data[1]).reduce(
+                (sum, issues) => (sum += issues)
+              ) === 0,
+            igw: getPingStateForAllServers(getNumberOfIssues(data[1])[0]),
+            igwAverage: getAverageOfLastMinute(data[1])[0],
+            igwColor: getStateColor(getNumberOfIssues(data[1])[0]),
+            ipx: getPingStateForAllServers(getNumberOfIssues(data[1])[1]),
+            ipxAverage: getAverageOfLastMinute(data[1])[1],
+            ipxColor: getStateColor(getNumberOfIssues(data[1])[1]),
+          },
+        };
 
-      setISPStateData(convertedData);
-    });
+        setISPStateData(convertedData);
+      })
+      .catch(() => {
+        toast.error(
+          "مشکلی در ارتباط با سرور ایجاد شده است. لطفا دقایقی دیگر تلاش کنید."
+        );
+      });
   }, []);
 
   return ISPStateData;

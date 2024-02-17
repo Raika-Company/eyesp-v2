@@ -19,6 +19,7 @@ import StatusTooltip from "../../components/ui/StatusTooltip";
 import PulseCircle from "../../components/ui/PulseCircle";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
+import { toast } from "react-toastify";
 
 interface ISP {
   id: number;
@@ -51,28 +52,28 @@ export const InternalISPList: {
   isActive: boolean;
   speed: string;
 }[] = [
-    {
-      id: 1,
-      name: "زیرساخت - کرج",
-      province: "alborz",
-      isActive: false,
-      speed: "6200",
-    },
-    {
-      id: 2,
-      name: "زیر ساخت - اهواز",
-      province: "ahvaz",
-      isActive: true,
-      speed: "4362",
-    },
-    {
-      id: 3,
-      name: "فن آوا - تهران",
-      province: "tehran",
-      isActive: true,
-      speed: "862",
-    },
-  ];
+  {
+    id: 1,
+    name: "زیرساخت - کرج",
+    province: "alborz",
+    isActive: false,
+    speed: "6200",
+  },
+  {
+    id: 2,
+    name: "زیر ساخت - اهواز",
+    province: "ahvaz",
+    isActive: true,
+    speed: "4362",
+  },
+  {
+    id: 3,
+    name: "فن آوا - تهران",
+    province: "tehran",
+    isActive: true,
+    speed: "862",
+  },
+];
 
 const ExternalISPList = [
   {
@@ -198,22 +199,22 @@ const LeftSide: React.FC = () => {
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const ispStateData = useISPState();
 
-  const [networkState, setNetworkState] = useState<MetricsReturnType | null>(
-    null
-  );
+  const [networkState, setNetworkState] = useState<
+    MetricsReturnType | { uploadAverage: number; downloadAverage: number }
+  >({ uploadAverage: 0, downloadAverage: 0 });
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     setLoading(true);
     api.metrics
       .getAllMetrics()
       .then((res) => {
-        console.log(res, "this is the end");
-
         setNetworkState(res.data);
         setLoading(false);
       })
-      .catch((e) => {
-        console.log(e, "this is the end");
+      .catch(() => {
+        toast.error(
+          "مشکلی در ارتباط با سرور ایجاد شده است. لطفا دقایقی دیگر تلاش کنید."
+        );
       });
   }, []);
 
@@ -242,12 +243,16 @@ const LeftSide: React.FC = () => {
         >
           <NumberValue
             title="Upload"
-            value={loading ? 0 : networkState!.uploadAverage!}
+            value={
+              loading || !networkState ? 0 : networkState.uploadAverage || 0
+            }
             unit="mbps"
           />
           <NumberValue
             title="Download"
-            value={loading ? 0 : networkState!.downloadAverage!}
+            value={
+              loading || !networkState ? 0 : networkState.downloadAverage || 0
+            }
             unit="mbps"
           />
         </Stack>
@@ -269,7 +274,7 @@ const LeftSide: React.FC = () => {
         ispStatus={ispStateData!}
         internal={false}
         // link="/global-overview"
-        link="/global-overview?type=global"
+        link="/global-overview?type=external"
         isXlgScreen={isXlgScreen}
         hasMoreInfo={true}
       />

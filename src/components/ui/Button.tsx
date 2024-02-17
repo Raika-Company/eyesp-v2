@@ -17,10 +17,10 @@ export const ClickableButton: FC<ButtonProps> = ({
     sx={{
       background: disable ? "#66666666" : "#666",
       color: disable ? "#ffffff88" : "#FFF",
-      fontSize: "1.2rem",
+      fontSize: ".8rem",
       border: "none",
-      width: "2.5rem",
-      height: "2.5rem",
+      width: { xs: "1.2rem", sm: "1.8rem", md: "2.2rem", lg: "2.5rem" },
+      height: { xs: "1.2rem", sm: "1.8rem", md: "2.2rem", lg: "2.5rem" },
       borderRadius: ".5rem",
       cursor: "pointer",
       ":hover": {

@@ -153,7 +153,7 @@ const Map: FC<Props> = ({
         >
           {/* <Link to="/disorders"> */}
           <svg
-            preserveAspectRatio="none"
+            preserveAspectRatio="true"
             width={
               is4XlgScreen
                 ? "1600"
@@ -269,7 +269,8 @@ const Map: FC<Props> = ({
               variant="contained"
               sx={{
                 backgroundColor: "#505050",
-                paddingX: "2rem",
+                paddingX: { xs: ".8rem", sm: "1.2rem", md: "2rem" },
+                fontSize: { xs: ".8rem", sm: "1rem", md: "1.2rem" },
                 "&:hover": {
                   backgroundColor: "#1A1F25",
                   color: "#505050",
