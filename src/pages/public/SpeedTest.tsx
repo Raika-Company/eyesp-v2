@@ -87,23 +87,53 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-  const [clipPathStyle, setClipPathStyle] = useState("circle(41% at 24% 100%)");
+  function interpolateClipPath(angle) {
+    // Define the known angles and their corresponding clipPath attributes
+    const angleClipPathMap = [
+      { angle: -133.5, y: 275, borderRadius: 34 },
+      { angle: -99.584, y: 211, borderRadius: 0 },
+      // Add other known points here
+      { angle: 26.34, y: -15.84, borderRadius: 16.36 },
+    ];
 
-  const updateClipPathBasedOnRotation = (rotationAngle) => {
-    const factor = rotationAngle / 360;
-    const newRadius = 50 + factor * 90;
+    // Sort by angle to ensure correct interpolation order
+    angleClipPathMap.sort((a, b) => a.angle - b.angle);
 
-    const newClipPath = `circle(${newRadius}% at 24% 100%)`;
+    // Find the closest lower and upper bounds for the given angle
+    let lowerBound = null;
+    let upperBound = null;
+    for (const point of angleClipPathMap) {
+      if (angle >= point.angle) {
+        lowerBound = point;
+      } else {
+        upperBound = point;
+        break; // Found the immediate upper bound, exit loop
+      }
+    }
 
-    setClipPathStyle(newClipPath);
-  };
+    // If angle is outside the known ranges, handle edge cases
+    if (!lowerBound || !upperBound) {
+      // Return a default or edge case clipPath
+      return "defaultClipPath";
+    }
 
-  useEffect(() => {
-    const rotationAngle = calculateAngleOfCarret(
-      isDl ? download || 0 : upload || 0
-    );
-    updateClipPathBasedOnRotation(rotationAngle);
-  }, [download, upload, isDl]); // Add other dependencies as needed
+    // Interpolate y and borderRadius between lowerBound and upperBound
+    const fraction =
+      (angle - lowerBound.angle) / (upperBound.angle - lowerBound.angle);
+    const interpolatedY =
+      lowerBound.y + fraction * (upperBound.y - lowerBound.y);
+    const interpolatedBorderRadius =
+      lowerBound.borderRadius +
+      fraction * (upperBound.borderRadius - lowerBound.borderRadius);
+
+    // Construct and return the interpolated clipPath string
+    return `xywh(0 ${interpolatedY}px 50% 96% round ${interpolatedBorderRadius}% 0)`;
+  }
+
+  // Example usage
+  const clipPath = interpolateClipPath(
+    calculateAngleOfCarret(download || upload || 0)
+  );
 
   useEffect(() => {
     axios
@@ -244,7 +274,10 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
-
+  console.log(
+    "DDDDD",
+    calculateAngleOfCarret(isDl ? download || 0 : upload || 0)
+  );
   return (
     <Box
       sx={{
@@ -864,9 +897,7 @@ const SpeedTest = () => {
                     zIndex: "-5",
                     width: "380px",
                     height: "380px",
-                    clipPath: clipPathStyle,
-                    // clipPath: "circle(41% at 24% 100%)",
-
+                    clipPath: clipPath,
                     transition: "clip-path .1s ease-in-out",
                   }}
                 />
