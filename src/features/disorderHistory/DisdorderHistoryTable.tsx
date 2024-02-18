@@ -13,6 +13,9 @@ import {
 } from "@mui/material";
 import React from "react";
 
+/**
+ * Interface representing the structure of each data row.
+ */
 type DataRow = {
   date: string;
   hour: string;
@@ -21,16 +24,46 @@ type DataRow = {
   handle: string;
 };
 
+/**
+ * Interface representing the props for the `DisdorderHistoryTable` component.
+ */
 interface Props {
   cellHeaders: string[];
   rows: DataRow[];
   delay?: number;
 }
+
+/**
+ * Functional component for displaying a disorder history table.
+ * 
+ * This component is responsible for rendering a table that represents a history of disorders. 
+ * It takes in the following props:
+ * 
+ * @param {Props} props - The props for the component.
+ *   - `cellHeaders`: An array of strings representing the headers for each column in the table.
+ *   - `rows`: An array of objects, where each object represents a row of data in the table. Each object should have the following structure:
+ *     - `date`: A string representing the date of the disorder.
+ *     - `hour`: A string representing the hour of the disorder.
+ *     - `categoryDis`: A string representing the category of the disorder.
+ *     - `causeDis`: A string representing the cause of the disorder.
+ *     - `handle`: A string representing the handling status of the disorder (e.g., "برطرف شده" or "نا برطرف").
+ *   - `delay` (optional): A number representing the delay for the fadeIn animation effect on table rows.
+ * 
+ * The component uses Material-UI components and animations to create an aesthetically pleasing and informative table.
+ * It includes styled components for table rows and headers, as well as animations for a fadeIn effect on the rows.
+ * The table structure is dynamic and adjusts based on the provided data, with additional styling for responsive design.
+ * Colors for the handling status are determined dynamically based on the "handle" property.
+ * 
+ * @returns {JSX.Element} - The JSX element representing the disorder history table.
+ */
 const DisdorderHistoryTable: React.FC<Props> = ({
   cellHeaders,
   rows,
   delay,
 }) => {
+  /**
+ * Animation keyframes for fadeIn effect.
+ */
   const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -41,6 +74,9 @@ const DisdorderHistoryTable: React.FC<Props> = ({
 `;
   const theme = useTheme();
 
+  /**
+ * Styled component for a table row with data.
+ */
   const RowBox = styled(TableRow)(() => ({
     display: "flex",
     alignItems: "center",
@@ -70,6 +106,10 @@ const DisdorderHistoryTable: React.FC<Props> = ({
       flex: 0.5,
     },
   }));
+
+  /**
+ * Styled component for a table row with header.
+ */
   const RowBoxHead = styled(TableRow)(() => ({
     display: "flex",
     alignItems: "center",
@@ -98,17 +138,30 @@ const DisdorderHistoryTable: React.FC<Props> = ({
       flex: 0.5,
     },
   }));
+
+  /**
+ * Ensuring there are at least 2 rows for animation effect.
+ */
   const animatedRows =
     rows.length >= 2
       ? rows
       : [...rows, ...Array(2 - rows.length).fill(rows[0])];
 
+  /**
+* Function to get color based on the handle value.
+* @param {string} handle - The handle value.
+* @returns {string} - Color value.
+*/
   const getColorBasedOnHandle = (handle: string) => {
     const color = handle === "برطرف شده" ? "green" : "red";
     return color;
   };
 
+  /**
+ * Media query hook to check screen size.
+ */
   const isLgScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
   return (
     <MuiTable
       aria-label="simple table"

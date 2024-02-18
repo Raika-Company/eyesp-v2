@@ -3,6 +3,12 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 
+/**
+ * Custom hook for fetching and pinging servers to determine the best server.
+ * The hook provides information about available servers, their status, and the best server.
+ *
+ * @returns An object containing servers, fetching status, a function to select the best server, and the URL of the best server.
+ */
 const useFetchServers = () => {
   const [servers, setServers] = useState<any[]>([]);
   const [isFetchingServers, setIsFetchingServers] = useState(false);
@@ -31,8 +37,17 @@ const useFetchServers = () => {
     fetchServers();
   }, []);
 
+  /**
+ * Number of ping attempts.
+ */
   const PING_TIMES = 10;
 
+  /**
+ * Function to ping a server and measure latency.
+ *
+ * @param url - The URL of the server to ping.
+ * @returns A promise that resolves to the minimum latency measured in milliseconds.
+ */
   const pingServer = async (url: string) => {
     return new Promise((resolve) => {
       const socket = io(url, { transports: ["websocket"] });
@@ -66,6 +81,11 @@ const useFetchServers = () => {
     });
   };
 
+  /**
+ * Function to select the best server based on ping latencies.
+ *
+ * @returns The URL of the best server.
+ */
   const selectBestServer = async () => {
     if (isBestServerFound.current) {
       return bestServerUrl;

@@ -1,6 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
+/**
+ * Props for the StatusTooltip component.
+ */
 interface Props {
   ipx: string;
   ipxColor?: string;
@@ -12,6 +15,18 @@ interface Props {
   isScreenShot?: boolean;
 }
 
+/**
+ * StatusTooltip component displays information in a tooltip style.
+ * @param ipx - The value for internal services (سرویس‌های داخلی).
+ * @param ipxColor - The color of the internal services value. Default is white.
+ * @param igw - The value for external services (سرویس‌های خارجی).
+ * @param igwColor - The color of the external services value. Default is white.
+ * @param x - The x-coordinate for the tooltip position.
+ * @param y - The y-coordinate for the tooltip position.
+ * @param isSecond - Flag indicating if it is the second tooltip.
+ * @param isScreenShot - Flag indicating if the tooltip is for a screenshot, triggering a pulse animation.
+ * @returns JSX element representing the StatusTooltip.
+ */
 const StatusTooltip: FC<Props> = ({
   ipx,
   ipxColor = "#fff",

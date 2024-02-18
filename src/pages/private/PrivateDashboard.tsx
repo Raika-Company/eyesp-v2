@@ -5,12 +5,22 @@ import RightSide from "../../features/private_dashboard/RightSide";
 import Map from "../../components/ui/Map";
 import calculateScale from "../../utils/convertWindowToScaleForMap";
 
+/**
+ * PrivateDashboard Component
+ *
+ * This component represents the private dashboard layout, including left side, map, and right side components.
+ *
+ * @component
+ */
 const PrivateDashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const isXgScreen = useMediaQuery("(min-width:1921px)");
+  /**
+   * State to manage the map scale
+   */
   const [scale, setScale] = useState<number>(calculateScale());
 
   useEffect(() => {
@@ -50,8 +60,8 @@ const PrivateDashboard: FC = () => {
             gridTemplateColumns: isSmScreen
               ? "1fr"
               : isMdScreen
-              ? "1fr"
-              : `1fr 4fr 1fr`,
+                ? "1fr"
+                : `1fr 4fr 1fr`,
             gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",

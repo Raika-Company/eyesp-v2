@@ -17,6 +17,9 @@ import provincesCoords from "../../../public/data/provincesCoords.json";
 import ISPData from "../../../public/data/ISPData.json";
 import Category from "../../../public/data/category.json";
 
+/**
+ * Props interface for the Header component.
+ */
 interface Props {
   title: string;
   selectTitle?: string;
@@ -34,6 +37,35 @@ interface Props {
   clickedButton?: string | null;
 }
 
+/**
+ * Functional component representing a header with title, icon, and optional selection controls or buttons.
+ *
+ * The Header component can display a title, an icon, and either selection controls (dropdowns) or buttons.
+ *
+ * @component
+ * @example
+ * // Usage of Header with required props:
+ * <Header
+ *   title="Page Title"
+ *   iconPath="path/to/icon.png"
+ * />
+ *
+ * @param {HeaderProps} title - The title to be displayed in the header.
+ * @param {HeaderProps} iconPath - The path to the icon image.
+ * @param {HeaderProps} selectTitle - The title to be displayed above selection controls (dropdowns).
+ * @param {HeaderProps} province - The selected province.
+ * @param {HeaderProps} selectedISP - The selected ISP (Internet Service Provider).
+ * @param {HeaderProps} category - The selected category.
+ * @param {HeaderProps} onClick - Function to be called on header click.
+ * @param {HeaderProps} handleISPChange - Function to handle ISP selection change.
+ * @param {HeaderProps} handleProvinceChange - Function to handle province selection change.
+ * @param {HeaderProps} handleCategory - Function to handle category selection change.
+ * @param {HeaderProps} isButton - Indicates whether to render buttons instead of selection controls.
+ * @param {HeaderProps} showButton - Indicates whether to show buttons.
+ * @param {HeaderProps} handleButtonSelect - Function to handle button selection.
+ * @param {HeaderProps} clickedButton - The name of the currently clicked button.
+ * @returns {JSX.Element} - React JSX element representing the header.
+ */
 const Header: FC<Props> = ({
   title,
   iconPath,
@@ -53,6 +85,8 @@ const Header: FC<Props> = ({
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
+
+  // Function to render buttons based on isButton prop
   const renderButtons = () => (
     <Box
       sx={{
@@ -84,6 +118,7 @@ const Header: FC<Props> = ({
     </Box>
   );
 
+  // Function to render selection controls (dropdowns)
   const renderSelects = () => (
     <>
       <SelectControl
@@ -156,6 +191,7 @@ const Header: FC<Props> = ({
   );
 };
 
+// Function to get styles for the main box
 const getMainBoxStyle = (isMdScreen: boolean) => ({
   display: "flex",
   flexDirection: "row",
@@ -168,6 +204,7 @@ const getMainBoxStyle = (isMdScreen: boolean) => ({
   PaddingY: "1rem",
 });
 
+// Function to get styles for the icon box
 const getIconBoxStyle = (isMdScreen: boolean) => ({
   display: "flex",
   alignItems: "center",
@@ -175,6 +212,7 @@ const getIconBoxStyle = (isMdScreen: boolean) => ({
   gap: "1rem",
 });
 
+// Function to get styles for the selects box
 const getSelectsBoxStyle = (isSmScreen: boolean, isMdScreen: boolean) => ({
   display: "flex",
   flexDirection: isSmScreen ? "column" : "row",
@@ -186,6 +224,7 @@ const getSelectsBoxStyle = (isSmScreen: boolean, isMdScreen: boolean) => ({
   transform: isMdScreen ? "0" : isSmScreen ? "0" : "translateX(17rem)",
 });
 
+// Function to get styles for the selects wrapper
 const getSelectsWrapperStyle = (isSmScreen: boolean) => ({
   display: "flex",
   gap: isSmScreen ? 0 : 2,
@@ -194,6 +233,7 @@ const getSelectsWrapperStyle = (isSmScreen: boolean) => ({
   justifyContent: "center",
 });
 
+// Function to get styles for the back button box
 const getBackButtonBoxStyle = (isMdScreen: boolean) => ({
   display: "flex",
   alignItems: "center",
@@ -201,12 +241,14 @@ const getBackButtonBoxStyle = (isMdScreen: boolean) => ({
   order: isMdScreen ? 2 : 2,
 });
 
+// Function to get options for the selection controls
 const getOptions = (data: typeof provincesCoords) =>
   Object.keys(data).map((key) => ({
     value: key,
     label: data[key as keyof typeof provincesCoords].name,
   }));
 
+// SelectControl component for rendering selection controls (dropdowns)
 const SelectControl: FC<{
   label: string;
   value: string;

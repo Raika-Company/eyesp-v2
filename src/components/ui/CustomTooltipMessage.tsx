@@ -1,6 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import { StatusDetail } from '../../utils/types';
 
+/**
+ * Generates a custom tooltip message based on the status details.
+ * @param details - List of status details
+ * @param color - Color associated with the status
+ * @returns JSX element representing the custom tooltip message
+ */
 const CustomTooltipMessage = (details: StatusDetail[], color: string) => {
     const detail = details[0];
     let icon;

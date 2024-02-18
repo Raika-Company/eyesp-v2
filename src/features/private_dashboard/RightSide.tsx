@@ -13,14 +13,25 @@ import IspAndProvinces from "../../assets/images/isp-province.svg";
 import ArrowLeftGreen from "../../assets/images/arrow-left-green.svg";
 import WifiIcon from "../../assets/images/wifi.svg";
 import Send from "../../assets/images/send.svg";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import InfoBox from "../../components/ui/InfoBox";
 import { InternalISPList } from "../dashboard/LeftSide";
 import { Link } from "react-router-dom";
 import ISPList from "../dashboard/ـcomponents/ISPList";
 import BadgedValue from "../dashboard/ـcomponents/BadgedValue";
 
-const aiMessages = [
+/**
+ * Interface representing a single AI message.
+ */
+interface AiMessage {
+  id: number;
+  text: string;
+  time: string;
+  isAi: boolean;
+}
+
+// Initial AI messages
+const aiMessages: AiMessage[] = [
   {
     id: 1,
     text: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون ",
@@ -29,14 +40,28 @@ const aiMessages = [
   },
 ];
 
-const RightSide = () => {
+/**
+ * Functional React component representing the right side of the application.
+ * This component encompasses the user interface for the right-hand section of the application,
+ * including the chat interface with artificial intelligence (AI), a list of operators and provinces,
+ * and information about current traffic in terms of Internet Exchange Points (IXP) and Internet Gateway (IGW).
+ * It manages the state of AI messages, user input, and the display of relevant information.
+ * Utilizes various MUI (Material-UI) components for a consistent and responsive layout.
+ *
+ * @returns {React.FC} A functional React component representing the right side of the application.
+ */
+const RightSide: FC = () => {
   const theme = useTheme();
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [enteredMessage, setEnteredMessage] = useState<string>("");
 
+  /**
+ * Toggles the dialog state.
+ */
   const toggleDialog = () => {
     setDialogOpen(!isDialogOpen);
   };
@@ -49,7 +74,10 @@ const RightSide = () => {
       aiMessages
     );
 
-  const [enteredMessage, setEnteredMessage] = useState<string>("");
+  /**
+ * Handles form submission.
+ * @param e - The form event.
+ */
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setMessages((prevMessages) => [

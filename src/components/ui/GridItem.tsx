@@ -4,6 +4,12 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { Detail, WebsiteData, Details } from '../../utils/types';
 import CustomTooltipMessage from './CustomTooltipMessage';
 
+/**
+ * Extracts the time part from the first valid detail in the given details.
+ * @param details - List of details
+ * @returns Time part or "N/A" if no valid detail is found
+ */
+
 const getFirstValidTimeForHour = (details: Details) => {
     const validDetail = details.find(
         (detail: Detail) => detail.status === "200" || detail.status === "0"
@@ -16,6 +22,13 @@ const getFirstValidTimeForHour = (details: Details) => {
         return "N/A";
     }
 };
+
+/**
+ * Computes the CSS style for the status line at the given index.
+ * @param index - Current index
+ * @param total - Total number of statuses
+ * @returns CSS style object
+ */
 
 const statusLineStyle = (index: number, total: number) => {
     const displayInterval = Math.floor(total / 4);
@@ -38,7 +51,14 @@ const statusLineStyle = (index: number, total: number) => {
     };
 };
 
-const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
+/**
+ * Props for the GridItem component.
+ */
+interface GridItemProps {
+    data: WebsiteData;
+}
+
+const GridItem: React.FC<GridItemProps> = ({ data }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery("(max-width:600px)");
     const isMiniMobile = useMediaQuery("(max-width:350px)");
@@ -48,6 +68,10 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
     const [tooltipTimer, setTooltipTimer] = useState<NodeJS.Timeout | null>(null);
     const [currentActiveGraph, setCurrentActiveGraph] = useState<number | null>(null);
 
+    /**
+  * Handles the click event on the graph.
+  * @param index - Index of the clicked graph
+  */
     const handleGraphClick = (index: number) => {
         if (isMobile) {
             setCurrentActiveGraph(index);
@@ -61,12 +85,19 @@ const GridItem: React.FC<{ data: WebsiteData }> = ({ data }) => {
         }
     };
 
+    /**
+ * Handles the hover event on the graph.
+ * @param index - Index of the hovered graph
+ */
     const handleGraphHover = (index: number) => {
         if (!isMobile) {
             setActiveGraphDesktop(index);
         }
     };
 
+    /**
+ * Handles the leave event on the graph.
+ */
     const handleGraphLeave = () => {
         if (!isMobile) {
             setActiveGraphDesktop(null);

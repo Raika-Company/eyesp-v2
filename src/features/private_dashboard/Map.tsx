@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import MapPaths from "../dashboard/ـcomponents/MapPaths";
 import provinceCoordsData from "../../../public/data/provincesCoords.json";
 
+/**
+ * Type definition for the coordinates of provinces on the map.
+ */
 type ProvinceCoordsType = {
   [key: string]: {
     name: string;
@@ -13,9 +16,20 @@ type ProvinceCoordsType = {
   };
 };
 
+// Type assertion for province coordinates data
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
-const mockProvinceData = [
+/**
+ * Type definition for the mock data representing provinces and their associated issues.
+ */
+type MockProvinceData = {
+  id: number;
+  name: string;
+  numberOfIssues: number;
+}[];
+
+// Mock data for provinces and their issues
+const mockProvinceData: MockProvinceData = [
   {
     id: 1,
     name: "tehran",
@@ -53,12 +67,20 @@ const mockProvinceData = [
   },
 ];
 
+/**
+ * Function to determine the color based on the number of issues.
+ * @param value - The number of issues for a province.
+ * @returns A string representing the color hex code.
+ */
 const getColor = (value: number): string => {
   if (value <= 4) return "#1CC760";
   if (value <= 9) return "#FFF500";
   return "#FF6B6B";
 };
 
+/**
+ * Styled component for an animated circle with pulse animation.
+ */
 const AnimatedCircle = styled("circle")<{ index: number }>((props) => ({
   animation: `pulse 2s ${188 * props.index}ms infinite `,
   transformOrigin: `${props.cx}px ${props.cy}px`,
@@ -68,6 +90,13 @@ const AnimatedCircle = styled("circle")<{ index: number }>((props) => ({
   },
 }));
 
+/**
+ * Functional React component representing the map with interactive elements.
+ * This component renders an SVG map with dynamic circles and animations based on mock data.
+ * Utilizes Material-UI components for responsive styling and integrates with the application's routing.
+ *
+ * @returns {React.FC} A functional React component representing the interactive map.
+ */
 const Map: FC = () => {
   const theme = useTheme();
   const isLgDownScreen = useMediaQuery(theme.breakpoints.down("lg"));

@@ -6,6 +6,19 @@ import Map from "../../components/ui/Map";
 import domtoimage from "dom-to-image";
 import calculateScale from "../../utils/convertWindowToScaleForMap";
 
+/**
+ * Dashboard component represents the main view of the application.
+ * This component is responsible for rendering the main dashboard layout, which includes
+ * a left side panel, a central map section, and a right side panel. It also handles
+ * functionality such as resizing the map based on the screen size, capturing and
+ * downloading screenshots of the map, and adjusting the layout based on the screen
+ * size breakpoints.
+ * 
+ * @remarks
+ * The component utilizes Material-UI's theming and media query hooks for responsive design.
+ * It also makes use of the `dom-to-image` library to convert the map container to a PNG image
+ * for downloading as a screenshot.
+ */
 const Dashboard: FC = () => {
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -24,6 +37,9 @@ const Dashboard: FC = () => {
     };
   }, []);
 
+  /**
+ * Handles the generation and download of a screenshot of the map.
+ */
   const handleScreenshot = () => {
     setIsExportButtonVisible(false);
     setIsScreenShot(true);
@@ -83,8 +99,8 @@ const Dashboard: FC = () => {
             gridTemplateColumns: isSmScreen
               ? "1fr"
               : isMdScreen
-              ? "1fr"
-              : `1fr 4fr 1fr`,
+                ? "1fr"
+                : `1fr 4fr 1fr`,
             gridTemplateRows: isLgScreen ? "1fr" : "repeat(3, auto)",
             alignItems: "center",
             gap: isLgScreen ? "2rem" : "0rem",

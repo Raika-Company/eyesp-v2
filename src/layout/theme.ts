@@ -1,14 +1,24 @@
 import { createTheme } from "@mui/material";
 
+/**
+ * Extends the `BreakpointOverrides` interface from MUI system to include a new breakpoint `x2`.
+ */
 declare module "@mui/system" {
   interface BreakpointOverrides {
     x2: true;
   }
 }
 const themes = createTheme();
+
+/**
+ * Defines the background gradient used in the theme.
+ */
 const BACKGROUND_GRADIENT =
   "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)";
 
+/**
+* Creates a Material-UI theme with customizations.
+*/
 const theme = createTheme({
   direction: "rtl",
   palette: {
