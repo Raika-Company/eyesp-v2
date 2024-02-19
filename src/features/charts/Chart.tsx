@@ -25,9 +25,12 @@ import { ChartReturnType } from "../../services/Chart";
  * Props for the Chart component.
  * @param title The title of the chart.
  * @param desc Description of the chart.
- * @param selectedISP The currently selected ISP.
- * @param province The selected province.
- * @param category The selected category for data representation.
+ * @param selectedISP - The currently selected Internet Service Provider.
+ * @param province - The selected province for chart data.
+ * @param category - The selected category for data representation.
+ * @param selectedMetric - The currently selected metric for the chart.
+ * @param setSelectedMetric - Callback function to set the selected metric.
+ * @param chartData - The data used for rendering the chart.
  */
 interface ChartProps {
   title: string;
@@ -89,7 +92,7 @@ const Chart: React.FC<ChartProps> = ({
   desc,
   chartData,
   selectedMetric = "",
-  setSelectedMetric = () => {},
+  setSelectedMetric = () => { },
 }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -112,12 +115,12 @@ const Chart: React.FC<ChartProps> = ({
 
     const dataKey =
       metricMapping[
-        selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
+      selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
       ];
 
     const metricData =
       chartData.data[
-        dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
+      dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
       ];
 
     if (!metricData) {
@@ -169,9 +172,9 @@ const Chart: React.FC<ChartProps> = ({
             sx={{
               px: "1.1em",
               ".css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-                {
-                  paddingRight: "0em",
-                },
+              {
+                paddingRight: "0em",
+              },
               height: "40px",
               bgcolor: "#232629",
               color: "#FFF",

@@ -21,15 +21,23 @@ interface Props {
   onClick?: () => void;
 }
 
+/**
+ * List of available cities for filtering.
+ */
 const cities = ["خروجی", "IXP", "IGW"];
+
+/**
+ * List of titles for different charts.
+ */
 const chartsTitle = ["IXP", "IGW"];
 
 /**
  * CurrentTraffic Component: Displays the current traffic data with interactive charts.
  * It shows different traffic metrics for selected cities and provides filters for customization.
  *
- * @param props - Props passed to the CurrentTraffic component.
- * @returns The CurrentTraffic component JSX.
+ * @component
+ * @param {Props} props - Props passed to the CurrentTraffic component.
+ * @returns {JSX.Element} - The CurrentTraffic component JSX.
  */
 const CurrentTraffic: FC<Props> = () => {
   const [city, setCity] = useState<string>("خروجی");
@@ -42,14 +50,24 @@ const CurrentTraffic: FC<Props> = () => {
 
   /**
    * Handles category selection change.
-   * @param event - The select change event.
+   * @param {SelectChangeEvent<unknown>} event - The select change event.
    */
   const handleCategory = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string);
   };
+
+  /**
+ * Handles province selection change.
+ * @param {SelectChangeEvent<unknown>} event - The select change event.
+ */
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
   };
+
+  /**
+ * Handles ISP selection change.
+ * @param {SelectChangeEvent<unknown>} event - The select change event.
+ */
   const handleISPChange = (event: SelectChangeEvent<unknown>) => {
     setSelectedISP(event.target.value as string);
   };
@@ -114,9 +132,9 @@ const CurrentTraffic: FC<Props> = () => {
             borderRadius: "0.7em",
             textAlign: "center",
             ".css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-              {
-                paddingRight: "0em",
-              },
+            {
+              paddingRight: "0em",
+            },
           }}
         >
           {cities.map((cityName) => (

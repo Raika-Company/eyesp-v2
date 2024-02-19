@@ -22,6 +22,9 @@ import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import { toast } from "react-toastify";
 
+/**
+ * Interface representing the structure of an ISP (Internet Service Provider).
+ */
 interface ISP {
   id: number;
   name: string;
@@ -30,6 +33,9 @@ interface ISP {
   speed?: string; // Include if speed is a property for any of the ISPs
 }
 
+/**
+ * Interface representing the props for the `ISPSection` component.
+ */
 interface ISPSectionProps {
   title: string;
   ispList: ISP[];
@@ -46,6 +52,9 @@ interface ISPSectionProps {
   hasMoreInfo?: boolean;
 }
 
+/**
+ * Internal ISP data list.
+ */
 export const InternalISPList: {
   id: number;
   name: string;
@@ -53,29 +62,32 @@ export const InternalISPList: {
   isActive: boolean;
   speed: string;
 }[] = [
-  {
-    id: 1,
-    name: "زیرساخت - کرج",
-    province: "alborz",
-    isActive: false,
-    speed: "6200",
-  },
-  {
-    id: 2,
-    name: "زیر ساخت - اهواز",
-    province: "ahvaz",
-    isActive: true,
-    speed: "4362",
-  },
-  {
-    id: 3,
-    name: "فن آوا - تهران",
-    province: "tehran",
-    isActive: true,
-    speed: "862",
-  },
-];
+    {
+      id: 1,
+      name: "زیرساخت - کرج",
+      province: "alborz",
+      isActive: false,
+      speed: "6200",
+    },
+    {
+      id: 2,
+      name: "زیر ساخت - اهواز",
+      province: "ahvaz",
+      isActive: true,
+      speed: "4362",
+    },
+    {
+      id: 3,
+      name: "فن آوا - تهران",
+      province: "tehran",
+      isActive: true,
+      speed: "862",
+    },
+  ];
 
+/**
+* External ISP data list.
+*/
 const ExternalISPList = [
   {
     id: 1,
@@ -94,6 +106,14 @@ const ExternalISPList = [
   },
 ];
 
+/**
+ * Functional component representing a section for ISP information.
+ * 
+ * This component displays ISP information, including their names, status, and additional details.
+ * 
+ * @param {ISPSectionProps} props - The props for the component.
+ * @returns {JSX.Element} - The JSX element representing the ISP section.
+ */
 const ISPSection: React.FC<ISPSectionProps> = ({
   title,
   ispList,
@@ -192,6 +212,18 @@ const ISPSection: React.FC<ISPSectionProps> = ({
   );
 };
 
+/**
+ * Functional component representing the left side section of the application.
+ * 
+ * This component includes various information boxes and displays data related to ISP (Internet Service Provider) statistics.
+ * It consists of:
+ * - Average upload and download speed.
+ * - Speed test button.
+ * - Internal ISP section.
+ * - External ISP section.
+ * 
+ * @returns {JSX.Element} - The JSX element representing the left side section.
+ */
 const LeftSide: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();

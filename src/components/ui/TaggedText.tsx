@@ -1,11 +1,20 @@
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 
+/**
+ * Props for the TaggedText component.
+ */
 interface Props {
   title: string;
   value: string;
 }
 
+/**
+ * TaggedText component displays a tagged text with a title and a corresponding value.
+ * @param title - The title for the tagged text.
+ * @param value - The value to be displayed in the tagged text.
+ * @returns JSX element representing the TaggedText.
+ */
 const TaggedText: FC<Props> = ({ title, value }) => {
   return (
     <Box

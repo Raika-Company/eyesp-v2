@@ -17,9 +17,22 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-const NotFound = () => {
+/**
+ * Functional React component representing a custom 404 Not Found page.
+ *
+ * @component
+ * @returns {JSX.Element} A JSX.Element representing the NotFound component.
+ *
+ * @example
+ * // Example usage of NotFound component
+ * <NotFound />
+ */
+const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
+  /**
+ * Handles navigation to the home page.
+ */
   const handleNavigate = () => {
     startTransition(() => {
       navigate("/");
@@ -83,6 +96,7 @@ const NotFound = () => {
           <span>0</span>
           <span>4</span>
         </Typography>
+        {/* Subtitle with the "Page Not Found" message */}
         <Typography
           variant="h3"
           component="h3"
@@ -90,6 +104,7 @@ const NotFound = () => {
         >
           صفحه‌ی مورد نظر پیدا نشد
         </Typography>
+        {/* Button to navigate back to the home page */}
         <Button onClick={handleNavigate}>بازگشت به صفحه اصلی</Button>
       </Box>
     </Box>

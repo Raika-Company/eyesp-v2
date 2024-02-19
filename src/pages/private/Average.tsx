@@ -9,6 +9,7 @@ import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
 import convertToEnglishNumbers from "../../utils/convertToEnglishNumbers";
 
+// Lazily imported components for code splitting
 const Header = lazy(() => import("../../components/ui/Header"));
 const CircleChart = lazy(() => import("../../components/ui/CircularChart"));
 const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
@@ -21,6 +22,9 @@ const TaggedText = lazy(() => import("../../components/ui/TaggedText"));
 //   unit: string;
 // }
 
+/**
+ * Represents the data structure for the mock information displayed on the page.
+ */
 interface MockData {
   id: number;
   title: string;
@@ -88,6 +92,14 @@ const mockData: MockData[] = [
   },
 ];
 
+/**
+ * Represents the Average component, which serves as the main page for displaying
+ * various visualizations and information related to average network metrics.
+ * This component includes lazily loaded visual components such as CircleChart
+ * and TaggedText, and interacts with the API to fetch metrics data for display.
+ *
+ * @component
+ */
 const Average = () => {
   // const [isp, setIsp] = useState<string | null>(null);
   // const [province, setProvince] = useState<string | null>(null);

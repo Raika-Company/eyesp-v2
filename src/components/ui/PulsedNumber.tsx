@@ -1,6 +1,9 @@
 import { Typography, keyframes } from "@mui/material";
 import { FC } from "react";
 
+/**
+ * Keyframes for pulse animation.
+ */
 const pulse = keyframes`
   0% {
     color: transparent;
@@ -19,6 +22,9 @@ const pulse = keyframes`
   }
 `;
 
+/**
+ * Props for the PulsedNumber component.
+ */
 interface Props {
   displayValue: number;
   animationDelay: number;
@@ -26,6 +32,22 @@ interface Props {
   showNumber: boolean;
 }
 
+/**
+ * PulsedNumber component to display a pulsating numeric value.
+ *
+ * The PulsedNumber component is a UI element that displays a pulsating numeric value with optional animation effects.
+ *
+ * @component
+ * @example
+ * // Usage of PulsedNumber with required props:
+ * <PulsedNumber displayValue={5} animationDelay={0.5} value={10} showNumber={true} />
+ *
+ * @param {Props} displayValue - The value to be displayed during animation.
+ * @param {Props} animationDelay - The delay for animation in seconds.
+ * @param {Props} value - The actual numeric value to be displayed.
+ * @param {Props} showNumber - Flag to determine whether to show the numeric value.
+ * @returns {JSX.Element} - React JSX element representing the PulsedNumber.
+ */
 const PulsedNumber: FC<Props> = ({
   displayValue,
   animationDelay,

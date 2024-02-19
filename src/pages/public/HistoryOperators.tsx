@@ -30,6 +30,7 @@ enum ActiveButtonType {
   Current = "current",
 }
 
+// Headers for the table cells
 const cellHeaders = ["تاریخ و ساعت", "نوع اختلال", "دلیل اختلال", "وضعیت"];
 
 // const MemoizedCustomTable = React.memo(CustomTable);

@@ -1,3 +1,6 @@
+/**
+ * Extend the global Window interface to include a custom property 'speedtest'.
+ */
 declare global {
   interface Window {
     speedtest: any;
@@ -22,14 +25,23 @@ import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
 import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
-
 import ResultTest from "./ResultTest";
+
+
+/**
+ * Enum representing status codes for the speed test.
+ */
 const STATUS_MAP = {
   READY: 2,
   RUNNING: 3,
   FINISH: 4,
 };
 
+/**
+ * Calculates the angle of the caret based on the given value.
+ * @param value - The value for which the angle needs to be calculated.
+ * @returns The calculated angle of the caret.
+ */
 const calculateAngleOfCarret = (value: number) => {
   if (value <= 1) {
     return -133.5 + value * 29;
@@ -66,6 +78,30 @@ const calculateAngleOfCarret = (value: number) => {
   if (value > 100) return 137;
 };
 
+/**
+ * Functional component representing the Speed Test.
+ *
+ * The `SpeedTest` component is responsible for rendering and managing the user interface
+ * for conducting speed tests. It utilizes various state variables, effects, and helper functions
+ * to handle interactions, display real-time results, and communicate with the server for testing.
+ * The component includes UI elements, animations, and logic for both download and upload speed tests.
+ *
+ * It incorporates external dependencies such as MUI (Material-UI), Axios for HTTP requests,
+ * and Socket.IO for real-time communication with the server. Additionally, the component relies
+ * on custom hooks, such as `useFetchServers`, to fetch and manage server information for testing.
+ *
+ * The speed test process involves several stages, including selecting the best server, establishing
+ * a connection, and measuring latency, download, and upload speeds. The component utilizes socket events
+ * for communication with the server during the test, and it updates the UI based on the test progress.
+ *
+ * The UI elements include interactive buttons, server information, and dynamic animations to enhance
+ * the user experience. The component handles various states, such as ready, running, and finished,
+ * to ensure a smooth and informative testing process.
+ *
+ * Overall, the `SpeedTest` component encapsulates the entire speed testing functionality within a
+ * React functional component, providing a clear structure and encapsulation for speed testing
+ * capabilities in a larger application.
+ */
 const SpeedTest = () => {
   const [hoverButton, setHoverButton] = useState<boolean>(false);
   const [startTest, setStartTest] = useState<boolean>(false);
@@ -135,6 +171,9 @@ const SpeedTest = () => {
     calculateAngleOfCarret(download || upload || 0)
   );
 
+  /**
+ * Fetches the client's IP address from an external server.
+ */
   useEffect(() => {
     axios
       .get("https://server1.eyesp.live/get-ip")
@@ -226,6 +265,12 @@ const SpeedTest = () => {
     socket && socket.emit("ping_event", performance.now());
   };
 
+  /**
+   * Handles the click event when starting the speed test.
+   *
+   * Initiates the speed test process by triggering animations, starting the ping test,
+   * and calling the main speed test function (`handleStart`).
+   */
   const handleStartTestClick = () => {
     if (!isServerSelected) return;
     setStartAnimate(true);

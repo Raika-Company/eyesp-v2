@@ -1,11 +1,25 @@
 import { FC } from "react";
 
+/**
+ * Props for the MapPaths component.
+ */
 interface Props {
+  /**
+ * A dictionary of province codes and their corresponding names.
+ */
   provinceList?: {
     [key: string]: string;
   };
 }
 
+/**
+ * MapPaths component renders SVG fragments for a map, with special consideration
+ * for SVG (Scalable Vector Graphics) in the fragments.
+ *
+ * @component
+ * @param {Props} props - The properties of the MapPaths component.
+ * @returns {JSX.Element} The rendered MapPaths component.
+ */
 const MapPaths: FC<Props> = ({ provinceList = {} }) => {
   return (
     <>

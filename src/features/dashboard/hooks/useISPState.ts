@@ -3,8 +3,14 @@ import api from "../../../services";
 import { ReturnStateType } from "../../../services/pingStatus";
 import { toast } from "react-toastify";
 
+/**
+ * The last index of the second in a minute.
+ */
 const LAST_SECOND_INDEX = 59;
 
+/**
+ * Interface representing the state of an ISP (Internet Service Provider).
+ */
 export interface ISPStateType {
   isActive: boolean;
   igw: string;
@@ -15,6 +21,9 @@ export interface ISPStateType {
   ipxColor: string;
 }
 
+/**
+ * Custom hook to fetch and manage ISP state data
+ */
 export const useISPState = () => {
   const [ISPStateData, setISPStateData] = useState<{
     ipxAverage: number;
@@ -92,34 +101,52 @@ export const useISPState = () => {
   return ISPStateData;
 };
 
-const getPingStateForAllServers = (numberOfIssues: number) => {
+/**
+ * Get the ping state for all servers based on the number of issues.
+ * 
+ * @param {number} numberOfIssues - The number of issues.
+ * @returns {string} - The ping state.
+ */
+const getPingStateForAllServers = (numberOfIssues: number): string => {
   if (numberOfIssues === 0) return "مطلوب ";
   if (numberOfIssues <= 2) return "اختلالات جزئی";
   return "اختلالات کلی";
 };
 
+/**
+ * Get the number of issues for each type (IGW and IXP).
+ * 
+ * @param {ReturnStateType} issueData - The issue data.
+ * @returns {[number, number]} - An array containing the number of IGW and IXP issues.
+ */
 const getNumberOfIssues = (issueData: ReturnStateType) => {
   const numberOfIpxIssues = Object.keys(issueData.data.IXP).reduce(
     (issueSum, ip) =>
-      (issueSum +=
-        issueData.data.IXP[ip][LAST_SECOND_INDEX].last_1_min_avg === null
-          ? 1
-          : 0),
+    (issueSum +=
+      issueData.data.IXP[ip][LAST_SECOND_INDEX].last_1_min_avg === null
+        ? 1
+        : 0),
     0
   );
 
   const numberOfIGWIssues = Object.keys(issueData.data.IGW).reduce(
     (issueSum, ip) =>
-      (issueSum +=
-        issueData.data.IGW[ip][LAST_SECOND_INDEX].last_1_min_avg === null
-          ? 1
-          : 0),
+    (issueSum +=
+      issueData.data.IGW[ip][LAST_SECOND_INDEX].last_1_min_avg === null
+        ? 1
+        : 0),
     0
   );
 
   return [numberOfIGWIssues, numberOfIpxIssues];
 };
 
+/**
+ * Get the color based on the value.
+ * 
+ * @param {number} value - The value.
+ * @returns {string} - The color.
+ */
 export const getStateColor = (value: number): string => {
   if (value === 0) {
     return "#1CC760";
@@ -128,7 +155,13 @@ export const getStateColor = (value: number): string => {
   } else return "#FF6B6B";
 };
 
-export const getAverageOfLastMinute = (data: ReturnStateType) => {
+/**
+ * Get the average of the last minute for IGW and IXP.
+ * 
+ * @param {ReturnStateType} data - The state data.
+ * @returns {[number, number]} - An array containing the average of IGW and IXP.
+ */
+export const getAverageOfLastMinute = (data: ReturnStateType): [number, number] => {
   let igwSum = 0;
   let igwCount = 0;
   for (let i = 0; i < Object.keys(data.data.IGW).length; i++) {

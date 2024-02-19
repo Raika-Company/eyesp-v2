@@ -17,6 +17,14 @@ import GridItem from "../../components/ui/GridItem";
 import TransformData from "../../components/ui/TransformData";
 import { WebsiteData } from "../../utils/types";
 
+/**
+ * GlobalOverview Component: Displays the global overview of server status data.
+ * Fetches data based on the provided type (internal or external) and renders a grid of server status information.
+ * Also provides a back button for navigation.
+ *
+ * @component
+ * @returns {JSX.Element} - The GlobalOverview component JSX.
+ */
 const GlobalOverview: React.FC = () => {
   const [serverData, setServerData] = useState<WebsiteData[]>([]);
   const [, setLoading] = useState<boolean>(true);
@@ -26,6 +34,10 @@ const GlobalOverview: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
 
+  /**
+ * Fetches server status data based on the provided type.
+ * @param {string} endpoint - The API endpoint to fetch data from.
+ */
   useEffect(() => {
     const fetchData = async (endpoint: string) => {
       setLoading(true);
@@ -82,7 +94,7 @@ const GlobalOverview: React.FC = () => {
         {serverData ? (
           <Grid container rowSpacing={4} paddingY="1rem">
             {serverData.map((dataItem, index) => (
-              <GridItem key={index} data={dataItem} />
+              <GridItem key={index} data={dataItem} type={type} />
             ))}
           </Grid>
         ) : (

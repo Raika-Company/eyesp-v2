@@ -15,6 +15,9 @@ import {
 import React from "react";
 import { ProvinceCompare } from "../../features/lastDisorders/LastDis";
 
+/**
+ * Props for the CustomTable component.
+ */
 interface Props {
   cellHeaders: string[];
   isAI?: boolean;
@@ -22,6 +25,9 @@ interface Props {
   delay?: number;
 }
 
+/**
+ * Keyframes for fadeIn animation.
+ */
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -31,6 +37,9 @@ const fadeIn = keyframes`
   }
 `;
 
+/**
+ * Styled component for TableRow with animation.
+ */
 const RowBox = styled(TableRow)(() => ({
   display: "flex",
   alignItems: "center",
@@ -60,6 +69,10 @@ const RowBox = styled(TableRow)(() => ({
     flex: 0.5,
   },
 }));
+
+/**
+ * Styled component for TableRowHead with animation.
+ */
 const RowBoxHead = styled(TableRow)(() => ({
   display: "flex",
   alignItems: "center",
@@ -89,6 +102,22 @@ const RowBoxHead = styled(TableRow)(() => ({
   },
 }));
 
+/**
+ * CustomTable component to display tabular data.
+ *
+ * The CustomTable component is a customizable table component for displaying tabular data, including support for animations and conditional rendering based on AI status.
+ *
+ * @component
+ * @example
+ * // Usage of CustomTable with required props:
+ * <CustomTable cellHeaders={["Date", "Category", "Cause", "Handle"]} rows={provinceCompareData} />
+ *
+ * @param {Props} cellHeaders - Array of cell headers for the table.
+ * @param {Props} isAI - Boolean flag indicating whether it's an AI table.
+ * @param {Props} rows - Array of rows containing ProvinceCompare data.
+ * @param {Props} delay - Delay for animation in seconds.
+ * @returns {JSX.Element} - React JSX element representing the CustomTable.
+ */
 const CustomTable: React.FC<Props> = ({ cellHeaders, isAI, rows, delay }) => {
   const theme = useTheme();
 

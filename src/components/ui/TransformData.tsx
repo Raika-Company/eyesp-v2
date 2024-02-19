@@ -1,5 +1,10 @@
 import { WebsiteData, HourlyStatus } from '../../utils/types';
 
+/**
+ * Transforms raw data into an array of WebsiteData objects.
+ * @param data - The raw data to be transformed.
+ * @returns An array of WebsiteData objects representing the transformed data.
+ */
 const TransformData = (data: any): WebsiteData[] => {
     if (Array.isArray(data)) {
         return data.map(item => ({
