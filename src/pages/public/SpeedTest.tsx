@@ -27,7 +27,6 @@ import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
 import ResultTest from "./ResultTest";
 
-
 /**
  * Enum representing status codes for the speed test.
  */
@@ -172,8 +171,8 @@ const SpeedTest = () => {
   );
 
   /**
- * Fetches the client's IP address from an external server.
- */
+   * Fetches the client's IP address from an external server.
+   */
   useEffect(() => {
     axios
       .get("https://server1.eyesp.live/get-ip")
@@ -326,213 +325,220 @@ const SpeedTest = () => {
   return (
     <Box
       sx={{
-        width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "start",
+        justifyContent: "space-evenly",
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
-      <Stack direction="row" justifyContent="end" width="100%">
-        <Button
-          component={Link}
-          to="/"
-          sx={{
-            fontSize: "1.5rem",
-            textDecoration: "none",
-            textAlign: "center",
-            width: "10%",
-            color: "#FFF",
-            // ml: isLgScreen ? "1em" : "0em",
-          }}
-          endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
-        >
-          بازگشت
-        </Button>
-      </Stack>
-
-      <Container
-        onClick={handleStartTestClick}
-        onMouseEnter={() => setHoverButton(true)}
-        onMouseLeave={() => setHoverButton(false)}
-        sx={{
-          position: "absolute",
-          width: "300px",
-          height: "300px",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "transparent",
-          color: "#fff",
-          fontWeight: "bold",
-          cursor: "pointer",
-          marginTop: { md: "10rem", xs: "5rem" },
-          zIndex: "20",
-          ":hover": {
-            background: "#498dd615",
-          },
-          "::before": {
-            padding: "3px",
-            content: '""',
-            position: "absolute",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            border: "8px",
-            background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
-            WebkitMask:
-              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "xor",
-            maskComposite: "exclude",
-          },
-
-          animation: startAnimate ? "fadeOut 1s both" : "",
-          "@keyframes fadeOut": {
-            "0%": {
-              opacity: 1,
-            },
-
-            "100%": {
-              opacity: 0,
-            },
-          },
-        }}
-      >
-        <Typography
-          sx={{
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            zIndex: "1",
-            fontSize: "3.5rem",
-            opacity: ".7",
-          }}
-        >
-          شروع
-        </Typography>
+      <Container>
         <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            border: "2px #7FCD9F solid",
-            opacity: "0",
-            animation: hoverButton ? "" : "startRing 3.5s 3.5s infinite linear",
-
-            "@keyframes startRing": {
-              "0%": {
-                opacity: "0",
-                transform: "scale(1)",
-              },
-
-              "12.5%": {
-                opacity: "0",
-                transform: "scale(.995)",
-              },
-
-              "16.66%": {
-                opacity: "1",
-              },
-
-              "50%": {
-                opacity: 0,
-                transform: "scale(1.3)",
-              },
-            },
-          }}
-        />
+          display="flex"
+          flexDirection="row"
+          justifyContent="end"
+          alignItems="center"
+          width="90%"
+        >
+          <Button
+            component={Link}
+            to="/"
+            sx={{
+              fontSize: "1.5rem",
+              textDecoration: "none",
+              textAlign: "center",
+              width: "10%",
+              color: "#FFF",
+            }}
+            endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
+          >
+            بازگشت
+          </Button>
+        </Box>
       </Container>
+
       {!startAnimate && (
-        <Container
-          sx={{
-            position: "absolute",
-            bottom: "0",
-            top: "60%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
         >
           <Box
+            onClick={handleStartTestClick}
+            onMouseEnter={() => setHoverButton(true)}
+            onMouseLeave={() => setHoverButton(false)}
             sx={{
+              width: { lg: "300px", md: "400px", xs: "300px" },
+              height: { lg: "300px", md: "400px", xs: "300px" },
+              borderRadius: "50%",
               display: "flex",
-              flexWrap: "wrap",
+              position: "relative",
               alignItems: "center",
               justifyContent: "center",
-              gap: { md: "6rem", xs: "3rem" },
+              background: "transparent",
+              color: "#fff",
+              fontWeight: "bold",
+              cursor: "pointer",
+              zIndex: "20",
+              ":hover": {
+                background: "#498dd615",
+              },
+              "::before": {
+                padding: "3px",
+                content: '""',
+                top: "0",
+                left: "0",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                border: "8px",
+                background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+              },
+
+              animation: startAnimate ? "fadeOut 1s both" : "",
+              "@keyframes fadeOut": {
+                "0%": {
+                  opacity: 1,
+                },
+
+                "100%": {
+                  opacity: 0,
+                },
+              },
             }}
           >
-            <Stack direction="row" gap={3}>
-              <img src={earth} alt="earth" />
-              <Stack direction="column" gap={1}>
-                <Typography variant="h1" color="white">
-                  سرور مقصد
-                </Typography>
-                <Typography variant="h2" color="#57585A">
-                  تهران-امام
-                </Typography>
-                <Typography variant="h3" color="#7FCD9F">
-                  تغییر سرور
-                </Typography>
-              </Stack>
-            </Stack>
-            <Stack
-              direction="row"
-              gap={3}
-              sx={{ mr: { md: "0", xs: "0.8rem" } }}
+            <Typography
+              sx={{
+                position: "absolute",
+                fontSize: "3.5rem",
+                opacity: ".7",
+              }}
             >
-              <img src={person} alt="person" />
-              <Stack direction="column" gap={1}>
-                <Typography variant="h1" color="white">
-                  همراه اول{" "}
-                </Typography>
+              شروع
+            </Typography>
+            <Box
+              sx={{
+                position: "absolute",
+
+                width: { lg: "300px", md: "400px", xs: "300px" },
+                height: { lg: "300px", md: "400px", xs: "300px" },
+                borderRadius: "50%",
+                border: "2px #7FCD9F solid",
+                opacity: "0",
+                animation: hoverButton
+                  ? ""
+                  : "startRing 3.5s 3.5s infinite linear",
+
+                "@keyframes startRing": {
+                  "0%": {
+                    opacity: "0",
+                    transform: "scale(1)",
+                  },
+
+                  "12.5%": {
+                    opacity: "0",
+                    transform: "scale(.995)",
+                  },
+
+                  "16.66%": {
+                    opacity: "1",
+                  },
+
+                  "50%": {
+                    opacity: 0,
+                    transform: "scale(1.3)",
+                  },
+                },
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: { md: "6rem", xs: "3rem" },
+              }}
+            >
+              <Stack direction="row" gap={3}>
+                <img src={earth} alt="earth" />
+                <Stack direction="column" gap={1}>
+                  <Typography variant="h1" color="white">
+                    سرور مقصد
+                  </Typography>
+                  <Typography variant="h2" color="#57585A">
+                    تهران-امام
+                  </Typography>
+                  <Typography variant="h3" color="#7FCD9F">
+                    تغییر سرور
+                  </Typography>
+                </Stack>
+              </Stack>
+              <Stack
+                direction="row"
+                gap={3}
+                sx={{ mr: { md: "0", xs: "0.8rem" } }}
+              >
+                <img src={person} alt="person" />
+                <Stack direction="column" gap={1}>
+                  <Typography variant="h1" color="white">
+                    همراه اول{" "}
+                  </Typography>
+                  <Typography variant="h2" color="#57585A">
+                    51.15.57.153{" "}
+                  </Typography>
+                </Stack>
+              </Stack>{" "}
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h2" color="#57585A">
+                نوع اتصال
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mr: "2rem",
+              }}
+            >
+              <Stack direction="row" alignItems="center" gap={2}>
                 <Typography variant="h2" color="#57585A">
-                  51.15.57.153{" "}
+                  تکی
+                </Typography>
+                <img src={etesal} alt="etesal" />
+                <Typography variant="h2" color="#FFFFFF">
+                  چند تایی
                 </Typography>
               </Stack>
-            </Stack>{" "}
-          </Box>
+            </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography variant="h2" color="#57585A">
-              نوع اتصال
-            </Typography>
+            {/* Invisible Flex Breaker */}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              mr: "2rem",
-            }}
-          >
-            <Stack direction="row" alignItems="center" gap={2}>
-              <Typography variant="h2" color="#57585A">
-                تکی
-              </Typography>
-              <img src={etesal} alt="etesal" />
-              <Typography variant="h2" color="#FFFFFF">
-                چند تایی
-              </Typography>
-            </Stack>
-          </Box>
-
-          {/* Invisible Flex Breaker */}
-        </Container>
+        </Box>
       )}
 
       {startAnimate && (
