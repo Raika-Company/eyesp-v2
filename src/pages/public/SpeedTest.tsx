@@ -4,9 +4,9 @@ declare global {
   }
 }
 
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import DownloadGrad from "../../assets/images/download-grad.png";
+import DownloadGrad from "../../assets/images/donwload-grad.svg";
 import UploadGrad from "../../assets/images/upload-grad.png";
 import axios from "axios";
 import { Socket, io } from "socket.io-client";
@@ -20,6 +20,10 @@ import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
 import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
+import WestIcon from "@mui/icons-material/West";
+import { Link } from "react-router-dom";
+
+import ResultTest from "./ResultTest";
 const STATUS_MAP = {
   READY: 2,
   RUNNING: 3,
@@ -83,7 +87,53 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-  // const [openSelectServer, setOpenSelectServer] = useState(false);
+  function interpolateClipPath(angle) {
+    // Define the known angles and their corresponding clipPath attributes
+    const angleClipPathMap = [
+      { angle: -133.5, y: 275, borderRadius: 34 },
+      { angle: -99.584, y: 211, borderRadius: 0 },
+      // Add other known points here
+      { angle: 26.34, y: -15.84, borderRadius: 16.36 },
+    ];
+
+    // Sort by angle to ensure correct interpolation order
+    angleClipPathMap.sort((a, b) => a.angle - b.angle);
+
+    // Find the closest lower and upper bounds for the given angle
+    let lowerBound = null;
+    let upperBound = null;
+    for (const point of angleClipPathMap) {
+      if (angle >= point.angle) {
+        lowerBound = point;
+      } else {
+        upperBound = point;
+        break; // Found the immediate upper bound, exit loop
+      }
+    }
+
+    // If angle is outside the known ranges, handle edge cases
+    if (!lowerBound || !upperBound) {
+      // Return a default or edge case clipPath
+      return "defaultClipPath";
+    }
+
+    // Interpolate y and borderRadius between lowerBound and upperBound
+    const fraction =
+      (angle - lowerBound.angle) / (upperBound.angle - lowerBound.angle);
+    const interpolatedY =
+      lowerBound.y + fraction * (upperBound.y - lowerBound.y);
+    const interpolatedBorderRadius =
+      lowerBound.borderRadius +
+      fraction * (upperBound.borderRadius - lowerBound.borderRadius);
+
+    // Construct and return the interpolated clipPath string
+    return `xywh(0 ${interpolatedY}px 50% 96% round ${interpolatedBorderRadius}% 0)`;
+  }
+
+  // Example usage
+  const clipPath = interpolateClipPath(
+    calculateAngleOfCarret(download || upload || 0)
+  );
 
   useEffect(() => {
     axios
@@ -224,7 +274,10 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
-
+  console.log(
+    "DDDDD",
+    calculateAngleOfCarret(isDl ? download || 0 : upload || 0)
+  );
   return (
     <Box
       sx={{
@@ -237,6 +290,24 @@ const SpeedTest = () => {
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
       }}
     >
+      <Stack direction="row" justifyContent="end" width="100%">
+        <Button
+          component={Link}
+          to="/"
+          sx={{
+            fontSize: "1.5rem",
+            textDecoration: "none",
+            textAlign: "center",
+            width: "10%",
+            color: "#FFF",
+            // ml: isLgScreen ? "1em" : "0em",
+          }}
+          endIcon={<WestIcon sx={{ marginRight: "1em" }} />}
+        >
+          بازگشت
+        </Button>
+      </Stack>
+
       <Container
         onClick={handleStartTestClick}
         onMouseEnter={() => setHoverButton(true)}
@@ -253,7 +324,7 @@ const SpeedTest = () => {
           color: "#fff",
           fontWeight: "bold",
           cursor: "pointer",
-          marginTop: "5rem",
+          marginTop: { md: "10rem", xs: "5rem" },
           zIndex: "20",
           ":hover": {
             background: "#498dd615",
@@ -351,10 +422,9 @@ const SpeedTest = () => {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              gap: "6rem",
+              gap: { md: "6rem", xs: "3rem" },
             }}
           >
-            {" "}
             <Stack direction="row" gap={3}>
               <img src={earth} alt="earth" />
               <Stack direction="column" gap={1}>
@@ -369,7 +439,11 @@ const SpeedTest = () => {
                 </Typography>
               </Stack>
             </Stack>
-            <Stack direction="row" gap={3}>
+            <Stack
+              direction="row"
+              gap={3}
+              sx={{ mr: { md: "0", xs: "0.8rem" } }}
+            >
               <img src={person} alt="person" />
               <Stack direction="column" gap={1}>
                 <Typography variant="h1" color="white">
@@ -434,6 +508,7 @@ const SpeedTest = () => {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
+            // padding="2rem"
           >
             <Stack direction="row" gap={10}>
               <Stack direction="row" gap={1} alignItems="start">
@@ -510,7 +585,7 @@ const SpeedTest = () => {
           </Box>
           <Box
             sx={{
-              width: "380px",
+              width: "375px",
               height: "380px",
               overflow: "hidden",
               display: "flex",
@@ -520,6 +595,7 @@ const SpeedTest = () => {
               position: "relative",
               borderRadius: "50%",
               marginTop: "1rem",
+              // padding: "2rem",
             }}
           >
             <Box
@@ -821,9 +897,7 @@ const SpeedTest = () => {
                     zIndex: "-5",
                     width: "380px",
                     height: "380px",
-                    clipPath: "circle(41% at 24% 100%)",
-                    // clipPath: "circle(35% at 33% 100%)",
-                    // clipPath: "circle(50% at 51.0% 100%)",
+                    clipPath: clipPath,
                     transition: "clip-path .1s ease-in-out",
                   }}
                 />
@@ -851,7 +925,8 @@ const SpeedTest = () => {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              gap: "6rem",
+              gap: { md: "6rem", xs: "3rem" },
+              // padding: "2rem",
             }}
           >
             {" "}
@@ -884,6 +959,7 @@ const SpeedTest = () => {
         </Box>
       )}
     </Box>
+    // <ResultTest />
   );
 };
 

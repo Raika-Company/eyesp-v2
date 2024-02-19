@@ -41,8 +41,8 @@ const ResultTest = () => {
     <Box
       sx={{
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+        height: "100dvh",
       }}
-      height="100dvh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -51,10 +51,13 @@ const ResultTest = () => {
       <Container>
         <Box
           display="flex"
-          flexDirection="row"
-          justifyContent="start"
+          height="100dvh"
+          overflow="auto"
+          flexWrap="wrap"
+          justifyContent="center"
           alignItems="center"
           gap={13}
+          padding={3}
         >
           <Stack direction="row">
             <img src={go} alt="go" />

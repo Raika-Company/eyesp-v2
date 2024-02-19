@@ -246,14 +246,14 @@ const LeftSide: React.FC = () => {
           <NumberValue
             title="Upload"
             value={
-              loading || !networkState ? 0 : networkState.uploadAverage || 0
+              loading || !networkState ? 8 : networkState.uploadAverage || 0
             }
             unit="mbps"
           />
           <NumberValue
             title="Download"
             value={
-              loading || !networkState ? 0 : networkState.downloadAverage || 0
+              loading || !networkState ? 7 : networkState.downloadAverage || 0
             }
             unit="mbps"
           />
