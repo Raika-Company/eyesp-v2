@@ -88,6 +88,46 @@ interface Operator {
 }
 type ChartData = ChartReturnType | null;
 const Operators: React.FC = () => {
+  const mockChartData: ChartReturnType = {
+    id: "string",
+    data: {
+      download: [
+        { name: "January", value: 400 },
+        { name: "February", value: 300 },
+        { name: "March", value: 200 },
+        { name: "April", value: 278 },
+        { name: "May", value: 189 },
+      ],
+      upload: [
+        { name: "March", value: 200 },
+        { name: "April", value: 278 },
+        { name: "May", value: 189 },
+        { name: "January", value: 400 },
+        { name: "February", value: 300 },
+      ],
+      ping: [
+        { name: "January", value: 400 },
+        { name: "February", value: 300 },
+        { name: "March", value: 200 },
+        { name: "April", value: 278 },
+        { name: "May", value: 189 },
+      ],
+      packet_loss: [
+        { name: "January", value: 400 },
+        { name: "February", value: 300 },
+        { name: "March", value: 200 },
+        { name: "April", value: 278 },
+        { name: "May", value: 189 },
+      ],
+      jitter: [
+        { name: "January", value: 400 },
+        { name: "February", value: 300 },
+        { name: "March", value: 200 },
+        { name: "April", value: 278 },
+        { name: "May", value: 189 },
+      ],
+    },
+  };
   const theme = useTheme();
   const [province, setProvince] = useState("");
   const [selectedISP, setSelectedISP] = useState("");
@@ -135,11 +175,17 @@ const Operators: React.FC = () => {
               console.log(response.data);
               setChartData(response.data);
             } else {
-              // Handle the case where data is undefined
               console.error("Data is undefined");
+              setChartData(mockChartData);
             }
           })
-          .catch((err) => console.error(err));
+          .catch((error) => {
+            console.error(
+              "Failed to fetch chart data, using mock data instead.",
+              error
+            );
+            setChartData(mockChartData);
+          });
         break;
       case "ماهانه":
         api.Chart.getMonthsChart()
@@ -149,7 +195,7 @@ const Operators: React.FC = () => {
               console.log(response.data);
               setChartData(response.data);
             } else {
-              // Handle the case where data is undefined
+              setChartData(mockChartData);
               console.error("Data is undefined");
             }
           })
@@ -163,7 +209,7 @@ const Operators: React.FC = () => {
               console.log(response.data);
               setChartData(response.data);
             } else {
-              // Handle the case where data is undefined
+              setChartData(mockChartData);
               console.error("Data is undefined");
             }
           })
@@ -177,7 +223,7 @@ const Operators: React.FC = () => {
               console.log(response.data);
               setChartData(response.data);
             } else {
-              // Handle the case where data is undefined
+              setChartData(mockChartData);
               console.error("Data is undefined");
             }
           })
@@ -186,48 +232,16 @@ const Operators: React.FC = () => {
       default:
         api.Chart.getYearsChart()
           .then((response) => setChartData(response.data))
-          .catch((err) => console.error(err));
+          .catch((error) => {
+            console.error(
+              "Failed to fetch chart data, using mock data instead.",
+              error
+            );
+            setChartData(mockChartData);
+          });
         break;
     }
   };
-
-  // const filteredData = (): ChartReturnType | null => {
-  //   if (!chartData) return null;
-
-  //   // Initialize an object that conforms to the structure of ChartReturnType
-  //   const result: ChartReturnType = {
-  //     id: chartData.id, // Assuming id is needed as part of the return
-  //     data: {
-  //       download: [], // Default empty arrays or ideally, keep original data if needed
-  //       upload: [],
-  //       ping: [],
-  //       packet_loss: [],
-  //       jitter: [],
-  //     },
-  //   };
-
-  //   // Based on selectedMetric, filter and assign the data accordingly
-  //   switch (selectedMetric) {
-  //     case "آپلود":
-  //       result.data.upload = chartData.data.upload;
-  //       break;
-  //     case "جیتر":
-  //       result.data.jitter = chartData.data.jitter;
-  //       break;
-  //     case "پینگ":
-  //       result.data.ping = chartData.data.ping;
-  //       break;
-  //     case "پکت لاس":
-  //       result.data.packet_loss = chartData.data.packet_loss;
-  //       break;
-  //     // Add cases for other metrics as necessary
-  //     default:
-  //       return chartData; // Return original data if no metric matches
-  //   }
-
-  //   // Cast to ChartReturnType since we're initializing result as a Partial<ChartReturnType>
-  //   return result as ChartReturnType;
-  // };
 
   const handleProvinceChange = (event: SelectChangeEvent<unknown>) => {
     setProvince(event.target.value as string);
@@ -254,8 +268,15 @@ const Operators: React.FC = () => {
   useEffect(() => {
     api.Chart.getYearsChart()
       .then((response) => setChartData(response.data))
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        console.error(
+          "Failed to fetch chart data, using mock data instead.",
+          error
+        );
+        setChartData(mockChartData);
+      });
   }, []);
+
   return (
     <>
       <Header
@@ -339,29 +360,29 @@ const Operators: React.FC = () => {
           >
             <InfoItem
               title="سرعت دانلود"
-              value={averageDetail?.downloadAverage || "N/A"}
+              value={averageDetail?.downloadAverage || "3"}
               isLoading={isloading}
             />
             {/* <InfoItem title="سرعت دانلود" value="18Mbps" /> */}
             <InfoItem
               title="سرعت آپلود"
-              value={averageDetail?.packetLossAverage || "N/A"}
+              value={averageDetail?.packetLossAverage || "5"}
               isLoading={isloading}
             />
             <InfoItem
               title="پینگ"
-              value={averageDetail?.pingAverage || "N/A"}
+              value={averageDetail?.pingAverage || "6"}
               isLoading={isloading}
             />
             <InfoItem
               title="جیتر"
-              value={averageDetail?.jitterAverage || "N/A"}
+              value={averageDetail?.jitterAverage || "9"}
               isLoading={isloading}
             />
             <InfoItem title="رتبه کشوری" value="2" />
             <InfoItem
               title="رتبه جهانی"
-              value={averageDetail?.speedAverage || "N/A"}
+              value={averageDetail?.speedAverage || "5"}
               isLoading={isloading}
             />
           </Box>

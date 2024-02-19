@@ -1,6 +1,12 @@
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 
-const RefreshIcon = (props: SvgIconProps) => {
+/**
+ * RefreshIcon component.
+ * A custom SVG icon representing a refresh or reload action.
+ * @param {SvgIconProps} props - SVG icon properties.
+ * @returns {React.ReactElement} - React component representing the RefreshIcon.
+ */
+const RefreshIcon = (props: SvgIconProps): React.ReactElement => {
   return (
     <SvgIcon {...props} viewBox="0 0 29 28">
       <svg

@@ -21,6 +21,9 @@ import { MetricsReturnType } from "../../services/dashboard/metrics";
 import api from "../../services";
 import { toast } from "react-toastify";
 
+/**
+ * Mock data for conflicts displayed in the current state.
+ */
 const ConflictsData = [
   {
     id: 1,
@@ -36,6 +39,9 @@ const ConflictsData = [
   },
 ];
 
+/**
+ * Mock data for conflicts' historical information.
+ */
 const conflictsHistoryMockData = [
   {
     id: 11,
@@ -67,6 +73,14 @@ const conflictsHistoryMockData = [
   },
 ];
 
+/**
+ * Functional React component representing the left side of the application.
+ * This component displays current conflicts, historical conflict information,
+ * and the overall average metrics.
+ *
+ * @returns {React.FC} A functional React component representing the left side of the application.
+ */
+
 const LeftSide: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -74,11 +88,12 @@ const LeftSide: React.FC = () => {
   const isLgScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const isMdScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const isXlgScreen = useMediaQuery(theme.breakpoints.up("x2"));
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [metricsData, setMetricsData] = useState<MetricsReturnType | null>(
     null
   );
-  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     setLoading(true);
     api.metrics
@@ -94,6 +109,9 @@ const LeftSide: React.FC = () => {
       });
   }, []);
 
+  /**
+ * Navigates to the average metrics page.
+ */
   const navigateToAverage = () => {
     navigate("/private/average");
   };

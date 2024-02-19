@@ -22,6 +22,9 @@ import calculateScale from "../../utils/convertWindowToScaleForMap";
 
 const provinceCoords = provinceCoordsData as ProvinceCoordsType;
 
+/**
+ * Props interface for the Map component.
+ */
 interface Props {
   isPrivate?: boolean;
   isScreenShot?: boolean;
@@ -31,6 +34,11 @@ interface Props {
   setScale: (scale: number) => void;
 }
 
+/**
+ * Functional component representing a map.
+ * @param {Props} props - The props for the Map component.
+ * @returns {JSX.Element} - React JSX element representing the map.
+ */
 const Map: FC<Props> = ({
   isPrivate = false,
   isScreenShot = false,
@@ -115,14 +123,14 @@ const Map: FC<Props> = ({
 
   const [provinceData, setProvinceData] = useState<
     | {
-        id: number;
-        name: string;
-        color: string;
-        igw: string;
-        ipx: string;
-        igwColor: string;
-        ipxColor: string;
-      }[]
+      id: number;
+      name: string;
+      color: string;
+      igw: string;
+      ipx: string;
+      igwColor: string;
+      ipxColor: string;
+    }[]
     | null
   >(null);
 
@@ -166,12 +174,12 @@ const Map: FC<Props> = ({
               is4XlgScreen
                 ? "1600"
                 : is3XlgScreen
-                ? "1500"
-                : is2XlgScreen
-                ? "1400"
-                : isXlgScreen
-                ? "1200"
-                : "1000"
+                  ? "1500"
+                  : is2XlgScreen
+                    ? "1400"
+                    : isXlgScreen
+                      ? "1200"
+                      : "1000"
             }
             height="950"
             viewBox={"-1200 -500 5000 3500"}
@@ -186,20 +194,20 @@ const Map: FC<Props> = ({
               cursor: dragging
                 ? "grabbing"
                 : scale !== 1
-                ? "pointer"
-                : "initial",
+                  ? "pointer"
+                  : "initial",
             }}
             onMouseDown={startDrag}
             onMouseMove={onDrag}
             onMouseUp={endDrag}
             onMouseLeave={endDrag}
-            // onClick={() => {
-            //   if (isPrivate) {
-            //     navigate("/last-disorders");
-            //   } else {
-            //     navigate("/disorders");
-            //   }
-            // }}
+          // onClick={() => {
+          //   if (isPrivate) {
+          //     navigate("/last-disorders");
+          //   } else {
+          //     navigate("/disorders");
+          //   }
+          // }}
           >
             <MapPaths
               provinceList={isPrivate ? mockProvinceListsForPrivate : {}}

@@ -1,5 +1,8 @@
 import api from "../services";
 
+/**
+ * Type definition for the coordinates of provinces.
+ */
 export type ProvinceCoordsType = {
   [key: string]: {
     name: string;
@@ -9,6 +12,10 @@ export type ProvinceCoordsType = {
   };
 };
 
+/**
+ * Fetches data for provinces including ping statuses.
+ * @returns Array of objects representing province data.
+ */
 export const getProvinceData = async () => {
   const data = await Promise.all([
     api.pingStatuses.getTehranPingStatus().then((res) => res.data),
@@ -47,12 +54,21 @@ export const getProvinceData = async () => {
   ];
 };
 
+/**
+ * Mock province lists for private use.
+ */
 export const mockProvinceListsForPrivate = {
   tehran: "#BD2626",
   qom: "#B68A19",
   isfahan: "#7FCD9F",
 };
 
+/**
+ * Determines the color based on the IXP and IGW colors.
+ * @param ixp - The color of the IXP.
+ * @param igw - The color of the IGW.
+ * @returns Color string.
+ */
 export const getColor = (ixp: string, igw: string): string => {
   if (ixp === "green" && igw === "green") {
     return "#1CC760";
@@ -63,6 +79,11 @@ export const getColor = (ixp: string, igw: string): string => {
   } else return "#1CC760";
 };
 
+/**
+ * Determines the state color based on the provided value.
+ * @param value - The value indicating the state color.
+ * @returns Color string.
+ */
 export const getStateColor = (value: string): string => {
   if (value === "green") {
     return "#1CC760";
@@ -73,6 +94,11 @@ export const getStateColor = (value: string): string => {
   } else return "#1CC760";
 };
 
+/**
+ * Determines the status based on the provided color.
+ * @param color - The color indicating the status.
+ * @returns Status string.
+ */
 export const getStatus = (color: string): string => {
   switch (color) {
     case "green":

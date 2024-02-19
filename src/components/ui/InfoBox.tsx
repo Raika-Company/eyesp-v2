@@ -2,6 +2,9 @@ import { Box, Stack, Typography } from "@mui/material";
 import { FC, ReactNode } from "react";
 import ArrowLeft from "../../assets/images/arrow-left.svg";
 
+/**
+ * Props interface for the InfoBox component.
+ */
 interface Props {
   title: string;
   iconPath: string;
@@ -10,6 +13,11 @@ interface Props {
   onClick?: () => void;
 }
 
+/**
+ * Functional component representing an information box.
+ * @param {Props} props - The props for the InfoBox component.
+ * @returns {JSX.Element} - React JSX element representing the information box.
+ */
 const InfoBox: FC<Props> = ({
   title,
   iconPath,

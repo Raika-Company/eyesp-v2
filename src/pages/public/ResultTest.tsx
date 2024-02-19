@@ -6,7 +6,17 @@ import person from "../../assets/images/person.svg";
 import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
 import ping from "../../assets/images/ping.svg";
+
+/**
+ * Functional component representing the result display after the speed test.
+ *
+ * The `ResultTest` component is responsible for rendering the results of the speed test,
+ * including details about the connection, server information, and final download/upload rates.
+ * It uses Material-UI components for styling and layout, creating an aesthetically pleasing
+ * and informative result display.
+ */
 const ResultTest = () => {
+  // Details about the connection and server
   const detail = [
     {
       imgSrc: etesal,
@@ -24,6 +34,7 @@ const ResultTest = () => {
       subtitle: "تهران-امام",
     },
   ];
+  // Final results including download and upload rates
   const finalResult = [
     {
       id: 1,
@@ -41,8 +52,8 @@ const ResultTest = () => {
     <Box
       sx={{
         background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+        height: "100dvh",
       }}
-      height="100dvh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -51,10 +62,13 @@ const ResultTest = () => {
       <Container>
         <Box
           display="flex"
-          flexDirection="row"
-          justifyContent="start"
+          height="100dvh"
+          overflow="auto"
+          flexWrap="wrap"
+          justifyContent="center"
           alignItems="center"
           gap={13}
+          padding={3}
         >
           <Stack direction="row">
             <img src={go} alt="go" />

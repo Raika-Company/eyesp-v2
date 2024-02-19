@@ -1,13 +1,39 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
-interface Props {
+/**
+ * Props interface for the BadgedValue component.
+ */
+interface BadgedValueProps {
+  /**
+   * The name of the badge.
+   */
   badgeName: string;
+
+  /**
+   * The numeric value to be displayed.
+   */
   value: number;
+
+  /**
+   * The unit of measurement for the value. Defaults to "Mbps".
+   */
   unit?: string;
 }
 
-const BadgedValue: FC<Props> = ({ badgeName, value, unit = "Mbps" }) => {
+/**
+ * A functional React component that displays a numeric value with an associated badge.
+ * This component is designed to visually represent a specific metric or measurement.
+ *
+ * @component
+ * @param {BadgedValueProps} props - The properties of the BadgedValue component.
+ * @returns {JSX.Element} A JSX.Element representing the BadgedValue component.
+ *
+ * @example
+ * // Example usage of BadgedValue component
+ * <BadgedValue badgeName="Download Speed" value={25} unit="Mbps" />
+ */
+const BadgedValue: FC<BadgedValueProps> = ({ badgeName, value, unit = "Mbps" }) => {
   return (
     <Box
       sx={{

@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { ReactElement, lazy } from "react";
 const Dashboard = lazy(() => import("../pages/public/Dashboard"));
 const GlobalOverview = lazy(() => import("../pages/public/GlobalOverview"));
 const ISP = lazy(() => import("../pages/public/ISP"));
@@ -14,7 +14,19 @@ const Chart = lazy(() => import("../pages/private/Chat"));
 import SpeedTest from "../pages/public/SpeedTest";
 import NotFound from "../features/notfound/NotFound";
 
-export const mainRoutes = [
+/**
+ * Type definition for a main route in the application.
+ */
+export interface MainRoute {
+  path: string;
+  element: ReactElement;
+  title: string;
+}
+
+/**
+ * Main routes for the public section of the application.
+ */
+export const mainRoutes: MainRoute[] = [
   {
     path: "/",
     element: <Dashboard />,
@@ -52,7 +64,10 @@ export const mainRoutes = [
   },
 ];
 
-export const privateMainRoutes = [
+/**
+ * Main routes for the private section of the application.
+ */
+export const privateMainRoutes: MainRoute[] = [
   {
     path: "/private",
     element: <PrivateDashboard />,

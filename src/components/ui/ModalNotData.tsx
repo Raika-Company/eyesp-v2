@@ -2,17 +2,25 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Modal, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Represents the details of a status at a specific time.
+ */
 interface StatusDetail {
     time: string;
     status: string;
 }
 
-
+/**
+ * Represents the hourly status information.
+ */
 interface HourlyStatus {
     hour: string;
     details: StatusDetail[];
 }
 
+/**
+ * Represents the server status information.
+ */
 interface ServerStatus {
     name: string;
     url: string;
@@ -20,10 +28,18 @@ interface ServerStatus {
     hourly_status: HourlyStatus[];
 }
 
+/**
+ * Props for the ModalNotData component.
+ */
 type ModalNotDataProps = {
     serverStatusData: ServerStatus[] | null;
 };
 
+/**
+ * Displays a modal when server data is not available.
+ * @component
+ * @param {ModalNotDataProps} props - The component props
+ */
 const ModalNotData: React.FC<ModalNotDataProps> = ({ serverStatusData }) => {
     const navigate = useNavigate();
     const theme = useTheme();

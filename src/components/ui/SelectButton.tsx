@@ -1,5 +1,13 @@
 import { Select, styled } from "@mui/material";
 
+/**
+ * A styled component for a custom Select button.
+ *
+ * This component provides a styled button for a custom Select. It extends the
+ * base MUI `Select` component with additional styles for a customized appearance.
+ *
+ * @component
+ * **/
 const SelectButton = styled(Select)({
   height: "60%",
   borderRadius: "1.25rem",
@@ -20,9 +28,9 @@ const SelectButton = styled(Select)({
     border: 0,
   },
   ".css-1t0qkoj-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1t0qkoj-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1t0qkoj-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-    {
-      paddingRight: "5rem",
-    },
+  {
+    paddingRight: "5rem",
+  },
 });
 
 export { SelectButton };

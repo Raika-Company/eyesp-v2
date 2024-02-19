@@ -25,9 +25,12 @@ import { ChartReturnType } from "../../services/Chart";
  * Props for the Chart component.
  * @param title The title of the chart.
  * @param desc Description of the chart.
- * @param selectedISP The currently selected ISP.
- * @param province The selected province.
- * @param category The selected category for data representation.
+ * @param selectedISP - The currently selected Internet Service Provider.
+ * @param province - The selected province for chart data.
+ * @param category - The selected category for data representation.
+ * @param selectedMetric - The currently selected metric for the chart.
+ * @param setSelectedMetric - Callback function to set the selected metric.
+ * @param chartData - The data used for rendering the chart.
  */
 interface ChartProps {
   title: string;
@@ -63,7 +66,7 @@ interface CustomTooltipProps {
  * @returns An array of data objects for the chart. Each object has a 'name' (string) and a 'uv' (number).
  */
 
-const steps: string[] = ["دانلود", "آپلود", "پینگ", "پکت لاس", "جیتر"];
+const steps: string[] = ["دانلود", "آپلود", "پینگ", "پکت_لاس", "جیتر"];
 
 /**
  * A custom tooltip component for the chart.
@@ -89,7 +92,7 @@ const Chart: React.FC<ChartProps> = ({
   desc,
   chartData,
   selectedMetric = "",
-  setSelectedMetric = () => {},
+  setSelectedMetric = () => { },
 }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -100,49 +103,6 @@ const Chart: React.FC<ChartProps> = ({
     setSelectedMetric(event.target.value as string);
   };
 
-  // const filteredData = (): ChartReturnType | null => {
-  //   if (!chartData) return null;
-
-  //   // Initialize an object that conforms to the structure of ChartReturnType
-  //   let result: Partial<ChartReturnType> = {
-  //     id: chartData.id,
-  //     data: {
-  //       download: [],
-  //       upload: [],
-  //       ping: [],
-  //       packet_loss: [],
-  //       jitter: [],
-  //     },
-  //   };
-
-  //   switch (selectedMetric) {
-  //     case "دانلود":
-  //       console.log(chartData.data.download);
-
-  //       result.data.download = chartData.data.download;
-  //       break;
-  //     case "آپلود":
-  //       result.data.upload = chartData.data.upload;
-  //       break;
-  //     case "جیتر":
-  //       result.data.jitter = chartData.data.jitter;
-  //       break;
-  //     case "پینگ":
-  //       console.log(chartData.data.ping);
-
-  //       result.data.ping = chartData.data.ping;
-  //       break;
-  //     case "پکت لاس":
-  //       result.data.packet_loss = chartData.data.packet_loss;
-  //       break;
-  //     default:
-  //       console.log(chartData.data.download);
-  //       result.data.download = chartData.data.download;
-  //       break;
-  //   }
-
-  //   return result as ChartReturnType;
-  // };
   const metricMapping = {
     دانلود: "download",
     آپلود: "upload",
@@ -155,12 +115,12 @@ const Chart: React.FC<ChartProps> = ({
 
     const dataKey =
       metricMapping[
-        selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
+      selectedMetric as "دانلود" | "آپلود" | "پینگ" | "پکت_لاس" | "جیتر"
       ];
 
     const metricData =
       chartData.data[
-        dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
+      dataKey as "download" | "upload" | "ping" | "packet_loss" | "jitter"
       ];
 
     if (!metricData) {
@@ -212,9 +172,9 @@ const Chart: React.FC<ChartProps> = ({
             sx={{
               px: "1.1em",
               ".css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-v3zyv7-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-                {
-                  paddingRight: "0em",
-                },
+              {
+                paddingRight: "0em",
+              },
               height: "40px",
               bgcolor: "#232629",
               color: "#FFF",
