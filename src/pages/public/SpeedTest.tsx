@@ -122,7 +122,7 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-  function interpolateClipPath(angle) {
+  function interpolateClipPath(angle: number | undefined) {
     // Define the known angles and their corresponding clipPath attributes
     const angleClipPathMap = [
       { angle: -133.5, y: 275, borderRadius: 34 },
@@ -138,11 +138,13 @@ const SpeedTest = () => {
     let lowerBound = null;
     let upperBound = null;
     for (const point of angleClipPathMap) {
-      if (angle >= point.angle) {
-        lowerBound = point;
-      } else {
-        upperBound = point;
-        break; // Found the immediate upper bound, exit loop
+      if (angle !== undefined) {
+        if (angle >= point.angle) {
+          lowerBound = point;
+        } else {
+          upperBound = point;
+          break; // Found the immediate upper bound, exit loop
+        }
       }
     }
 
@@ -153,16 +155,18 @@ const SpeedTest = () => {
     }
 
     // Interpolate y and borderRadius between lowerBound and upperBound
-    const fraction =
-      (angle - lowerBound.angle) / (upperBound.angle - lowerBound.angle);
-    const interpolatedY =
-      lowerBound.y + fraction * (upperBound.y - lowerBound.y);
-    const interpolatedBorderRadius =
-      lowerBound.borderRadius +
-      fraction * (upperBound.borderRadius - lowerBound.borderRadius);
+    if (angle !== undefined) {
+      const fraction =
+        (angle - lowerBound.angle) / (upperBound.angle - lowerBound.angle);
+      const interpolatedY =
+        lowerBound.y + fraction * (upperBound.y - lowerBound.y);
+      const interpolatedBorderRadius =
+        lowerBound.borderRadius +
+        fraction * (upperBound.borderRadius - lowerBound.borderRadius);
 
-    // Construct and return the interpolated clipPath string
-    return `xywh(0 ${interpolatedY}px 50% 96% round ${interpolatedBorderRadius}% 0)`;
+      // Construct and return the interpolated clipPath string
+      return `xywh(0 ${interpolatedY}px 50% 96% round ${interpolatedBorderRadius}% 0)`;
+    }
   }
 
   // Example usage
