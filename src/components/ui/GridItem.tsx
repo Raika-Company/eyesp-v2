@@ -56,9 +56,10 @@ const statusLineStyle = (index: number, total: number) => {
  */
 interface GridItemProps {
     data: WebsiteData;
+    type: string | null;
 }
 
-const GridItem: React.FC<GridItemProps> = ({ data }) => {
+const GridItem: React.FC<GridItemProps> = ({ data, type }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery("(max-width:600px)");
     const isMiniMobile = useMediaQuery("(max-width:350px)");
@@ -145,7 +146,11 @@ const GridItem: React.FC<GridItemProps> = ({ data }) => {
                 sx={{ textTransform: "uppercase" }}
             >
                 <img
-                    src={`/images/${data.name}.svg`}
+                    src={
+                        type === "internal"
+                            ? `/images/Internal/${data.name}.svg`
+                            : `/images/External/${data.name}.svg`
+                    }
                     alt={data.name}
                     width={60}
                     height={60}

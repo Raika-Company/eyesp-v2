@@ -94,7 +94,7 @@ const GlobalOverview: React.FC = () => {
         {serverData ? (
           <Grid container rowSpacing={4} paddingY="1rem">
             {serverData.map((dataItem, index) => (
-              <GridItem key={index} data={dataItem} />
+              <GridItem key={index} data={dataItem} type={type} />
             ))}
           </Grid>
         ) : (
