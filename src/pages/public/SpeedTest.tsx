@@ -16,13 +16,13 @@ import { Socket, io } from "socket.io-client";
 import useFetchServers from "../../hooks/useFetchServers";
 import PulsedNumber from "../../components/ui/PulsedNumber";
 import earth from "../../assets/images/earth.svg";
-import etesal from "../../assets/images/etesal.svg";
 import person from "../../assets/images/person.svg";
 import download_blue from "../../assets/images/download_blue.svg";
 import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
 import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
+import donwload_gray from "../../assets/images/download-gray.svg";
 import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
 import ResultTest from "./ResultTest";
@@ -31,6 +31,7 @@ import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 import AnimatingNumber from "./AnimatingNumber";
 import useDebounceTime from "../../hooks/useDebounceTime";
 import FloatingResult from "./FloatingResult";
+import SwitchBtn from "./SwitchBtn";
 
 /**
  * Enum representing status codes for the speed test.
@@ -158,11 +159,11 @@ const SpeedTest = () => {
 
   const [latency, setLatency] = useState(0);
   const [download, setDownload] = useState(0);
-  const [_downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   const [upload, setUpload] = useState(0);
-  const [_uploadProgress, setUploadProgress] = useState(0);
-  // const [testType, setTestType] = useState("تست دقیق");
-  const [_testStateNumber, setTestStateNumber] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [testType, setTestType] = useState("تست دقیق");
+  const [testStateNumber, setTestStateNumber] = useState(0);
   const [isDl, setIsDl] = useState(true);
   const [clientIp, setClientIp] = useState("");
   const { isFetchingServers, selectBestServer } = useFetchServers();
@@ -177,6 +178,8 @@ const SpeedTest = () => {
       // Add other known points here
       { angle: 26.34, y: -15.84, borderRadius: 16.36 },
     ];
+    console.log("ping", latency);
+    console.log("download", download);
 
     // Sort by angle to ensure correct interpolation order
     angleClipPathMap.sort((a, b) => a.angle - b.angle);
@@ -405,7 +408,6 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
-  const debounceValue = useDebounceTime(isDl ? download : upload);
 
   return (
     <Box
@@ -606,15 +608,11 @@ const SpeedTest = () => {
                 mr: "2rem",
               }}
             >
-              <Stack direction="row" alignItems="center" gap={2}>
-                <Typography variant="h2" color="#57585A">
-                  تکی
-                </Typography>
-                <img src={etesal} alt="etesal" />
-                <Typography variant="h2" color="#FFFFFF">
-                  چند تایی
-                </Typography>
-              </Stack>
+              <SwitchBtn
+                textOn="تست دقیق"
+                textOff="تست فوری"
+                onChange={setTestType}
+              />{" "}
             </Box>
 
             {/* Invisible Flex Breaker */}
@@ -643,40 +641,90 @@ const SpeedTest = () => {
             // padding="2rem"
           >
             <Stack direction="row" gap={10}>
-              <Stack direction="row" gap={1} alignItems="start">
-                <img src={download_green} alt="download" />
-                <Stack direction="column">
-                  <Typography variant="h1" color="white">
-                    دانلود
-                  </Typography>
-                  <Box
-                    width="100%"
-                    borderBottom="2px solid #57585A"
-                    sx={{ marginTop: "1rem" }}
-                  />
-                </Stack>
+              {isDl && (
+                <>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={download_green} alt="download" />
+                    <Stack direction="column">
+                      <Typography variant="h1" color="white">
+                        دانلود
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #FFFFFF"
+                        sx={{ marginTop: "1rem" }}
+                      />
+                    </Stack>
 
-                <Typography variant="h1" color="#57585A">
-                  Mbps
-                </Typography>
-              </Stack>
-              <Stack direction="row" gap={1} alignItems="start">
-                <img src={upload_Gray} alt="download" />
-                <Stack direction="column">
-                  <Typography variant="h1" color="white">
-                    آپلود{" "}
-                  </Typography>
-                  <Box
-                    width="100%"
-                    borderBottom="2px solid #57585A"
-                    sx={{ marginTop: "1rem" }}
-                  />{" "}
-                </Stack>
+                    <Typography variant="h1" color="white">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={upload_Gray} alt="download" />
+                    <Stack direction="column">
+                      <Typography
+                        variant="h1"
+                        color="white"
+                        sx={{ opacity: "0.5" }}
+                      >
+                        آپلود{" "}
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #57585A"
+                        sx={{ marginTop: "1rem", opacity: "0.5" }}
+                      />{" "}
+                    </Stack>
 
-                <Typography variant="h1" color="#57585A">
-                  Mbps
-                </Typography>
-              </Stack>
+                    <Typography variant="h1" color="#57585A">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                </>
+              )}{" "}
+              {!isDl && (
+                <>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={donwload_gray} alt="download" />
+                    <Stack direction="column">
+                      <Typography
+                        variant="h1"
+                        color="white"
+                        sx={{ opacity: "0.5" }}
+                      >
+                        دانلود
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #57585A"
+                        sx={{ marginTop: "1rem", opacity: "0.5" }}
+                      />
+                    </Stack>
+
+                    <Typography variant="h1" color="#57585A">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={upload_purple} alt="download" />
+                    <Stack direction="column">
+                      <Typography variant="h1" color="white">
+                        آپلود{" "}
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #FFFFFF"
+                        sx={{ marginTop: "1rem" }}
+                      />{" "}
+                    </Stack>
+
+                    <Typography variant="h1" color="white">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                </>
+              )}
             </Stack>
             <Stack
               direction="row"

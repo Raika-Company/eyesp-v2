@@ -6,7 +6,10 @@ import "./AnimatingNumber.css";
 
 // Helper function doesn't need changes for TypeScript, but let's add return type
 const formatForDisplay = (number: number = 0): string[] => {
-  return parseFloat(Math.max(number, 0)).toFixed(2).split("").reverse();
+  return parseFloat(Math.max(number, 0).toString())
+    .toFixed(2)
+    .split("")
+    .reverse();
 };
 
 interface NumberColumnProps {
@@ -18,7 +21,7 @@ const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
   const numberColumnRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<number>(0);
   const [animationClass, setAnimationClass] = useState<string | null>(null);
-  const previousDigit = usePrevious<string>(digit);
+  const previousDigit = usePrevious(digit);
   const columnContainer = useRef<HTMLDivElement>(null);
 
   const setColumnToNumber = (number: string) => {
@@ -82,15 +85,15 @@ interface AnimatingNumberProps {
 const AnimatingNumber = ({ value }: AnimatingNumberProps) => {
   const theme = useTheme();
   const numArray = formatForDisplay(value);
-  const previousNumber = usePrevious<number>(value);
+  const previousNumber = usePrevious(value.toString());
 
   let delta: string | null = null;
   if (previousNumber !== undefined) {
-    // Ensure previousNumber is not undefined
+    const previousNum = parseFloat(previousNumber); // Convert previousNumber to a number
     delta =
-      value > previousNumber
+      value > previousNum
         ? "increase"
-        : value < previousNumber
+        : value < previousNum
         ? "decrease"
         : null;
   }
