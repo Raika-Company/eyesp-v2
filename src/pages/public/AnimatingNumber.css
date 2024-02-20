@@ -1,0 +1,29 @@
+.ticker-column.increase {
+  animation: pulseGreen 600ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.ticker-column.decrease {
+  animation: pulseRed 600ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes pulseGreen {
+  0%,
+  100% {
+    color: #fff;
+  }
+
+  50% {
+    color: aquamarine;
+  }
+}
+
+@keyframes pulseRed {
+  0%,
+  100% {
+    color: #fff;
+  }
+
+  50% {
+    color: crimson;
+  }
+}

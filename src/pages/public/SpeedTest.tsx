@@ -28,6 +28,8 @@ import { Link } from "react-router-dom";
 import ResultTest from "./ResultTest";
 import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
+import AnimatingNumber from "./AnimatingNumber";
+import useDebounceTime from "../../hooks/useDebounceTime";
 
 /**
  * Enum representing status codes for the speed test.
@@ -402,6 +404,7 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
+  const debounceValue = useDebounceTime(isDl ? download : upload);
 
   return (
     <Box
@@ -701,13 +704,10 @@ const SpeedTest = () => {
                   62{" "}
                 </Typography>
                 <img src={download_blue} alt="download" />
-                <Typography variant="h1" color="white">
-                  62{" "}
-                </Typography>
+                <AnimatingNumber value={debounceValue} />
+
                 <img src={upload_purple} alt="upload" />
-                <Typography variant="h1" color="white">
-                  62{" "}
-                </Typography>
+                <AnimatingNumber value={debounceValue} />
               </Stack>
             </Stack>
           </Box>
