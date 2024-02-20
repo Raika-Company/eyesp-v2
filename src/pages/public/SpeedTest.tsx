@@ -26,6 +26,8 @@ import ping from "../../assets/images/ping.svg";
 import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
 import ResultTest from "./ResultTest";
+import moment from "moment-jalaali";
+import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 
 /**
  * Enum representing status codes for the speed test.
@@ -101,16 +103,57 @@ const calculateAngleOfCarret = (value: number) => {
  * React functional component, providing a clear structure and encapsulation for speed testing
  * capabilities in a larger application.
  */
+interface AddressIPProps {
+  ip: string;
+}
+
+const AddressIP: React.FC<AddressIPProps> = ({ ip }) => {
+  return (
+    <Box>
+      <Stack direction="row">
+        <Typography
+          component="span"
+          variant="h5"
+          color="text.main"
+          marginX="0.5rem"
+        >
+          {ip === "" ? "در حال پیدا کردن ip" : ip}
+        </Typography>
+      </Stack>
+    </Box>
+  );
+};
+interface AddressServerProps {
+  server: string;
+}
+
+const AddressServer: React.FC<AddressServerProps> = ({ server }) => {
+  return (
+    <Box>
+      <Stack direction="row">
+        <Typography
+          component="span"
+          variant="h5"
+          color="text.main"
+          marginX="0.5rem"
+        >
+          {server === "" ? "در حال انتخاب سرور" : "تهران - زیرساخت"}
+        </Typography>
+      </Stack>
+    </Box>
+  );
+};
+
 const SpeedTest = () => {
   const [hoverButton, setHoverButton] = useState<boolean>(false);
   const [startTest, setStartTest] = useState<boolean>(false);
 
   const [startAnimate, setStartAnimate] = useState(false);
   const [_status, setStatus] = useState(2);
-  // const [isTestEnds, setIsTestEnds] = useState(false);
+  const [isTestEnds, setIsTestEnds] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const [_latency, setLatency] = useState(0);
+  const [latency, setLatency] = useState(0);
   const [download, setDownload] = useState(0);
   const [_downloadProgress, setDownloadProgress] = useState(0);
   const [upload, setUpload] = useState(0);
@@ -118,10 +161,11 @@ const SpeedTest = () => {
   // const [testType, setTestType] = useState("تست دقیق");
   const [_testStateNumber, setTestStateNumber] = useState(0);
   const [isDl, setIsDl] = useState(true);
-  const [_clientIp, setClientIp] = useState("");
+  const [clientIp, setClientIp] = useState("");
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
+
   function interpolateClipPath(angle: number | undefined) {
     // Define the known angles and their corresponding clipPath attributes
     const angleClipPathMap = [
@@ -178,9 +222,9 @@ const SpeedTest = () => {
    * Fetches the client's IP address from an external server.
    */
   useEffect(() => {
-    axios
-      .get("https://server1.eyesp.live/get-ip")
-      .then((res) => setClientIp(res.data.ip));
+    axios.get("http://95.38.58.11:3000/get-ip").then((res) => {
+      setClientIp(res.data.response_ip_address);
+    });
   }, []);
 
   const fetchServers = async () => {
@@ -192,7 +236,7 @@ const SpeedTest = () => {
     }
   };
 
-  const [_servers, setServers] = useState([]);
+  const [servers, setServers] = useState([]);
 
   useEffect(() => {
     const getServers = async () => {
@@ -314,6 +358,42 @@ const SpeedTest = () => {
           setUpload(ulStatus);
           setUploadProgress(ulProgress);
         }
+        if (dlProgress == 1 && ulProgress == 1) {
+          const currentJalaliDateInEnglish = moment().format("jYYYY/jM/jD");
+          const currentJalaliDateInFarsi = convertToPersianNumbers(
+            currentJalaliDateInEnglish
+          );
+
+          const getCurrentTime = () => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const seconds = now.getSeconds().toString().padStart(2, "0");
+
+            return `${hours}:${minutes}:${seconds}`;
+          };
+
+          const testResults = {
+            date: currentJalaliDateInFarsi,
+            englishDate: currentJalaliDateInEnglish,
+            time: convertToPersianNumbers(getCurrentTime()),
+            englishTime: getCurrentTime(),
+            ping: convertToPersianNumbers(latency),
+            download: convertToPersianNumbers(dlStatus),
+            testDuration: convertToPersianNumbers("00:16"),
+            testType: "دقیق",
+            upload: convertToPersianNumbers(ulStatus),
+            server: "ایرانسل-تهران",
+            ip: clientIp,
+          };
+          const existingResults = JSON.parse(
+            localStorage.getItem("testResults") || "[]"
+          );
+          existingResults.push(testResults);
+          localStorage.setItem("testResults", JSON.stringify(existingResults));
+          // setIsGoButtonVisible(true);
+          setIsTestEnds(true);
+        }
       };
       window.speedtest.onend = () => {
         setStatus(STATUS_MAP.READY);
@@ -322,10 +402,7 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
-  console.log(
-    "DDDDD",
-    calculateAngleOfCarret(isDl ? download || 0 : upload || 0)
-  );
+
   return (
     <Box
       sx={{
@@ -485,12 +562,10 @@ const SpeedTest = () => {
                   <Typography variant="h1" color="white">
                     سرور مقصد
                   </Typography>
-                  <Typography variant="h2" color="#57585A">
-                    تهران-امام
-                  </Typography>
-                  <Typography variant="h3" color="#7FCD9F">
+                  <AddressServer server={selectedServerURL} />
+                  {/* <Typography variant="h3" color="#7FCD9F">
                     تغییر سرور
-                  </Typography>
+                  </Typography> */}
                 </Stack>
               </Stack>
               <Stack
@@ -503,9 +578,7 @@ const SpeedTest = () => {
                   <Typography variant="h1" color="white">
                     همراه اول{" "}
                   </Typography>
-                  <Typography variant="h2" color="#57585A">
-                    51.15.57.153{" "}
-                  </Typography>
+                  <AddressIP ip={clientIp} />
                 </Stack>
               </Stack>{" "}
             </Box>
@@ -991,12 +1064,11 @@ const SpeedTest = () => {
                 <Typography variant="h1" color="white">
                   سرور مقصد
                 </Typography>
-                <Typography variant="h2" color="#57585A">
-                  تهران-امام
-                </Typography>
-                <Typography variant="h3" color="#7FCD9F">
+                <AddressServer server={selectedServerURL} />
+
+                {/* <Typography variant="h3" color="#7FCD9F">
                   تغییر سرور
-                </Typography>
+                </Typography> */}
               </Stack>
             </Stack>
             <Stack direction="row" gap={3}>
@@ -1005,9 +1077,7 @@ const SpeedTest = () => {
                 <Typography variant="h1" color="white">
                   همراه اول{" "}
                 </Typography>
-                <Typography variant="h2" color="#57585A">
-                  51.15.57.153{" "}
-                </Typography>
+                <AddressIP ip={clientIp} />
               </Stack>
             </Stack>{" "}
           </Box>{" "}

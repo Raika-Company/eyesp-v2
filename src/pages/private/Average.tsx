@@ -7,7 +7,7 @@ import { SelectButton } from "../../components/ui/SelectButton";
 import ispData from "../../../public/data/ISPData.json";
 import api from "../../services";
 import { MetricsReturnType } from "../../services/dashboard/metrics";
-import convertToEnglishNumbers from "../../utils/convertToEnglishNumbers";
+import { convertToEnglishNumbers } from "../../utils/convertToEnglishNumbers";
 
 // Lazily imported components for code splitting
 const Header = lazy(() => import("../../components/ui/Header"));
