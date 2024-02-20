@@ -4,20 +4,21 @@ import usePrevious from "../../hooks/usePrevious";
 import { Box, Typography, useTheme } from "@mui/material";
 import "./AnimatingNumber.css";
 
+// Helper function doesn't need changes for TypeScript, but let's add return type
+const formatForDisplay = (number: number = 0): string[] => {
+  return parseFloat(Math.max(number, 0)).toFixed(2).split("").reverse();
+};
+
 interface NumberColumnProps {
   digit: string;
   delta: string | null;
 }
 
-const formatForDisplay = (number: number = 0): string[] => {
-  return parseFloat(Math.max(number, 0)).toFixed(2).split("").reverse();
-};
-
 const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
   const numberColumnRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState<number>(0);
   const [animationClass, setAnimationClass] = useState<string | null>(null);
-  const previousDigit = usePrevious(digit);
+  const previousDigit = usePrevious<string>(digit);
   const columnContainer = useRef<HTMLDivElement>(null);
 
   const setColumnToNumber = (number: string) => {
@@ -27,17 +28,17 @@ const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
   };
 
   useEffect(() => {
-    setAnimationClass(previousDigit !== digit ? delta : "");
+    setAnimationClass(previousDigit !== digit ? delta : null);
   }, [delta, digit, previousDigit]);
 
   useEffect(() => {
     if (!animationClass) return;
     const timer = setTimeout(() => {
-      setAnimationClass("");
+      setAnimationClass(null);
     }, 201);
 
     return () => clearTimeout(timer);
-  }, [digit, delta, animationClass]);
+  }, [animationClass]);
 
   useEffect(() => {
     setColumnToNumber(digit);
@@ -46,10 +47,8 @@ const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
   return (
     <div style={{ position: "relative" }} ref={columnContainer}>
       <motion.div
-        animate={{
-          y: -position,
-        }}
-        className={`ticker-column ${animationClass ?? ""}`}
+        animate={{ y: -position }}
+        className={`ticker-column ${animationClass || ""}`}
         style={{
           position: "absolute",
           height: "1000%",
@@ -63,13 +62,7 @@ const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
           </div>
         ))}
       </motion.div>
-      <Typography
-        sx={{
-          visibility: "hidden",
-        }}
-      >
-        0
-      </Typography>
+      <Typography sx={{ visibility: "hidden" }}>0</Typography>
     </div>
   );
 };
@@ -89,11 +82,19 @@ interface AnimatingNumberProps {
 const AnimatingNumber = ({ value }: AnimatingNumberProps) => {
   const theme = useTheme();
   const numArray = formatForDisplay(value);
-  const previousNumber = usePrevious(value);
+  const previousNumber = usePrevious<number>(value);
 
   let delta: string | null = null;
-  if (value > (previousNumber ?? 0)) delta = "increase";
-  if (value < (previousNumber ?? 0)) delta = "decrease";
+  if (previousNumber !== undefined) {
+    // Ensure previousNumber is not undefined
+    delta =
+      value > previousNumber
+        ? "increase"
+        : value < previousNumber
+        ? "decrease"
+        : null;
+  }
+
   return (
     <Box
       sx={{

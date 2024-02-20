@@ -30,6 +30,7 @@ import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 import AnimatingNumber from "./AnimatingNumber";
 import useDebounceTime from "../../hooks/useDebounceTime";
+import FloatingResult from "./FloatingResult";
 
 /**
  * Enum representing status codes for the speed test.
@@ -98,7 +99,7 @@ const calculateAngleOfCarret = (value: number) => {
  * for communication with the server during the test, and it updates the UI based on the test progress.
  *
  * The UI elements include interactive buttons, server information, and dynamic animations to enhance
- * the user experience. The component handles various states, such as ready, running, and finished,
+ * the user experience. The component handles various states, such as ready, running, afnd finished,
  * to ensure a smooth and informative testing process.
  *
  * Overall, the `SpeedTest` component encapsulates the entire speed testing functionality within a
@@ -701,13 +702,12 @@ const SpeedTest = () => {
               >
                 <img src={ping} alt="ping" />
                 <Typography variant="h1" color="white">
-                  62{" "}
+                  {latency}{" "}
                 </Typography>
                 <img src={download_blue} alt="download" />
-                <AnimatingNumber value={debounceValue} />
-
+                <AnimatingNumber value={download} />
                 <img src={upload_purple} alt="upload" />
-                <AnimatingNumber value={debounceValue} />
+                <AnimatingNumber value={upload} />
               </Stack>
             </Stack>
           </Box>
