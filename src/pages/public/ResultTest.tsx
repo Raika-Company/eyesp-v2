@@ -71,7 +71,99 @@ const ResultTest = () => {
           padding={3}
         >
           <Stack direction="row">
-            <img src={go} alt="go" />
+            <Box
+              // onClick={handleStartTestClick}
+              // onMouseEnter={() => setHoverButton(true)}
+              // onMouseLeave={() => setHoverButton(false)}
+              sx={{
+                width: { lg: "300px", md: "400px", xs: "300px" },
+                height: { lg: "300px", md: "400px", xs: "300px" },
+                borderRadius: "50%",
+                display: "flex",
+                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "transparent",
+                color: "#fff",
+                fontWeight: "bold",
+                cursor: "pointer",
+                zIndex: "20",
+                ":hover": {
+                  background: "#498dd615",
+                },
+                "::before": {
+                  padding: "3px",
+                  content: '""',
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  border: "8px",
+                  background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                },
+
+                animation: startAnimate ? "fadeOut 1s both" : "",
+                "@keyframes fadeOut": {
+                  "0%": {
+                    opacity: 1,
+                  },
+
+                  "100%": {
+                    opacity: 0,
+                  },
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  position: "absolute",
+                  fontSize: "3.5rem",
+                  opacity: ".7",
+                }}
+              >
+                شروع
+              </Typography>
+              <Box
+                sx={{
+                  position: "absolute",
+
+                  width: { lg: "300px", md: "400px", xs: "300px" },
+                  height: { lg: "300px", md: "400px", xs: "300px" },
+                  borderRadius: "50%",
+                  border: "2px #7FCD9F solid",
+                  opacity: "0",
+                  animation: hoverButton
+                    ? ""
+                    : "startRing 3.5s 3.5s infinite linear",
+
+                  "@keyframes startRing": {
+                    "0%": {
+                      opacity: "0",
+                      transform: "scale(1)",
+                    },
+
+                    "12.5%": {
+                      opacity: "0",
+                      transform: "scale(.995)",
+                    },
+
+                    "16.66%": {
+                      opacity: "1",
+                    },
+
+                    "50%": {
+                      opacity: 0,
+                      transform: "scale(1.3)",
+                    },
+                  },
+                }}
+              />
+            </Box>
           </Stack>{" "}
           <Box
             display="flex"
