@@ -16,16 +16,23 @@ import { Socket, io } from "socket.io-client";
 import useFetchServers from "../../hooks/useFetchServers";
 import PulsedNumber from "../../components/ui/PulsedNumber";
 import earth from "../../assets/images/earth.svg";
-import etesal from "../../assets/images/etesal.svg";
 import person from "../../assets/images/person.svg";
 import download_blue from "../../assets/images/download_blue.svg";
 import download_green from "../../assets/images/download_green.svg";
 import upload_purple from "../../assets/images/upload_purpel.svg";
 import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
+import donwload_gray from "../../assets/images/download-gray.svg";
 import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
 import ResultTest from "./ResultTest";
+import moment from "moment-jalaali";
+import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
+import AnimatingNumber from "./AnimatingNumber";
+import useDebounceTime from "../../hooks/useDebounceTime";
+import FloatingResult from "./FloatingResult";
+import SwitchBtn from "./SwitchBtn";
+import etesal from "../../assets/images/etesal.svg";
 
 /**
  * Enum representing status codes for the speed test.
@@ -94,34 +101,76 @@ const calculateAngleOfCarret = (value: number) => {
  * for communication with the server during the test, and it updates the UI based on the test progress.
  *
  * The UI elements include interactive buttons, server information, and dynamic animations to enhance
- * the user experience. The component handles various states, such as ready, running, and finished,
+ * the user experience. The component handles various states, such as ready, running, afnd finished,
  * to ensure a smooth and informative testing process.
  *
  * Overall, the `SpeedTest` component encapsulates the entire speed testing functionality within a
  * React functional component, providing a clear structure and encapsulation for speed testing
  * capabilities in a larger application.
  */
+interface AddressIPProps {
+  ip: string;
+}
+
+const AddressIP: React.FC<AddressIPProps> = ({ ip }) => {
+  return (
+    <Box>
+      <Stack direction="row">
+        <Typography
+          component="span"
+          variant="h5"
+          color="text.main"
+          marginX="0.5rem"
+        >
+          {ip === "" ? "در حال پیدا کردن ip" : ip}
+        </Typography>
+      </Stack>
+    </Box>
+  );
+};
+interface AddressServerProps {
+  server: string;
+}
+
+const AddressServer: React.FC<AddressServerProps> = ({ server }) => {
+  return (
+    <Box>
+      <Stack direction="row">
+        <Typography
+          component="span"
+          variant="h5"
+          color="text.main"
+          marginX="0.5rem"
+        >
+          {server === "" ? "در حال انتخاب سرور" : "تهران - زیرساخت"}
+        </Typography>
+      </Stack>
+    </Box>
+  );
+};
+
 const SpeedTest = () => {
   const [hoverButton, setHoverButton] = useState<boolean>(false);
   const [startTest, setStartTest] = useState<boolean>(false);
 
   const [startAnimate, setStartAnimate] = useState(false);
   const [_status, setStatus] = useState(2);
-  // const [isTestEnds, setIsTestEnds] = useState(false);
+  const [isTestEnds, setIsTestEnds] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const [_latency, setLatency] = useState(0);
+  const [latency, setLatency] = useState(0);
   const [download, setDownload] = useState(0);
-  const [_downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   const [upload, setUpload] = useState(0);
-  const [_uploadProgress, setUploadProgress] = useState(0);
-  // const [testType, setTestType] = useState("تست دقیق");
-  const [_testStateNumber, setTestStateNumber] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [testType, setTestType] = useState("تست دقیق");
+  const [testStateNumber, setTestStateNumber] = useState(0);
   const [isDl, setIsDl] = useState(true);
-  const [_clientIp, setClientIp] = useState("");
+  const [clientIp, setClientIp] = useState("");
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
+
   function interpolateClipPath(angle: number | undefined) {
     // Define the known angles and their corresponding clipPath attributes
     const angleClipPathMap = [
@@ -178,9 +227,9 @@ const SpeedTest = () => {
    * Fetches the client's IP address from an external server.
    */
   useEffect(() => {
-    axios
-      .get("https://server1.eyesp.live/get-ip")
-      .then((res) => setClientIp(res.data.ip));
+    axios.get("http://95.38.58.11:3000/get-ip").then((res) => {
+      setClientIp(res.data.response_ip_address);
+    });
   }, []);
 
   const fetchServers = async () => {
@@ -192,7 +241,7 @@ const SpeedTest = () => {
     }
   };
 
-  const [_servers, setServers] = useState([]);
+  const [servers, setServers] = useState([]);
 
   useEffect(() => {
     const getServers = async () => {
@@ -314,6 +363,42 @@ const SpeedTest = () => {
           setUpload(ulStatus);
           setUploadProgress(ulProgress);
         }
+        if (dlProgress == 1 && ulProgress == 1) {
+          const currentJalaliDateInEnglish = moment().format("jYYYY/jM/jD");
+          const currentJalaliDateInFarsi = convertToPersianNumbers(
+            currentJalaliDateInEnglish
+          );
+
+          const getCurrentTime = () => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const seconds = now.getSeconds().toString().padStart(2, "0");
+
+            return `${hours}:${minutes}:${seconds}`;
+          };
+
+          const testResults = {
+            date: currentJalaliDateInFarsi,
+            englishDate: currentJalaliDateInEnglish,
+            time: convertToPersianNumbers(getCurrentTime()),
+            englishTime: getCurrentTime(),
+            ping: convertToPersianNumbers(latency),
+            download: convertToPersianNumbers(dlStatus),
+            testDuration: convertToPersianNumbers("00:16"),
+            testType: "دقیق",
+            upload: convertToPersianNumbers(ulStatus),
+            server: "ایرانسل-تهران",
+            ip: clientIp,
+          };
+          const existingResults = JSON.parse(
+            localStorage.getItem("testResults") || "[]"
+          );
+          existingResults.push(testResults);
+          localStorage.setItem("testResults", JSON.stringify(existingResults));
+          // setIsGoButtonVisible(true);
+          setIsTestEnds(true);
+        }
       };
       window.speedtest.onend = () => {
         setStatus(STATUS_MAP.READY);
@@ -322,10 +407,253 @@ const SpeedTest = () => {
       window.speedtest.start();
     }
   };
-  console.log(
-    "DDDDD",
-    calculateAngleOfCarret(isDl ? download || 0 : upload || 0)
-  );
+  //resultTest
+
+  const detailResult = [
+    {
+      imgSrc: etesal,
+      title: "نوع اتصال",
+      subtitle: testType,
+    },
+    {
+      imgSrc: person,
+      title: "همراه اول",
+      subtitle: clientIp,
+    },
+    {
+      imgSrc: earth,
+      title: "سرور مقصد",
+      subtitle: "تهران-زیرساخت",
+    },
+  ];
+  // Final results including download and upload rates
+  const finalResult = [
+    {
+      id: 1,
+      downloadRate: download,
+      image: download_green,
+    },
+    {
+      id: 2,
+      downloadRate: upload,
+      image: upload_purple,
+    },
+  ];
+
+  const restartTest = (): void => {
+    setIsTestEnds(false);
+    setStartAnimate(true);
+
+    setStartTest(false);
+    setStatus(STATUS_MAP.READY);
+    setDownload(0);
+    setUpload(0);
+  };
+
+  interface ResultTestProps {
+    onRestartTest: () => void;
+  }
+  const ResultTest: React.FC<ResultTestProps> = ({ onRestartTest }) => {
+    return (
+      <Box
+        sx={{
+          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
+          height: "100dvh",
+        }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+      >
+        {" "}
+        <Container>
+          <Box
+            display="flex"
+            height="100dvh"
+            overflow="auto"
+            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="center"
+            gap={13}
+            padding={3}
+          >
+            <Stack direction="row">
+              <Box
+                onClick={onRestartTest}
+                onMouseEnter={() => setHoverButton(true)}
+                onMouseLeave={() => setHoverButton(false)}
+                sx={{
+                  width: { lg: "300px", md: "400px", xs: "300px" },
+                  height: { lg: "300px", md: "400px", xs: "300px" },
+                  borderRadius: "50%",
+                  display: "flex",
+                  position: "relative",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "transparent",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  zIndex: "20",
+                  ":hover": {
+                    background: "#498dd615",
+                  },
+                  "::before": {
+                    padding: "3px",
+                    content: '""',
+                    top: "0",
+                    left: "0",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "50%",
+                    border: "8px",
+                    background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  },
+
+                  animation: startAnimate ? "fadeOut 1s both" : "",
+                  "@keyframes fadeOut": {
+                    "0%": {
+                      opacity: 1,
+                    },
+
+                    "100%": {
+                      opacity: 0,
+                    },
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    position: "absolute",
+                    fontSize: "3.5rem",
+                    opacity: ".7",
+                  }}
+                >
+                  شروع
+                </Typography>
+                <Box
+                  sx={{
+                    position: "absolute",
+
+                    width: { lg: "300px", md: "400px", xs: "300px" },
+                    height: { lg: "300px", md: "400px", xs: "300px" },
+                    borderRadius: "50%",
+                    border: "2px #7FCD9F solid",
+                    opacity: "0",
+                    animation: hoverButton
+                      ? ""
+                      : "startRing 3.5s 3.5s infinite linear",
+
+                    "@keyframes startRing": {
+                      "0%": {
+                        opacity: "0",
+                        transform: "scale(1)",
+                      },
+
+                      "12.5%": {
+                        opacity: "0",
+                        transform: "scale(.995)",
+                      },
+
+                      "16.66%": {
+                        opacity: "1",
+                      },
+
+                      "50%": {
+                        opacity: 0,
+                        transform: "scale(1.3)",
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            </Stack>{" "}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+              alignItems="start"
+              gap={8}
+            >
+              {detailResult.map((item, index) => (
+                <Stack key={index} direction="row" gap={4} alignItems="center">
+                  <img src={item.imgSrc} alt="img" />
+                  <Stack direction="column" alignItems="center" gap={1}>
+                    <Typography variant="h2" color="white">
+                      {item.title}
+                    </Typography>
+                    <Typography variant="h3" color="#57585A">
+                      {item.subtitle}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              ))}
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+              alignItems="start"
+              gap={13}
+            >
+              {finalResult.map((item) => (
+                <Stack
+                  key={item.id}
+                  direction="column"
+                  gap={2}
+                  alignItems="center"
+                >
+                  <Stack direction="row" gap={2} alignItems="center">
+                    <img src={item.image} alt="download" />
+                    <Typography variant="h2" color="white">
+                      دانلود
+                    </Typography>
+                    <Typography variant="h3" color="#57585A">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                  <Typography variant="h2" color="white">
+                    {item.downloadRate}
+                  </Typography>
+                </Stack>
+              ))}
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={5}
+            >
+              <Stack direction="row" alignItems="center" gap={1}>
+                <Typography variant="h1" color="white">
+                  پینگ
+                </Typography>
+                <Typography variant="h3" color="#57585A">
+                  ms
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                gap={1}
+              >
+                <img src={ping} alt="ping" />
+                <Typography variant="h2" color="white">
+                  {latency}
+                </Typography>
+              </Stack>{" "}
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -485,12 +813,10 @@ const SpeedTest = () => {
                   <Typography variant="h1" color="white">
                     سرور مقصد
                   </Typography>
-                  <Typography variant="h2" color="#57585A">
-                    تهران-امام
-                  </Typography>
-                  <Typography variant="h3" color="#7FCD9F">
+                  <AddressServer server={selectedServerURL} />
+                  {/* <Typography variant="h3" color="#7FCD9F">
                     تغییر سرور
-                  </Typography>
+                  </Typography> */}
                 </Stack>
               </Stack>
               <Stack
@@ -503,9 +829,7 @@ const SpeedTest = () => {
                   <Typography variant="h1" color="white">
                     همراه اول{" "}
                   </Typography>
-                  <Typography variant="h2" color="#57585A">
-                    51.15.57.153{" "}
-                  </Typography>
+                  <AddressIP ip={clientIp} />
                 </Stack>
               </Stack>{" "}
             </Box>
@@ -529,15 +853,11 @@ const SpeedTest = () => {
                 mr: "2rem",
               }}
             >
-              <Stack direction="row" alignItems="center" gap={2}>
-                <Typography variant="h2" color="#57585A">
-                  تکی
-                </Typography>
-                <img src={etesal} alt="etesal" />
-                <Typography variant="h2" color="#FFFFFF">
-                  چند تایی
-                </Typography>
-              </Stack>
+              <SwitchBtn
+                textOn="تست دقیق"
+                textOff="تست فوری"
+                onChange={setTestType}
+              />{" "}
             </Box>
 
             {/* Invisible Flex Breaker */}
@@ -566,40 +886,90 @@ const SpeedTest = () => {
             // padding="2rem"
           >
             <Stack direction="row" gap={10}>
-              <Stack direction="row" gap={1} alignItems="start">
-                <img src={download_green} alt="download" />
-                <Stack direction="column">
-                  <Typography variant="h1" color="white">
-                    دانلود
-                  </Typography>
-                  <Box
-                    width="100%"
-                    borderBottom="2px solid #57585A"
-                    sx={{ marginTop: "1rem" }}
-                  />
-                </Stack>
+              {isDl && (
+                <>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={download_green} alt="download" />
+                    <Stack direction="column">
+                      <Typography variant="h1" color="white">
+                        دانلود
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #FFFFFF"
+                        sx={{ marginTop: "1rem" }}
+                      />
+                    </Stack>
 
-                <Typography variant="h1" color="#57585A">
-                  Mbps
-                </Typography>
-              </Stack>
-              <Stack direction="row" gap={1} alignItems="start">
-                <img src={upload_Gray} alt="download" />
-                <Stack direction="column">
-                  <Typography variant="h1" color="white">
-                    آپلود{" "}
-                  </Typography>
-                  <Box
-                    width="100%"
-                    borderBottom="2px solid #57585A"
-                    sx={{ marginTop: "1rem" }}
-                  />{" "}
-                </Stack>
+                    <Typography variant="h1" color="white">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={upload_Gray} alt="download" />
+                    <Stack direction="column">
+                      <Typography
+                        variant="h1"
+                        color="white"
+                        sx={{ opacity: "0.5" }}
+                      >
+                        آپلود{" "}
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #57585A"
+                        sx={{ marginTop: "1rem", opacity: "0.5" }}
+                      />{" "}
+                    </Stack>
 
-                <Typography variant="h1" color="#57585A">
-                  Mbps
-                </Typography>
-              </Stack>
+                    <Typography variant="h1" color="#57585A">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                </>
+              )}{" "}
+              {!isDl && (
+                <>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={donwload_gray} alt="download" />
+                    <Stack direction="column">
+                      <Typography
+                        variant="h1"
+                        color="white"
+                        sx={{ opacity: "0.5" }}
+                      >
+                        دانلود
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #57585A"
+                        sx={{ marginTop: "1rem", opacity: "0.5" }}
+                      />
+                    </Stack>
+
+                    <Typography variant="h1" color="#57585A">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" gap={1} alignItems="start">
+                    <img src={upload_purple} alt="download" />
+                    <Stack direction="column">
+                      <Typography variant="h1" color="white">
+                        آپلود{" "}
+                      </Typography>
+                      <Box
+                        width="100%"
+                        borderBottom="2px solid #FFFFFF"
+                        sx={{ marginTop: "1rem" }}
+                      />{" "}
+                    </Stack>
+
+                    <Typography variant="h1" color="white">
+                      Mbps
+                    </Typography>
+                  </Stack>
+                </>
+              )}
             </Stack>
             <Stack
               direction="row"
@@ -625,16 +995,12 @@ const SpeedTest = () => {
               >
                 <img src={ping} alt="ping" />
                 <Typography variant="h1" color="white">
-                  62{" "}
+                  {latency}{" "}
                 </Typography>
                 <img src={download_blue} alt="download" />
-                <Typography variant="h1" color="white">
-                  62{" "}
-                </Typography>
+                <AnimatingNumber value={download} />
                 <img src={upload_purple} alt="upload" />
-                <Typography variant="h1" color="white">
-                  62{" "}
-                </Typography>
+                <AnimatingNumber value={upload} />
               </Stack>
             </Stack>
           </Box>
@@ -991,12 +1357,11 @@ const SpeedTest = () => {
                 <Typography variant="h1" color="white">
                   سرور مقصد
                 </Typography>
-                <Typography variant="h2" color="#57585A">
-                  تهران-امام
-                </Typography>
-                <Typography variant="h3" color="#7FCD9F">
+                <AddressServer server={selectedServerURL} />
+
+                {/* <Typography variant="h3" color="#7FCD9F">
                   تغییر سرور
-                </Typography>
+                </Typography> */}
               </Stack>
             </Stack>
             <Stack direction="row" gap={3}>
@@ -1005,16 +1370,14 @@ const SpeedTest = () => {
                 <Typography variant="h1" color="white">
                   همراه اول{" "}
                 </Typography>
-                <Typography variant="h2" color="#57585A">
-                  51.15.57.153{" "}
-                </Typography>
+                <AddressIP ip={clientIp} />
               </Stack>
             </Stack>{" "}
           </Box>{" "}
         </Box>
       )}
     </Box>
-    // <ResultTest />
+    // <ResultTest onRestartTest={restartTest} />
   );
 };
 
