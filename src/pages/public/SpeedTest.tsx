@@ -33,6 +33,7 @@ import useDebounceTime from "../../hooks/useDebounceTime";
 import FloatingResult from "./FloatingResult";
 import SwitchBtn from "./SwitchBtn";
 import etesal from "../../assets/images/etesal.svg";
+import test from "node:test";
 
 /**
  * Enum representing status codes for the speed test.
@@ -111,7 +112,11 @@ const calculateAngleOfCarret = (value: number) => {
 interface AddressIPProps {
   ip: string;
 }
-
+enum TestStatus {
+  NotStarted = "notStartAnimate",
+  Running = "startAnimate",
+  Finished = "resultTest",
+}
 const AddressIP: React.FC<AddressIPProps> = ({ ip }) => {
   return (
     <Box>
@@ -170,7 +175,9 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-
+  const [testStatus, setTestStatus] = useState<TestStatus>(
+    TestStatus.NotStarted
+  );
   function interpolateClipPath(angle: number | undefined) {
     // Define the known angles and their corresponding clipPath attributes
     const angleClipPathMap = [
@@ -326,6 +333,8 @@ const SpeedTest = () => {
   const handleStartTestClick = () => {
     if (!isServerSelected) return;
     setStartAnimate(true);
+    setTestStatus(TestStatus.Running);
+
     setTimeout(() => {
       setStartTest(true);
       startPingTest();
@@ -398,6 +407,8 @@ const SpeedTest = () => {
           localStorage.setItem("testResults", JSON.stringify(existingResults));
           // setIsGoButtonVisible(true);
           setIsTestEnds(true);
+          setTestStatus(TestStatus.Finished);
+          console.log("Test results:", TestStatus.Finished);
         }
       };
       window.speedtest.onend = () => {
@@ -441,13 +452,20 @@ const SpeedTest = () => {
   ];
 
   const restartTest = (): void => {
-    setIsTestEnds(false);
-    setStartAnimate(true);
+    // Reset relevant state variables to their initial values
+    handleStartTestClick();
 
-    setStartTest(false);
-    setStatus(STATUS_MAP.READY);
     setDownload(0);
     setUpload(0);
+    setLatency(0);
+    setDownloadProgress(0);
+    setUploadProgress(0);
+    setIsDl(true);
+    setTestStateNumber(0);
+    setIsTestEnds(false);
+    setStartTest(false);
+    setStartAnimate(false);
+    setTestStatus(TestStatus.Running);
   };
 
   interface ResultTestProps {
@@ -690,7 +708,7 @@ const SpeedTest = () => {
         </Box>
       </Container>
 
-      {!startAnimate && (
+      {testStatus === TestStatus.NotStarted && (
         <Box
           display="flex"
           flexDirection="column"
@@ -865,7 +883,7 @@ const SpeedTest = () => {
         </Box>
       )}
 
-      {startAnimate && (
+      {testStatus === TestStatus.Running && (
         <Box
           sx={{
             width: "100vw",
@@ -1375,6 +1393,9 @@ const SpeedTest = () => {
             </Stack>{" "}
           </Box>{" "}
         </Box>
+      )}
+      {testStatus === TestStatus.Finished && (
+        <ResultTest onRestartTest={restartTest} />
       )}
     </Box>
     // <ResultTest onRestartTest={restartTest} />
