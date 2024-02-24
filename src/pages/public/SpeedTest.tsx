@@ -24,7 +24,7 @@ import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
 import donwload_gray from "../../assets/images/download-gray.svg";
 import WestIcon from "@mui/icons-material/West";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ResultTest from "./ResultTest";
 import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
@@ -451,19 +451,11 @@ const SpeedTest = () => {
     },
   ];
 
+  const navigate = useNavigate();
   const restartTest = (): void => {
-    setDownload(0);
-    setUpload(0);
-    setLatency(0);
-    setDownloadProgress(0);
-    setUploadProgress(0);
-    setIsDl(true);
-    setTestStateNumber(0);
-    setIsTestEnds(false);
-    setStartTest(false);
-    setStartAnimate(false);
-    setTestStatus(TestStatus.Running);
-    handleStartTestClick();
+    navigate(0);
+
+    // Perform ping test, which will subsequently start the download/upload tests
   };
 
   interface ResultTestProps {
