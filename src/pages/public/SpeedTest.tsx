@@ -25,12 +25,9 @@ import ping from "../../assets/images/ping.svg";
 import donwload_gray from "../../assets/images/download-gray.svg";
 import WestIcon from "@mui/icons-material/West";
 import { Link } from "react-router-dom";
-import ResultTest from "./ResultTest";
 import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 import AnimatingNumber from "./AnimatingNumber";
-import useDebounceTime from "../../hooks/useDebounceTime";
-import FloatingResult from "./FloatingResult";
 import SwitchBtn from "./SwitchBtn";
 import etesal from "../../assets/images/etesal.svg";
 
@@ -997,10 +994,22 @@ const SpeedTest = () => {
                 <Typography variant="h1" color="white">
                   {latency}{" "}
                 </Typography>
-                <img src={download_blue} alt="download" />
-                <AnimatingNumber value={download} />
-                <img src={upload_purple} alt="upload" />
-                <AnimatingNumber value={upload} />
+                <Stack direction="row" gap=".8rem">
+                  <img
+                    src={download_blue}
+                    alt="download"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={download} />
+                </Stack>
+                <Stack direction="row" gap=".8rem">
+                  <img
+                    src={upload_purple}
+                    alt="upload"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={upload} />
+                </Stack>
               </Stack>
             </Stack>
           </Box>
