@@ -11,6 +11,11 @@ const Digit = ({ value }: { value: string }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2 }}
+      style={{
+        fontSize: "1.6rem",
+        fontWeight: "bold",
+        color: "white",
+      }}
     >
       {value}
     </motion.div>
@@ -29,7 +34,7 @@ const AnimatedNumber = ({ value }: { value: number }) => {
     <Box
       sx={{
         mr: "-0.5rem",
-        minWidth: "3rem",
+        minWidth: "3.9rem",
         display: "flex",
         direction: "ltr",
         justifyContent: "center",

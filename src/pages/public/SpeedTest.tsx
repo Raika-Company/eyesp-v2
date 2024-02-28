@@ -745,7 +745,7 @@ const SpeedTest = () => {
             <Typography
               sx={{
                 position: "absolute",
-                fontSize: "3.5rem",
+                fontSize: { xs: "2rem", sm: "2.8rem", lg: "3.5rem !important" },
                 opacity: ".7",
               }}
             >
@@ -883,96 +883,80 @@ const SpeedTest = () => {
             // padding="2rem"
           >
             <Stack direction="row" gap={10}>
-              {isDl && (
-                <>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={download_green} alt="download" />
-                    <Stack direction="column">
-                      <Typography variant="h1" color="white">
-                        دانلود
-                      </Typography>
+              {/* {isDl && ( */}
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    gap: "1rem",
+                    opacity: downloadProgress === 1 ? "0.7" : "1",
+                    transition: "opacity 0.5s ease-in-out",
+                  }}
+                >
+                  <img
+                    src={
+                      downloadProgress === 1 ? donwload_gray : download_green
+                    }
+                    alt="download"
+                  />
+                  <Stack direction="column">
+                    <Typography variant="h1" color="white">
+                      دانلود
+                    </Typography>
+                    {downloadProgress < 1 ? (
                       <Box
                         width="100%"
-                        borderBottom="2px solid #FFFFFF"
+                        borderBottom="2px solid #FFF"
                         sx={{ marginTop: "1rem" }}
                       />
-                    </Stack>
+                    ) : (
+                      <Typography variant="h2">{download}</Typography>
+                    )}
+                  </Stack>
 
+                  <Typography variant="h1" color="white">
+                    Mbps
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    gap: "1rem",
+                    opacity: !isDl && uploadProgress < 1 ? "1" : ".7",
+                    transition: "opacity 0.5s ease-in-out",
+                  }}
+                >
+                  <img
+                    src={uploadProgress === 1 ? upload_Gray : upload_purple}
+                    alt="upload"
+                  />
+                  <Stack direction="column">
                     <Typography variant="h1" color="white">
-                      Mbps
+                      آپلود{" "}
                     </Typography>
-                  </Stack>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={upload_Gray} alt="download" />
-                    <Stack direction="column">
-                      <Typography
-                        variant="h1"
-                        color="white"
-                        sx={{ opacity: "0.5" }}
-                      >
-                        آپلود{" "}
-                      </Typography>
+                    {uploadProgress < 1 ? (
                       <Box
                         width="100%"
-                        borderBottom="2px solid #57585A"
-                        sx={{ marginTop: "1rem", opacity: "0.5" }}
-                      />{" "}
-                    </Stack>
-
-                    <Typography variant="h1" color="#57585A">
-                      Mbps
-                    </Typography>
-                  </Stack>
-                </>
-              )}{" "}
-              {!isDl && (
-                <>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={donwload_gray} alt="download" />
-                    <Stack direction="column">
-                      <Typography
-                        variant="h1"
-                        color="white"
-                        sx={{ opacity: "0.5" }}
-                      >
-                        دانلود
-                      </Typography>
-                      <Box
-                        width="100%"
-                        borderBottom="2px solid #57585A"
-                        sx={{ marginTop: "1rem", opacity: "0.5" }}
-                      />
-                    </Stack>
-
-                    <Typography variant="h1" color="#57585A">
-                      Mbps
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={upload_purple} alt="download" />
-                    <Stack direction="column">
-                      <Typography variant="h1" color="white">
-                        آپلود{" "}
-                      </Typography>
-                      <Box
-                        width="100%"
-                        borderBottom="2px solid #FFFFFF"
+                        borderBottom="2px solid #FFF"
                         sx={{ marginTop: "1rem" }}
-                      />{" "}
-                    </Stack>
-
-                    <Typography variant="h1" color="white">
-                      Mbps
-                    </Typography>
+                      />
+                    ) : (
+                      <Typography variant="h2">{upload}</Typography>
+                    )}
                   </Stack>
-                </>
-              )}
+                  <Typography variant="h1" color="white">
+                    Mbps
+                  </Typography>
+                </Box>
+              </>
             </Stack>
             <Stack
               direction="row"
               justifyContent="start"
               alignItems="center"
-              gap={4}
+              gap={2}
               mt={5}
             >
               <Stack direction="row" justifyContent="start" alignItems="center">
@@ -988,13 +972,18 @@ const SpeedTest = () => {
                 direction="row"
                 justifyContent="start"
                 alignItems="center"
-                gap={2}
+                gap={1}
               >
-                <img src={ping} alt="ping" />
-                <Typography variant="h1" color="white">
-                  {latency}{" "}
-                </Typography>
                 <Stack direction="row" gap=".8rem">
+                  <img
+                    src={ping}
+                    alt="ping"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={latency} />
+                </Stack>
+
+                <Stack direction="row" gap=".8rem" marginLeft="1rem">
                   <img
                     src={download_blue}
                     alt="download"
