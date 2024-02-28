@@ -908,7 +908,7 @@ const SpeedTest = () => {
                       <Box
                         width="100%"
                         borderBottom="2px solid #FFF"
-                        sx={{ marginTop: "1rem" }}
+                        sx={{ marginTop: "1rem", minHeight: ".5rem" }}
                       />
                     ) : (
                       <Typography variant="h2">{download}</Typography>
@@ -940,7 +940,7 @@ const SpeedTest = () => {
                       <Box
                         width="100%"
                         borderBottom="2px solid #FFF"
-                        sx={{ marginTop: "1rem" }}
+                        sx={{ marginTop: "1rem", minHeight: ".5rem" }}
                       />
                     ) : (
                       <Typography variant="h2">{upload}</Typography>
