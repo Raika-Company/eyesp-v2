@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import usePrevious from "../../hooks/usePrevious";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import "./AnimatingNumber.css";
 
 // Helper function doesn't need changes for TypeScript, but let's add return type
@@ -48,24 +48,23 @@ const NumberColumn = ({ digit, delta }: NumberColumnProps) => {
   }, [digit]);
 
   return (
-    <div style={{ position: "relative" }} ref={columnContainer}>
+    <div ref={columnContainer} style={{ color: "white", fontSize: "20px" }}>
       <motion.div
         animate={{ y: -position }}
         className={`ticker-column ${animationClass || ""}`}
         style={{
-          position: "absolute",
           height: "1000%",
           bottom: "0",
         }}
         ref={numberColumnRef}
       >
-        {[9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((num) => (
+        {[9, 8, 7, 6, 5, 4, 3, 2, 1, 0].reverse().map((num) => (
           <div key={num} style={{ height: "10%" }}>
             <span>{num}</span>
           </div>
         ))}
       </motion.div>
-      <Typography sx={{ visibility: "hidden" }}>0</Typography>
+      <Typography>0</Typography>
     </div>
   );
 };
@@ -83,7 +82,6 @@ interface AnimatingNumberProps {
 }
 
 const AnimatingNumber = ({ value }: AnimatingNumberProps) => {
-  const theme = useTheme();
   const numArray = formatForDisplay(value);
   const previousNumber = usePrevious(value.toString());
 
@@ -101,12 +99,10 @@ const AnimatingNumber = ({ value }: AnimatingNumberProps) => {
   return (
     <Box
       sx={{
-        height: "100%",
+        height: "20px",
         margin: "auto",
         display: "flex",
         overflow: "hidden",
-        position: "relative",
-        color: theme.palette.mode === "dark" ? "#fff" : "gray",
       }}
     >
       {numArray.map((number, index) =>
