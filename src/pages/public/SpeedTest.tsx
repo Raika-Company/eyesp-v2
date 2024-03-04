@@ -35,8 +35,6 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 import AnimatingNumber from "./AnimatingNumber";
-import useDebounceTime from "../../hooks/useDebounceTime";
-import FloatingResult from "./FloatingResult";
 import SwitchBtn from "./SwitchBtn";
 import etesal from "../../assets/images/etesal.svg";
 import test from "node:test";
@@ -756,6 +754,7 @@ const SpeedTest = () => {
               variant="h1"
               sx={{
                 position: "absolute",
+                fontSize: { xs: "2rem", sm: "2.8rem", lg: "3.5rem !important" },
                 opacity: ".7",
               }}
             >
@@ -886,96 +885,80 @@ const SpeedTest = () => {
             // padding="2rem"
           >
             <Stack direction="row" gap={10}>
-              {isDl && (
-                <>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={download_green} alt="download" />
-                    <Stack direction="column">
-                      <Typography variant="h1" color="white">
-                        دانلود
-                      </Typography>
-                      <Box
-                        width="100%"
-                        borderBottom="2px solid #FFFFFF"
-                        sx={{ marginTop: "1rem" }}
-                      />
-                    </Stack>
-
+              {/* {isDl && ( */}
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    gap: "1rem",
+                    opacity: downloadProgress === 1 ? "0.7" : "1",
+                    transition: "opacity 0.5s ease-in-out",
+                  }}
+                >
+                  <img
+                    src={
+                      downloadProgress === 1 ? donwload_gray : download_green
+                    }
+                    alt="download"
+                  />
+                  <Stack direction="column">
                     <Typography variant="h1" color="white">
-                      Mbps
+                      دانلود
                     </Typography>
-                  </Stack>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={upload_Gray} alt="download" />
-                    <Stack direction="column">
-                      <Typography
-                        variant="h1"
-                        color="white"
-                        sx={{ opacity: "0.5" }}
-                      >
-                        آپلود{" "}
-                      </Typography>
+                    {downloadProgress < 1 ? (
                       <Box
                         width="100%"
-                        borderBottom="2px solid #57585A"
-                        sx={{ marginTop: "1rem", opacity: "0.5" }}
-                      />{" "}
-                    </Stack>
-
-                    <Typography variant="h1" color="#57585A">
-                      Mbps
-                    </Typography>
-                  </Stack>
-                </>
-              )}{" "}
-              {!isDl && (
-                <>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={donwload_gray} alt="download" />
-                    <Stack direction="column">
-                      <Typography
-                        variant="h1"
-                        color="white"
-                        sx={{ opacity: "0.5" }}
-                      >
-                        دانلود
-                      </Typography>
-                      <Box
-                        width="100%"
-                        borderBottom="2px solid #57585A"
-                        sx={{ marginTop: "1rem", opacity: "0.5" }}
+                        borderBottom="2px solid #FFF"
+                        sx={{ marginTop: "1rem", minHeight: ".5rem" }}
                       />
-                    </Stack>
-
-                    <Typography variant="h1" color="#57585A">
-                      Mbps
-                    </Typography>
+                    ) : (
+                      <Typography variant="h2">{download}</Typography>
+                    )}
                   </Stack>
-                  <Stack direction="row" gap={1} alignItems="start">
-                    <img src={upload_purple} alt="download" />
-                    <Stack direction="column">
-                      <Typography variant="h1" color="white">
-                        آپلود{" "}
-                      </Typography>
+
+                  <Typography variant="h1" color="white">
+                    Mbps
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    gap: "1rem",
+                    opacity: !isDl && uploadProgress < 1 ? "1" : ".7",
+                    transition: "opacity 0.5s ease-in-out",
+                  }}
+                >
+                  <img
+                    src={uploadProgress === 1 ? upload_Gray : upload_purple}
+                    alt="upload"
+                  />
+                  <Stack direction="column">
+                    <Typography variant="h1" color="white">
+                      آپلود{" "}
+                    </Typography>
+                    {uploadProgress < 1 ? (
                       <Box
                         width="100%"
-                        borderBottom="2px solid #FFFFFF"
-                        sx={{ marginTop: "1rem" }}
-                      />{" "}
-                    </Stack>
-
-                    <Typography variant="h1" color="white">
-                      Mbps
-                    </Typography>
+                        borderBottom="2px solid #FFF"
+                        sx={{ marginTop: "1rem", minHeight: ".5rem" }}
+                      />
+                    ) : (
+                      <Typography variant="h2">{upload}</Typography>
+                    )}
                   </Stack>
-                </>
-              )}
+                  <Typography variant="h1" color="white">
+                    Mbps
+                  </Typography>
+                </Box>
+              </>
             </Stack>
             <Stack
               direction="row"
               justifyContent="start"
               alignItems="center"
-              gap={4}
+              gap={2}
               mt={5}
             >
               <Stack direction="row" justifyContent="start" alignItems="center">
@@ -991,16 +974,33 @@ const SpeedTest = () => {
                 direction="row"
                 justifyContent="start"
                 alignItems="center"
-                gap={2}
+                gap={1}
               >
-                <img src={ping} alt="ping" />
-                <Typography variant="h1" color="white">
-                  {latency}{" "}
-                </Typography>
-                <img src={download_blue} alt="download" />
-                <AnimatingNumber value={download} />
-                <img src={upload_purple} alt="upload" />
-                <AnimatingNumber value={upload} />
+                <Stack direction="row" gap=".8rem">
+                  <img
+                    src={ping}
+                    alt="ping"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={latency} />
+                </Stack>
+
+                <Stack direction="row" gap=".8rem" marginLeft="1rem">
+                  <img
+                    src={download_blue}
+                    alt="download"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={download} />
+                </Stack>
+                <Stack direction="row" gap=".8rem">
+                  <img
+                    src={upload_purple}
+                    alt="upload"
+                    style={{ width: "1.2rem", marginTop: "-.2rem" }}
+                  />
+                  <AnimatingNumber value={upload} />
+                </Stack>
               </Stack>
             </Stack>
           </Box>
