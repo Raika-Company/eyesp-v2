@@ -7,7 +7,14 @@ declare global {
   }
 }
 
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  styled,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import DownloadGrad from "../../assets/images/donwload-grad.svg";
 import UploadGrad from "../../assets/images/upload-grad.png";
@@ -24,12 +31,35 @@ import upload_Gray from "../../assets/images/uploadGray.svg";
 import ping from "../../assets/images/ping.svg";
 import donwload_gray from "../../assets/images/download-gray.svg";
 import WestIcon from "@mui/icons-material/West";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import { convertToPersianNumbers } from "../../utils/convertToPersianNumbers";
 import AnimatingNumber from "./AnimatingNumber";
 import SwitchBtn from "./SwitchBtn";
 import etesal from "../../assets/images/etesal.svg";
+import test from "node:test";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { x: -10, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 100 },
+  },
+};
 
 /**
  * Enum representing status codes for the speed test.
@@ -108,7 +138,11 @@ const calculateAngleOfCarret = (value: number) => {
 interface AddressIPProps {
   ip: string;
 }
-
+enum TestStatus {
+  NotStarted = "notStartAnimate",
+  Running = "startAnimate",
+  Finished = "resultTest",
+}
 const AddressIP: React.FC<AddressIPProps> = ({ ip }) => {
   return (
     <Box>
@@ -167,7 +201,9 @@ const SpeedTest = () => {
   const { isFetchingServers, selectBestServer } = useFetchServers();
   const [selectedServerURL, setSelectedServerURL] = useState("");
   const [isServerSelected, setIsServerSelected] = useState(false);
-
+  const [testStatus, setTestStatus] = useState<TestStatus>(
+    TestStatus.NotStarted
+  );
   function interpolateClipPath(angle: number | undefined) {
     // Define the known angles and their corresponding clipPath attributes
     const angleClipPathMap = [
@@ -323,6 +359,8 @@ const SpeedTest = () => {
   const handleStartTestClick = () => {
     if (!isServerSelected) return;
     setStartAnimate(true);
+    setTestStatus(TestStatus.Running);
+
     setTimeout(() => {
       setStartTest(true);
       startPingTest();
@@ -395,6 +433,8 @@ const SpeedTest = () => {
           localStorage.setItem("testResults", JSON.stringify(existingResults));
           // setIsGoButtonVisible(true);
           setIsTestEnds(true);
+          setTestStatus(TestStatus.Finished);
+          console.log("Test results:", TestStatus.Finished);
         }
       };
       window.speedtest.onend = () => {
@@ -437,217 +477,185 @@ const SpeedTest = () => {
     },
   ];
 
+  const navigate = useNavigate();
   const restartTest = (): void => {
-    setIsTestEnds(false);
-    setStartAnimate(true);
+    navigate(0);
 
-    setStartTest(false);
-    setStatus(STATUS_MAP.READY);
-    setDownload(0);
-    setUpload(0);
+    // Perform ping test, which will subsequently start the download/upload tests
   };
 
   interface ResultTestProps {
     onRestartTest: () => void;
   }
   const ResultTest: React.FC<ResultTestProps> = ({ onRestartTest }) => {
+    const [animationPlayed, setAnimationPlayed] = useState(false);
+
+    const handleRestartTest = () => {
+      if (!animationPlayed) {
+        setAnimationPlayed(true); // Ensures the animation is marked as played
+      }
+      onRestartTest();
+    };
     return (
-      <Box
-        sx={{
-          background: "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
-          height: "100dvh",
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "56px",
         }}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
       >
-        {" "}
-        <Container>
-          <Box
-            display="flex"
-            height="100dvh"
-            overflow="auto"
-            flexWrap="wrap"
-            justifyContent="center"
-            alignItems="center"
-            gap={13}
-            padding={3}
-          >
-            <Stack direction="row">
-              <Box
-                onClick={onRestartTest}
-                onMouseEnter={() => setHoverButton(true)}
-                onMouseLeave={() => setHoverButton(false)}
+        <Stack direction="row">
+          <motion.div>
+            <Box
+              onClick={handleRestartTest}
+              sx={{
+                width: { lg: "300px", md: "400px", xs: "300px" },
+                height: { lg: "300px", md: "400px", xs: "300px" },
+                borderRadius: "50%",
+                display: "flex",
+                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "transparent",
+                color: "#fff",
+                fontWeight: "bold",
+                cursor: "pointer",
+                zIndex: "20",
+                ":hover": {
+                  background: "#498dd615",
+                },
+                "::before": {
+                  padding: "3px",
+                  content: '""',
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  border: "8px",
+                  background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                },
+              }}
+            >
+              <Typography
+                variant="h1"
                 sx={{
+                  position: "absolute",
+                  fontSize: "5.5rem",
+                  opacity: ".7",
+                }}
+              >
+                شروع
+              </Typography>
+              <Box
+                sx={{
+                  position: "absolute",
                   width: { lg: "300px", md: "400px", xs: "300px" },
                   height: { lg: "300px", md: "400px", xs: "300px" },
                   borderRadius: "50%",
-                  display: "flex",
-                  position: "relative",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "transparent",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  zIndex: "20",
-                  ":hover": {
-                    background: "#498dd615",
-                  },
-                  "::before": {
-                    padding: "3px",
-                    content: '""',
-                    top: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50%",
-                    border: "8px",
-                    background: "linear-gradient(to bottom, #1CC760, #7FCD9F)",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                  },
-
-                  animation: startAnimate ? "fadeOut 1s both" : "",
-                  "@keyframes fadeOut": {
-                    "0%": {
-                      opacity: 1,
-                    },
-
-                    "100%": {
-                      opacity: 0,
-                    },
-                  },
+                  border: "2px #7FCD9F solid",
+                  opacity: "0",
+                  animation: animationPlayed
+                    ? "none"
+                    : "startRing 3.5s 3.5s forwards linear",
                 }}
-              >
-                <Typography
-                  sx={{
-                    position: "absolute",
-                    fontSize: "3.5rem",
-                    opacity: ".7",
-                  }}
-                >
-                  شروع
-                </Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-
-                    width: { lg: "300px", md: "400px", xs: "300px" },
-                    height: { lg: "300px", md: "400px", xs: "300px" },
-                    borderRadius: "50%",
-                    border: "2px #7FCD9F solid",
-                    opacity: "0",
-                    animation: hoverButton
-                      ? ""
-                      : "startRing 3.5s 3.5s infinite linear",
-
-                    "@keyframes startRing": {
-                      "0%": {
-                        opacity: "0",
-                        transform: "scale(1)",
-                      },
-
-                      "12.5%": {
-                        opacity: "0",
-                        transform: "scale(.995)",
-                      },
-
-                      "16.66%": {
-                        opacity: "1",
-                      },
-
-                      "50%": {
-                        opacity: 0,
-                        transform: "scale(1.3)",
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Stack>{" "}
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="start"
-              alignItems="start"
-              gap={8}
-            >
-              {detailResult.map((item, index) => (
-                <Stack key={index} direction="row" gap={4} alignItems="center">
-                  <img src={item.imgSrc} alt="img" />
-                  <Stack direction="column" alignItems="center" gap={1}>
-                    <Typography variant="h2" color="white">
-                      {item.title}
-                    </Typography>
-                    <Typography variant="h3" color="#57585A">
-                      {item.subtitle}
-                    </Typography>
-                  </Stack>
-                </Stack>
-              ))}
+              />
             </Box>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="start"
-              alignItems="start"
-              gap={13}
-            >
-              {finalResult.map((item) => (
-                <Stack
-                  key={item.id}
-                  direction="column"
-                  gap={2}
-                  alignItems="center"
-                >
-                  <Stack direction="row" gap={2} alignItems="center">
-                    <img src={item.image} alt="download" />
-                    <Typography variant="h2" color="white">
-                      دانلود
-                    </Typography>
-                    <Typography variant="h3" color="#57585A">
-                      Mbps
-                    </Typography>
-                  </Stack>
+          </motion.div>
+        </Stack>{" "}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="start"
+          gap={8}
+        >
+          {detailResult.map((item, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <Stack key={index} direction="row" gap={4} alignItems="center">
+                <img src={item.imgSrc} alt="img" />
+                <Stack direction="column" alignItems="center" gap={1}>
                   <Typography variant="h2" color="white">
-                    {item.downloadRate}
+                    {item.title}
+                  </Typography>
+                  <Typography variant="h3" color="#57585A">
+                    {item.subtitle}
                   </Typography>
                 </Stack>
-              ))}
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              gap={5}
-            >
-              <Stack direction="row" alignItems="center" gap={1}>
-                <Typography variant="h1" color="white">
-                  پینگ
-                </Typography>
-                <Typography variant="h3" color="#57585A">
-                  ms
+              </Stack>
+            </motion.div>
+          ))}
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="start"
+          gap={13}
+        >
+          {finalResult.map((item) => (
+            <motion.div key={item.id} variants={itemVariants}>
+              <Stack
+                key={item.id}
+                direction="column"
+                gap={2}
+                alignItems="center"
+              >
+                <Stack direction="row" gap={2} alignItems="center">
+                  <img src={item.image} alt="download" />
+                  <Typography variant="h2" color="white">
+                    دانلود
+                  </Typography>
+                  <Typography variant="h3" color="#57585A">
+                    Mbps
+                  </Typography>
+                </Stack>
+                <Typography variant="h2" color="white">
+                  {item.downloadRate}
                 </Typography>
               </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                gap={1}
-              >
-                <img src={ping} alt="ping" />
-                <Typography variant="h2" color="white">
-                  {latency}
-                </Typography>
-              </Stack>{" "}
-            </Box>
+            </motion.div>
+          ))}
+        </Box>
+        <motion.div variants={itemVariants}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={5}
+          >
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Typography variant="h1" color="white">
+                پینگ
+              </Typography>
+              <Typography variant="h3" color="#57585A">
+                ms
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              gap={1}
+            >
+              <img src={ping} alt="ping" />
+              <Typography variant="h2" color="white">
+                {latency}
+              </Typography>
+            </Stack>{" "}
           </Box>
-        </Container>
-      </Box>
+        </motion.div>
+      </motion.div>
     );
   };
 
@@ -687,7 +695,7 @@ const SpeedTest = () => {
         </Box>
       </Container>
 
-      {!startAnimate && (
+      {testStatus === TestStatus.NotStarted && (
         <Box
           display="flex"
           flexDirection="column"
@@ -743,6 +751,7 @@ const SpeedTest = () => {
             }}
           >
             <Typography
+              variant="h1"
               sx={{
                 position: "absolute",
                 fontSize: { xs: "2rem", sm: "2.8rem", lg: "3.5rem !important" },
@@ -754,7 +763,6 @@ const SpeedTest = () => {
             <Box
               sx={{
                 position: "absolute",
-
                 width: { lg: "300px", md: "400px", xs: "300px" },
                 height: { lg: "300px", md: "400px", xs: "300px" },
                 borderRadius: "50%",
@@ -862,18 +870,12 @@ const SpeedTest = () => {
         </Box>
       )}
 
-      {startAnimate && (
+      {testStatus === TestStatus.Running && (
         <Box
-          sx={{
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            background:
-              "linear-gradient(252deg, #2C2E32 0.73%, #0F1114 39.56%)",
-          }}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
         >
           <Box
             display="flex"
@@ -1374,7 +1376,11 @@ const SpeedTest = () => {
           </Box>{" "}
         </Box>
       )}
+      {testStatus === TestStatus.Finished && (
+        <ResultTest onRestartTest={restartTest} />
+      )}
     </Box>
+
     // <ResultTest onRestartTest={restartTest} />
   );
 };
